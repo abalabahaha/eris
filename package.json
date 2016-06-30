@@ -1,0 +1,34 @@
+{
+  "name": "eris",
+  "version": "0.0.1",
+  "description": "Yet another NodeJS lib for Discord",
+  "main": "./index.js",
+  "scripts": {
+    "test": "cd test && node test",
+    "eslint": "node_modules/.bin/eslint --fix lib index.js && echo \"OK\" || echo \"Not OK\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abalabahaha/eris.git"
+  },
+  "keywords": [
+    "api",
+    "discord",
+    "discordapp",
+    "eris",
+    "wrapper"
+  ],
+  "author": "abalabahaha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abalabahaha/eris/issues"
+  },
+  "homepage": "https://github.com/abalabahaha/eris#readme",
+  "dependencies": {
+    "ws": "^1.0.1"
+  },
+  "optionalDependencies": {
+    "node-opus": "^0.1.12",
+    "tweetnacl": "^0.14.3"
+  }
+}
