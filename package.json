@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "A NodeJS Discord library",
   "main": "./index.js",
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "scripts": {
     "eslint": "eslint --fix lib index.js && echo \"\u001b[1m\u001b[32mOK\u001b[39m\u001b[22m\" || echo \"\u001b[1m\u001b[31mNot OK\u001b[39m\u001b[22m\""
   },
