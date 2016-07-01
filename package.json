@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Yet another NodeJS lib for Discord",
   "main": "./index.js",
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "scripts": {
     "test": "cd test && node test",
     "eslint": "node_modules/.bin/eslint --fix lib index.js && echo \"OK\" || echo \"Not OK\""
