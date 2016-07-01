@@ -49,7 +49,7 @@ Useful Links
 
 [The Discord channel](https://discordapp.com/invite/n2g6BQP) is the best place to get support/contact me.
 
-[The GitHub repo](https://github.com/abalabaahha/eris) has the most updated code.
+[The GitHub repo](https://github.com/abalabahaha/eris) has the most updated code.
 
 License
 -------
