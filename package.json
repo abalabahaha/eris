@@ -1,11 +1,10 @@
 {
   "name": "eris",
   "version": "0.0.1",
-  "description": "Yet another NodeJS lib for Discord",
+  "description": "A NodeJS Discord library",
   "main": "./index.js",
   "scripts": {
-    "test": "cd test && node test",
-    "eslint": "node_modules/.bin/eslint --fix lib index.js && echo \"OK\" || echo \"Not OK\""
+    "eslint": "eslint --fix lib index.js && echo \"\u001b[1m\u001b[32mOK\u001b[39m\u001b[22m\" || echo \"\u001b[1m\u001b[31mNot OK\u001b[39m\u001b[22m\""
   },
   "repository": {
     "type": "git",
