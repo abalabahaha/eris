@@ -38,7 +38,7 @@ bot.on("ready", () => { // When the bot is ready
                 waitForever: true
             });
 
-            console.log("Bridging " + channel1 + " " + channel2 + "!"); // Log a bridging notification
+            console.log("Bridging " + channel1 + " and " + channel2 + "!"); // Log a bridging notification
         });
     });
 });
