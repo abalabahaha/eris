@@ -1,6 +1,6 @@
 {
   "name": "eris",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A NodeJS Discord library",
   "main": "./index.js",
   "scripts": {
@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/abalabahaha/eris/issues"
   },
-  "homepage": "https://github.com/abalabahaha/eris#readme",
+  "homepage": "https://abal.moe/Eris/",
   "dependencies": {
     "ws": "^1.0.1"
   },
