@@ -7,12 +7,14 @@ function Eris(token, options) {
 }
 
 Eris.Bucket = require("./lib/util/Bucket");
+Eris.Call = require("./lib/core/Call");
 Eris.Channel = require("./lib/core/Channel");
 Eris.Client = Client;
 Eris.Collection = require("./lib/util/Collection");
 Eris.Command = require("./lib/command/Command");
 Eris.CommandClient = require("./lib/command/CommandClient");
 Eris.Constants = require("./lib/Constants");
+Eris.GroupChannel = require("./lib/core/GroupChannel");
 Eris.Guild = require("./lib/core/Guild");
 Eris.GuildIntegration = require("./lib/core/GuildIntegration");
 Eris.Invite = require("./lib/core/Invite");
@@ -24,5 +26,6 @@ Eris.Role = require("./lib/core/Role");
 Eris.Shard = require("./lib/core/Shard");
 Eris.User = require("./lib/core/User");
 Eris.VoiceConnection = require("./lib/core/VoiceConnection");
+Eris.VoiceState = require("./lib/core/VoiceState");
 
 module.exports = Eris;
