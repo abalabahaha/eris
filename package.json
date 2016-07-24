@@ -24,10 +24,10 @@
   },
   "homepage": "https://abal.moe/Eris/",
   "dependencies": {
-    "ws": "^1.0.1"
+    "ws": "^1.1.1"
   },
   "optionalDependencies": {
-    "node-opus": "^0.1.12",
+    "node-opus": "^0.2.1",
     "tweetnacl": "^0.14.3"
   }
 }
