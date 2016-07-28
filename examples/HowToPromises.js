@@ -3,7 +3,7 @@
 */
 const Eris = require('eris')
 var shards = 2 // You can set your shard count here, recommend moving that to a config file.
-var bot = new Eris('MjA1OTk3MTM2NzgzOTk4OTc2.CnOJSA.CxzPOS-ksWya3VPtyq03VI9AiGs', {maxShards: shards, lastShardID: shards - 1}) // Simple shard options
+var bot = new Eris('BOT_TOKEN', {maxShards: shards, lastShardID: shards - 1}) // Simple shard options
 // Replace BOT_TOKEN with your bot account's token
 
 bot.on('ready', () => { // When the bot is ready
