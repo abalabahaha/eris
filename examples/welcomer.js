@@ -15,7 +15,7 @@ bot.on("guildMemberAdd", (guild, member) => { // When a member joins a guild
     // Send the response in the guild's default channel
 });
 
-bot.on("guildMemberRemove", (guild, member) => { // When a member joins a guild
+bot.on("guildMemberRemove", (guild, member) => { // When a member leaves a guild
     var response = `Farewell @${member.user.username}!`;
     // Make a farewell string with the member's username
 
