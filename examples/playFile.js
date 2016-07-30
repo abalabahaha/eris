@@ -19,7 +19,7 @@ bot.on("messageCreate", (msg) => { // When a message is created
             bot.createMessage(msg.channel.id, "This command can only be run in a server.");
             return;
         }
-        if(!msg.member.channelID) { // Check if the user is in a voice channel
+        if(!msg.member.voiceState) { // Check if the user is in a voice channel
             bot.createMessage(msg.channel.id, "You are not in a voice channel.");
             return;
         }
@@ -34,7 +34,7 @@ bot.on("messageCreate", (msg) => { // When a message is created
                     return;
                 }
             } else {
-                bot.joinVoiceChannel(msg.member.channelID).catch((err) => { // Join the user's voice channel
+                bot.joinVoiceChannel(msg.member.voiceState.channelID).catch((err) => { // Join the user's voice channel
                     bot.createMessage(msg.channel.id, "Error joining voice channel: " + err.message); // Notify the user if there is an error
                     console.log(err); // Log the error
                 }).then((connection) => {
