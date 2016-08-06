@@ -30,8 +30,6 @@
     "ws": "^1.1.1"
   },
   "optionalDependencies": {
-    "bluebird": "^3.4.1",
-    "eventemitter3": "^1.2.0",
     "node-opus": "^0.2.1",
     "tweetnacl": "^0.14.3"
   }
