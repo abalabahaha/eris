@@ -2,6 +2,8 @@ env:
   es6: true
   node: true
 extends: "eslint:recommended"
+globals:
+  window: true
 parserOptions:
   ecmaVersion: 6
 rules:
