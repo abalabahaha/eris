@@ -32,5 +32,15 @@
   "optionalDependencies": {
     "node-opus": "^0.2.1",
     "tweetnacl": "^0.14.3"
+  },
+  "browser": {
+    "child_process": false,
+    "dgram": false,
+    "dns": false,
+    "fs": false,
+    "node-opus": false,
+    "tls": false,
+    "tweetnacl": false,
+    "ws": false
   }
 }
