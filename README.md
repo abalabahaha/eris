@@ -17,7 +17,7 @@ If you need voice support, remove the `--no-optional`
 Ping Pong Example
 -----------------
 
-```
+```js
 const Eris = require("eris");
 
 var bot = new Eris("BOT_TOKEN");
@@ -50,6 +50,8 @@ Useful Links
 [The Discord channel](https://discordapp.com/invite/n2g6BQP) is the best place to get support/contact me.
 
 [The GitHub repo](https://github.com/abalabahaha/eris) has the most updated code.
+
+[NPM package](https://github.com/abalabahaha/eris)
 
 License
 -------
