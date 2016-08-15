@@ -26,18 +26,20 @@ class OpusScript {
         if(!~VALID_SAMPLING_RATES.indexOf(samplingRate)) {
             throw new RangeError(`${samplingRate} is an invalid sampling rate.`);
         }
+        this.samplingRate = samplingRate;
+
         this.frameDuration = frameDuration || 20;
         if(this.frameDuration % 2.5 !== 0) {
             throw new RangeError(`${this.frameDuration} is an invalid frame duration.`);
         }
-        this.samplingRate = samplingRate;
+
         this.channels = channels || 1;
         this.application = application || OpusApplication.AUDIO;
         this.frameSize = this.samplingRate * this.frameDuration / 1000;
 
         this.encoder = new opusscript_native.OpusScriptEncoder(this.samplingRate, this.channels, this.application);
 
-        this.inPCMLength = this.frameSize * 2 * this.channels;
+        this.inPCMLength = this.frameSize * this.channels * 2;
         this.inPCMPointer = opusscript_native._malloc(this.inPCMLength);
         this.inPCM = opusscript_native.HEAPU16.subarray(this.inPCMPointer, this.inPCMPointer + this.inPCMLength);
 
@@ -55,8 +57,8 @@ class OpusScript {
     }
 
     encode(buffer) {
-        if(buffer.length !== this.inPCMLength) {
-            throw new Error("Incompatible buffer length");
+        if(buffer.length > this.inPCMLength) {
+            throw new RangeError("Buffer too large");
         }
 
         this.inPCM.set(buffer);
@@ -66,11 +68,13 @@ class OpusScript {
             throw new Error("Encode error: " + OpusError["" + opus_native.getValue(len, "i32")]);
         }
 
-        return this.outOpus.slice(0, len);
+        return this.outOpus.subarray(0, len);
     }
 }
 
 OpusScript.Application = OpusApplication;
 OpusScript.Error = OpusError;
+OpusScript.VALID_SAMPLING_RATES = VALID_SAMPLING_RATES;
+OpusScript.MAX_FRAME_SIZE = MAX_FRAME_SIZE;
 
 module.exports = OpusScript;
