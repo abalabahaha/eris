@@ -43,8 +43,15 @@ class OpusScript {
         this.inPCMPointer = opusscript_native._malloc(this.inPCMLength);
         this.inPCM = opusscript_native.HEAPU16.subarray(this.inPCMPointer, this.inPCMPointer + this.inPCMLength);
 
+        this.inOpusPointer = opusscript_native._malloc(MAX_FRAME_SIZE);
+        this.inOpus = opusscript_native.HEAPU8.subarray(this.inOpusPointer, this.inOpusPointer + MAX_FRAME_SIZE);
+
         this.outOpusPointer = opusscript_native._malloc(MAX_FRAME_SIZE);
         this.outOpus = opusscript_native.HEAPU8.subarray(this.outOpusPointer, this.outOpusPointer + MAX_FRAME_SIZE);
+
+        this.outPCMLength = this.frameSize * this.channels * 2;
+        this.outPCMPointer = opusscript_native._malloc(this.outPCMLength);
+        this.outPCM = opusscript_native.HEAPU16.subarray(this.outPCMPointer, this.outPCMPointer + this.outPCMLength);
     }
 
     setBitrate(bitrate) {
@@ -68,7 +75,22 @@ class OpusScript {
             throw new Error("Encode error: " + OpusError["" + opus_native.getValue(len, "i32")]);
         }
 
-        return this.outOpus.subarray(0, len);
+        return new Buffer(this.outOpus.subarray(0, len));
+    }
+
+    decode(buffer) {
+        if(buffer.length > MAX_FRAME_SIZE) {
+            throw new RangeError("Buffer too large");
+        }
+
+        this.inOpus.set(buffer);
+
+        var len = this.encoder._decode(this.inOpusPointer, this.outPCM.byteOffset, buffer.length);
+        if(len < 0) {
+            throw new Error("Decode error: " + OpusError["" + opus_native.getValue(len, "i32")]);
+        }
+
+        return new Buffer(this.outPCM.subarray(0, len * this.channels * 2));
     }
 }
 
