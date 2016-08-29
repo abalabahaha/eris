@@ -41,7 +41,7 @@ bot.on("messageCreate", (msg) => { // When a message is created
                     if(connection.playing) { // Stop playing if the connection is playing something
                         connection.stopPlaying();
                     }
-                    connection.playFile(filename); // Play the file and notify the user
+                    connection.playResource(filename); // Play the file and notify the user
                     bot.createMessage(msg.channel.id, `Now playing **${filename}**`);
                     connection.once("end", () => {
                         bot.createMessage(msg.channel.id, `Finished **${filename}**`); // Say when the file has finished playing
