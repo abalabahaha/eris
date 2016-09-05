@@ -51,7 +51,7 @@ Useful Links
 
 [The GitHub repo](https://github.com/abalabahaha/eris) has the most updated code.
 
-[NPM package](https://github.com/abalabahaha/eris)
+[The NPM package](https://www.npmjs.com/package/eris)
 
 License
 -------

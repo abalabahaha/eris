@@ -32,6 +32,5 @@ Eris.User = require("./lib/structures/User");
 Eris.VoiceConnection = require("./lib/voice/VoiceConnection");
 Eris.VoiceState = require("./lib/structures/VoiceState");
 Eris.MultipartData = require("./lib/util/MultipartData");
-Eris.VolumeTransformer = require("./lib/util/VolumeTransformer");
 
 module.exports = Eris;
