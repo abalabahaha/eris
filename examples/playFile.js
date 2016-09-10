@@ -24,30 +24,18 @@ bot.on("messageCreate", (msg) => { // When a message is created
             return;
         }
         var filename = msg.content.substring(playCommand.length + 1); // Get the filename
-        FS.stat(filename, (err) => { // Try to read the file
-            if(err) {
-                if(err.code === "ENOENT") { // Handle ENOENT (file does not exist)
-                    bot.createMessage(msg.channel.id, "That file does not exist.");
-                    return;
-                } else { // Notify user about file access error
-                    bot.createMessage(msg.channel.id, "An error occured trying to access that file.");
-                    return;
-                }
-            } else {
-                bot.joinVoiceChannel(msg.member.voiceState.channelID).catch((err) => { // Join the user's voice channel
-                    bot.createMessage(msg.channel.id, "Error joining voice channel: " + err.message); // Notify the user if there is an error
-                    console.log(err); // Log the error
-                }).then((connection) => {
-                    if(connection.playing) { // Stop playing if the connection is playing something
-                        connection.stopPlaying();
-                    }
-                    connection.playResource(filename); // Play the file and notify the user
-                    bot.createMessage(msg.channel.id, `Now playing **${filename}**`);
-                    connection.once("end", () => {
-                        bot.createMessage(msg.channel.id, `Finished **${filename}**`); // Say when the file has finished playing
-                    });
-                });
+        bot.joinVoiceChannel(msg.member.voiceState.channelID).catch((err) => { // Join the user's voice channel
+            bot.createMessage(msg.channel.id, "Error joining voice channel: " + err.message); // Notify the user if there is an error
+            console.log(err); // Log the error
+        }).then((connection) => {
+            if(connection.playing) { // Stop playing if the connection is playing something
+                connection.stopPlaying();
             }
+            connection.play(filename); // Play the file and notify the user
+            bot.createMessage(msg.channel.id, `Now playing **${filename}**`);
+            connection.once("end", () => {
+                bot.createMessage(msg.channel.id, `Finished **${filename}**`); // Say when the file has finished playing
+            });
         });
     }
 });

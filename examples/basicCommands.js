@@ -19,8 +19,8 @@ bot.registerCommand("ping", "Pong!", { // Make a ping command
     fullDescription: "This command could be used to check if the bot is up. Or entertainment when you're bored."
 });
 
-bot.registerCommand("pong", "Ping!", { // Make a pong command
-// Responds with "Ping!" when someone says "!pong"
+bot.registerCommand("pong", ["Pang!", "Peng!", "Ping!", "Pung!"], { // Make a pong command
+// Responds with a random version of "Ping!" when someone says "!pong"
     description: "Ping!",
     fullDescription: "This command could also be used to check if the bot is up. Or entertainment when you're bored."
 });

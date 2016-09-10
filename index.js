@@ -25,12 +25,10 @@ Eris.Permission = require("./lib/structures/Permission");
 Eris.PermissionOverwrite = require("./lib/structures/PermissionOverwrite");
 Eris.PrivateChannel = require("./lib/structures/PrivateChannel");
 Eris.Relationship = require("./lib/structures/Relationship");
-Eris.RequestHandler = require("./lib/rest/RequestHandler");
 Eris.Role = require("./lib/structures/Role");
 Eris.Shard = require("./lib/gateway/Shard");
 Eris.User = require("./lib/structures/User");
 Eris.VoiceConnection = require("./lib/voice/VoiceConnection");
 Eris.VoiceState = require("./lib/structures/VoiceState");
-Eris.MultipartData = require("./lib/util/MultipartData");
 
 module.exports = Eris;
