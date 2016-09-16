@@ -61,4 +61,4 @@ Refer to the [LICENSE](LICENSE) file.
 [npm-image]: https://badge.fury.io/js/eris.svg
 [npm-url]: https://npmjs.org/package/eris
 [daviddm-image]: https://david-dm.org/abalabahaha/eris.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/abalabahaha/slrngen-js
+[daviddm-url]: https://david-dm.org/abalabahaha/eris
