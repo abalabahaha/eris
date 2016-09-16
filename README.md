@@ -1,4 +1,4 @@
-Eris
+Eris [![NPM version](https://img.shields.io/npm/v/eris.svg?style=flat-square)](https://npmjs.com/package/eris) [![Dependency Status](https://img.shields.io/david/abalabahaha/eris.svg?style=flat-square)](https://david-dm.org/abalabahaha/eris)
 ====
 
 A NodeJS wrapper for interfacing with Discord.
@@ -9,7 +9,7 @@ Installing
 You will need NodeJS 4+. If you need voice support you will also need Python 2.7 and a C++ compiler. Refer to [the Getting Started section of the docs](https://abal.moe/Eris/docs.html) for more details.
 
 ```
-npm install --no-optional abalabahaha/eris
+npm install --no-optional eris
 ```
 
 If you need voice support, remove the `--no-optional`
@@ -51,7 +51,7 @@ Useful Links
 
 [The GitHub repo](https://github.com/abalabahaha/eris) has the most updated code.
 
-[The NPM package](https://www.npmjs.com/package/eris)
+[The NPM package](https://npmjs.com/package/eris)
 
 License
 -------
