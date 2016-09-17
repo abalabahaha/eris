@@ -42,5 +42,6 @@
     "tls": false,
     "tweetnacl": false,
     "ws": false
-  }
+  },
+  "typings": "typings/eris"
 }
