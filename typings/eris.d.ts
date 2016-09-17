@@ -25,7 +25,7 @@ declare module "eris" {
         * @prop {Collection<User>} users Collection of users the bot sees
         * @prop {Collection<Relationship>} relationships Collection of relationships the bot user has (user accounts only)
         */
-       new (token: String, options?: { autoreconnect: Boolean, cleanContent: Boolean, compress: Boolean, connectionTimeout: Number, disableEvents: Object, disableEveryone: Boolean, firstShardID: Number, getAllUsers: Boolean, largeThreshold: Number, lastShardID: Number, maxShards: Number, messageLimit: Number, opusOnly: Boolean, guildCreateTimeout: Number, sequencerWait: Number });
+       new (token: String, options?: { autoreconnect?: Boolean, cleanContent?: Boolean, compress?: Boolean, connectionTimeout?: Number, disableEvents?: Object, disableEveryone?: Boolean, firstShardID?: Number, getAllUsers?: Boolean, largeThreshold?: Number, lastShardID?: Number, maxShards?: Number, messageLimit?: Number, opusOnly?: Boolean, guildCreateTimeout?: Number, sequencerWait?: Number });
 
        Bucket: Bucket;
        Call: Call;
@@ -119,7 +119,7 @@ declare module "eris" {
         * @prop {Collection<User>} users Collection of users the bot sees
         * @prop {Collection<Relationship>} relationships Collection of relationships the bot user has (user accounts only)
         */
-       constructor(token: String, options?: { autoreconnect: Boolean, cleanContent: Boolean, compress: Boolean, connectionTimeout: Number, disableEvents: Object, disableEveryone: Boolean, firstShardID: Number, getAllUsers: Boolean, largeThreshold: Number, lastShardID: Number, maxShards: Number, messageLimit: Number, opusOnly: Boolean, guildCreateTimeout: Number, sequencerWait: Number }, autoreconnect?: Boolean, cleanContent?: Boolean, compress?: Boolean, connectionTimeout?: Number, disableEvents?: Object, disableEveryone?: Boolean, firstShardID?: Number, getAllUsers?: Boolean, largeThreshold?: Number, lastShardID?: Number, maxShards?: Number, messageLimit?: Number, opusOnly?: Boolean, guildCreateTimeout?: Number, sequencerWait?: Number);
+       constructor(token: String, options?: { autoreconnect?: Boolean, cleanContent?: Boolean, compress?: Boolean, connectionTimeout?: Number, disableEvents?: Object, disableEveryone?: Boolean, firstShardID?: Number, getAllUsers?: Boolean, largeThreshold?: Number, lastShardID?: Number, maxShards?: Number, messageLimit?: Number, opusOnly?: Boolean, guildCreateTimeout?: Number, sequencerWait?: Number }, autoreconnect?: Boolean, cleanContent?: Boolean, compress?: Boolean, connectionTimeout?: Number, disableEvents?: Object, disableEveryone?: Boolean, firstShardID?: Number, getAllUsers?: Boolean, largeThreshold?: Number, lastShardID?: Number, maxShards?: Number, messageLimit?: Number, opusOnly?: Boolean, guildCreateTimeout?: Number, sequencerWait?: Number);
 
        /**
         * Tells all shards to connect.
@@ -138,7 +138,7 @@ declare module "eris" {
         * @arg {Object?} [options] Shard disconnect options
         * @arg {String | Boolean} [options.reconnect] false means destroy everything, true means you want to reconnect in the future, "auto" will autoreconnect
         */
-       disconnect(options?: { reconnect: (String|Boolean) }): void;
+       disconnect(options?: { reconnect?: (String|Boolean) }): void;
 
        /**
         * Join a voice channel. If joining a group call, the voice connection ID will be stored in voiceConnections as "call". Otherwise, it will be the guild ID
@@ -162,7 +162,7 @@ declare module "eris" {
         * @arg {Number} [game.type] The type of game. 0 is default, 1 is streaming (Twitch only)
         * @arg {String} [game.url] Sets the url of the shard's active game
         */
-       editStatus(idle?: Boolean, game?: { name: String, type: Number, url: String }): void;
+       editStatus(idle?: Boolean, game?: { name: String, type?: Number, url?: String }): void;
 
        /**
         * Updates the bot's idle status (for all guilds)
@@ -177,7 +177,7 @@ declare module "eris" {
         * @arg {Number} [game.type] The type of game. 0 is default, 1 is streaming (Twitch only)
         * @arg {String} [game.url] Sets the url of the shard's active game
         */
-       editGame(game?: { name: String, type: Number, url: String }): void;
+       editGame(game?: { name: String, type?: Number, url?: String }): void;
 
        /**
         * Get a Channel object from a channelID
@@ -207,7 +207,7 @@ declare module "eris" {
         * @arg {Number} [options.userLimit] The channel user limit (guild voice channels only)
         * @returns {Promise<GroupChannel | GuildChannel>}
         */
-       editChannel(channelID: String, options: { name: String, icon: String, ownerID: String, topic: String, bitrate: Number, userLimit: Number }): Promise<(GroupChannel|GuildChannel)>;
+       editChannel(channelID: String, options: { name?: String, icon?: String, ownerID?: String, topic?: String, bitrate?: Number, userLimit?: Number }): Promise<(GroupChannel|GuildChannel)>;
 
        /**
         * Edit a guild channel's position. Note that channel position numbers are lowest on top and highest at the bottom.
@@ -266,7 +266,7 @@ declare module "eris" {
         * @arg {Boolean} [options.temporary] Whether the invite is temporary or not
         * @returns {Promise<Invite>}
         */
-       createInvite(channelID: String, options?: { maxAge: Number, maxUses: Number, temporary: Boolean }): Promise<Invite>;
+       createInvite(channelID: String, options?: { maxAge?: Number, maxUses?: Number, temporary?: Boolean }): Promise<Invite>;
 
        /**
         * Create a gulid role
@@ -286,7 +286,7 @@ declare module "eris" {
         * @arg {Boolean} [options.hoist] Whether to hoist the role in the user list or not
         * @returns {Promise<Role>}
         */
-       editRole(guildID: String, roleID: String, options: { name: String, permissions: Number, color: Number, hoist: Boolean }): Promise<Role>;
+       editRole(guildID: String, roleID: String, options: { name?: String, permissions?: Number, color?: Number, hoist?: Boolean }): Promise<Role>;
 
        /**
         * Edit a guild role's position. Note that role position numbers are highest on top and lowest at the bottom.
@@ -362,7 +362,7 @@ declare module "eris" {
         * @arg {String} [options.avatar] The new avatar as a base64 data URI. Note: base64 strings alone are not base64 data URI strings
         * @returns {Promise<ExtendedUser>}
         */
-       editSelf(options: { username: String, avatar: String }): Promise<ExtendedUser>;
+       editSelf(options: { username?: String, avatar?: String }): Promise<ExtendedUser>;
 
        /**
         * Get a DM channel with a user, or create one if it does not exist
@@ -417,7 +417,7 @@ declare module "eris" {
         * @arg {String} file.name What to name the file
         * @returns {Promise<Message>}
         */
-       createMessage(channelID: String, content: (String|{ content: String, tts: Boolean, disableEveryone: Boolean }), file?: { file: String, name: String }): Promise<Message>;
+       createMessage(channelID: String, content: (String|{ content: String, tts?: Boolean, disableEveryone?: Boolean }), file?: { file: String, name: String }): Promise<Message>;
 
        /**
         * Edit a message
@@ -489,7 +489,7 @@ declare module "eris" {
         * @arg {String} [options.enableEmoticons] Whether to enable integration emoticons or not
         * @returns {Promise}
         */
-       editGuildIntegration(guildID: String, integrationID: String, options: { expireBehavior: String, expireGracePeriod: String, enableEmoticons: String }): Promise<void>;
+       editGuildIntegration(guildID: String, integrationID: String, options: { expireBehavior?: String, expireGracePeriod?: String, enableEmoticons?: String }): Promise<void>;
 
        /**
         * Delete a guild integration
@@ -554,7 +554,7 @@ declare module "eris" {
         * @arg {String} [options.splash] The guild splash image as a base64 data URI (VIP only). Note: base64 strings alone are not base64 data URI strings
         * @returns {Promise<Guild>}
         */
-       editGuild(guildID: String, options: { name: String, region: String, icon: String, verificationLevel: Number, afkChannelID: String, afkTimeout: Number, ownerID: String, splash: String }): Promise<Guild>;
+       editGuild(guildID: String, options: { name?: String, region?: String, icon?: String, verificationLevel?: Number, afkChannelID?: String, afkTimeout?: Number, ownerID?: String, splash?: String }): Promise<Guild>;
 
        /**
         * Get the ban list of a guild
@@ -575,7 +575,7 @@ declare module "eris" {
         * @arg {String} [options.channelID] The ID of the voice channel to move the user to (must be in voice)
         * @returns {Promise}
         */
-       editGuildMember(guildID: String, userID: String, options: { roles: String[], nick: String, mute: Boolean, deaf: Boolean, channelID: String }): Promise<void>;
+       editGuildMember(guildID: String, userID: String, options: { roles?: String[], nick?: String, mute?: Boolean, deaf?: Boolean, channelID?: String }): Promise<void>;
 
        /**
         * Edit the bot's nickname in a guild
@@ -657,7 +657,7 @@ declare module "eris" {
         * Represents an command framework command
         * @prop {Object} subcommands Object mapping subcommand labels to Command objects
         */
-       constructor(label: String, generator: ((() => any)|String|((() => any)|String)[]), options?: { aliases: String[], caseInsensitive: Boolean, deleteCommand: Boolean, guildOnly: Boolean, dmOnly: Boolean, description: String, fullDescription: String, usage: String, requirements: Object });
+       constructor(label: String, generator: ((() => any)|String|((() => any)|String)[]), options?: { aliases?: String[], caseInsensitive?: Boolean, deleteCommand?: Boolean, guildOnly?: Boolean, dmOnly?: Boolean, description?: String, fullDescription?: String, usage?: String, requirements?: Object });
 
        /**
         * Register an alias for a subcommand
@@ -695,7 +695,7 @@ declare module "eris" {
         * @arg {Array<String>} [options.requirements.roleNames] An array of role names that would allow a user to use the subcommand
         * @returns {Command}
         */
-       registerSubcommand(label: String, generator: ((() => any)|String|((() => any)|String)[]), options?: { aliases: String[], caseInsensitive: Boolean, deleteCommand: Boolean, guildOnly: Boolean, dmOnly: Boolean, description: String, fullDescription: String, usage: String, requirements: Object }): Command;
+       registerSubcommand(label: String, generator: ((() => any)|String|((() => any)|String)[]), options?: { aliases?: String[], caseInsensitive?: Boolean, deleteCommand?: Boolean, guildOnly?: Boolean, dmOnly?: Boolean, description?: String, fullDescription?: String, usage?: String, requirements?: Object }): Command;
 
        /**
         * Unregister a subcommand
@@ -717,7 +717,7 @@ declare module "eris" {
         * @extends Client
         * @prop {Object} commands Object mapping command labels to Command objects
         */
-       constructor(token: String, options?: Object, commandOptions?: { defaultHelpCommand: Boolean, description: String, ignoreBots: Boolean, ignoreSelf: Boolean, name: String, owner: String, prefix: (String|any[]), defaultCommandOptions: Object });
+       constructor(token: String, options?: Object, commandOptions?: { defaultHelpCommand?: Boolean, description?: String, ignoreBots?: Boolean, ignoreSelf?: Boolean, name?: String, owner?: String, prefix?: (String|any[]), defaultCommandOptions?: Object });
 
        /**
         * Register a prefix override for a specific guild
@@ -762,7 +762,7 @@ declare module "eris" {
         * @arg {Array<String>} [options.requirements.roleNames] An array of role names that would allow a user to use the command
         * @returns {Command}
         */
-       registerCommand(label: String, generator: ((() => any)|String|((() => any)|String)[]), options?: { aliases: String[], caseInsensitive: Boolean, deleteCommand: Boolean, guildOnly: Boolean, dmOnly: Boolean, description: String, fullDescription: String, usage: String, requirements: Object }): Command;
+       registerCommand(label: String, generator: ((() => any)|String|((() => any)|String)[]), options?: { aliases?: String[], caseInsensitive?: Boolean, deleteCommand?: Boolean, guildOnly?: Boolean, dmOnly?: Boolean, description?: String, fullDescription?: String, usage?: String, requirements?: Object }): Command;
 
        /**
         * Unregister a command
@@ -811,7 +811,7 @@ declare module "eris" {
         * @arg {Object?} [options] Shard disconnect options
         * @arg {String | Boolean} [options.reconnect] false means destroy everything, true means you want to reconnect in the future, "auto" will autoreconnect
         */
-       disconnect(options?: { reconnect: (String|Boolean) }): void;
+       disconnect(options?: { reconnect?: (String|Boolean) }): void;
 
        /**
         * Updates the bot's status (for all guilds the shard is in)
@@ -821,7 +821,7 @@ declare module "eris" {
         * @arg {Number} [game.type] The type of game. 0 is default, 1 is streaming (Twitch only)
         * @arg {String} [game.url] Sets the url of the shard's active game
         */
-       editStatus(idle?: Boolean, game?: { name: String, type: Number, url: String }): void;
+       editStatus(idle?: Boolean, game?: { name: String, type?: Number, url?: String }): void;
 
        /**
         * Updates the shard's idle status (for all guilds the shard is in)
@@ -836,7 +836,7 @@ declare module "eris" {
         * @arg {Number} [game.type] The type of game. 0 is default, 1 is Twitch, 2 is YouTube
         * @arg {String} [game.url] Sets the url of the shard's active game
         */
-       editGame(game?: { name: String, type: Number, url: String }): void;
+       editGame(game?: { name: String, type?: Number, url?: String }): void;
 
    }
 
@@ -955,7 +955,7 @@ declare module "eris" {
         * @arg {String} file.name What to name the file
         * @returns {Promise<Message>}
         */
-       createMessage(content: (String|{ content: String, tts: Boolean, disableEveryone: Boolean }), file?: { file: String, name: String }): Promise<Message>;
+       createMessage(content: (String|{ content: String, tts?: Boolean, disableEveryone?: Boolean }), file?: { file: String, name: String }): Promise<Message>;
 
        /**
         * Edit a message
@@ -1065,7 +1065,7 @@ declare module "eris" {
         * @arg {String} [options.ownerID] The ID of the channel owner (group channels only)
         * @returns {Promise<GroupChannel>}
         */
-       edit(options: { name: String, icon: String, ownerID: String }): Promise<GroupChannel>;
+       edit(options: { name?: String, icon?: String, ownerID?: String }): Promise<GroupChannel>;
 
        /**
         * Add a user to the group
@@ -1210,7 +1210,7 @@ declare module "eris" {
         * @arg {Boolean} [options.hoist] Whether to hoist the role in the user list or not
         * @returns {Promise<Role>}
         */
-       editRole(roleID: String, options: { name: String, permissions: Number, color: Number, hoist: Boolean }): Promise<Role>;
+       editRole(roleID: String, options: { name?: String, permissions?: Number, color?: Number, hoist?: Boolean }): Promise<Role>;
 
        /**
         * Delete a role
@@ -1234,7 +1234,7 @@ declare module "eris" {
         * @arg {String} [options.enableEmoticons] Whether to enable integration emoticons or not
         * @returns {Promise}
         */
-       editIntegration(integrationID: String, options: { expireBehavior: String, expireGracePeriod: String, enableEmoticons: String }): Promise<void>;
+       editIntegration(integrationID: String, options: { expireBehavior?: String, expireGracePeriod?: String, enableEmoticons?: String }): Promise<void>;
 
        /**
         * Force a guild integration to sync
@@ -1267,7 +1267,7 @@ declare module "eris" {
         * @arg {String} [options.channelID] The ID of the voice channel to move the user to (must be in voice)
         * @returns {Promise}
         */
-       editMember(userID: String, options: { roles: String[], nick: String, mute: Boolean, deaf: Boolean, channelID: String }): Promise<void>;
+       editMember(userID: String, options: { roles?: String[], nick?: String, mute?: Boolean, deaf?: Boolean, channelID?: String }): Promise<void>;
 
        /**
         * Remove (kick) a member from the guild
@@ -1304,7 +1304,7 @@ declare module "eris" {
         * @arg {String} [options.splash] The guild splash image as a base64 data URI (VIP only). Note: base64 strings alone are not base64 data URI strings
         * @returns {Promise<Guild>}
         */
-       edit(options: { name: String, region: String, icon: String, verificationLevel: Number, afkChannelID: String, afkTimeout: Number, ownerID: String, splash: String }): Promise<Guild>;
+       edit(options: { name?: String, region?: String, icon?: String, verificationLevel?: Number, afkChannelID?: String, afkTimeout?: Number, ownerID?: String, splash?: String }): Promise<Guild>;
 
        /**
         * Delete the guild (bot user must be owner)
@@ -1400,7 +1400,7 @@ declare module "eris" {
         * @arg {Number} [options.userLimit] The channel user limit (guild voice channels only)
         * @returns {Promise<GuildChannel>}
         */
-       edit(options: { name: String, topic: String, bitrate: Number, userLimit: Number }): Promise<GuildChannel>;
+       edit(options: { name?: String, topic?: String, bitrate?: Number, userLimit?: Number }): Promise<GuildChannel>;
 
        /**
         * Edit the channel's position. Note that channel position numbers are lowest on top and highest at the bottom.
@@ -1446,7 +1446,7 @@ declare module "eris" {
         * @arg {Boolean} [options.temporary] Whether the invite is temporary or not
         * @returns {Promise<Invite>}
         */
-       createInvite(options?: { maxAge: Number, maxUses: Number, temporary: Boolean }): Promise<Invite>;
+       createInvite(options?: { maxAge?: Number, maxUses?: Number, temporary?: Boolean }): Promise<Invite>;
 
    }
 
@@ -1513,7 +1513,7 @@ declare module "eris" {
         * @arg {String} [options.enableEmoticons] Whether to enable integration emoticons or not
         * @returns {Promise}
         */
-       edit(options: { expireBehavior: String, expireGracePeriod: String, enableEmoticons: String }): Promise<void>;
+       edit(options: { expireBehavior?: String, expireGracePeriod?: String, enableEmoticons?: String }): Promise<void>;
 
        /**
         * Delete the guild integration
@@ -1644,7 +1644,7 @@ declare module "eris" {
         * @arg {String} [options.channelID] The ID of the voice channel to move the user to (must be in voice)
         * @returns {Promise}
         */
-       edit(options: { roles: String[], nick: String, mute: Boolean, deaf: Boolean, channelID: String }): Promise<void>;
+       edit(options: { roles?: String[], nick?: String, mute?: Boolean, deaf?: Boolean, channelID?: String }): Promise<void>;
 
        /**
         * Remove (kick) the member from the guild
@@ -1951,7 +1951,7 @@ declare module "eris" {
         * @arg {Boolean} [options.hoist] Whether to hoist the role in the user list or not
         * @returns {Promise<Role>}
         */
-       edit(options: { name: String, permissions: Number, color: Number, hoist: Boolean }): Promise<Role>;
+       edit(options: { name?: String, permissions?: Number, color?: Number, hoist?: Boolean }): Promise<Role>;
 
        /**
         * Edit the role's position. Note that role position numbers are highest on top and lowest at the bottom.
@@ -2257,7 +2257,7 @@ declare module "eris" {
         * @arg {Number} [options.frameSize=2880] The resource opus frame size
         * @arg {Number} [options.sampleRate=48000] The resource audio sampling rate
         */
-       play(resource: (ReadableStream|String), options?: { inlineVolume: Boolean, voiceDataTimeout: Number, format: String, frameDuration: Number, frameSize: Number, sampleRate: Number }): void;
+       play(resource: (ReadableStream|String), options?: { inlineVolume?: Boolean, voiceDataTimeout?: Number, format?: String, frameDuration?: Number, frameSize?: Number, sampleRate?: Number }): void;
 
        /**
         * Generate a receive stream for the voice connection.
