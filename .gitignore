@@ -1,5 +1,5 @@
-node_modules
 .DS_Store
 docgen
+lib/voice/crystal
+node_modules
 test
-examples/node_modules
