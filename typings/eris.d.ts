@@ -15,7 +15,7 @@ declare module "eris" {
         * @prop {Object} privateChannelMap Object mapping user IDs to private channel IDs
         * @prop {Collection<PrivateChannel>} privateChannels Collection of private channels the bot is in
         * @prop {Collection<GroupChannel>} groupChannels Collection of group channels the bot is in (user accounts only)
-        * @prop {Collection<VoiceConnection>} voiceConnections Collection of VoiceConnections the bot has
+        * @prop {VoiceConnectionManager} voiceConnections Extended collection of VoiceConnections the bot has
         * @prop {Object} retryAfters Object mapping endpoints to ratelimit expiry timestamps
         * @prop {Object} guildShardMap Object mapping guild IDs to shard IDs
         * @prop {Number} startTime Timestamp of bot ready event
@@ -25,7 +25,7 @@ declare module "eris" {
         * @prop {Collection<User>} users Collection of users the bot sees
         * @prop {Collection<Relationship>} relationships Collection of relationships the bot user has (user accounts only)
         */
-       new (token: String, options?: { autoreconnect?: Boolean, cleanContent?: Boolean, compress?: Boolean, connectionTimeout?: Number, disableEvents?: Object, disableEveryone?: Boolean, firstShardID?: Number, getAllUsers?: Boolean, largeThreshold?: Number, lastShardID?: Number, maxShards?: Number, messageLimit?: Number, opusOnly?: Boolean, guildCreateTimeout?: Number, sequencerWait?: Number });
+       new (token: String, options?: { autoreconnect?: Boolean, cleanContent?: Boolean, compress?: Boolean, connectionTimeout?: Number, disableEvents?: Object, disableEveryone?: Boolean, firstShardID?: Number, getAllUsers?: Boolean, guildCreateTimeout?: Number, largeThreshold?: Number, lastShardID?: Number, maxShards?: Number, messageLimit?: Number, opusOnly?: Boolean, seedVoiceConnections?: Boolean, sequencerWait?: Number });
 
        Bucket: Bucket;
        Call: Call;
@@ -68,7 +68,7 @@ declare module "eris" {
     * @prop {Object} privateChannelMap Object mapping user IDs to private channel IDs
     * @prop {Collection<PrivateChannel>} privateChannels Collection of private channels the bot is in
     * @prop {Collection<GroupChannel>} groupChannels Collection of group channels the bot is in (user accounts only)
-    * @prop {Collection<VoiceConnection>} voiceConnections Collection of VoiceConnections the bot has
+    * @prop {VoiceConnectionManager} voiceConnections Extended collection of VoiceConnections the bot has
     * @prop {Object} retryAfters Object mapping endpoints to ratelimit expiry timestamps
     * @prop {Object} guildShardMap Object mapping guild IDs to shard IDs
     * @prop {Number} startTime Timestamp of bot ready event
@@ -88,7 +88,7 @@ declare module "eris" {
        privateChannelMap: Object;
        privateChannels: Collection<PrivateChannel>;
        groupChannels: Collection<GroupChannel>;
-       voiceConnections: Collection<VoiceConnection>;
+       voiceConnections: VoiceConnectionManager;
        retryAfters: Object;
        guildShardMap: Object;
        startTime: Number;
@@ -109,7 +109,7 @@ declare module "eris" {
         * @prop {Object} privateChannelMap Object mapping user IDs to private channel IDs
         * @prop {Collection<PrivateChannel>} privateChannels Collection of private channels the bot is in
         * @prop {Collection<GroupChannel>} groupChannels Collection of group channels the bot is in (user accounts only)
-        * @prop {Collection<VoiceConnection>} voiceConnections Collection of VoiceConnections the bot has
+        * @prop {VoiceConnectionManager} voiceConnections Extended collection of VoiceConnections the bot has
         * @prop {Object} retryAfters Object mapping endpoints to ratelimit expiry timestamps
         * @prop {Object} guildShardMap Object mapping guild IDs to shard IDs
         * @prop {Number} startTime Timestamp of bot ready event
@@ -119,7 +119,7 @@ declare module "eris" {
         * @prop {Collection<User>} users Collection of users the bot sees
         * @prop {Collection<Relationship>} relationships Collection of relationships the bot user has (user accounts only)
         */
-       constructor(token: String, options?: { autoreconnect?: Boolean, cleanContent?: Boolean, compress?: Boolean, connectionTimeout?: Number, disableEvents?: Object, disableEveryone?: Boolean, firstShardID?: Number, getAllUsers?: Boolean, largeThreshold?: Number, lastShardID?: Number, maxShards?: Number, messageLimit?: Number, opusOnly?: Boolean, guildCreateTimeout?: Number, sequencerWait?: Number }, autoreconnect?: Boolean, cleanContent?: Boolean, compress?: Boolean, connectionTimeout?: Number, disableEvents?: Object, disableEveryone?: Boolean, firstShardID?: Number, getAllUsers?: Boolean, largeThreshold?: Number, lastShardID?: Number, maxShards?: Number, messageLimit?: Number, opusOnly?: Boolean, guildCreateTimeout?: Number, sequencerWait?: Number);
+       constructor(token: String, options?: { autoreconnect?: Boolean, cleanContent?: Boolean, compress?: Boolean, connectionTimeout?: Number, disableEvents?: Object, disableEveryone?: Boolean, firstShardID?: Number, getAllUsers?: Boolean, guildCreateTimeout?: Number, largeThreshold?: Number, lastShardID?: Number, maxShards?: Number, messageLimit?: Number, opusOnly?: Boolean, seedVoiceConnections?: Boolean, sequencerWait?: Number }, autoreconnect?: Boolean, cleanContent?: Boolean, compress?: Boolean, connectionTimeout?: Number, disableEvents?: Object, disableEveryone?: Boolean, firstShardID?: Number, getAllUsers?: Boolean, guildCreateTimeout?: Number, largeThreshold?: Number, lastShardID?: Number, maxShards?: Number, messageLimit?: Number, opusOnly?: Boolean, seedVoiceConnections?: Boolean, sequencerWait?: Number);
 
        /**
         * Tells all shards to connect.
@@ -2299,6 +2299,37 @@ declare module "eris" {
         * Resume sending audio (if paused)
         */
        resume(): void;
+
+   }
+
+   /**
+    * Collects and manages VoiceConnections
+    * @extends Collection
+    */
+   declare class VoiceConnectionManager extends Collection {
+       /**
+        * Collects and manages VoiceConnections
+        * @extends Collection
+        */
+       constructor();
+
+       /**
+        * Connect to a voice channel
+        * @arg {String} channelID The ID of the voice channel
+        */
+       join(channelID: String): void;
+
+       /**
+        * Leave a voice channel
+        * @arg {String} targetID The ID of the voice channel
+        */
+       leave(targetID: String): void;
+
+       /**
+        * Gets the voice connection associated with the specified guild or channel
+        * @arg {String} targetID The ID of the guild or channel
+        */
+       get(targetID: String): void;
 
    }
 
