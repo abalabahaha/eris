@@ -1,5 +1,6 @@
 .DS_Store
 docgen
+docs
 lib/voice/crystal
 node_modules
 test
