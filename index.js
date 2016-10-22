@@ -29,6 +29,7 @@ Eris.Role = require("./lib/structures/Role");
 Eris.Shard = require("./lib/gateway/Shard");
 Eris.User = require("./lib/structures/User");
 Eris.VoiceConnection = require("./lib/voice/VoiceConnection");
+Eris.VoiceConnectionManager = require("./lib/voice/VoiceConnectionManager");
 Eris.VoiceState = require("./lib/structures/VoiceState");
 
 module.exports = Eris;
