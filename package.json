@@ -31,7 +31,7 @@
   },
   "optionalDependencies": {
     "opusscript": "0.0.1",
-    "tweetnacl": "^0.14.3"
+    "tweetnacl": "^0.14.5"
   },
   "browser": {
     "child_process": false,
