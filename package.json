@@ -1,6 +1,6 @@
 {
   "name": "eris",
-  "version": "0.3.0",
+  "version": "0.5.2",
   "description": "A NodeJS Discord library",
   "main": "./index.js",
   "engines": {
@@ -30,8 +30,8 @@
     "ws": "^1.1.1"
   },
   "optionalDependencies": {
-    "opusscript": "0.0.1",
-    "tweetnacl": "^0.14.3"
+    "opusscript": "^0.0.2",
+    "tweetnacl": "^0.14.5"
   },
   "browser": {
     "child_process": false,

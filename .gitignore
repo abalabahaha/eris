@@ -1,5 +1,6 @@
-node_modules
 .DS_Store
 docgen
+docs
+node_modules
 test
-examples/node_modules
+npm-debug.log
