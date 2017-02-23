@@ -27,11 +27,11 @@
   },
   "homepage": "https://abal.moe/Eris/",
   "dependencies": {
-    "ws": "^2.0.2"
+    "ws": "^2.1.0"
   },
   "optionalDependencies": {
     "opusscript": "^0.0.2",
-    "tweetnacl": "^0.14.5"
+    "tweetnacl": "^1.0.0-rc.1"
   },
   "browser": {
     "child_process": false,
