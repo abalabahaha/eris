@@ -17,6 +17,7 @@ Eris.Constants = require("./lib/Constants");
 Eris.ExtendedUser = require("./lib/structures/ExtendedUser");
 Eris.GroupChannel = require("./lib/structures/GroupChannel");
 Eris.Guild = require("./lib/structures/Guild");
+Eris.GuildChannel = require("./lib/structures/GuildChannel");
 Eris.GuildIntegration = require("./lib/structures/GuildIntegration");
 Eris.Invite = require("./lib/structures/Invite");
 Eris.Member = require("./lib/structures/Member");

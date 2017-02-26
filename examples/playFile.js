@@ -19,7 +19,7 @@ bot.on("messageCreate", (msg) => { // When a message is created
             bot.createMessage(msg.channel.id, "This command can only be run in a server.");
             return;
         }
-        if(!msg.member.voiceState) { // Check if the user is in a voice channel
+        if(!msg.member.voiceState.channelID) { // Check if the user is in a voice channel
             bot.createMessage(msg.channel.id, "You are not in a voice channel.");
             return;
         }
