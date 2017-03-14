@@ -30,7 +30,7 @@
     "ws": "^2.2.0"
   },
   "optionalDependencies": {
-    "opusscript": "^0.0.2",
+    "opusscript": "^0.0.3",
     "tweetnacl": "^1.0.0-rc.1"
   },
   "browser": {
