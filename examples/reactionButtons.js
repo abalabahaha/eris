@@ -11,19 +11,29 @@ bot.on("ready", () => { // When the bot is ready
     console.log("Ready!"); // Log "Ready!"
 });
 
-var reactionButtons = { // add your reaction buttons here
-    "🕰": {
-        "type": "edit",
-        "content": "time heck!"
-    }, 
-    "👾": {
-        "type": "edit",
-        "content": "space heck!"
-    }, 
-    "⏹": {
-        "type": "cancel"
+var reactionButtons = [ // add your buttons here
+    {
+        emoji: "🕰",
+        type: "edit",
+        response: () => {
+            return `you pressed the time button at ${new Date().toLocaleString()}`
+        }
+    },
+    {
+        emoji: "👾",
+        type: "edit",
+        response: "space heck!"
+    },
+    {
+        emoji: "🎲",
+        type: "edit",
+        response: ["one", "two", "three"]
+    },
+    {
+        emoji: "⏹",
+        type: "cancel"
     }
-}
+];
 
 bot.registerCommand("react", (msg, args) => {
     return "heck!!"; // the default message of the command
