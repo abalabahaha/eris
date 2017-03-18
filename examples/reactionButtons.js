@@ -42,7 +42,7 @@ bot.registerCommand("react", (msg, args) => {
     fullDescription: "do a spooky thing",
     usage: "<text>",
     reactionButtons: reactionButtons, // enable the command's reaction buttons
-    reactionButtonTimeout: 30 // how long the command will watch for reaction buttons
+    reactionButtonTimeout: 30000 // how long the command will watch for reaction buttons
 });
 
 bot.connect();
