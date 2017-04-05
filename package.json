@@ -34,7 +34,7 @@
     "node-opus": "^0.2.5",
     "pako": "^1.0.5",
     "sodium-native": "^1.7.0",
-    "uws": "^0.14.1",
+    "uws": "^0.14.1"
   },
   "optionalDependencies": {
     "opusscript": "^0.0.2",
