@@ -27,6 +27,7 @@
   },
   "homepage": "https://abal.moe/Eris/",
   "dependencies": {
+    "ws": "^2.1.0",
     "bluebird": "^3.5.0",
     "bufferutil": "^3.0.0",
     "erlpack": "^0.1.2",
