@@ -1,3 +1,4 @@
+![Eris](https://i.imgur.com/GjA0J6q.png)
 Eris [![NPM version](https://img.shields.io/npm/v/eris.svg?style=flat-square)](https://npmjs.com/package/eris) [![Dependency Status](https://img.shields.io/david/abalabahaha/eris.svg?style=flat-square)](https://david-dm.org/abalabahaha/eris)
 ====
 
