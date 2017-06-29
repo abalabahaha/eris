@@ -27,7 +27,15 @@
   },
   "homepage": "https://abal.moe/Eris/",
   "dependencies": {
-    "ws": "^2.3.1"
+    "ws": "^2.1.0",
+    "bluebird": "^3.5.0",
+    "bufferutil": "^3.0.0",
+    "erlpack": "^0.1.2",
+    "eventemitter2": "^4.1.0",
+    "node-opus": "^0.2.5",
+    "pako": "^1.0.5",
+    "sodium-native": "^1.7.0",
+    "uws": "^0.14.1"
   },
   "optionalDependencies": {
     "opusscript": "^0.0.3",
