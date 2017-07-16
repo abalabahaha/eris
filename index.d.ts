@@ -5,7 +5,7 @@ declare module 'eris' {
   type WebhookPayload = {
     content?: string,
     file?: { file: Buffer, name: string } | Array<{ file: Buffer, name: string}>,
-    embeds?: Array<Embed>,
+    embeds?: Array<EmbedOptions>,
     username?: string,
     avatarURL?: string,
     tts?: boolean,
@@ -13,10 +13,8 @@ declare module 'eris' {
     disableEveryone?: boolean
   }
 
-  // TODO: Not sure if this is right
-  type Embed = {
+  type EmbedBase = {
     title?: string,
-    type: string,
     description?: string,
     url?: string,
     timestamp?: number,
@@ -28,6 +26,12 @@ declare module 'eris' {
     provider?: { name: string, url?: string },
     fields?: Array<{ name?: string, value?: string, inline?: boolean }>
   }
+  type Embed = {
+    type: string
+  } & EmbedBase
+  type EmbedOptions = {
+    type?: string
+  } & EmbedBase
 
   type Webhook = {
     name: string,
@@ -125,9 +129,18 @@ declare module 'eris' {
     id: string
   }
 
-  type MessageContent = string | { content?: string, tts?: boolean, disableEveryone?: boolean, embed?: Embed };
+  type MessageContent = string | { content?: string, tts?: boolean, disableEveryone?: boolean, embed?: EmbedOptions };
   type MessageFile = { file: Buffer | string, name: string };
-  type EmojiOptions = { name: string, icon?: string, roles?: Array<string> };
+  type EmojiBase = {
+    name: string,
+    icon?: string
+  }
+  type EmojiOptions = {
+    roles?: Array<string>
+  } & EmojiBase
+  type Emoji = {
+    roles: Array<string>
+  } & EmojiBase
   type IntegrationOptions = { expireBehavior: string, expireGracePeriod: string, enableEmoticons: string };
   type GuildOptions = {
     name?: string,
@@ -278,8 +291,8 @@ declare module 'eris' {
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
     getGuildWebhooks(guildID: string): Promise<Array<Webhook>>;
     getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number): Promise<GuildAuditLog>;
-    createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<EmojiOptions>;
-    editGuildEmoji(guildID: string, emojiID: string, options: { name?: string, roles?: Array<string> }, reason?: string): Promise<EmojiOptions>;
+    createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
+    editGuildEmoji(guildID: string, emojiID: string, options: { name?: string, roles?: Array<string> }, reason?: string): Promise<Emoji>;
     deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
     createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
@@ -390,8 +403,8 @@ declare module 'eris' {
     getRESTGuild(guildID: string): Promise<Guild>;
     getRESTGuilds(limit?: number, before?: string, after?: string): Promise<Array<Guild>>;
     getRESTGuildChannels(guildID: string): Promise<Array<GuildChannel>>;
-    getRESTGuildEmojis(guildID: string): Promise<Array<EmojiOptions>>; // TODO rethink emojioptions
-    getRESTGuildEmoji(guildID: string, emojiID: string): Promise<EmojiOptions>;
+    getRESTGuildEmojis(guildID: string): Promise<Array<Emoji>>;
+    getRESTGuildEmoji(guildID: string, emojiID: string): Promise<Emoji>;
     getRESTGuildMembers(guildID: string, limit?: number, after?: string): Promise<Array<Member>>;
     getRESTGuildMember(guildID: string, memberID: string): Promise<Member>;
     getRESTGuildRoles(guildID: string): Promise<Array<Role>>;
@@ -419,7 +432,7 @@ declare module 'eris' {
     on(event: "guildBanRemove", listener: (guild: Guild, user: User) => void): this;
     on(event: "guildCreate", listener: (guild: Guild) => void): this;
     on(event: "guildDelete", listener: (guild: Guild) => void): this;
-    on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Array<EmojiOptions>, oldEmojis: Array<EmojiOptions>) => void): this;
+    on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Array<Emoji>, oldEmojis: Array<Emoji>) => void): this;
     on(event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): this;
     on(event: "guildMemberChunk", listener: (guild: Guild, members: Array<Member>) => void): this;
     on(event: "guildMemberRemove", listener: (guild: Guild, member: Member | { id: string, user: User }) => void): this;
@@ -432,8 +445,8 @@ declare module 'eris' {
     on(event: "messageCreate", listener: (message: Message) => void): this;
     on(event: "messageDelete", listener: (message: PossiblyUncachedMessage) => void): this;
     on(event: "messageDeleteBulk", listener: (messages: Array<PossiblyUncachedMessage>) => void): this;
-    on(event: "messageReactionAdd", listener: (message: PossiblyUncachedMessage, emoji: EmojiOptions, userID: string) => void): this;
-    on(event: "messageReactionRemove", listener: (message: PossiblyUncachedMessage, emoji: EmojiOptions, userID: string) => void): this;
+    on(event: "messageReactionAdd", listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void): this;
+    on(event: "messageReactionRemove", listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void): this;
     on(event: "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): this;
     on(event: "messageUpdate", listener: (message: Message, oldMessage?: {
       attachments: Array<Attachment>,
@@ -634,7 +647,7 @@ declare module 'eris' {
     roles: Collection<Role>;
     shard: Shard;
     features: Array<string>;
-    emojis: Array<EmojiOptions>;
+    emojis: Array<Emoji>;
     iconURL?: string;
     explicitContentFilter: number;
     constructor(data: BaseData, client: Client);
@@ -648,8 +661,8 @@ declare module 'eris' {
     getPruneCount(days: number): Promise<number>;
     pruneMembers(days: number, reason?: string): Promise<number>;
     getRESTChannels(): Promise<Array<GuildChannel>>;
-    getRESTEmojis(): Promise<Array<EmojiOptions>>;
-    getRESTEmoji(emojiID: string): Promise<EmojiOptions>;
+    getRESTEmojis(): Promise<Array<Emoji>>;
+    getRESTEmoji(emojiID: string): Promise<Emoji>;
     getRESTMembers(limit?: number, after?: string): Promise<Array<Member>>;
     getRESTMember(memberID: string): Promise<Member>;
     getRESTRoles(): Promise<Array<Role>>;
