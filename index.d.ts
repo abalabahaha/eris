@@ -25,7 +25,7 @@ declare module 'eris' {
     video?: { url: string, height?: number, width?: number },
     provider?: { name: string, url?: string },
     fields?: Array<{ name?: string, value?: string, inline?: boolean }>,
-    author: { name: string, url?: string, icon_url?: string, proxy_icon_url?: string }
+    author?: { name: string, url?: string, icon_url?: string, proxy_icon_url?: string }
   }
   type Embed = {
     type: string
