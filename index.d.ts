@@ -312,7 +312,7 @@ declare module 'eris' {
     getMessage(channelID: string, messageID: string): Promise<Message>;
     getMessages(channelID: string, limit?: number, before?: string, after?: string, around?: string): Promise<Array<Message>>;
     getPins(channelID: string): Promise<Array<Message>>;
-    createMessage(channelID: string, content: MessageContent, file: MessageFile): Promise<Message>;
+    createMessage(channelID: string, content: MessageContent, file?: MessageFile): Promise<Message>;
     editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
     pinMessage(channelID: string, messageID: string): Promise<void>;
     unpinMessage(channelID: string, messageID: string): Promise<void>;
