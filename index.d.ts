@@ -24,7 +24,8 @@ declare module 'eris' {
     thumbnail?: { url?: string, proxy_url?: string, height?: number, width?: number },
     video?: { url: string, height?: number, width?: number },
     provider?: { name: string, url?: string },
-    fields?: Array<{ name?: string, value?: string, inline?: boolean }>
+    fields?: Array<{ name?: string, value?: string, inline?: boolean }>,
+    author?: { name: string, url?: string, icon_url?: string, proxy_icon_url?: string }
   }
   type Embed = {
     type: string
@@ -311,7 +312,7 @@ declare module 'eris' {
     getMessage(channelID: string, messageID: string): Promise<Message>;
     getMessages(channelID: string, limit?: number, before?: string, after?: string, around?: string): Promise<Array<Message>>;
     getPins(channelID: string): Promise<Array<Message>>;
-    createMessage(channelID: string, content: MessageContent, file: MessageFile): Promise<Message>;
+    createMessage(channelID: string, content: MessageContent, file?: MessageFile): Promise<Message>;
     editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
     pinMessage(channelID: string, messageID: string): Promise<void>;
     unpinMessage(channelID: string, messageID: string): Promise<void>;
