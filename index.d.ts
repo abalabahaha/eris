@@ -217,6 +217,7 @@ declare module 'eris' {
     prefix?: string,
     defaultCommandOptions?: CommandOptions
   }
+  type GenericCheckFunction<T> = (msg: Message) => T;
   type CommandOptions = {
     aliases?: Array<string>,
     caseInsensitive?: boolean,
@@ -228,9 +229,17 @@ declare module 'eris' {
     fullDescription?: string,
     usage?: string,
     requirements?: {
-      userIDs?: Array<string>,
-      permissions?: { [s: string]: boolean }
-    }
+      userIDs?: Array<string> | GenericCheckFunction<Array<string>>,
+      roleIDs?: Array<string> | GenericCheckFunction<Array<string>>,
+      roleNames?: Array<string> | GenericCheckFunction<Array<string>>,
+      permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>
+    },
+    restartCooldown?: boolean,
+    cooldownReturns?: number,
+    cooldownMessage?: string | GenericCheckFunction<string>,
+    invalidUsageMessage?: string | GenericCheckFunction<string>,
+    permissionMessage?: string | GenericCheckFunction<string>,
+    errorMessage?: string | GenericCheckFunction<string>
   }
   type CommandGeneratorFunction = (msg: Message, args: Array<string>) => string | void;
   type CommandGenerator = CommandGeneratorFunction | string | Array<string> | Array<CommandGeneratorFunction>;
