@@ -834,7 +834,6 @@ declare module 'eris' {
     id: string;
     createdAt: number;
     channel: PrivateChannel | GuildChannel | GroupChannel;
-    guild?: Guild;
     timestamp: number;
     type: number;
     author: User;
