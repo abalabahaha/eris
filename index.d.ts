@@ -831,7 +831,7 @@ declare module 'eris' {
   export class Message extends Base {
     id: string;
     createdAt: number;
-    channel: Channel;
+    channel: PrivateChannel | GuildChannel | GroupChannel;
     guild?: Guild;
     timestamp: number;
     type: number;
