@@ -283,7 +283,8 @@ declare module 'eris' {
       ownerID?: string,
       topic?: string,
       bitrate?: number,
-      userLimit?: number
+      userLimit?: number,
+      nsfw?: boolean
     }, reason?: string): Promise<GroupChannel | GuildChannel>;
     editChannelPosition(channelID: string, position: number): Promise<void>;
     deleteChannel(channelID: string, reason?: string): Promise<void>;
@@ -740,10 +741,11 @@ declare module 'eris' {
     permissionsOf(memberID: string): Permission;
     edit(
       options: {
-        name: string,
-        topic: string,
-        bitrate: number,
-        userLimit: number
+        name?: string,
+        topic?: string,
+        bitrate?: number,
+        userLimit?: number,
+        nsfw?: boolean
       }, reason?: string
     ): Promise<GuildChannel>;
     editPosition(position: number): Promise<void>;
