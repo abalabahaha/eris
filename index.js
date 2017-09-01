@@ -6,6 +6,7 @@ function Eris(token, options) {
     return new Client(token, options);
 }
 
+Eris.Base = require("./lib/structures/Base");
 Eris.Bucket = require("./lib/util/Bucket");
 Eris.Call = require("./lib/structures/Call");
 Eris.Channel = require("./lib/structures/Channel");
