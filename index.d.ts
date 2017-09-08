@@ -198,14 +198,15 @@ declare module 'eris' {
     guildCreateTimeout?: number,
     largeThreshold?: number,
     lastShardID?: number,
-    maxShards?: number,
+    maxShards?: number | "auto",
     messageLimit?: number,
     opusOnly?: boolean,
     restMode?: boolean,
     seedVoiceConnections?: boolean,
     sequencerWaiter?: number,
     defaultImageFormat?: string,
-    defaultImageSize?: number
+    defaultImageSize?: number,
+    ws?: any
   }
   type CommandClientOptions = {
     defaultHelpCommand?: boolean,
@@ -214,7 +215,7 @@ declare module 'eris' {
     ignoreSelf?: boolean,
     name?: string,
     owner?: string,
-    prefix?: string,
+    prefix?: string | Array<string>,
     defaultCommandOptions?: CommandOptions
   }
   type GenericCheckFunction<T> = (msg: Message) => T;
