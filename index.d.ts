@@ -205,7 +205,8 @@ declare module 'eris' {
     seedVoiceConnections?: boolean,
     sequencerWaiter?: number,
     defaultImageFormat?: string,
-    defaultImageSize?: number
+    defaultImageSize?: number,
+    ws?: any
   }
   type CommandClientOptions = {
     defaultHelpCommand?: boolean,
