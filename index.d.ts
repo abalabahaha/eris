@@ -198,7 +198,7 @@ declare module 'eris' {
     guildCreateTimeout?: number,
     largeThreshold?: number,
     lastShardID?: number,
-    maxShards?: number,
+    maxShards?: number | "auto",
     messageLimit?: number,
     opusOnly?: boolean,
     restMode?: boolean,
