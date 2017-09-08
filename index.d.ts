@@ -214,7 +214,7 @@ declare module 'eris' {
     ignoreSelf?: boolean,
     name?: string,
     owner?: string,
-    prefix?: string,
+    prefix?: string | Array<string>,
     defaultCommandOptions?: CommandOptions
   }
   type GenericCheckFunction<T> = (msg: Message) => T;
