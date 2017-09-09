@@ -285,7 +285,8 @@ declare module 'eris' {
       topic?: string,
       bitrate?: number,
       userLimit?: number,
-      nsfw?: boolean
+      nsfw?: boolean,
+      parentID?: string
     }, reason?: string): Promise<GroupChannel | GuildChannel>;
     editChannelPosition(channelID: string, position: number): Promise<void>;
     deleteChannel(channelID: string, reason?: string): Promise<void>;
@@ -728,6 +729,7 @@ declare module 'eris' {
     guild: Guild;
     messages: Collection<Message>;
     lastMessageID: string;
+    parentID?: string;
     lastPinTimestamp: number;
     permissionOverwrites: Collection<PermissionOverwrite>;
     type: number;
@@ -759,6 +761,10 @@ declare module 'eris' {
     createWebhook(options: { name: string, avatar: string }, reason?: string): Promise<Webhook>;
     deleteMessages(messageIDs: Array<string>): Promise<void>;
     purge(limit?: number, filter?: (m: Message) => boolean, before?: string, after?: string): Promise<number>;
+  }
+
+  export class CategoryChannel extends GuildChannel {
+    channels?: Collection<GuildChannel>;
   }
 
   export class GuildIntegration extends Base {
