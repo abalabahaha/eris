@@ -516,7 +516,7 @@ declare module 'eris' {
     }
     constructor(id: string, options?: { shard?: Shard, shared?: boolean, opusOnly?: boolean });
     pause(): void;
-    play(resource: ReadableStream | string, options: VoiceResourceOptions): void;
+    play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
     receive(type: string): VoiceDataStream;
     resume(): void;
     setVolume(volume: number): void;
@@ -570,9 +570,9 @@ declare module 'eris' {
   }
 
   export class Collection<T extends { id: string }> extends Map<string, T> {
-    baseObject: new () => T;
+    baseObject: new (...args: any[]) => T;
     limit?: number;
-    constructor(baseObject: new () => T, limit?: number);
+    constructor(baseObject: new (...args: any[]) => T, limit?: number);
     add(obj: T, extra?: any, replace?: boolean): T;
     find(func: (i: T) => boolean): T;
     random(): T;
