@@ -516,7 +516,7 @@ declare module 'eris' {
     }
     constructor(id: string, options?: { shard?: Shard, shared?: boolean, opusOnly?: boolean });
     pause(): void;
-    play(resource: ReadableStream | string, options: VoiceResourceOptions): void;
+    play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
     receive(type: string): VoiceDataStream;
     resume(): void;
     setVolume(volume: number): void;
