@@ -280,7 +280,7 @@ declare module "eris" {
     public editAFK(afk: boolean): void;
     public editStatus(status?: string, game?: GamePresence): void;
     public getChannel(channelID: string): Promise<Channel>;
-    public createChannel(guildID: string, name: string, type?: number, reason?: string): Promise<GuildChannel>;
+    public createChannel(guildID: string, name: string, type?: number, reason?: string, parentID?: string): Promise<GuildChannel>;
     public editChannel(channelID: string, options: {
       name?: string,
       icon?: string,
@@ -777,7 +777,7 @@ declare module "eris" {
     public constructor(data: BaseData, client: Client);
     public fetchAllMembers(): void;
     public dynamicIconURL(format: string, size: number): string;
-    public createChannel(name: string, type: string): Promise<GuildChannel>;
+    public createChannel(name: string, type: string, parentID?: string): Promise<GuildChannel>;
     public createEmoji(
       options: { name: string, image: string, roles?: string[] },
       reason?: string,
