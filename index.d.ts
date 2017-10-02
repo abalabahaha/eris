@@ -242,7 +242,7 @@ declare module "eris" {
     permissionMessage?: string | GenericCheckFunction<string>;
     errorMessage?: string | GenericCheckFunction<string>;
   }
-  type CommandGeneratorFunction = (msg: Message, args: string[]) => string | void;
+  type CommandGeneratorFunction = (msg: Message, args: string[]) => Promise<string> | Promise<void> | string | void;
   type CommandGenerator = CommandGeneratorFunction | string | string[] | CommandGeneratorFunction[];
 
   export class Client extends EventEmitter {
@@ -1136,7 +1136,7 @@ declare module "eris" {
     public onMessageCreate(msg: Message): void;
     public registerGuildPrefix(guildID: string, prefix: string[] | string): void;
     public registerCommandAlias(alias: string, label: string): void;
-    public registerCommand(label: string, generator: CommandGenerator, options?: CommandOptions): void;
+    public registerCommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
     public unregisterCommand(label: string): void;
   }
 }
