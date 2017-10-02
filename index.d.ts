@@ -1136,7 +1136,7 @@ declare module "eris" {
     public onMessageCreate(msg: Message): void;
     public registerGuildPrefix(guildID: string, prefix: string[] | string): void;
     public registerCommandAlias(alias: string, label: string): void;
-    public registerCommand(label: string, generator: CommandGenerator, options?: CommandOptions): void;
+    public registerCommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
     public unregisterCommand(label: string): void;
   }
 }
