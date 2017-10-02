@@ -242,7 +242,7 @@ declare module "eris" {
     permissionMessage?: string | GenericCheckFunction<string>;
     errorMessage?: string | GenericCheckFunction<string>;
   }
-  type CommandGeneratorFunction = (msg: Message, args: string[]) => Promise<string> | string | void;
+  type CommandGeneratorFunction = (msg: Message, args: string[]) => Promise<string> | Promise<void> | string | void;
   type CommandGenerator = CommandGeneratorFunction | string | string[] | CommandGeneratorFunction[];
 
   export class Client extends EventEmitter {
