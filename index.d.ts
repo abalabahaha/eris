@@ -856,6 +856,7 @@ declare module 'eris' {
     attachments: Array<Attachment>;
     embeds: Array<Embed>;
     reactions: { [s: string]: any, count: number, me: boolean };
+    prefix: string;
     command: Command;
     constructor(data: BaseData, client: Client);
     edit(content: MessageContent): Promise<Message>;
