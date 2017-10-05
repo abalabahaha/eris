@@ -995,7 +995,8 @@ declare module "eris" {
     public attachments: Attachment[];
     public embeds: Embed[];
     public reactions: { [s: string]: any, count: number, me: boolean };
-    public command: Command;
+    public prefix?: string;
+    public command?: Command;
     public constructor(data: BaseData, client: Client);
     public edit(content: MessageContent): Promise<Message>;
     public pin(): Promise<void>;
