@@ -154,8 +154,8 @@ declare module "eris" {
     ownerID?: string;
     splash?: string;
   }
-  interface MemberOptions { roles: string[]; nick: string; mute: boolean; deaf: boolean; channelID: string; }
-  interface RoleOptions { name: string; permissions: number; color: number; hoist: boolean; mentionable: boolean; }
+  interface MemberOptions { roles?: string[]; nick?: string; mute?: boolean; deaf?: boolean; channelID?: string; }
+  interface RoleOptions { name?: string; permissions?: number; color?: number; hoist?: boolean; mentionable?: boolean; }
   interface GamePresence { name: string; type?: number; url?: string; }
   interface SearchOptions {
     sortBy?: string;
