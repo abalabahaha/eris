@@ -235,12 +235,16 @@ declare module "eris" {
       roleNames?: string[] | GenericCheckFunction<string[]>,
       permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>,
     };
+    cooldown?: number;
     restartCooldown?: boolean;
     cooldownReturns?: number;
     cooldownMessage?: string | GenericCheckFunction<string>;
     invalidUsageMessage?: string | GenericCheckFunction<string>;
     permissionMessage?: string | GenericCheckFunction<string>;
     errorMessage?: string | GenericCheckFunction<string>;
+    reactionButtons?: Array<{ emoji: string, type: string, response: CommandGenerator }>;
+    reactionButtonTimeout?: number;
+    defaultSubcommandOptions?: CommandOptions;
   }
   type CommandGeneratorFunction = (msg: Message, args: string[]) => Promise<string> | Promise<void> | string | void;
   type CommandGenerator = CommandGeneratorFunction | string | string[] | CommandGeneratorFunction[];
