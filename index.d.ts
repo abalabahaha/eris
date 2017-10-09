@@ -2,6 +2,20 @@ declare module "eris" {
   import { EventEmitter } from "events";
   import { Readable as ReadableStream } from "stream";
 
+  interface Constants {
+    DefaultAvatarHashes: string[];
+    ImageFormats: string[];
+    ImageSizes: number[];
+    GatewayOPCodes: {[key: string]: number};
+    GATEWAY_VERSION: number;
+    Permissions: {[key: string]: number};
+    VoiceOPCodes: {[key: string]: number};
+    SystemJoinMessages: string[];
+    AuditLogActions: {[key: string]: number};
+  }
+
+  export var Constants: Constants;
+
   interface WebhookPayload {
     content?: string;
     file?: { file: Buffer, name: string } | Array<{ file: Buffer, name: string}>;
@@ -17,7 +31,7 @@ declare module "eris" {
     title?: string;
     description?: string;
     url?: string;
-    timestamp?: number;
+    timestamp?: string;
     color?: number;
     footer?: { text: string, icon_url?: string, proxy_icon_url?: string };
     image?: { url?: string, proxy_url?: string, height?: number, width?: number };
@@ -128,6 +142,7 @@ declare module "eris" {
   // TODO: Does this have more stuff?
   interface BaseData {
     id: string;
+    [key: string]: {};
   }
 
   type MessageContent = string | { content?: string, tts?: boolean, disableEveryone?: boolean, embed?: EmbedOptions };
@@ -283,7 +298,7 @@ declare module "eris" {
     public leaveVoiceChannel(channelID: string): void;
     public editAFK(afk: boolean): void;
     public editStatus(status?: string, game?: GamePresence): void;
-    public getChannel(channelID: string): Promise<Channel>;
+    public getChannel(channelID: string): GuildChannel | PrivateChannel | GroupChannel;
     public createChannel(guildID: string, name: string, type?: number, reason?: string, parentID?: string): Promise<GuildChannel>;
     public editChannel(channelID: string, options: {
       name?: string,
@@ -669,7 +684,7 @@ declare module "eris" {
     public id: string;
     public createdAt: number;
     public constructor(id: string);
-    public toJSON(arg: any, cache: Array<string | any>): { [s: string]: any }; // TODO is `arg` even used
+    public toJSON(arg?: any, cache?: Array<string | any>): { [s: string]: any }; // TODO is `arg` even used
     public inspect(): this;
   }
 
@@ -684,7 +699,7 @@ declare module "eris" {
     public queue(func: Function): void;
   }
 
-  export class Collection<T extends { id: string }> extends Map<string, T> {
+  export class Collection<T extends { id: string | number }> extends Map<string | number, T> {
     public baseObject: new (...args: any[]) => T;
     public limit?: number;
     public constructor(baseObject: new (...args: any[]) => T, limit?: number);
@@ -1108,7 +1123,7 @@ declare module "eris" {
   }
 
   export class Shard extends EventEmitter {
-    public id: string;
+    public id: number;
     public connecting: boolean;
     public ready: boolean;
     public discordServerTrace?: string[];
@@ -1124,6 +1139,7 @@ declare module "eris" {
     // tslint:disable-next-line
     public on(event: string, listener: Function): this;
     public on(event: "disconnect", listener: (err: Error) => void): this;
+    sendWS(op: number, _data: object): void;
   }
 
   // TODO: Do we need all properties of Command, as it has a lot of stuff
