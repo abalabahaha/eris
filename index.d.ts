@@ -788,7 +788,6 @@ declare module "eris" {
     public name: string;
     public verificationLevel: number;
     public region: string;
-    public defaultChannel: GuildChannel;
     public icon?: string;
     public afkChannelID: string;
     public afkTimeout: number;
