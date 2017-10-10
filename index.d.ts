@@ -14,7 +14,10 @@ declare module "eris" {
   }
 
   // TODO there's also toJSON(): JSONCache, though, SimpleJSON should suffice
-  
+
+  type TextableChannel = TextChannel | PrivateChannel | GroupChannel;
+  type AnyChannel = TextChannel | VoiceChannel | CategoryChannel | PrivateChannel | GroupChannel;
+  type AnyGuildChannel = TextChannel | VoiceChannel | CategoryChannel;
   interface Textable {
     lastMessageID: string;
     messages: Collection<Message>;
@@ -235,7 +238,7 @@ declare module "eris" {
     frameSize?: number;
     sampleRate?: number;
   }
-  type PossiblyUncachedMessage = Message | { id: string, channel: Channel };
+  type PossiblyUncachedMessage = Message | { id: string, channel: TextableChannel };
   interface RawPacket { op: number; t?: string; d?: any; s?: number; }
   interface ClientOptions {
     autoreconnect?: boolean;
@@ -333,8 +336,8 @@ declare module "eris" {
     public leaveVoiceChannel(channelID: string): void;
     public editAFK(afk: boolean): void;
     public editStatus(status?: string, game?: GamePresence): void;
-    public getChannel(channelID: string): GuildChannel | PrivateChannel | GroupChannel;
-    public createChannel(guildID: string, name: string, type?: number, reason?: string, parentID?: string): Promise<GuildChannel>;
+    public getChannel(channelID: string): AnyChannel;
+    public createChannel(guildID: string, name: string, type?: number, reason?: string, parentID?: string): Promise<AnyGuildChannel>;
     public editChannel(channelID: string, options: {
       name?: string,
       icon?: string,
@@ -344,7 +347,7 @@ declare module "eris" {
       userLimit?: number,
       nsfw?: boolean,
       parentID?: string,
-    },                 reason?: string): Promise<GroupChannel | GuildChannel>;
+    },                 reason?: string): Promise<GroupChannel | AnyGuildChannel>;
     public editChannelPosition(channelID: string, position: number): Promise<void>;
     public deleteChannel(channelID: string, reason?: string): Promise<void>;
     public sendChannelTyping(channelID: string): Promise<void>;
@@ -531,10 +534,10 @@ declare module "eris" {
     }>>;
     public addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
     public deleteSelfPremiumSubscription(): Promise<void>;
-    public getRESTChannel(channelID: string): Promise<Channel>;
+    public getRESTChannel(channelID: string): Promise<AnyChannel>;
     public getRESTGuild(guildID: string): Promise<Guild>;
     public getRESTGuilds(limit?: number, before?: string, after?: string): Promise<Guild[]>;
-    public getRESTGuildChannels(guildID: string): Promise<GuildChannel[]>;
+    public getRESTGuildChannels(guildID: string): Promise<AnyGuildChannel[]>;
     public getRESTGuildEmojis(guildID: string): Promise<Emoji[]>;
     public getRESTGuildEmoji(guildID: string, emojiID: string): Promise<Emoji>;
     public getRESTGuildMembers(guildID: string, limit?: number, after?: string): Promise<Member[]>;
@@ -559,10 +562,10 @@ declare module "eris" {
         },
       ) => void,
     ): this;
-    public on(event: "channelCreate" | "channelDelete", listener: (channel: Channel) => void): this;
+    public on(event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): this;
     public on(
       event: "channelPinUpdate",
-      listener: (channel: Channel, timestamp: number, oldTimestamp: number) => void,
+      listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void,
     ): this;
     public on(
       event: "channelRecipientAdd" | "channelRecipientRemove",
@@ -571,7 +574,7 @@ declare module "eris" {
     public on(
       event: "channelUpdate",
       listener: (
-        channel: Channel,
+        channel: AnyChannel,
         oldChannel: {
           name: string,
           position: string,
@@ -642,17 +645,17 @@ declare module "eris" {
     ): this;
     public on(event: "shardDisconnect" | "error", listener: (err: Error, id: number) => void): this;
     public on(event: "shardReady" | "shardResume" | "shardPreReady" | "connect", listener: (id: number) => void): this;
-    public on(event: "typingStart", listener: (channel: Channel, user: User) => void): this;
+    public on(event: "typingStart", listener: (channel: TextableChannel, user: User) => void): this;
     public on(event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): this;
     public on(
       event: "userUpdate",
       listener: (user: User, oldUser: { username: string, discriminator: string, avatar?: string }) => void,
     ): this;
-    public on(event: "voiceChannelJoin", listener: (member: Member, newChannel: GuildChannel) => void): this;
-    public on(event: "voiceChannelLeave", listener: (member: Member, oldChannel: GuildChannel) => void): this;
+    public on(event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): this;
+    public on(event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): this;
     public on(
       event: "voiceChannelSwitch",
-      listener: (member: Member, newChannel: GuildChannel, oldChannel: GuildChannel) => void,
+      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void,
     ): this;
     public on(
       event: "voiceStateUpdate",
@@ -806,7 +809,7 @@ declare module "eris" {
     public unavailable: boolean;
     public large: boolean;
     public maxPresences: number;
-    public channels: Collection<GuildChannel>;
+    public channels: Collection<AnyGuildChannel>;
     public members: Collection<Member>;
     public memberCount: number;
     public roles: Collection<Role>;
@@ -818,7 +821,7 @@ declare module "eris" {
     public constructor(data: BaseData, client: Client);
     public fetchAllMembers(): void;
     public dynamicIconURL(format: string, size: number): string;
-    public createChannel(name: string, type: string, parentID?: string): Promise<GuildChannel>;
+    public createChannel(name: string, type: string, parentID?: string): Promise<AnyGuildChannel>;
     public createEmoji(
       options: { name: string, image: string, roles?: string[] },
       reason?: string,
@@ -832,7 +835,7 @@ declare module "eris" {
     public createRole(options: RoleOptions, reason?: string): Promise<Role>;
     public getPruneCount(days: number): Promise<number>;
     public pruneMembers(days: number, reason?: string): Promise<number>;
-    public getRESTChannels(): Promise<GuildChannel[]>;
+    public getRESTChannels(): Promise<AnyGuildChannel[]>;
     public getRESTEmojis(): Promise<Emoji[]>;
     public getRESTEmoji(emojiID: string): Promise<Emoji>;
     public getRESTMembers(limit?: number, after?: string): Promise<Member[]>;
@@ -871,11 +874,11 @@ declare module "eris" {
     public reason?: string;
     public user: User;
     public targetID: string;
-    public target?: Guild | GuildChannel | Member | Invite | Role | any;
+    public target?: Guild | AnyGuildChannel | Member | Invite | Role | any;
     public before?: any;
     public after?: any;
     public count?: number;
-    public channel?: GuildChannel;
+    public channel?: AnyGuildChannel;
     public deleteMemberDays?: number;
     public membersRemoved?: number;
     public member?: Member | any;
@@ -910,7 +913,7 @@ declare module "eris" {
         nsfw?: boolean,
       },
       reason?: string,
-    ): Promise<GuildChannel>;
+    ): Promise<AnyGuildChannel>;
     public editPosition(position: number): Promise<void>;
     public delete(reason?: string): Promise<void>;
     public editPermission(
@@ -924,7 +927,7 @@ declare module "eris" {
   }
 
   export class CategoryChannel extends GuildChannel {
-    public channels?: Collection<GuildChannel>;
+    public channels?: Collection<AnyGuildChannel>;
   }
 
   export class TextChannel extends GuildChannel implements Textable {
@@ -1042,7 +1045,7 @@ declare module "eris" {
   export class Message extends Base {
     public id: string;
     public createdAt: number;
-    public channel: PrivateChannel | GuildChannel | GroupChannel;
+    public channel: TextableChannel;
     public timestamp: number;
     public type: number;
     public author: User;
