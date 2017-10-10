@@ -14,6 +14,28 @@ declare module "eris" {
   }
 
   // TODO there's also toJSON(): JSONCache, though, SimpleJSON should suffice
+  
+  interface Textable {
+    lastMessageID: string;
+    messages: Collection<Message>;
+    sendTyping(): Promise<void>;
+    getMessage(messageID: string): Promise<Message>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
+    getPins(): Promise<Message[]>;
+    createMessage(
+      content: MessageContent,
+      file?: MessageFile,
+    ): Promise<Message>;
+    editMessage(messageID: string, content: MessageContent): Promise<Message>;
+    pinMessage(messageID: string): Promise<void>;
+    unpinMessage(messageID: string): Promise<void>;
+    getMessageReaction(messageID: string, reaction: string, limit?: number, after?: string): Promise<User[]>;
+    addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
+    removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
+    removeMessageReactions(messageID: string): Promise<void>;
+    deleteMessage(messageID: string, reason?: string): Promise<void>;
+    unsendMessage(messageID: string): Promise<void>;
+  }
 
   interface Constants {
     DefaultAvatarHashes: string[];
@@ -743,25 +765,10 @@ declare module "eris" {
 
   export class Channel extends Base {
     public id: string;
+    public mention: string;
+    public type: number;
     public createdAt: number;
     public constructor(data: BaseData);
-    public sentTyping(): Promise<void>;
-    public getMessage(messageID: string): Promise<Message>;
-    public getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
-    public getPins(): Promise<Message[]>;
-    public createMessage(
-      content: MessageContent,
-      file?: MessageFile,
-    ): Promise<Message>;
-    public editMessage(messageID: string, content: MessageContent): Promise<Message>;
-    public pinMessage(messageID: string): Promise<void>;
-    public unpinMessage(messageID: string): Promise<void>;
-    public getMessageReaction(messageID: string, reaction: string, limit?: number, after?: string): Promise<User[]>;
-    public addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
-    public removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
-    public removeMessageReactions(messageID: string): Promise<void>;
-    public deleteMessage(messageID: string, reason?: string): Promise<void>;
-    public unsendMessage(messageID: string): Promise<void>;
   }
 
   export class ExtendedUser extends User {
@@ -877,22 +884,22 @@ declare module "eris" {
   }
 
   export class GuildChannel extends Channel {
-    public mention: string;
     public guild: Guild;
-    public messages: Collection<Message>;
-    public lastMessageID: string;
     public parentID?: string;
-    public lastPinTimestamp: number;
-    public permissionOverwrites: Collection<PermissionOverwrite>;
-    public type: number;
     public name: string;
     public position: number;
-    public topic?: string;
-    public bitrate?: number;
-    public userLimit?: number;
+    public permissionOverwrites: Collection<PermissionOverwrite>;
     public nsfw: boolean;
-    public voiceMembers?: Collection<Member>;
-    public constructor(data: BaseData, guild: Guild, messageLimit: number);
+    public constructor(data: BaseData, guild: Guild);
+    public getInvites(): Promise<Invite[]>;
+    public createInvite(
+      options: {
+        maxAge: number,
+        maxUses: number,
+        temporary: boolean,
+      },
+      reason?: string,
+    ): Promise<Invite>;
     public permissionsOf(memberID: string): Permission;
     public edit(
       options: {
@@ -914,24 +921,44 @@ declare module "eris" {
       reason?: string,
     ): Promise<PermissionOverwrite>;
     public deletePermission(overwriteID: string, reason?: string): Promise<void>;
-    public getInvites(): Promise<Invite[]>;
-    public createInvite(
-      options: {
-        maxAge: number,
-        maxUses: number,
-        temporary: boolean,
-      },
-      reason?: string,
-    ): Promise<Invite>;
-    public getWebhooks(): Promise<Webhook[]>;
-    public createWebhook(options: { name: string, avatar: string }, reason?: string): Promise<Webhook>;
-    public deleteMessages(messageIDs: string[]): Promise<void>;
-    public purge(limit?: number, filter?: (m: Message) => boolean, before?: string, after?: string): Promise<number>;
   }
 
   export class CategoryChannel extends GuildChannel {
     public channels?: Collection<GuildChannel>;
-    public permissionOverwrites: Collection<PermissionOverwrite>;
+  }
+
+  export class TextChannel extends GuildChannel implements Textable {
+    public topic?: string;
+    public lastMessageID: string;
+    public messages: Collection<Message>;
+    public constructor(data: BaseData, guild: Guild, messageLimit: number);
+    public getWebhooks(): Promise<Webhook[]>;
+    public createWebhook(options: { name: string, avatar: string }, reason?: string): Promise<Webhook>;
+    public sendTyping(): Promise<void>;
+    public getMessage(messageID: string): Promise<Message>;
+    public getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
+    public getPins(): Promise<Message[]>;
+    public createMessage(
+      content: MessageContent,
+      file?: MessageFile,
+    ): Promise<Message>;
+    public editMessage(messageID: string, content: MessageContent): Promise<Message>;
+    public pinMessage(messageID: string): Promise<void>;
+    public unpinMessage(messageID: string): Promise<void>;
+    public getMessageReaction(messageID: string, reaction: string, limit?: number, after?: string): Promise<User[]>;
+    public addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
+    public removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
+    public removeMessageReactions(messageID: string): Promise<void>;
+    public deleteMessage(messageID: string, reason?: string): Promise<void>;
+    public unsendMessage(messageID: string): Promise<void>;
+  }
+
+  export class VoiceChannel extends GuildChannel {
+    public bitrate?: number;
+    public userLimit?: number;
+    public voiceMembers?: Collection<Member>;
+    public join(options: VoiceResourceOptions): Promise<VoiceConnection>;
+    public leave(): void;
   }
 
   export class GuildIntegration extends Base {
@@ -1059,13 +1086,30 @@ declare module "eris" {
     public constructor(data: { allow: number, deny: number });
   }
 
-  export class PrivateChannel extends Channel {
+  export class PrivateChannel extends Channel implements Textable {
     public lastMessageID: string;
     public recipient: User;
     public messages: Collection<Message>;
     public ring(recipient: string[]): void;
     public syncCall(): void;
     public leave(): Promise<void>;
+    public sendTyping(): Promise<void>;
+    public getMessage(messageID: string): Promise<Message>;
+    public getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
+    public getPins(): Promise<Message[]>;
+    public createMessage(
+      content: MessageContent,
+      file?: MessageFile,
+    ): Promise<Message>;
+    public editMessage(messageID: string, content: MessageContent): Promise<Message>;
+    public pinMessage(messageID: string): Promise<void>;
+    public unpinMessage(messageID: string): Promise<void>;
+    public getMessageReaction(messageID: string, reaction: string, limit?: number, after?: string): Promise<User[]>;
+    public addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
+    public removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
+    public removeMessageReactions(messageID: string): Promise<void>;
+    public deleteMessage(messageID: string, reason?: string): Promise<void>;
+    public unsendMessage(messageID: string): Promise<void>;
   }
 
   export class Relationship {
