@@ -235,6 +235,7 @@ declare module "eris" {
     defaultImageFormat?: string;
     defaultImageSize?: number;
     ws?: any;
+    latencyThreshold?: number;
   }
   interface CommandClientOptions {
     defaultHelpCommand?: boolean;
