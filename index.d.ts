@@ -404,7 +404,7 @@ declare module "eris" {
     public editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
     public pinMessage(channelID: string, messageID: string): Promise<void>;
     public unpinMessage(channelID: string, messageID: string): Promise<void>;
-    public getMessageReaction(channelID: string, messageID: string, reaction: string, limit?: number): Promise<User[]>;
+    public getMessageReaction(channelID: string, messageID: string, reaction: string, limit?: number, after?: string): Promise<User[]>;
     public addMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
     public removeMessageReaction(
       channelID: string,
@@ -756,7 +756,7 @@ declare module "eris" {
     public editMessage(messageID: string, content: MessageContent): Promise<Message>;
     public pinMessage(messageID: string): Promise<void>;
     public unpinMessage(messageID: string): Promise<void>;
-    public getMessageReaction(messageID: string, reaction: string, limit?: number): Promise<User[]>;
+    public getMessageReaction(messageID: string, reaction: string, limit?: number, after?: string): Promise<User[]>;
     public addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     public removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     public removeMessageReactions(messageID: string): Promise<void>;
@@ -1037,7 +1037,7 @@ declare module "eris" {
     public edit(content: MessageContent): Promise<Message>;
     public pin(): Promise<void>;
     public unpin(): Promise<void>;
-    public getReaction(reaction: string, limit?: number): Promise<User[]>;
+    public getReaction(reaction: string, limit?: number, after?: string): Promise<User[]>;
     public addReaction(reaction: string, userID?: string): Promise<void>;
     public removeReaction(reaction: string, userID?: string): Promise<void>;
     public removeReactions(): Promise<void>;
