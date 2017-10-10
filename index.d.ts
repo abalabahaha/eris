@@ -18,6 +18,19 @@ declare module "eris" {
   type TextableChannel = TextChannel | PrivateChannel | GroupChannel;
   type AnyChannel = TextChannel | VoiceChannel | CategoryChannel | PrivateChannel | GroupChannel;
   type AnyGuildChannel = TextChannel | VoiceChannel | CategoryChannel;
+
+  interface Invitable {
+    getInvites(): Promise<Invite[]>;
+    createInvite(
+      options: {
+        maxAge: number,
+        maxUses: number,
+        temporary: boolean,
+      },
+      reason?: string,
+    ): Promise<Invite>;
+  }
+
   interface Textable {
     lastMessageID: string;
     messages: Collection<Message>;
@@ -930,11 +943,20 @@ declare module "eris" {
     public channels?: Collection<AnyGuildChannel>;
   }
 
-  export class TextChannel extends GuildChannel implements Textable {
+  export class TextChannel extends GuildChannel implements Textable, Invitable {
     public topic?: string;
     public lastMessageID: string;
     public messages: Collection<Message>;
     public constructor(data: BaseData, guild: Guild, messageLimit: number);
+    public getInvites(): Promise<Invite[]>;
+    public createInvite(
+      options: {
+        maxAge: number,
+        maxUses: number,
+        temporary: boolean,
+      },
+      reason?: string,
+    ): Promise<Invite>;
     public getWebhooks(): Promise<Webhook[]>;
     public createWebhook(options: { name: string, avatar: string }, reason?: string): Promise<Webhook>;
     public sendTyping(): Promise<void>;
@@ -956,10 +978,19 @@ declare module "eris" {
     public unsendMessage(messageID: string): Promise<void>;
   }
 
-  export class VoiceChannel extends GuildChannel {
+  export class VoiceChannel extends GuildChannel implements Invitable {
     public bitrate?: number;
     public userLimit?: number;
     public voiceMembers?: Collection<Member>;
+    public getInvites(): Promise<Invite[]>;
+    public createInvite(
+      options: {
+        maxAge: number,
+        maxUses: number,
+        temporary: boolean,
+      },
+      reason?: string,
+    ): Promise<Invite>;
     public join(options: VoiceResourceOptions): Promise<VoiceConnection>;
     public leave(): void;
   }
