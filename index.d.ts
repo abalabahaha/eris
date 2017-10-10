@@ -1,6 +1,19 @@
 declare module "eris" {
+  // TODO good hacktoberfest PR: implement ShardManager, RequestHandler and other stuff and other stuff and other stuff
   import { EventEmitter } from "events";
   import { Readable as ReadableStream } from "stream";
+
+  type JSONCache = {[s: string]: any}
+
+  interface SimpleJSON {
+    toJSON(simple?: boolean): JSONCache;
+  }
+
+  interface NestedJSON {
+    toJSON(arg?: any, cache?: Array<string | any>): JSONCache;
+  }
+
+  // TODO there's also toJSON(): JSONCache, though, SimpleJSON should suffice
 
   interface Constants {
     DefaultAvatarHashes: string[];
@@ -264,7 +277,7 @@ declare module "eris" {
   type CommandGeneratorFunction = (msg: Message, args: string[]) => Promise<string> | Promise<void> | string | void;
   type CommandGenerator = CommandGeneratorFunction | string | string[] | CommandGeneratorFunction[];
 
-  export class Client extends EventEmitter {
+  export class Client extends EventEmitter implements SimpleJSON {
     public token: string;
     public bot?: boolean;
     public options: ClientOptions;
@@ -275,7 +288,6 @@ declare module "eris" {
     public privateChannels: Collection<PrivateChannel>;
     public groupChannels: Collection<GroupChannel>;
     public voiceConnections: Collection<VoiceConnection>;
-    public retryAfters: { [s: string]: number };
     public guildShardMap: { [s: string]: number };
     public startTime: number;
     public unavailableGuilds: Collection<UnavailableGuild>;
@@ -627,9 +639,10 @@ declare module "eris" {
       ) => void,
     ): this;
     public on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
+    public toJSON(simple?: boolean): JSONCache;
   }
 
-  export class VoiceConnection extends EventEmitter {
+  export class VoiceConnection extends EventEmitter implements SimpleJSON {
     public id: string;
     public channelID: string;
     public connecting: boolean;
@@ -659,6 +672,7 @@ declare module "eris" {
     public on(event: "error" | "disconnect", listener: (err: Error) => void): this;
     public on(event: "pong", listener: (latency: number) => void): this;
     public on(event: "speakingStart", listener: (userID: string) => void): this;
+    public toJSON(simple?: boolean): JSONCache;
   }
 
   export class SharedStream extends EventEmitter {
@@ -673,19 +687,20 @@ declare module "eris" {
     public constructor(type: string);
   }
 
-  export class VoiceConnectionManager<T extends VoiceConnection> extends Collection<T> { // owo an undocumented class
+  export class VoiceConnectionManager<T extends VoiceConnection> extends Collection<T> implements SimpleJSON { // owo an undocumented class
     public constructor(vcObject: new () => T);
     public join(guildID: string, channelID: string, options: VoiceResourceOptions): Promise<VoiceConnection>;
     public leave(guildID: string): void;
     public switch(guildID: string, channelID: string): void;
+    public toJSON(simple?: boolean): JSONCache;
   }
 
-  class Base {
+  class Base implements SimpleJSON {
     public id: string;
     public createdAt: number;
     public constructor(id: string);
-    public toJSON(arg?: any, cache?: Array<string | any>): { [s: string]: any }; // TODO is `arg` even used
     public inspect(): this;
+    public toJSON(simple?: boolean): JSONCache;
   }
 
   export class Bucket {
@@ -916,6 +931,7 @@ declare module "eris" {
 
   export class CategoryChannel extends GuildChannel {
     public channels?: Collection<GuildChannel>;
+    public permissionOverwrites: Collection<PermissionOverwrite>;
   }
 
   export class GuildIntegration extends Base {
@@ -939,7 +955,7 @@ declare module "eris" {
     public sync(): Promise<void>;
   }
 
-  export class Invite {
+  export class Invite implements SimpleJSON {
     public code: string;
     public channel: { id: string, name: string };
     public guild: {
@@ -961,6 +977,7 @@ declare module "eris" {
     public memberCount?: number;
     public constructor(data: BaseData, client: Client);
     public delete(reason?: string): Promise<void>;
+    public toJSON(simple?: boolean): JSONCache;
   }
 
   export class Member extends Base {
@@ -1109,7 +1126,7 @@ declare module "eris" {
     public deleteNote(): Promise<void>;
   }
 
-  export class VoiceState extends Base {
+  export class VoiceState extends Base implements NestedJSON {
     public id: string;
     public createdAt: number;
     public sessionID?: string;
@@ -1120,9 +1137,10 @@ declare module "eris" {
     public selfMute: boolean;
     public selfDeaf: boolean;
     public constructor(data: BaseData);
+    public toJSON(arg?: any, cache?: Array<string | any>): JSONCache;
   }
 
-  export class Shard extends EventEmitter {
+  export class Shard extends EventEmitter implements SimpleJSON {
     public id: number;
     public connecting: boolean;
     public ready: boolean;
@@ -1139,6 +1157,7 @@ declare module "eris" {
     // tslint:disable-next-line
     public on(event: string, listener: Function): this;
     public on(event: "disconnect", listener: (err: Error) => void): this;
+    public toJSON(simple?: boolean): JSONCache;
     sendWS(op: number, _data: object): void;
   }
 
