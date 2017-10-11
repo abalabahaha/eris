@@ -19,16 +19,15 @@ declare module "eris" {
   type AnyChannel = TextChannel | VoiceChannel | CategoryChannel | PrivateChannel | GroupChannel;
   type AnyGuildChannel = TextChannel | VoiceChannel | CategoryChannel;
 
+  type CreateInviteOptions = {
+    maxAge?: number,
+    maxUses?: number,
+    temporary?: boolean,
+  }
+
   interface Invitable {
     getInvites(): Promise<Invite[]>;
-    createInvite(
-      options: {
-        maxAge: number,
-        maxUses: number,
-        temporary: boolean,
-      },
-      reason?: string,
-    ): Promise<Invite>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
   }
 
   interface Textable {
@@ -908,14 +907,7 @@ declare module "eris" {
     public nsfw: boolean;
     public constructor(data: BaseData, guild: Guild);
     public getInvites(): Promise<Invite[]>;
-    public createInvite(
-      options: {
-        maxAge: number,
-        maxUses: number,
-        temporary: boolean,
-      },
-      reason?: string,
-    ): Promise<Invite>;
+    public createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
     public permissionsOf(memberID: string): Permission;
     public edit(
       options: {
@@ -949,14 +941,7 @@ declare module "eris" {
     public messages: Collection<Message>;
     public constructor(data: BaseData, guild: Guild, messageLimit: number);
     public getInvites(): Promise<Invite[]>;
-    public createInvite(
-      options: {
-        maxAge: number,
-        maxUses: number,
-        temporary: boolean,
-      },
-      reason?: string,
-    ): Promise<Invite>;
+    public createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
     public getWebhooks(): Promise<Webhook[]>;
     public createWebhook(options: { name: string, avatar: string }, reason?: string): Promise<Webhook>;
     public sendTyping(): Promise<void>;
@@ -983,14 +968,7 @@ declare module "eris" {
     public userLimit?: number;
     public voiceMembers?: Collection<Member>;
     public getInvites(): Promise<Invite[]>;
-    public createInvite(
-      options: {
-        maxAge: number,
-        maxUses: number,
-        temporary: boolean,
-      },
-      reason?: string,
-    ): Promise<Invite>;
+    public createInvite(options: CreateInviteOptions, reason?: string): Promise<Invite>;
     public join(options: VoiceResourceOptions): Promise<VoiceConnection>;
     public leave(): void;
   }
