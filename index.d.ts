@@ -811,7 +811,8 @@ declare module "eris" {
     public verificationLevel: number;
     public region: string;
     public icon?: string;
-    public afkChannelID: string;
+    public afkChannelID?: string;
+    public systemChannelID?: string;
     public afkTimeout: number;
     public defaultNotifications: number;
     public mfaLevel: number;
