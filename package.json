@@ -31,7 +31,6 @@
   },
   "optionalDependencies": {
     "opusscript": "^0.0.4",
-    "pako": "^1.0.6",
     "tweetnacl": "^1.0.0"
   },
   "browser": {
