@@ -620,6 +620,7 @@ declare module "eris" {
     public on(event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): this;
     public on(event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: RoleOptions) => void): this;
     public on(event: "guildUpdate", listener: (guild: Guild, oldGuild: GuildOptions) => void): this;
+    public on(event: "hello", listener: (trace: string[], id: number) => void): this;
     public on(event: "messageCreate", listener: (message: Message) => void): this;
     public on(
       event: "messageDelete" | "messageReactionRemoveAll",
