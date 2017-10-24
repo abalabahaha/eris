@@ -1,5 +1,5 @@
 declare module "eris" {
-  // TODO good hacktoberfest PR: implement ShardManager, RequestHandler and other stuff and other stuff and other stuff
+  // TODO good hacktoberfest PR: implement ShardManager, RequestHandler and other stuff
   import { EventEmitter } from "events";
   import { Readable as ReadableStream } from "stream";
 
@@ -58,11 +58,15 @@ declare module "eris" {
     unsendMessage(messageID: string): Promise<void>;
   }
 
-  class GatewayEmitter extends EventEmitter {
+  // To anyone snooping around this snippet of code and wondering
+  // "Why didn't they use a class for this? It would make the code cleaner!"
+  // I could, but TypeScript isn't smart enough to properly inherit overloaded methods,
+  // so `on` event listeners would loose their type-safety.
+  interface Emittable {
     // tslint:disable-next-line
-    public on(event: string, listener: Function): this;
-    public on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
-    public on(
+    on(event: string, listener: Function): this;
+    on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
+    on(
       event: "callUpdate",
       listener: (
         call: Call,
@@ -75,16 +79,16 @@ declare module "eris" {
         },
       ) => void,
     ): this;
-    public on(event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): this;
-    public on(
+    on(event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): this;
+    on(
       event: "channelPinUpdate",
       listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void,
     ): this;
-    public on(
+    on(
       event: "channelRecipientAdd" | "channelRecipientRemove",
       listener: (channel: GroupChannel, user: User) => void,
     ): this;
-    public on(
+    on(
       event: "channelUpdate",
       listener: (
         channel: AnyChannel,
@@ -97,42 +101,42 @@ declare module "eris" {
         },
       ) => void,
     ): this;
-    public on(
+    on(
       event: "friendSuggestionCreate",
       listener: (user: User, reasons: Array<{ type: number, platform_type: string, name: string }>) => void,
     ): this;
-    public on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
-    public on(
+    on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
+    on(
       event: "guildAvailable" | "guildBanAdd" | "guildBanRemove",
       listener: (guild: Guild, user: User) => void,
     ): this;
-    public on(event: "guildDelete" | "guildUnavailable" | "guildCreate", listener: (guild: Guild) => void): this;
-    public on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): this;
-    public on(event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): this;
-    public on(event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): this;
-    public on(
+    on(event: "guildDelete" | "guildUnavailable" | "guildCreate", listener: (guild: Guild) => void): this;
+    on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): this;
+    on(event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): this;
+    on(event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): this;
+    on(
       event: "guildMemberRemove",
       listener: (guild: Guild, member: Member | { id: string, user: User }) => void,
     ): this;
-    public on(
+    on(
       event: "guildMemberUpdate",
       listener: (guild: Guild, member: Member, oldMember: { roles: string[], nick?: string }) => void,
     ): this;
-    public on(event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): this;
-    public on(event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: RoleOptions) => void): this;
-    public on(event: "guildUpdate", listener: (guild: Guild, oldGuild: GuildOptions) => void): this;
-    public on(event: "hello", listener: (trace: string[], id: number) => void): this;
-    public on(event: "messageCreate", listener: (message: Message) => void): this;
-    public on(
+    on(event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): this;
+    on(event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: RoleOptions) => void): this;
+    on(event: "guildUpdate", listener: (guild: Guild, oldGuild: GuildOptions) => void): this;
+    on(event: "hello", listener: (trace: string[], id: number) => void): this;
+    on(event: "messageCreate", listener: (message: Message) => void): this;
+    on(
       event: "messageDelete" | "messageReactionRemoveAll",
       listener: (message: PossiblyUncachedMessage) => void,
     ): this;
-    public on(event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): this;
-    public on(
+    on(event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): this;
+    on(
       event: "messageReactionAdd" | "messageReactionRemove",
       listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void,
     ): this;
-    public on(event: "messageUpdate", listener: (message: Message, oldMessage?: {
+    on(event: "messageUpdate", listener: (message: Message, oldMessage?: {
       attachments: Attachment[],
       embeds: Embed[],
       content: string,
@@ -143,7 +147,7 @@ declare module "eris" {
       roleMentions: string[],
       channelMentions: string[],
     }) => void): this;
-    public on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: {
+    on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: {
       status: string,
       game?: {
         name: string,
@@ -151,33 +155,33 @@ declare module "eris" {
         url?: string,
       },
     }) => void): this;
-    public on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
-    public on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
-    public on(
+    on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
+    on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
+    on(
       event: "relationshipUpdate",
       listener: (relationship: Relationship, oldRelationship: { type: number }) => void,
     ): this;
-    public on(event: "shardPreReady" | "connect", listener: (id: number) => void): this;
-    public on(event: "typingStart", listener: (channel: TextableChannel, user: User) => void): this;
-    public on(event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): this;
-    public on(
+    on(event: "shardPreReady" | "connect", listener: (id: number) => void): this;
+    on(event: "typingStart", listener: (channel: TextableChannel, user: User) => void): this;
+    on(event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): this;
+    on(
       event: "userUpdate",
       listener: (user: User, oldUser: { username: string, discriminator: string, avatar?: string }) => void,
     ): this;
-    public on(event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): this;
-    public on(event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): this;
-    public on(
+    on(event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): this;
+    on(event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): this;
+    on(
       event: "voiceChannelSwitch",
       listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void,
     ): this;
-    public on(
+    on(
       event: "voiceStateUpdate",
       listener: (
         member: Member,
         oldState: { mute: boolean, deaf: boolean, selfMute: boolean, selfDeaf: boolean },
       ) => void,
     ): this;
-    public on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
+    on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
   }
 
   interface Constants {
@@ -443,7 +447,7 @@ declare module "eris" {
   type CommandGeneratorFunction = (msg: Message, args: string[]) => Promise<string> | Promise<void> | string | void;
   type CommandGenerator = CommandGeneratorFunction | string | string[] | CommandGeneratorFunction[];
 
-  export class Client extends GatewayEmitter implements SimpleJSON {
+  export class Client extends EventEmitter implements SimpleJSON, Emittable {
     public token: string;
     public bot?: boolean;
     public options: ClientOptions;
@@ -701,7 +705,126 @@ declare module "eris" {
     public searchGuildMessages(guildID: string, query: SearchOptions): Promise<SearchResults>;
     // tslint:disable-next-line
     public on(event: string, listener: Function): this;
-    public on(event: "shardDisconnect" | "error", listener: (err: Error, id: number) => void): this;
+    public on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
+    public on(
+      event: "callUpdate",
+      listener: (
+        call: Call,
+        oldCall: {
+          participants: string[],
+          endedTimestamp?: number,
+          ringing: string[],
+          region: string,
+          unavailable: boolean,
+        },
+      ) => void,
+    ): this;
+    public on(event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): this;
+    public on(
+      event: "channelPinUpdate",
+      listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void,
+    ): this;
+    public on(
+      event: "channelRecipientAdd" | "channelRecipientRemove",
+      listener: (channel: GroupChannel, user: User) => void,
+    ): this;
+    public on(
+      event: "channelUpdate",
+      listener: (
+        channel: AnyChannel,
+        oldChannel: {
+          name: string,
+          position: string,
+          topic?: string,
+          bitrate?: number,
+          permissionOverwrites: Collection<PermissionOverwrite>,
+        },
+      ) => void,
+    ): this;
+    public on(
+      event: "friendSuggestionCreate",
+      listener: (user: User, reasons: Array<{ type: number, platform_type: string, name: string }>) => void,
+    ): this;
+    public on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
+    public on(
+      event: "guildAvailable" | "guildBanAdd" | "guildBanRemove",
+      listener: (guild: Guild, user: User) => void,
+    ): this;
+    public on(event: "guildDelete" | "guildUnavailable" | "guildCreate", listener: (guild: Guild) => void): this;
+    public on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): this;
+    public on(event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): this;
+    public on(event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): this;
+    public on(
+      event: "guildMemberRemove",
+      listener: (guild: Guild, member: Member | { id: string, user: User }) => void,
+    ): this;
+    public on(
+      event: "guildMemberUpdate",
+      listener: (guild: Guild, member: Member, oldMember: { roles: string[], nick?: string }) => void,
+    ): this;
+    public on(event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): this;
+    public on(event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: RoleOptions) => void): this;
+    public on(event: "guildUpdate", listener: (guild: Guild, oldGuild: GuildOptions) => void): this;
+    public on(event: "hello", listener: (trace: string[], id: number) => void): this;
+    public on(event: "messageCreate", listener: (message: Message) => void): this;
+    public on(
+      event: "messageDelete" | "messageReactionRemoveAll",
+      listener: (message: PossiblyUncachedMessage) => void,
+    ): this;
+    public on(event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): this;
+    public on(
+      event: "messageReactionAdd" | "messageReactionRemove",
+      listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void,
+    ): this;
+    public on(event: "messageUpdate", listener: (message: Message, oldMessage?: {
+      attachments: Attachment[],
+      embeds: Embed[],
+      content: string,
+      editedTimestamp?: number,
+      mentionedBy?: any,
+      tts: boolean,
+      mentions: string[],
+      roleMentions: string[],
+      channelMentions: string[],
+    }) => void): this;
+    public on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: {
+      status: string,
+      game?: {
+        name: string,
+        type: number,
+        url?: string,
+      },
+    }) => void): this;
+    public on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
+    public on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
+    public on(
+      event: "relationshipUpdate",
+      listener: (relationship: Relationship, oldRelationship: { type: number }) => void,
+    ): this;
+    public on(event: "typingStart", listener: (channel: TextableChannel, user: User) => void): this;
+    public on(event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): this;
+    public on(
+      event: "userUpdate",
+      listener: (user: User, oldUser: { username: string, discriminator: string, avatar?: string }) => void,
+    ): this;
+    public on(event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): this;
+    public on(event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): this;
+    public on(
+      event: "voiceChannelSwitch",
+      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void,
+    ): this;
+    public on(
+      event: "voiceStateUpdate",
+      listener: (
+        member: Member,
+        oldState: { mute: boolean, deaf: boolean, selfMute: boolean, selfDeaf: boolean },
+      ) => void,
+    ): this;
+    public on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
+    public on(
+      event: "shardDisconnect" | "error" | "shardPreReady" | "connect",
+      listener: (err: Error, id: number) => void,
+    ): this;
     public on(event: "shardReady" | "shardResume", listener: (id: number) => void): this;
     public toJSON(simple?: boolean): JSONCache;
   }
@@ -730,8 +853,6 @@ declare module "eris" {
     public stopPlaying(): void;
     public switchChannel(channelID: string): void;
     public updateVoiceState(selfMute: boolean, selfDeaf: boolean): void;
-    // tslint:disable-next-line
-    public on(event: string, listener: Function): this;
     public on(event: "debug" | "warn", listener: (message: string) => void): this;
     public on(event: "error" | "disconnect", listener: (err: Error) => void): this;
     public on(event: "pong", listener: (latency: number) => void): this;
@@ -1236,7 +1357,7 @@ declare module "eris" {
     public toJSON(arg?: any, cache?: Array<string | any>): JSONCache;
   }
 
-  export class Shard extends GatewayEmitter implements SimpleJSON {
+  export class Shard extends EventEmitter implements SimpleJSON, Emittable {
     public id: number;
     public connecting: boolean;
     public ready: boolean;
@@ -1252,6 +1373,123 @@ declare module "eris" {
     public editStatus(status?: string, game?: GamePresence): void;
     // tslint:disable-next-line
     public on(event: string, listener: Function): this;
+    public on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
+    public on(
+      event: "callUpdate",
+      listener: (
+        call: Call,
+        oldCall: {
+          participants: string[],
+          endedTimestamp?: number,
+          ringing: string[],
+          region: string,
+          unavailable: boolean,
+        },
+      ) => void,
+    ): this;
+    public on(event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): this;
+    public on(
+      event: "channelPinUpdate",
+      listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void,
+    ): this;
+    public on(
+      event: "channelRecipientAdd" | "channelRecipientRemove",
+      listener: (channel: GroupChannel, user: User) => void,
+    ): this;
+    public on(
+      event: "channelUpdate",
+      listener: (
+        channel: AnyChannel,
+        oldChannel: {
+          name: string,
+          position: string,
+          topic?: string,
+          bitrate?: number,
+          permissionOverwrites: Collection<PermissionOverwrite>,
+        },
+      ) => void,
+    ): this;
+    public on(
+      event: "friendSuggestionCreate",
+      listener: (user: User, reasons: Array<{ type: number, platform_type: string, name: string }>) => void,
+    ): this;
+    public on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
+    public on(
+      event: "guildAvailable" | "guildBanAdd" | "guildBanRemove",
+      listener: (guild: Guild, user: User) => void,
+    ): this;
+    public on(event: "guildDelete" | "guildUnavailable" | "guildCreate", listener: (guild: Guild) => void): this;
+    public on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): this;
+    public on(event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): this;
+    public on(event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): this;
+    public on(
+      event: "guildMemberRemove",
+      listener: (guild: Guild, member: Member | { id: string, user: User }) => void,
+    ): this;
+    public on(
+      event: "guildMemberUpdate",
+      listener: (guild: Guild, member: Member, oldMember: { roles: string[], nick?: string }) => void,
+    ): this;
+    public on(event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): this;
+    public on(event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: RoleOptions) => void): this;
+    public on(event: "guildUpdate", listener: (guild: Guild, oldGuild: GuildOptions) => void): this;
+    public on(event: "hello", listener: (trace: string[], id: number) => void): this;
+    public on(event: "messageCreate", listener: (message: Message) => void): this;
+    public on(
+      event: "messageDelete" | "messageReactionRemoveAll",
+      listener: (message: PossiblyUncachedMessage) => void,
+    ): this;
+    public on(event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): this;
+    public on(
+      event: "messageReactionAdd" | "messageReactionRemove",
+      listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void,
+    ): this;
+    public on(event: "messageUpdate", listener: (message: Message, oldMessage?: {
+      attachments: Attachment[],
+      embeds: Embed[],
+      content: string,
+      editedTimestamp?: number,
+      mentionedBy?: any,
+      tts: boolean,
+      mentions: string[],
+      roleMentions: string[],
+      channelMentions: string[],
+    }) => void): this;
+    public on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: {
+      status: string,
+      game?: {
+        name: string,
+        type: number,
+        url?: string,
+      },
+    }) => void): this;
+    public on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
+    public on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
+    public on(
+      event: "relationshipUpdate",
+      listener: (relationship: Relationship, oldRelationship: { type: number }) => void,
+    ): this;
+    public on(event: "shardPreReady" | "connect", listener: (id: number) => void): this;
+    public on(event: "typingStart", listener: (channel: TextableChannel, user: User) => void): this;
+    public on(event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): this;
+    public on(
+      event: "userUpdate",
+      listener: (user: User, oldUser: { username: string, discriminator: string, avatar?: string }) => void,
+    ): this;
+    public on(event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): this;
+    public on(event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): this;
+    public on(
+      event: "voiceChannelSwitch",
+      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void,
+    ): this;
+    public on(
+      event: "voiceStateUpdate",
+      listener: (
+        member: Member,
+        oldState: { mute: boolean, deaf: boolean, selfMute: boolean, selfDeaf: boolean },
+      ) => void,
+    ): this;
+    public on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
     public on(event: "disconnect", listener: (err: Error) => void): this;
     public on(event: "resume", listener: () => void): this;
     public toJSON(simple?: boolean): JSONCache;
