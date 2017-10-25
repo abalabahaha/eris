@@ -58,6 +58,37 @@ declare module "eris" {
     unsendMessage(messageID: string): Promise<void>;
   }
 
+  interface OldCall {
+    participants: string[];
+    endedTimestamp?: number;
+    ringing: string[];
+    region: string;
+    unavailable: boolean;
+  }
+
+  interface OldChannel {
+    name: string;
+    position: string;
+    topic?: string;
+    bitrate?: number;
+    permissionOverwrites: Collection<PermissionOverwrite>;
+  }
+
+  type FriendSuggestionReasons = Array<{ type: number, platform_type: string, name: string }>;
+
+  interface MemberPartial { id: string; user: User; }
+
+  interface OldPresence {
+    status: string;
+    game?: {
+      name: string,
+      type: number,
+      url?: string,
+    };
+  }
+
+  interface OldVoiceState { mute: boolean; deaf: boolean; selfMute: boolean; selfDeaf: boolean; }
+
   // To anyone snooping around this snippet of code and wondering
   // "Why didn't they use a class for this? It would make the code cleaner!"
   // I could, but TypeScript isn't smart enough to properly inherit overloaded methods,
@@ -70,13 +101,7 @@ declare module "eris" {
       event: "callUpdate",
       listener: (
         call: Call,
-        oldCall: {
-          participants: string[],
-          endedTimestamp?: number,
-          ringing: string[],
-          region: string,
-          unavailable: boolean,
-        },
+        oldCall: OldCall,
       ) => void,
     ): this;
     on(event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): this;
@@ -92,18 +117,12 @@ declare module "eris" {
       event: "channelUpdate",
       listener: (
         channel: AnyChannel,
-        oldChannel: {
-          name: string,
-          position: string,
-          topic?: string,
-          bitrate?: number,
-          permissionOverwrites: Collection<PermissionOverwrite>,
-        },
+        oldChannel: OldChannel,
       ) => void,
     ): this;
     on(
       event: "friendSuggestionCreate",
-      listener: (user: User, reasons: Array<{ type: number, platform_type: string, name: string }>) => void,
+      listener: (user: User, reasons: FriendSuggestionReasons) => void,
     ): this;
     on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
     on(
@@ -116,7 +135,7 @@ declare module "eris" {
     on(event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): this;
     on(
       event: "guildMemberRemove",
-      listener: (guild: Guild, member: Member | { id: string, user: User }) => void,
+      listener: (guild: Guild, member: Member | MemberPartial) => void,
     ): this;
     on(
       event: "guildMemberUpdate",
@@ -147,14 +166,7 @@ declare module "eris" {
       roleMentions: string[],
       channelMentions: string[],
     }) => void): this;
-    on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: {
-      status: string,
-      game?: {
-        name: string,
-        type: number,
-        url?: string,
-      },
-    }) => void): this;
+    on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: OldPresence) => void): this;
     on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
     on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
     on(
@@ -178,7 +190,7 @@ declare module "eris" {
       event: "voiceStateUpdate",
       listener: (
         member: Member,
-        oldState: { mute: boolean, deaf: boolean, selfMute: boolean, selfDeaf: boolean },
+        oldState: OldVoiceState,
       ) => void,
     ): this;
     on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
@@ -710,13 +722,7 @@ declare module "eris" {
       event: "callUpdate",
       listener: (
         call: Call,
-        oldCall: {
-          participants: string[],
-          endedTimestamp?: number,
-          ringing: string[],
-          region: string,
-          unavailable: boolean,
-        },
+        oldCall: OldCall,
       ) => void,
     ): this;
     public on(event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): this;
@@ -732,18 +738,12 @@ declare module "eris" {
       event: "channelUpdate",
       listener: (
         channel: AnyChannel,
-        oldChannel: {
-          name: string,
-          position: string,
-          topic?: string,
-          bitrate?: number,
-          permissionOverwrites: Collection<PermissionOverwrite>,
-        },
+        oldChannel: OldChannel,
       ) => void,
     ): this;
     public on(
       event: "friendSuggestionCreate",
-      listener: (user: User, reasons: Array<{ type: number, platform_type: string, name: string }>) => void,
+      listener: (user: User, reasons: FriendSuggestionReasons) => void,
     ): this;
     public on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
     public on(
@@ -756,7 +756,7 @@ declare module "eris" {
     public on(event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): this;
     public on(
       event: "guildMemberRemove",
-      listener: (guild: Guild, member: Member | { id: string, user: User }) => void,
+      listener: (guild: Guild, member: Member | MemberPartial) => void,
     ): this;
     public on(
       event: "guildMemberUpdate",
@@ -787,14 +787,13 @@ declare module "eris" {
       roleMentions: string[],
       channelMentions: string[],
     }) => void): this;
-    public on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: {
-      status: string,
-      game?: {
-        name: string,
-        type: number,
-        url?: string,
-      },
-    }) => void): this;
+    public on(
+      event: "presenceUpdate",
+      listener: (
+        other: Member | Relationship,
+        oldPresence?: OldPresence,
+      ) => void,
+    ): this;
     public on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
     public on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
     public on(
@@ -817,7 +816,7 @@ declare module "eris" {
       event: "voiceStateUpdate",
       listener: (
         member: Member,
-        oldState: { mute: boolean, deaf: boolean, selfMute: boolean, selfDeaf: boolean },
+        oldState: OldVoiceState,
       ) => void,
     ): this;
     public on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
@@ -1378,13 +1377,7 @@ declare module "eris" {
       event: "callUpdate",
       listener: (
         call: Call,
-        oldCall: {
-          participants: string[],
-          endedTimestamp?: number,
-          ringing: string[],
-          region: string,
-          unavailable: boolean,
-        },
+        oldCall: OldCall,
       ) => void,
     ): this;
     public on(event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): this;
@@ -1400,18 +1393,12 @@ declare module "eris" {
       event: "channelUpdate",
       listener: (
         channel: AnyChannel,
-        oldChannel: {
-          name: string,
-          position: string,
-          topic?: string,
-          bitrate?: number,
-          permissionOverwrites: Collection<PermissionOverwrite>,
-        },
+        oldChannel: OldChannel,
       ) => void,
     ): this;
     public on(
       event: "friendSuggestionCreate",
-      listener: (user: User, reasons: Array<{ type: number, platform_type: string, name: string }>) => void,
+      listener: (user: User, reasons: FriendSuggestionReasons) => void,
     ): this;
     public on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
     public on(
@@ -1424,7 +1411,7 @@ declare module "eris" {
     public on(event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): this;
     public on(
       event: "guildMemberRemove",
-      listener: (guild: Guild, member: Member | { id: string, user: User }) => void,
+      listener: (guild: Guild, member: Member | MemberPartial) => void,
     ): this;
     public on(
       event: "guildMemberUpdate",
@@ -1455,14 +1442,13 @@ declare module "eris" {
       roleMentions: string[],
       channelMentions: string[],
     }) => void): this;
-    public on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: {
-      status: string,
-      game?: {
-        name: string,
-        type: number,
-        url?: string,
-      },
-    }) => void): this;
+    public on(
+      event: "presenceUpdate",
+      listener: (
+        other: Member | Relationship,
+        oldPresence?: OldPresence,
+      ) => void,
+    ): this;
     public on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
     public on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
     public on(
@@ -1486,7 +1472,7 @@ declare module "eris" {
       event: "voiceStateUpdate",
       listener: (
         member: Member,
-        oldState: { mute: boolean, deaf: boolean, selfMute: boolean, selfDeaf: boolean },
+        oldState: OldVoiceState,
       ) => void,
     ): this;
     public on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
