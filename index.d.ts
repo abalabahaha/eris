@@ -446,6 +446,11 @@ declare module "eris" {
       permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>,
     };
     cooldown?: number;
+    cooldownExclusions?: {
+      userIDs?: string[],
+      guildIDs?: string[],
+      channelIDs?: string[],
+    };
     restartCooldown?: boolean;
     cooldownReturns?: number;
     cooldownMessage?: string | GenericCheckFunction<string>;
