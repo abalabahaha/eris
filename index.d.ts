@@ -472,7 +472,8 @@ declare module "eris" {
   }
                           
   export class Client extends EventEmitter implements SimpleJSON, Emittable {
-    public token: string;
+    public token?: string;
+    public gatewayURL?: string;
     public bot?: boolean;
     public options: ClientOptions;
     public channelGuildMap: { [s: string]: string };
