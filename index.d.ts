@@ -464,12 +464,20 @@ declare module "eris" {
   type CommandGeneratorFunction = (msg: Message, args: string[]) => Promise<string> | Promise<void> | string | void;
   type CommandGenerator = CommandGeneratorFunction | string | string[] | CommandGeneratorFunction[];
 
+  export class ShardManager extends Collection<Shard> {
+    public constructor(client: Client);
+    public connect(shard: Shard): void;
+    public spawn(id: number): void;
+    public toJSON(): string;
+  }
+                          
   export class Client extends EventEmitter implements SimpleJSON, Emittable {
-    public token: string;
+    public token?: string;
+    public gatewayURL?: string;
     public bot?: boolean;
     public options: ClientOptions;
     public channelGuildMap: { [s: string]: string };
-    public shards: Collection<Shard>;
+    public shards: ShardManager;
     public guilds: Collection<Guild>;
     public privateChannelMap: { [s: string]: string };
     public privateChannels: Collection<PrivateChannel>;
