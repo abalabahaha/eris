@@ -865,9 +865,21 @@ declare module "eris" {
   }
 
   export class SharedStream extends EventEmitter {
+    public playing: boolean;
+    public ended: boolean;
+    public volume: number;
+    public speaking: boolean;
+    public current?: {
+      startTime: number,
+      playTime: number,
+      pausedTimestamp?: number,
+      pausedTime?: number,
+      options: VoiceResourceOptions,
+    };
     public add(connection: VoiceConnection): void;
     public play(resource: ReadableStream | string, options: VoiceResourceOptions): void;
     public remove(connection: VoiceConnection): void;
+    public setVolume(volume: number): void;
     public stopPlaying(): void;
   }
 
