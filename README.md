@@ -47,7 +47,7 @@ Useful Links
 
 [The website](https://abal.moe/Eris) includes more detailed information on getting started, as well as documentation for the different components.
 
-[The Discord channel](https://discordapp.com/invite/n2g6BQP) is the best place to get support/contact me.
+[The Discord API channel (#js_eris)](https://abal.moe/Eris/invite) is the best place to get support/contact me.
 
 [The GitHub repo](https://github.com/abalabahaha/eris) has the most updated code.
 
