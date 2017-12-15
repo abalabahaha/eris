@@ -96,6 +96,7 @@ declare module "eris" {
   interface Emittable {
     // tslint:disable-next-line
     on(event: string, listener: Function): this;
+    on(event: "ready" | "disconnect", listener: () => void): this;
     on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
     on(
       event: "callUpdate",
