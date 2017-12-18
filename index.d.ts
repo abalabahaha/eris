@@ -318,8 +318,7 @@ declare module "eris" {
     connected_accounts: Array<{ verified: boolean, type: string, id: string, name: string }>;
   }
 
-  interface 
-  {
+  interface Connection {
     verified: boolean;
     revoked: boolean;
     integrations: any[]; // TODO ????
