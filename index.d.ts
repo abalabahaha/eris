@@ -96,6 +96,7 @@ declare module "eris" {
   interface Emittable {
     // tslint:disable-next-line
     on(event: string, listener: Function): this;
+    on(event: "ready" | "disconnect", listener: () => void): this;
     on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
     on(
       event: "callUpdate",
@@ -730,6 +731,7 @@ declare module "eris" {
     public searchGuildMessages(guildID: string, query: SearchOptions): Promise<SearchResults>;
     // tslint:disable-next-line
     public on(event: string, listener: Function): this;
+    public on(event: "ready" | "disconnect", listener: () => void): this;
     public on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
     public on(
       event: "callUpdate",
@@ -869,6 +871,7 @@ declare module "eris" {
     public on(event: "error" | "disconnect", listener: (err: Error) => void): this;
     public on(event: "pong", listener: (latency: number) => void): this;
     public on(event: "speakingStart", listener: (userID: string) => void): this;
+    public on(event: "end", listener: () => void): this;
     public toJSON(simple?: boolean): JSONCache;
   }
 
@@ -1397,6 +1400,7 @@ declare module "eris" {
     public editStatus(status?: string, game?: GamePresence): void;
     // tslint:disable-next-line
     public on(event: string, listener: Function): this;
+    public on(event: "ready" | "disconnect", listener: () => void): this;
     public on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
     public on(
       event: "callUpdate",
