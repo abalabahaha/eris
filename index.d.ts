@@ -429,6 +429,12 @@ declare module "eris" {
     prefix?: string | string[];
     defaultCommandOptions?: CommandOptions;
   }
+  interface Hooks {
+    preCommand?: (msg: Message, args: string[]) => void;
+    postCheck?: (msg: Message, args: string[], checksPassed: boolean) => void;
+    postExecution?: (msg: Message, args: string[], executionSuccess: boolean) => void;
+    postCommand?: (msg: Message, args: string[], sent?: Message) => void;
+  }
   type GenericCheckFunction<T> = (msg: Message) => T;
   interface CommandOptions {
     aliases?: string[];
@@ -440,11 +446,13 @@ declare module "eris" {
     description?: string;
     fullDescription?: string;
     usage?: string;
+    hooks?: Hooks;
     requirements?: {
       userIDs?: string[] | GenericCheckFunction<string[]>,
       roleIDs?: string[] | GenericCheckFunction<string[]>,
       roleNames?: string[] | GenericCheckFunction<string[]>,
       permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>,
+      custom?: GenericCheckFunction<void>,
     };
     cooldown?: number;
     cooldownExclusions?: {
@@ -461,6 +469,7 @@ declare module "eris" {
     reactionButtons?: Array<{ emoji: string, type: string, response: CommandGenerator }>;
     reactionButtonTimeout?: number;
     defaultSubcommandOptions?: CommandOptions;
+    hidden?: boolean;
   }
   type CommandGeneratorFunction = (msg: Message, args: string[]) => Promise<string> | Promise<void> | string | void;
   type CommandGenerator = CommandGeneratorFunction | string | string[] | CommandGeneratorFunction[];
@@ -471,7 +480,7 @@ declare module "eris" {
     public spawn(id: number): void;
     public toJSON(): string;
   }
-                          
+
   export class Client extends EventEmitter implements SimpleJSON, Emittable {
     public token?: string;
     public gatewayURL?: string;
@@ -1506,6 +1515,8 @@ declare module "eris" {
     ): this;
     public on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
     public on(event: "disconnect", listener: (err: Error) => void): this;
+    // FIXME
+    // tslint:disable-next-line
     public on(event: "resume", listener: () => void): this;
     public toJSON(simple?: boolean): JSONCache;
     // tslint:disable-next-line
