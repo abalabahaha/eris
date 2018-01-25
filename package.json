@@ -1,6 +1,6 @@
 {
   "name": "eris",
-  "version": "0.8.1",
+  "version": "0.8.3",
   "description": "A NodeJS Discord library",
   "main": "./index.js",
   "engines": {
@@ -27,7 +27,7 @@
   },
   "homepage": "https://abal.moe/Eris/",
   "dependencies": {
-    "ws": "^3.2.0"
+    "ws": "^3.3.2"
   },
   "optionalDependencies": {
     "opusscript": "^0.0.4",
