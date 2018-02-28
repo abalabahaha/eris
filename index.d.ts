@@ -413,7 +413,6 @@ declare module "eris" {
     opusOnly?: boolean;
     restMode?: boolean;
     seedVoiceConnections?: boolean;
-    sequencerWaiter?: number;
     defaultImageFormat?: string;
     defaultImageSize?: number;
     ws?: any;
