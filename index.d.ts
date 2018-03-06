@@ -1039,7 +1039,7 @@ declare module "eris" {
     public getRESTMember(memberID: string): Promise<Member>;
     public getRESTRoles(): Promise<Role[]>;
     public getEmbed(): Promise<GuildEmbed>;
-	public getVoiceRegions(): Promise<VoiceRegion[]>;
+    public getVoiceRegions(): Promise<VoiceRegion[]>;
     public leaveVoiceChannel(): void;
     public editRole(roleID: string, options: RoleOptions): Promise<Role>;
     public deleteRole(roleID: string): Promise<void>;
