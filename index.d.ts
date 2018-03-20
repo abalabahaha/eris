@@ -1369,7 +1369,7 @@ declare module "eris" {
     public avatarURL: string;
     public staticAvatarURL: string;
     public constructor(data: BaseData, client: Client);
-    public dynamicIconURL(format?: string, size?: number): string;
+    public dynamicAvatarURL(format?: string, size?: number): string;
     public getDMChannel(): Promise<PrivateChannel>;
     public addRelationship(block?: boolean): Promise<void>;
     public removeRelationship(): Promise<void>;
