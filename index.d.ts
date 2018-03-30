@@ -200,7 +200,6 @@ declare module "eris" {
   interface Constants {
     DefaultAvatarHashes: string[];
     ImageFormats: string[];
-    ImageSizes: number[];
     GatewayOPCodes: {[key: string]: number};
     GATEWAY_VERSION: number;
     Permissions: {[key: string]: number};
