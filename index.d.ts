@@ -512,7 +512,7 @@ declare module "eris" {
       options?: { shared?: boolean, opusOnly?: boolean },
     ): Promise<VoiceConnection>;
     public leaveVoiceChannel(channelID: string): void;
-    public leaveVoiceGuild(guildID: string): void;
+    public closeVoiceConnection(guildID: string): void;
     public editAFK(afk: boolean): void;
     public editStatus(status?: string, game?: GamePresence): void;
     public getChannel(channelID: string): AnyChannel;
