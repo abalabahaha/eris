@@ -511,6 +511,7 @@ declare module "eris" {
       options?: { shared?: boolean, opusOnly?: boolean },
     ): Promise<VoiceConnection>;
     public leaveVoiceChannel(channelID: string): void;
+    public closeVoiceConnection(guildID: string): void;
     public editAFK(afk: boolean): void;
     public editStatus(status?: string, game?: GamePresence): void;
     public getChannel(channelID: string): AnyChannel;
@@ -1038,6 +1039,7 @@ declare module "eris" {
     public getRESTRoles(): Promise<Role[]>;
     public getEmbed(): Promise<GuildEmbed>;
     public getVoiceRegions(): Promise<VoiceRegion[]>;
+    public leaveVoiceChannel(): void;
     public editRole(roleID: string, options: RoleOptions): Promise<Role>;
     public deleteRole(roleID: string): Promise<void>;
     public getAuditLogs(limit?: number, before?: string, actionType?: number): Promise<GuildAuditLog>;
