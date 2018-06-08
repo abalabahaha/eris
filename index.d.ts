@@ -469,8 +469,8 @@ declare module "eris" {
     defaultSubcommandOptions?: CommandOptions;
     hidden?: boolean;
   }
-  type CommandGeneratorFunction = (msg: Message, args: string[]) => Promise<string> | Promise<void> | string | void;
-  type CommandGenerator = CommandGeneratorFunction | string | string[] | CommandGeneratorFunction[];
+  type CommandGeneratorFunction = (msg: Message, args: string[]) => Promise<MessageContent> | Promise<void> | MessageContent | void;
+  type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
 
   export class ShardManager extends Collection<Shard> {
     public constructor(client: Client);
