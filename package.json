@@ -27,7 +27,7 @@
   },
   "homepage": "https://abal.moe/Eris/",
   "dependencies": {
-    "ws": "^5.2.0"
+    "ws": "^6.0.0"
   },
   "optionalDependencies": {
     "opusscript": "^0.0.4",
