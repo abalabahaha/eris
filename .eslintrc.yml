@@ -5,6 +5,8 @@ extends: "eslint:recommended"
 globals:
   window: true
 parserOptions:
-  ecmaVersion: 6
+  ecmaVersion: 2017
 rules:
+  no-var: 2
+  prefer-const: 2
   semi: [2, "always"]
