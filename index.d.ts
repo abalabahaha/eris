@@ -1529,6 +1529,7 @@ declare module "eris" {
   // TODO: Do we need all properties of Command, as it has a lot of stuff
   export class Command {
     public subcommands: { [s: string]: Command };
+    public subcommandAliases: { [alias: string]: Command };
     public label: string;
     public parentCommand?: Command;
     public description: string;
