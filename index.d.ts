@@ -1526,7 +1526,6 @@ declare module "eris" {
     public sendWS(op: number, _data: object): void;
   }
 
-  // TODO: Do we need all properties of Command, as it has a lot of stuff
   export class Command {
     public subcommands: { [s: string]: Command };
     public subcommandAliases: { [alias: string]: Command };
