@@ -469,7 +469,8 @@ declare module "eris" {
     defaultSubcommandOptions?: CommandOptions;
     hidden?: boolean;
   }
-  type CommandGeneratorFunction = (msg: Message, args: string[]) => Promise<MessageContent> | Promise<void> | MessageContent | void;
+  type CommandGeneratorFunction = (msg: Message, args: string[]) => Promise<MessageContent>
+    | Promise<void> | MessageContent | void;
   type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
 
   export class ShardManager extends Collection<Shard> {
@@ -649,6 +650,7 @@ declare module "eris" {
     public createGuild(name: string, region: string, icon?: string): Promise<Guild>;
     public editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
     public getGuildBans(guildID: string): Promise<Array<{ reason?: string, user: User }>>;
+    public getGuildBan(guildID: string, userID: string): Promise<{ reason?: string, user: User }>;
     public editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<void>;
     public addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
     public removeGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
@@ -1060,6 +1062,7 @@ declare module "eris" {
     public delete(): Promise<void>;
     public leave(): Promise<void>;
     public getBans(): Promise<User[]>;
+    public getBan(): Promise<{ reason?: string, user: User }>;
     public editNickname(nick: string): Promise<void>;
     public getWebhooks(): Promise<Webhook[]>;
   }
@@ -1523,9 +1526,46 @@ declare module "eris" {
     public sendWS(op: number, _data: object): void;
   }
 
-  // TODO: Do we need all properties of Command, as it has a lot of stuff
   export class Command {
     public subcommands: { [s: string]: Command };
+    public subcommandAliases: { [alias: string]: Command };
+    public label: string;
+    public parentCommand?: Command;
+    public description: string;
+    public fullDescription: string;
+    public usage: string;
+    public aliases: string[];
+    public caseInsensitive: boolean;
+    public hooks: Hooks;
+    public requirements: {
+      userIDs?: string[] | GenericCheckFunction<string[]>,
+      roleIDs?: string[] | GenericCheckFunction<string[]>,
+      roleNames?: string[] | GenericCheckFunction<string[]>,
+      permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>,
+      custom?: GenericCheckFunction<void>,
+    };
+    public deleteCommand: boolean;
+    public argsRequired: boolean;
+    public guildOnly: boolean;
+    public dmOnly: boolean;
+    public cooldown: number;
+    public cooldownExclusions: {
+      userIDs?: string[],
+      guildIDs?: string[],
+      channelIDs?: string[],
+    };
+    public restartCooldown: boolean;
+    public cooldownReturns: number;
+    public cooldownMessage: string | boolean | GenericCheckFunction<string>;
+    public invalidUsageMessage: string | boolean | GenericCheckFunction<string>;
+    public permissionMessage: string | boolean | GenericCheckFunction<string>;
+    public errorMessage: string | GenericCheckFunction<string>;
+    public reactionButtons: null | Array<{
+      emoji: string, type: string, response: CommandGenerator, execute?: () => string, responses?: Array<() => string>,
+    }>;
+    public reactionButtonTimeout: number;
+    public defaultSubcommandOptions: CommandOptions;
+    public hidden: boolean;
     public constructor(label: string, generate: CommandGenerator, options?: CommandOptions);
     public registerSubcommandAlias(alias: string, label: string): void;
     public registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): void;
