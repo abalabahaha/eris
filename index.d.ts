@@ -530,6 +530,7 @@ declare module "eris" {
       topic?: string,
       bitrate?: number,
       userLimit?: number,
+      rateLimitPerUser: number,
       nsfw?: boolean,
       parentID?: string,
     },                 reason?: string): Promise<GroupChannel | AnyGuildChannel>;
@@ -1103,6 +1104,7 @@ declare module "eris" {
         topic?: string,
         bitrate?: number,
         userLimit?: number,
+        rateLimitPerUser: number,
         nsfw?: boolean,
       },
       reason?: string,
@@ -1126,6 +1128,7 @@ declare module "eris" {
   export class TextChannel extends GuildChannel implements Textable, Invitable {
     public topic?: string;
     public lastMessageID: string;
+    public rateLimitPerUser: number,
     public messages: Collection<Message>;
     public constructor(data: BaseData, guild: Guild, messageLimit: number);
     public getInvites(): Promise<Invite[]>;
