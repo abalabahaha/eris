@@ -1128,7 +1128,7 @@ declare module "eris" {
   export class TextChannel extends GuildChannel implements Textable, Invitable {
     public topic?: string;
     public lastMessageID: string;
-    public rateLimitPerUser: number,
+    public rateLimitPerUser: number;
     public messages: Collection<Message>;
     public constructor(data: BaseData, guild: Guild, messageLimit: number);
     public getInvites(): Promise<Invite[]>;
