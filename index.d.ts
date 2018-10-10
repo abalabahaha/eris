@@ -1269,6 +1269,7 @@ declare module "eris" {
     public reactions: { [s: string]: any, count: number, me: boolean };
     public prefix?: string;
     public command?: Command;
+    public guild?: Guild;
     public constructor(data: BaseData, client: Client);
     public edit(content: MessageContent): Promise<Message>;
     public pin(): Promise<void>;
