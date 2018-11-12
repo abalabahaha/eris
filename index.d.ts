@@ -350,6 +350,11 @@ declare module "eris" {
   } & EmojiBase;
   type Emoji = {
     roles: string[],
+    id: string,
+    require_colons: boolean,
+    animated: boolean,
+    managed: boolean,
+    user: { name: string, discriminator: string, id: string, avatar: string }
   } & EmojiBase;
   interface IntegrationOptions { expireBehavior: string; expireGracePeriod: string; enableEmoticons: string; }
   interface GuildOptions {
