@@ -1161,6 +1161,9 @@ declare module "eris" {
     public addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     public removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     public removeMessageReactions(messageID: string): Promise<void>;
+    public purge(
+      limit: number, filter?: (message: Message) => boolean, before?: string, after?: string
+    ): Promise<number>;
     public deleteMessage(messageID: string, reason?: string): Promise<void>;
     public unsendMessage(messageID: string): Promise<void>;
   }
