@@ -1029,12 +1029,12 @@ declare module "eris" {
     public createEmoji(
       options: { name: string, image: string, roles?: string[] },
       reason?: string,
-    ): Promise<EmojiOptions>;
+    ): Promise<Emoji>;
     public editEmoji(
       emojiID: string,
       options: { name: string, roles?: string[] },
       reason?: string,
-    ): Promise<EmojiOptions>;
+    ): Promise<Emoji>;
     public deleteEmoji(emojiID: string, reason?: string): Promise<void>;
     public createRole(options: RoleOptions, reason?: string): Promise<Role>;
     public getPruneCount(days: number): Promise<number>;
