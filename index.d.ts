@@ -350,6 +350,11 @@ declare module "eris" {
   } & EmojiBase;
   type Emoji = {
     roles: string[],
+    id: string,
+    require_colons: boolean,
+    animated: boolean,
+    managed: boolean,
+    user: { name: string, discriminator: string, id: string, avatar: string }
   } & EmojiBase;
   interface IntegrationOptions { expireBehavior: string; expireGracePeriod: string; enableEmoticons: string; }
   interface GuildOptions {
@@ -1024,12 +1029,12 @@ declare module "eris" {
     public createEmoji(
       options: { name: string, image: string, roles?: string[] },
       reason?: string,
-    ): Promise<EmojiOptions>;
+    ): Promise<Emoji>;
     public editEmoji(
       emojiID: string,
       options: { name: string, roles?: string[] },
       reason?: string,
-    ): Promise<EmojiOptions>;
+    ): Promise<Emoji>;
     public deleteEmoji(emojiID: string, reason?: string): Promise<void>;
     public createRole(options: RoleOptions, reason?: string): Promise<Role>;
     public getPruneCount(days: number): Promise<number>;
@@ -1156,6 +1161,9 @@ declare module "eris" {
     public addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     public removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     public removeMessageReactions(messageID: string): Promise<void>;
+    public purge(
+      limit: number, filter?: (message: Message) => boolean, before?: string, after?: string
+    ): Promise<number>;
     public deleteMessage(messageID: string, reason?: string): Promise<void>;
     public unsendMessage(messageID: string): Promise<void>;
   }
