@@ -3,6 +3,7 @@ declare module "eris" {
   import { EventEmitter } from "events";
   import { Readable as ReadableStream } from "stream";
 
+  export const VERSION: string;
   interface JSONCache { [s: string]: any; }
 
   interface SimpleJSON {
