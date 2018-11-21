@@ -651,6 +651,7 @@ declare module "eris" {
     public deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     public syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     public getGuildInvites(guildID: string): Promise<Invite[]>;
+    public getGuildVanity(guildID: string): Promise<{code: Invite}>;
     public banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     public unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     public createGuild(name: string, region: string, icon?: string): Promise<Guild>;
@@ -1056,6 +1057,7 @@ declare module "eris" {
     public syncIntegration(integrationID: string): Promise<void>;
     public deleteIntegration(integrationID: string): Promise<void>;
     public getInvites(): Promise<Invite[]>;
+    public getVanity(): Promise<{code: Invite}>;
     public editMember(memberID: string, options: MemberOptions, reason?: string): Promise<void>;
     public addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     public removeMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
