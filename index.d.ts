@@ -945,7 +945,7 @@ declare module "eris" {
     public queue(func: Function): void;
   }
 
-  export class Collection<T extends { id: string | number }> extends Map<string | number, T> {
+  export class Collection<T extends any> extends Map<string | number, T> {
     public baseObject: new (...args: any[]) => T;
     public limit?: number;
     public constructor(baseObject: new (...args: any[]) => T, limit?: number);
@@ -955,7 +955,7 @@ declare module "eris" {
     public filter(func: (i: T) => boolean): T[];
     public map<R>(func: (i: T) => R): R[];
     public update(obj: T, extra?: any, replace?: boolean): T;
-    public remove(obj: T | { id: string }): T;
+    public remove(obj: T | string): T;
   }
 
   export class Call extends Base {
