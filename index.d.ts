@@ -536,7 +536,7 @@ declare module "eris" {
       topic?: string,
       bitrate?: number,
       userLimit?: number,
-      rateLimitPerUser: number,
+      rateLimitPerUser?: number,
       nsfw?: boolean,
       parentID?: string,
     },                 reason?: string): Promise<GroupChannel | AnyGuildChannel>;
@@ -1112,7 +1112,7 @@ declare module "eris" {
         topic?: string,
         bitrate?: number,
         userLimit?: number,
-        rateLimitPerUser: number,
+        rateLimitPerUser?: number,
         nsfw?: boolean,
       },
       reason?: string,
