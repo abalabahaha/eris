@@ -913,9 +913,10 @@ declare module "eris" {
     public stopPlaying(): void;
   }
 
-  class VoiceDataStream {
+  export class VoiceDataStream extends EventEmitter {
     public type: string;
     public constructor(type: string);
+    public on(event: "data", listener: (data: Buffer, userID: string, timestamp: number, sequence: number) => void): this;
   }
 
   // tslint:disable-next-line
