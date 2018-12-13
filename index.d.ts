@@ -889,6 +889,7 @@ declare module "eris" {
     public on(event: "error" | "disconnect", listener: (err: Error) => void): this;
     public on(event: "pong", listener: (latency: number) => void): this;
     public on(event: "speakingStart", listener: (userID: string) => void): this;
+    public on(event: "speakingStop", listener: (userID: string) => void): this;
     public on(event: "end", listener: () => void): this;
     public toJSON(simple?: boolean): JSONCache;
   }
@@ -912,9 +913,10 @@ declare module "eris" {
     public stopPlaying(): void;
   }
 
-  class VoiceDataStream {
+  export class VoiceDataStream extends EventEmitter {
     public type: string;
     public constructor(type: string);
+    public on(event: "data", listener: (data: Buffer, userID: string, timestamp: number, sequence: number) => void): this;
   }
 
   // tslint:disable-next-line
