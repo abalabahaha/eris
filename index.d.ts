@@ -387,7 +387,7 @@ declare module "eris" {
     embedTypes?: string;
     attachmentExtensions?: string;
     attachmentFilename?: string;
-    channelIDs: string[];
+    channelIDs?: string[];
   }
   interface SearchResults { totalResults: number; results: Array<Array<Message & { hit?: boolean }>>; }
   interface VoiceResourceOptions {
