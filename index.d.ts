@@ -24,6 +24,7 @@ declare module "eris" {
     maxAge?: number;
     maxUses?: number;
     temporary?: boolean;
+    unique?: boolean;
   }
 
   interface Invitable {
