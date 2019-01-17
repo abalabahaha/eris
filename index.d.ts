@@ -539,7 +539,7 @@ declare module "eris" {
       rateLimitPerUser?: number,
       nsfw?: boolean,
       parentID?: string,
-    },                 reason?: string): Promise<GroupChannel | AnyGuildChannel>;
+    }, reason?: string): Promise<GroupChannel | AnyGuildChannel>;
     public editChannelPosition(channelID: string, position: number): Promise<void>;
     public deleteChannel(channelID: string, reason?: string): Promise<void>;
     public sendChannelTyping(channelID: string): Promise<void>;
@@ -1425,7 +1425,7 @@ declare module "eris" {
     public connect(): void;
     public disconnect(options?: { reconnect: boolean }): void;
     public editAFK(afk: boolean): void;
-    public editStatus(status?: string, game?: GamePresence): void;
+    public editStatus(status?: 'online' | 'offline' | 'idle' | 'dnd', game?: GamePresence): void;
     // tslint:disable-next-line
     public on(event: string, listener: Function): this;
     public on(event: "ready" | "disconnect", listener: () => void): this;
