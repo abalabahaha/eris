@@ -1,3 +1,11 @@
+Modified Content:
+====
+- Removed `lib/command`
+- Added more stuff (most from discord.js):
+  - `MessageCollector`: Await messages to get an expected result
+  - `MessageEmbed`: A utility to convert Discord "embeds" into JSON form with the `build` function.
+  - Emojis as an collection, not an array
+
 Eris [![NPM version](https://img.shields.io/npm/v/eris.svg?style=flat-square)](https://npmjs.com/package/eris)
 ====
 
