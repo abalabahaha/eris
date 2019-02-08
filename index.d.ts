@@ -956,6 +956,7 @@ declare module "eris" {
     public emojis: Collection<Emoji>;
     public iconURL?: string;
     public explicitContentFilter: number;
+    public me: Member;
     public constructor(data: BaseData, client: Client);
     public fetchAllMembers(): void;
     public dynamicIconURL(format: string, size: number): string;
@@ -1204,7 +1205,7 @@ declare module "eris" {
     public embeds: Embed[];
     public reactions: { [s: string]: any, count: number, me: boolean };
     public prefix?: string;
-    public command?: Command;
+    public guild: Guild;
     public constructor(data: BaseData, client: Client);
     public edit(content: MessageContent): Promise<Message>;
     public pin(): Promise<void>;
