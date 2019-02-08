@@ -1,4 +1,4 @@
-declare module "eris" {
+declare module "@augu/eris" {
   // TODO good hacktoberfest PR: implement ShardManager, RequestHandler and other stuff
   import { EventEmitter } from "events";
   import { Readable as ReadableStream } from "stream";

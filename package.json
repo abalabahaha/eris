@@ -1,6 +1,6 @@
 {
   "name": "@augu/eris",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "Forked instance of abal/eris - made for personal use.",
   "main": "./index.js",
   "engines": {
