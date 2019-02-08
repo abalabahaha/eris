@@ -407,6 +407,7 @@ declare module "@augu/eris" {
   }
 
   export class WebSocketManager {
+    public shards: Collection<Shard>;
     public constructor(client: Client);
     public connect(shard: Shard): void;
     public spawnShard(id: number): void;
@@ -419,7 +420,6 @@ declare module "@augu/eris" {
     public bot?: boolean;
     public options: ClientOptions;
     public channelGuildMap: { [s: string]: string };
-    public shards: Collection<Shard>;
     public guilds: Collection<Guild>;
     public privateChannelMap: { [s: string]: string };
     public privateChannels: Collection<PrivateChannel>;

@@ -1,6 +1,6 @@
 {
   "name": "@augu/eris",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "Forked instance of abal/eris - made for personal use.",
   "main": "./index.js",
   "engines": {
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/abalabahaha/eris.git"
+    "url": "git+https://github.com/auguwu/eris.git"
   },
   "keywords": [
     "api",
@@ -20,12 +20,11 @@
     "eris",
     "wrapper"
   ],
-  "author": "abalabahaha",
+  "author": "abalabahaha & August",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/abalabahaha/eris/issues"
+    "url": "https://github.com/auguwu/eris/issues"
   },
-  "homepage": "https://abal.moe/Eris/",
   "dependencies": {
     "ws": "6.1.3"
   },
