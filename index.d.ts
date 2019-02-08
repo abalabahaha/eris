@@ -235,10 +235,8 @@ declare module "eris" {
     fields?: Array<{ name?: string, value?: string, inline?: boolean }>;
     author?: { name: string, url?: string, icon_url?: string, proxy_icon_url?: string };
   }
+
   type Embed = {
-    type: string,
-  } & EmbedBase;
-  type EmbedOptions = {
     type?: string,
   } & EmbedBase;
 
@@ -341,16 +339,6 @@ declare module "eris" {
 
   type MessageContent = string | { content?: string, tts?: boolean, disableEveryone?: boolean, embed?: EmbedOptions };
   interface MessageFile { file: Buffer | string; name: string; }
-  interface EmojiBase {
-    name: string;
-    icon?: string;
-  }
-  type EmojiOptions = {
-    roles?: string[],
-  } & EmojiBase;
-  type Emoji = {
-    roles: string[],
-  } & EmojiBase;
   interface IntegrationOptions { expireBehavior: string; expireGracePeriod: string; enableEmoticons: string; }
   interface GuildOptions {
     name?: string;
@@ -417,65 +405,11 @@ declare module "eris" {
     ws?: any;
     latencyThreshold?: number;
   }
-  interface CommandClientOptions {
-    defaultHelpCommand?: boolean;
-    description?: string;
-    ignoreBots?: boolean;
-    ignoreSelf?: boolean;
-    name?: string;
-    owner?: string;
-    prefix?: string | string[];
-    defaultCommandOptions?: CommandOptions;
-  }
-  interface Hooks {
-    preCommand?: (msg: Message, args: string[]) => void;
-    postCheck?: (msg: Message, args: string[], checksPassed: boolean) => void;
-    postExecution?: (msg: Message, args: string[], executionSuccess: boolean) => void;
-    postCommand?: (msg: Message, args: string[], sent?: Message) => void;
-  }
-  type GenericCheckFunction<T> = (msg: Message) => T;
-  interface CommandOptions {
-    aliases?: string[];
-    caseInsensitive?: boolean;
-    deleteCommand?: boolean;
-    argsRequired?: boolean;
-    guildOnly?: boolean;
-    dmOnly?: boolean;
-    description?: string;
-    fullDescription?: string;
-    usage?: string;
-    hooks?: Hooks;
-    requirements?: {
-      userIDs?: string[] | GenericCheckFunction<string[]>,
-      roleIDs?: string[] | GenericCheckFunction<string[]>,
-      roleNames?: string[] | GenericCheckFunction<string[]>,
-      permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>,
-      custom?: GenericCheckFunction<void>,
-    };
-    cooldown?: number;
-    cooldownExclusions?: {
-      userIDs?: string[],
-      guildIDs?: string[],
-      channelIDs?: string[],
-    };
-    restartCooldown?: boolean;
-    cooldownReturns?: number;
-    cooldownMessage?: string | GenericCheckFunction<string>;
-    invalidUsageMessage?: string | GenericCheckFunction<string>;
-    permissionMessage?: string | GenericCheckFunction<string>;
-    errorMessage?: string | GenericCheckFunction<string>;
-    reactionButtons?: Array<{ emoji: string, type: string, response: CommandGenerator }>;
-    reactionButtonTimeout?: number;
-    defaultSubcommandOptions?: CommandOptions;
-    hidden?: boolean;
-  }
-  type CommandGeneratorFunction = (msg: Message, args: string[]) => Promise<MessageContent> | Promise<void> | MessageContent | void;
-  type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
 
-  export class ShardManager extends Collection<Shard> {
+  export class WebSocketManager {
     public constructor(client: Client);
     public connect(shard: Shard): void;
-    public spawn(id: number): void;
+    public spawnShard(id: number): void;
     public toJSON(): string;
   }
 
@@ -485,7 +419,7 @@ declare module "eris" {
     public bot?: boolean;
     public options: ClientOptions;
     public channelGuildMap: { [s: string]: string };
-    public shards: ShardManager;
+    public shards: Collection<Shard>;
     public guilds: Collection<Guild>;
     public privateChannelMap: { [s: string]: string };
     public privateChannels: Collection<PrivateChannel>;
@@ -501,6 +435,7 @@ declare module "eris" {
     public userGuildSettings: { [s: string]: GuildSettings };
     public userSettings: UserSettings;
     public notes: { [s: string]: string };
+    public ws: WebSocketManager;
     public constructor(token: string, options?: ClientOptions);
     public connect(): Promise<void>;
     public getGateway(): Promise<string>;
@@ -969,6 +904,13 @@ declare module "eris" {
     public constructor(data: BaseData);
   }
 
+  export class Emoji extends Base {
+    public name: string;
+    public roles: string[];
+    public animated: boolean;
+    public id: string;
+  }
+
   export class ExtendedUser extends User {
     public email: string;
     public verified: boolean;
@@ -1011,7 +953,7 @@ declare module "eris" {
     public roles: Collection<Role>;
     public shard: Shard;
     public features: string[];
-    public emojis: Emoji[];
+    public emojis: Collection<Emoji>;
     public iconURL?: string;
     public explicitContentFilter: number;
     public constructor(data: BaseData, client: Client);
@@ -1021,12 +963,12 @@ declare module "eris" {
     public createEmoji(
       options: { name: string, image: string, roles?: string[] },
       reason?: string,
-    ): Promise<EmojiOptions>;
+    ): Promise<Emoji>;
     public editEmoji(
       emojiID: string,
       options: { name: string, roles?: string[] },
       reason?: string,
-    ): Promise<EmojiOptions>;
+    ): Promise<Emoji>;
     public deleteEmoji(emojiID: string, reason?: string): Promise<void>;
     public createRole(options: RoleOptions, reason?: string): Promise<Role>;
     public getPruneCount(days: number): Promise<number>;
@@ -1521,24 +1463,5 @@ declare module "eris" {
     public toJSON(simple?: boolean): JSONCache;
     // tslint:disable-next-line
     public sendWS(op: number, _data: object): void;
-  }
-
-  // TODO: Do we need all properties of Command, as it has a lot of stuff
-  export class Command {
-    public subcommands: { [s: string]: Command };
-    public constructor(label: string, generate: CommandGenerator, options?: CommandOptions);
-    public registerSubcommandAlias(alias: string, label: string): void;
-    public registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): void;
-    public unregisterSubcommand(label: string): void;
-  }
-
-  export class CommandClient extends Client {
-    public commands: { [s: string]: Command };
-    public constructor(token: string, options?: ClientOptions, commandOptions?: CommandClientOptions);
-    public onMessageCreate(msg: Message): void;
-    public registerGuildPrefix(guildID: string, prefix: string[] | string): void;
-    public registerCommandAlias(alias: string, label: string): void;
-    public registerCommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
-    public unregisterCommand(label: string): void;
   }
 }
