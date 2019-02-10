@@ -957,6 +957,9 @@ declare module "eris" {
     public random(): T;
     public filter(func: (i: T) => boolean): T[];
     public map<R>(func: (i: T) => R): R[];
+    public reduce<U>(func: (accumulator: U, val: T) => U, initial?: U): U;
+    public every(func: (i: T) => boolean): boolean;
+    public some(func: (i: T) => boolean): boolean;
     public update(obj: T, extra?: any, replace?: boolean): T;
     public remove(obj: T | { id: string }): T;
   }
