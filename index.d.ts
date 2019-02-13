@@ -405,6 +405,8 @@ declare module "@augu/eris" {
     ws?: any;
     latencyThreshold?: number;
   }
+  
+  export type OnlineStatus = 'online' | 'offline' | 'dnd' | "offline";
 
   export class WebSocketManager {
     public shards: Collection<Shard>;
@@ -446,7 +448,7 @@ declare module "@augu/eris" {
     public leaveVoiceChannel(channelID: string): void;
     public closeVoiceConnection(guildID: string): void;
     public editAFK(afk: boolean): void;
-    public editStatus(status?: string, game?: GamePresence): void;
+    public editStatus(status?: OnlineStatus, game?: GamePresence): void;
     public getChannel(channelID: string): AnyChannel;
     public createChannel(
       guildID: string,
