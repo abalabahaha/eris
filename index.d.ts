@@ -213,7 +213,7 @@ declare module "@augu/eris" {
   interface WebhookPayload {
     content?: string;
     file?: { file: Buffer, name: string } | Array<{ file: Buffer, name: string}>;
-    embeds?: EmbedOptions[];
+    embeds?: Embed[];
     username?: string;
     avatarURL?: string;
     tts?: boolean;
@@ -337,7 +337,7 @@ declare module "@augu/eris" {
     [key: string]: {};
   }
 
-  type MessageContent = string | { content?: string, tts?: boolean, disableEveryone?: boolean, embed?: EmbedOptions };
+  type MessageContent = string | { content?: string, tts?: boolean, disableEveryone?: boolean, embed?: Embed };
   interface MessageFile { file: Buffer | string; name: string; }
   interface IntegrationOptions { expireBehavior: string; expireGracePeriod: string; enableEmoticons: string; }
   interface GuildOptions {
@@ -409,8 +409,6 @@ declare module "@augu/eris" {
   export class WebSocketManager {
     public shards: Collection<Shard>;
     public constructor(client: Client);
-    public connect(shard: Shard): void;
-    public spawnShard(id: number): void;
     public toJSON(): string;
   }
 
@@ -508,7 +506,7 @@ declare module "@augu/eris" {
       before?: string,
       actionType?: number,
     ): Promise<GuildAuditLog>;
-    public createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
+    public createGuildEmoji(guildID: string, options: any, reason?: string): Promise<Emoji>;
     public editGuildEmoji(
       guildID: string,
       emojiID: string,
@@ -871,9 +869,9 @@ declare module "@augu/eris" {
   }
 
   export class Collection<T extends { id: string | number }> extends Map<string | number, T> {
-    public baseObject: new (...args: any[]) => T;
+    public baseObject?: new (...args: any[]) => T;
     public limit?: number;
-    public constructor(baseObject: new (...args: any[]) => T, limit?: number);
+    public constructor(baseObject?: new (...args: any[]) => T, limit?: number);
     public add(obj: T, extra?: any, replace?: boolean): T;
     public find(func: (i: T) => boolean): T;
     public random(): T;
@@ -906,9 +904,10 @@ declare module "@augu/eris" {
 
   export class Emoji extends Base {
     public name: string;
-    public roles: string[];
+    public roles: Collection<Role>;
     public animated: boolean;
     public id: string;
+    public constructor(data: BaseData, client: Client);
   }
 
   export class ExtendedUser extends User {
@@ -1204,7 +1203,6 @@ declare module "@augu/eris" {
     public attachments: Attachment[];
     public embeds: Embed[];
     public reactions: { [s: string]: any, count: number, me: boolean };
-    public prefix?: string;
     public guild: Guild;
     public constructor(data: BaseData, client: Client);
     public edit(content: MessageContent): Promise<Message>;
@@ -1312,6 +1310,7 @@ declare module "@augu/eris" {
     public defaultAvatarURL: string;
     public avatarURL: string;
     public staticAvatarURL: string;
+    public tag: string;
     public constructor(data: BaseData, client: Client);
     public dynamicAvatarURL(format?: string, size?: number): string;
     public getDMChannel(): Promise<PrivateChannel>;

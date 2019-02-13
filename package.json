@@ -1,10 +1,10 @@
 {
   "name": "@augu/eris",
-  "version": "0.9.3",
+  "version": "0.10.0",
   "description": "Forked instance of abal/eris - made for personal use.",
   "main": "./index.js",
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=8.0.0"
   },
   "scripts": {
     "eslint": "eslint --fix lib index.js && echo \"\u001b[1m\u001b[32mOK\u001b[39m\u001b[22m\" || echo \"\u001b[1m\u001b[31mNot OK\u001b[39m\u001b[22m\""

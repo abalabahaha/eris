@@ -5,6 +5,6 @@ examples
 docgen
 docs
 node_modules
-test
 CONTRIBUTING.md
 .eslintrc.yml
+tests

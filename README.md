@@ -4,9 +4,9 @@ Modified Content:
 - Added more stuff (most from discord.js):
   - Emojis as an collection, not an array
   - Replace `ShardManager`:
-    - Use `Client.ws` for websocket stuff
-    - Use collections for shards
+    - Use `Client.ws` for websocket stuff (example: shards)
     - Renamed `ShardManager` to `WebSocketManager` (bc it sounds cool)
+  - `User.tag` getter
 - Updated typings
 
 Eris [![NPM version](https://img.shields.io/npm/v/eris.svg?style=flat-square)](https://npmjs.com/package/eris)
