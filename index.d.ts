@@ -91,6 +91,21 @@ declare module "eris" {
 
   interface OldVoiceState { mute: boolean; deaf: boolean; selfMute: boolean; selfDeaf: boolean; }
 
+  interface OAuthApplicationInfo {
+    description: string,
+    name: string,
+    owner: {
+      username: string,
+      discriminator: string,
+      id: string,
+      avatar?: string,
+    },
+    bot_public: boolean,
+    bot_require_code_grant: boolean,
+    id: string,
+    icon?: string,
+  }
+
   // To anyone snooping around this snippet of code and wondering
   // "Why didn't they use a class for this? It would make the code cleaner!"
   // I could, but TypeScript isn't smart enough to properly inherit overloaded methods,
@@ -667,20 +682,7 @@ declare module "eris" {
     public kickGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     public deleteGuild(guildID: string): Promise<void>;
     public leaveGuild(guildID: string): Promise<void>;
-    public getOAuthApplication(appID?: string): Promise<{
-      description: string,
-      name: string,
-      owner: {
-        username: string,
-        discriminator: string,
-        id: string,
-        avatar?: string,
-      },
-      bot_public: boolean,
-      bot_require_code_grant: boolean,
-      id: string,
-      icon?: string,
-    }>;
+    public getOAuthApplication(appID?: string): Promise<OAuthApplicationInfo>;
     public addRelationship(userID: string, block?: boolean): Promise<void>;
     public removeRelationship(userID: string): Promise<void>;
     public addGroupRecipient(groupID: string, userID: string): Promise<void>;
