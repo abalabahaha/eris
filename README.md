@@ -8,7 +8,9 @@ Modified Content:
     - Renamed `ShardManager` to `WebSocketManager` (bc it sounds cool)
   - `User.tag` getter
   - Add MessageCollector, MessageReaction, MessageMentions, and more c00l stuff
-- Updated typings
+- Updated typings:
+ - Fix everything
+ - Use namespaces (bc they cool)
 
 Eris [![NPM version](https://img.shields.io/npm/v/eris.svg?style=flat-square)](https://npmjs.com/package/eris)
 ====
