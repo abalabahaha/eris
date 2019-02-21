@@ -7,6 +7,7 @@ Modified Content:
     - Use `Client.ws` for websocket stuff (example: shards)
     - Renamed `ShardManager` to `WebSocketManager` (bc it sounds cool)
   - `User.tag` getter
+  - Add MessageCollector, MessageReaction, MessageMentions, and more c00l stuff
 - Updated typings
 
 Eris [![NPM version](https://img.shields.io/npm/v/eris.svg?style=flat-square)](https://npmjs.com/package/eris)
@@ -29,9 +30,9 @@ Ping Pong Example
 -----------------
 
 ```js
-const Eris = require("eris");
+const Eris = require("@augu/eris");
 
-var bot = new Eris("BOT_TOKEN");
+var bot = Eris.create("BOT_TOKEN");
 // Replace BOT_TOKEN with your bot account's token
 
 bot.on("ready", () => { // When the bot is ready
@@ -39,19 +40,15 @@ bot.on("ready", () => { // When the bot is ready
 });
 
 bot.on("messageCreate", (msg) => { // When a message is created
-    if(msg.content === "!ping") { // If the message content is "!ping"
-        bot.createMessage(msg.channel.id, "Pong!");
-        // Send a message in the same channel with "Pong!"
-    } else if(msg.content === "!pong") { // Otherwise, if the message is "!pong"
-        bot.createMessage(msg.channel.id, "Ping!");
-        // Respond with "Ping!"
-    }
+    const content = msg.getContent();
+    if (content === '!ping') return msg.channel.createMessage('Pong!');
+    if (content === '!pong') return msg.channel.createMessage('Ping!');
 });
 
 bot.connect(); // Get the bot to connect to Discord
 ```
 
-More examples can be found in [the examples folder](https://github.com/abalabahaha/eris/tree/master/examples).
+More examples can be found in [the examples folder](https://github.com/auguwu/eris/tree/master/examples).
 
 Useful Links
 ------------
