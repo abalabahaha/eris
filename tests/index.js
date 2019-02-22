@@ -3,9 +3,7 @@ const config = require('./config.json');
 const bot    = Eris.create(config.token);
 
 bot.on('ready', () => {
-    bot.guilds.forEach(guild => {
-        console.log(guild.emojis);
-    });
+    console.info('> Test Bot is ready!');
     process.exit();
 });
 
