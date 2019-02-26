@@ -33,8 +33,7 @@ Ping Pong Example
 
 ```js
 const Eris = require("@augu/eris");
-
-var bot = Eris.create("BOT_TOKEN");
+let bot = Eris.create("BOT_TOKEN");
 // Replace BOT_TOKEN with your bot account's token
 
 bot.on("ready", () => { // When the bot is ready
@@ -43,8 +42,8 @@ bot.on("ready", () => { // When the bot is ready
 
 bot.on("messageCreate", (msg) => { // When a message is created
     const content = msg.getContent();
-    if (content === '!ping') return msg.channel.createMessage('Pong!');
-    if (content === '!pong') return msg.channel.createMessage('Ping!');
+    if (content === '!ping') return msg.getChannel().createMessage('Pong!');
+    if (content === '!pong') return msg.getChannel().createMessage('Ping!');
 });
 
 bot.connect(); // Get the bot to connect to Discord
