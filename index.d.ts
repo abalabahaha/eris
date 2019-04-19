@@ -384,6 +384,7 @@ declare module "eris" {
     afkTimeout?: number;
     ownerID?: string;
     splash?: string;
+    banner?: string;
   }
   interface MemberOptions { roles?: string[]; nick?: string; mute?: boolean; deaf?: boolean; channelID?: string; }
   interface RoleOptions { name?: string; permissions?: number; color?: number; hoist?: boolean; mentionable?: boolean; }
@@ -1020,6 +1021,7 @@ declare module "eris" {
     public joinedAt: number;
     public ownerID: string;
     public splash?: string;
+    public banner?: string;
     public unavailable: boolean;
     public large: boolean;
     public maxPresences: number;
