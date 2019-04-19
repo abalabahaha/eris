@@ -380,7 +380,7 @@ declare module "eris" {
     icon?: string;
     verificationLevel?: number;
     defaultNotifications?: number;
-    contentFilterLevel?: number;
+    explicitContentFilter?: number;
     afkChannelID?: string;
     afkTimeout?: number;
     ownerID?: string;
