@@ -1,9 +1,8 @@
 const Eris = require("eris");
-const FS = require("fs");
 
-var bot = new Eris("BOT_TOKEN");
+const bot = new Eris("BOT_TOKEN");
 // Replace BOT_TOKEN with your bot account's token
-var playCommand = "!play";
+const playCommand = "!play";
 
 bot.on("ready", () => { // When the bot is ready
     console.log("Ready!"); // Log "Ready!"
@@ -23,7 +22,7 @@ bot.on("messageCreate", (msg) => { // When a message is created
             bot.createMessage(msg.channel.id, "You are not in a voice channel.");
             return;
         }
-        var filename = msg.content.substring(playCommand.length + 1); // Get the filename
+        const filename = msg.content.substring(playCommand.length + 1); // Get the filename
         bot.joinVoiceChannel(msg.member.voiceState.channelID).catch((err) => { // Join the user's voice channel
             bot.createMessage(msg.channel.id, "Error joining voice channel: " + err.message); // Notify the user if there is an error
             console.log(err); // Log the error

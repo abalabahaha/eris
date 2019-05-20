@@ -8,7 +8,6 @@ function Eris(token, options) {
 
 Eris.Base = require("./lib/structures/Base");
 Eris.Bucket = require("./lib/util/Bucket");
-Eris.Call = require("./lib/structures/Call");
 Eris.CategoryChannel = require("./lib/structures/CategoryChannel");
 Eris.Channel = require("./lib/structures/Channel");
 Eris.Client = Client;
@@ -28,7 +27,6 @@ Eris.NewsChannel = require("./lib/structures/NewsChannel");
 Eris.Permission = require("./lib/structures/Permission");
 Eris.PermissionOverwrite = require("./lib/structures/PermissionOverwrite");
 Eris.PrivateChannel = require("./lib/structures/PrivateChannel");
-Eris.Relationship = require("./lib/structures/Relationship");
 Eris.Role = require("./lib/structures/Role");
 Eris.Shard = require("./lib/gateway/Shard");
 Eris.SharedStream = require("./lib/voice/SharedStream");

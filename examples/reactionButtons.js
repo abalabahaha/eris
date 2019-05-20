@@ -1,7 +1,7 @@
 const Eris = require("eris");
 
 // Replace BOT_TOKEN with your bot account's token
-var bot = new Eris.CommandClient("BOT_TOKEN", {}, {
+const bot = new Eris.CommandClient("BOT_TOKEN", {}, {
     description: "A test bot made with Eris",
     owner: "somebody",
     prefix: "!"
