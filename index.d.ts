@@ -1143,7 +1143,7 @@ declare module "eris" {
   }
 
   export class CategoryChannel extends GuildChannel {
-    public channels?: Collection<AnyGuildChannel>;
+    public channels?: Array<AnyGuildChannel>;
   }
 
   export class TextChannel extends GuildChannel implements Textable, Invitable {
