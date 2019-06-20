@@ -1029,7 +1029,7 @@ declare module "eris" {
     public premiumTier: number;
     public premiumSuscriptionCount?: number;
     public vanityURL?: string;
-    public preferredLocale?: string;
+    public preferredLocale: string;
     public description?: string;
     public maxMembers: number;
     public unavailable: boolean;
