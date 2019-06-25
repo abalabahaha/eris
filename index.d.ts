@@ -1434,6 +1434,7 @@ declare module "eris" {
     public lastHeartbeatSent: number;
     public latency: number;
     public client: Client;
+    public presence: {status: string, game?: GamePresence};
     public constructor(id: number, client: Client);
     public connect(): void;
     public disconnect(options?: { reconnect: boolean }): void;
