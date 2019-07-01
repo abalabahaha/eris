@@ -1026,6 +1026,12 @@ declare module "eris" {
     public ownerID: string;
     public splash?: string;
     public banner?: string;
+    public premiumTier: number;
+    public premiumSuscriptionCount?: number;
+    public vanityURL?: string;
+    public preferredLocale: string;
+    public description?: string;
+    public maxMembers: number;
     public unavailable: boolean;
     public large: boolean;
     public maxPresences: number;
@@ -1246,6 +1252,7 @@ declare module "eris" {
     public mention: string;
     public guild: Guild;
     public joinedAt: number;
+    public premiumSince: number;
     public status: string;
     public game?: GamePresence;
     public voiceState: VoiceState;
