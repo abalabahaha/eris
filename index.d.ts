@@ -113,8 +113,6 @@ declare module "eris" {
   // I could, but TypeScript isn't smart enough to properly inherit overloaded methods,
   // so `on` event listeners would loose their type-safety.
   interface Emittable {
-    // tslint:disable-next-line
-    on(event: string, listener: Function): this;
     on(event: "ready" | "disconnect", listener: () => void): this;
     on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
     on(
@@ -214,6 +212,8 @@ declare module "eris" {
       ) => void,
     ): this;
     on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
+    // tslint:disable-next-line
+    on(event: string, listener: Function): this;
   }
 
   interface Constants {
