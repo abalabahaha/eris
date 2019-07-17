@@ -113,8 +113,6 @@ declare module "eris" {
   // I could, but TypeScript isn't smart enough to properly inherit overloaded methods,
   // so `on` event listeners would loose their type-safety.
   interface Emittable {
-    // tslint:disable-next-line
-    on(event: string, listener: Function): this;
     on(event: "ready" | "disconnect", listener: () => void): this;
     on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
     on(
@@ -214,6 +212,8 @@ declare module "eris" {
       ) => void,
     ): this;
     on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
+    // tslint:disable-next-line
+    on(event: string, listener: Function): this;
   }
 
   interface Constants {
@@ -755,8 +755,6 @@ declare module "eris" {
     public getRESTUser(userID: string): Promise<User>;
     public searchChannelMessages(channelID: string, query: SearchOptions): Promise<SearchResults>;
     public searchGuildMessages(guildID: string, query: SearchOptions): Promise<SearchResults>;
-    // tslint:disable-next-line
-    public on(event: string, listener: Function): this;
     public on(event: "ready" | "disconnect", listener: () => void): this;
     public on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
     public on(
@@ -866,6 +864,8 @@ declare module "eris" {
       listener: (err: Error, id: number) => void,
     ): this;
     public on(event: "shardReady" | "shardResume", listener: (id: number) => void): this;
+    // tslint:disable-next-line
+    public on(event: string, listener: Function): this;
     public toJSON(simple?: boolean): JSONCache;
   }
 
