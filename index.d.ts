@@ -1260,6 +1260,15 @@ declare module "eris" {
     public roles: string[];
     public user: User;
     public permission: Permission;
+    public defaultAvatar: string;
+    public createdAt: number;
+    public bot: boolean;
+    public username: string;
+    public discriminator: string;
+    public avatar?: string;
+    public defaultAvatarURL: string;
+    public avatarURL: string;
+    public staticAvatarURL: string;
     public constructor(data: BaseData, guild: Guild);
     public edit(
       options: MemberOptions, reason?: string,
@@ -1371,6 +1380,7 @@ declare module "eris" {
     public color: number;
     public position: number;
     public permissions: Permission;
+    public json: { [s: string]: boolean };
     public constructor(data: BaseData, guild: Guild);
     public edit(options: RoleOptions, reason?: string): Promise<Role>;
     public editPosition(position: number): Promise<void>;
