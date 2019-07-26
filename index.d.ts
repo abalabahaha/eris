@@ -1027,7 +1027,7 @@ declare module "eris" {
     public splash?: string;
     public banner?: string;
     public premiumTier: number;
-    public premiumSuscriptionCount?: number;
+    public premiumSubscriptionCount?: number;
     public vanityURL?: string;
     public preferredLocale: string;
     public description?: string;
