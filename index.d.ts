@@ -1188,6 +1188,7 @@ declare module "eris" {
       limit: number, filter?: (message: Message) => boolean, before?: string, after?: string
     ): Promise<number>;
     public deleteMessage(messageID: string, reason?: string): Promise<void>;
+    public deleteMessages(messageIDs: string[]): Promise<void>;
     public unsendMessage(messageID: string): Promise<void>;
   }
 
