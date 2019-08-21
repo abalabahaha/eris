@@ -531,7 +531,7 @@ declare module "eris" {
     public notes: { [s: string]: string };
     public constructor(token: string, options?: ClientOptions);
     public connect(): Promise<void>;
-    public getGateway(): Promise<string>;
+    public getGateway(): Promise<{ url: string }>;
     public getBotGateway(): Promise<{ url: string, shards: number }>;
     public disconnect(options: { reconnect: boolean }): void;
     public joinVoiceChannel(
