@@ -531,7 +531,7 @@ declare module "eris" {
     public notes: { [s: string]: string };
     public constructor(token: string, options?: ClientOptions);
     public connect(): Promise<void>;
-    public getGateway(): Promise<string>;
+    public getGateway(): Promise<{ url: string }>;
     public getBotGateway(): Promise<{ url: string, shards: number }>;
     public disconnect(options: { reconnect: boolean }): void;
     public joinVoiceChannel(
@@ -1606,7 +1606,7 @@ declare module "eris" {
     public hidden: boolean;
     public constructor(label: string, generate: CommandGenerator, options?: CommandOptions);
     public registerSubcommandAlias(alias: string, label: string): void;
-    public registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): void;
+    public registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
     public unregisterSubcommand(label: string): void;
   }
 
