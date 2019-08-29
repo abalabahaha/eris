@@ -20,7 +20,9 @@ declare module "eris" {
 
   type TextableChannel = TextChannel | PrivateChannel | GroupChannel;
   type AnyChannel = TextChannel | VoiceChannel | CategoryChannel | PrivateChannel | GroupChannel;
-  type AnyGuildChannel = TextChannel | VoiceChannel | CategoryChannel;
+  type AnyGuildChannel = (TextChannel | VoiceChannel | CategoryChannel) & {
+    guild: Guild
+  };
 
   interface CreateInviteOptions {
     maxAge?: number;
