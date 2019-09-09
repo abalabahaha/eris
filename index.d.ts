@@ -1158,7 +1158,7 @@ declare module "eris" {
     public lastMessageID: string;
     public rateLimitPerUser: number;
     public messages: Collection<Message>;
-    public lastPinTimestamp: number | null;
+    public lastPinTimestamp?: number;
     public constructor(data: BaseData, guild: Guild, messageLimit: number);
     public getInvites(): Promise<Invite[]>;
     public createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
