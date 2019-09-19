@@ -14,5 +14,5 @@
     "moduleResolution": "node",
     "lib": ["es6"]
   },
-  "files": ["index-old.d.ts"]
+  "files": ["index-new.d.ts"]
 }
