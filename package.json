@@ -42,5 +42,8 @@
     "tls": false,
     "tweetnacl": false,
     "ws": false
+  },
+  "devDependencies": {
+    "eslint": "^6.5.1"
   }
 }
