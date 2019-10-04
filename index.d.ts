@@ -406,6 +406,7 @@ declare module "eris" {
       small_image?: string,
       large_text?: string,
       large_image?: string,
+      [key: string]: any,
     };
     instance?: boolean;
     flags?: number;
