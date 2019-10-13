@@ -1605,7 +1605,7 @@ declare module "eris" {
     public hidden: boolean;
     public constructor(label: string, generate: CommandGenerator, options?: CommandOptions);
     public registerSubcommandAlias(alias: string, label: string): void;
-    public registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): void;
+    public registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
     public unregisterSubcommand(label: string): void;
   }
 
