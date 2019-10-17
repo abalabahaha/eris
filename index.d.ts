@@ -2,9 +2,7 @@ import { EventEmitter } from "events";
 import { Readable as ReadableStream } from "stream";
 import { Agent as HTTPSAgent } from "https";
 
-declare function Eris(token?: string, options?: Eris.ClientOptions): Eris.Client;
-
-export = Eris;
+declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
 
 declare namespace Eris {
   // TODO good hacktoberfest PR: implement ShardManager, RequestHandler and other stuff
@@ -1646,3 +1644,5 @@ declare namespace Eris {
     public unregisterCommand(label: string): void;
   }
 }
+
+export = Eris;
