@@ -1,9 +1,11 @@
-declare module "eris" {
+import { EventEmitter } from "events";
+import { Readable as ReadableStream } from "stream";
+import { Agent as HTTPSAgent } from "https";
+
+declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
+
+declare namespace Eris {
   // TODO good hacktoberfest PR: implement ShardManager, RequestHandler and other stuff
-  import { EventEmitter } from "events";
-  import { Readable as ReadableStream } from "stream";
-  import { Agent as HTTPAgent } from "http";
-  import { Agent as HTTPSAgent } from "https";
 
   export const VERSION: string;
   interface JSONCache { [s: string]: any; }
@@ -463,7 +465,7 @@ declare module "eris" {
     defaultImageSize?: number;
     ws?: any;
     latencyThreshold?: number;
-    agent?: HTTPAgent | HTTPSAgent
+    agent?: HTTPSAgent
   }
   interface CommandClientOptions {
     defaultHelpCommand?: boolean;
@@ -1642,3 +1644,5 @@ declare module "eris" {
     public unregisterCommand(label: string): void;
   }
 }
+
+export = Eris;
