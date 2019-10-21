@@ -1,9 +1,11 @@
-declare module "eris" {
+import { EventEmitter } from "events";
+import { Readable as ReadableStream } from "stream";
+import { Agent as HTTPSAgent } from "https";
+
+declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
+
+declare namespace Eris {
   // TODO good hacktoberfest PR: implement ShardManager, RequestHandler and other stuff
-  import { EventEmitter } from "events";
-  import { Readable as ReadableStream } from "stream";
-  import { Agent as HTTPAgent } from "http";
-  import { Agent as HTTPSAgent } from "https";
 
   export const VERSION: string;
   interface JSONCache { [s: string]: any; }
@@ -391,7 +393,28 @@ declare module "eris" {
   }
   interface MemberOptions { roles?: string[]; nick?: string; mute?: boolean; deaf?: boolean; channelID?: string; }
   interface RoleOptions { name?: string; permissions?: number; color?: number; hoist?: boolean; mentionable?: boolean; }
-  interface GamePresence { name: string; type?: number; url?: string; }
+  interface GamePresence {
+    name: string;
+    type?: number;
+    url?: string;
+    timestamps?: { start: number, end?: number };
+    application_id?: string;
+    sync_id?: string;
+    details?: string;
+    state?: string;
+    party?: { id?: string; };
+    assets?: {
+      small_text?: string,
+      small_image?: string,
+      large_text?: string,
+      large_image?: string,
+      [key: string]: any,
+    };
+    instance?: boolean;
+    flags?: number;
+    // the stuff attached to this object apparently varies even more than documented, so...
+    [key: string]: any;
+  }
   interface SearchOptions {
     sortBy?: string;
     sortOrder?: string;
@@ -442,7 +465,7 @@ declare module "eris" {
     defaultImageSize?: number;
     ws?: any;
     latencyThreshold?: number;
-    agent?: HTTPAgent | HTTPSAgent
+    agent?: HTTPSAgent
   }
   interface CommandClientOptions {
     defaultHelpCommand?: boolean;
@@ -1621,3 +1644,5 @@ declare module "eris" {
     public unregisterCommand(label: string): void;
   }
 }
+
+export = Eris;

@@ -10,3 +10,5 @@ rules:
   no-var: 2
   prefer-const: 2
   semi: [2, "always"]
+  require-atomic-updates: 1
+  no-prototype-builtins: 0
