@@ -24,3 +24,4 @@ rules:
     }
   }]
   brace-style: [2, "1tbs", { "allowSingleLine": false }]
+  object-curly-spacing: [2, "never"]
