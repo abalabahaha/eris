@@ -32,3 +32,4 @@ rules:
     "SwitchCase": 1,
     "ignoreComments": false
   }]
+  object-shorthand: [2, "consistent-as-needed"]
