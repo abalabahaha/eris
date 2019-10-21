@@ -28,3 +28,7 @@ rules:
   array-bracket-spacing: [2, "never"]
   comma-dangle: [2, "never"]
   arrow-parens: 2
+  indent: [2, 4, {
+    "SwitchCase": 1,
+    "ignoreComments": false
+  }]
