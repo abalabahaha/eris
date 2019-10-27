@@ -1093,7 +1093,7 @@ declare namespace Eris {
     public createChannel(name: string, type: 0, parentID?: string): Promise<TextChannel>;
     public createChannel(name: string, type: 2, parentID?: string): Promise<VoiceChannel>;
     public createChannel(name: string, type: 4, parentID?: string): Promise<CategoryChannel>;
-    public createChannel(name: string, type: number, parentID?: string): Promise<unknown>;
+    public createChannel(name: string, type?: number, parentID?: string): Promise<unknown>;
     public createEmoji(
       options: { name: string, image: string, roles?: string[] },
       reason?: string,
