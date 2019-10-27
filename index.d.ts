@@ -588,7 +588,7 @@ declare namespace Eris {
     public createChannel(
       guildID: string,
       name: string,
-      type: number,
+      type?: number,
       reason?: string,
       parentID?: string,
     ): Promise<unknown>;
