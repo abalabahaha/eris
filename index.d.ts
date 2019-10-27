@@ -569,10 +569,29 @@ declare namespace Eris {
     public createChannel(
       guildID: string,
       name: string,
-      type?: number,
+    ): Promise<TextChannel>;
+    public createChannel(
+      guildID: string,
+      name: string,
+      type: 0,
+    ): Promise<TextChannel>;
+    public createChannel(
+      guildID: string,
+      name: string,
+      type: 2,
+    ): Promise<VoiceChannel>;
+    public createChannel(
+      guildID: string,
+      name: string,
+      type: 4
+    ): Promise<CategoryChannel>;
+    public createChannel(
+      guildID: string,
+      name: string,
+      type: number,
       reason?: string,
       parentID?: string,
-    ): Promise<AnyGuildChannel>;
+    ): Promise<unknown>;
     public editChannel(channelID: string, options: {
       name?: string,
       icon?: string,
@@ -1070,7 +1089,11 @@ declare namespace Eris {
     public constructor(data: BaseData, client: Client);
     public fetchAllMembers(): void;
     public dynamicIconURL(format: string, size: number): string;
-    public createChannel(name: string, type: string, parentID?: string): Promise<AnyGuildChannel>;
+    public createChannel(name: string): Promise<TextChannel>;
+    public createChannel(name: string, type: 0, parentID?: string): Promise<TextChannel>;
+    public createChannel(name: string, type: 2, parentID?: string): Promise<VoiceChannel>;
+    public createChannel(name: string, type: 4, parentID?: string): Promise<CategoryChannel>;
+    public createChannel(name: string, type: number, parentID?: string): Promise<unknown>;
     public createEmoji(
       options: { name: string, image: string, roles?: string[] },
       reason?: string,
