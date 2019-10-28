@@ -1346,7 +1346,7 @@ declare namespace Eris {
     public content: string;
     public cleanContent?: string;
     public roleMentions: string[];
-    public channelMentions?: string[];
+    public channelMentions: string[];
     public editedTimestamp?: number;
     public tts: boolean;
     public mentionEveryone: boolean;
