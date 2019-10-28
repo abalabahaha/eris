@@ -1202,7 +1202,7 @@ declare namespace Eris {
   }
 
   export class CategoryChannel extends GuildChannel {
-    public channels?: Collection<AnyGuildChannel>;
+    public channels: Collection<TextChannel | VoiceChannel>;
   }
 
   export class TextChannel extends GuildChannel implements Textable, Invitable {
