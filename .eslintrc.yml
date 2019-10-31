@@ -12,3 +12,26 @@ rules:
   semi: [2, "always"]
   require-atomic-updates: 1
   no-prototype-builtins: 0
+  quotes: [2, "double"]
+  eol-last: [2, "always"]
+  no-trailing-spaces: 2
+  keyword-spacing: [2, {
+    "after": true,
+    "overrides": {
+      "if": { "after": false },
+      "for": { "after": false },
+      "while": { "after": false },
+      "catch": { "after": false },
+      "switch": { "after": false }
+    }
+  }]
+  brace-style: [2, "1tbs", { "allowSingleLine": false }]
+  object-curly-spacing: [2, "never"]
+  array-bracket-spacing: [2, "never"]
+  comma-dangle: [2, "never"]
+  arrow-parens: 2
+  indent: [2, 4, {
+    "SwitchCase": 1,
+    "ignoreComments": false
+  }]
+  object-shorthand: [2, "consistent-as-needed"]
