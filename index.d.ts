@@ -445,6 +445,7 @@ declare namespace Eris {
   }
   type PossiblyUncachedMessage = Message | { id: string, channel: TextableChannel };
   interface RawPacket { op: number; t?: string; d?: any; s?: number; }
+  type ReconnectDelayFunction = (lastDelay: number, attempts: number) => number;
   interface ClientOptions {
     autoreconnect?: boolean;
     compress?: boolean;
@@ -465,7 +466,9 @@ declare namespace Eris {
     defaultImageSize?: number;
     ws?: any;
     latencyThreshold?: number;
-    agent?: HTTPSAgent
+    agent?: HTTPSAgent;
+    reconnectAttempts: number;
+    reconnectDelay: ReconnectDelayFunction;
   }
   interface CommandClientOptions {
     defaultHelpCommand?: boolean;
