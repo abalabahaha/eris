@@ -467,8 +467,8 @@ declare namespace Eris {
     ws?: any;
     latencyThreshold?: number;
     agent?: HTTPSAgent;
-    reconnectAttempts: number;
-    reconnectDelay: ReconnectDelayFunction;
+    reconnectAttempts?: number;
+    reconnectDelay?: ReconnectDelayFunction;
   }
   interface CommandClientOptions {
     defaultHelpCommand?: boolean;
