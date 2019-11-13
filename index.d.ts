@@ -1112,7 +1112,7 @@ declare module "eris" {
     public delete(): Promise<void>;
     public leave(): Promise<void>;
     public getBans(): Promise<{ reason?: string, user: User }[]>;
-    public getBan(): Promise<{ reason?: string, user: User }>;
+    public getBan(userID: string): Promise<{ reason?: string, user: User }>;
     public editNickname(nick: string): Promise<void>;
     public getWebhooks(): Promise<Webhook[]>;
   }
