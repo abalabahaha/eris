@@ -8,7 +8,9 @@ declare namespace Eris {
   // TODO good hacktoberfest PR: implement ShardManager, RequestHandler and other stuff
 
   export const VERSION: string;
-  interface JSONCache { [s: string]: any; }
+  interface JSONCache {
+    [s: string]: any;
+  }
 
   interface SimpleJSON {
     toJSON(simple?: boolean): JSONCache;
@@ -43,10 +45,7 @@ declare namespace Eris {
     getMessage(messageID: string): Promise<Message>;
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
     getPins(): Promise<Message[]>;
-    createMessage(
-      content: MessageContent,
-      file?: MessageFile,
-    ): Promise<Message>;
+    createMessage(content: MessageContent, file?: MessageFile): Promise<Message>;
     editMessage(messageID: string, content: MessageContent): Promise<Message>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
@@ -55,7 +54,7 @@ declare namespace Eris {
       reaction: string,
       limit?: number,
       before?: string,
-      after?: string,
+      after?: string
     ): Promise<User[]>;
     addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
@@ -80,34 +79,42 @@ declare namespace Eris {
     permissionOverwrites: Collection<PermissionOverwrite>;
   }
 
-  type FriendSuggestionReasons = Array<{ type: number, platform_type: string, name: string }>;
+  type FriendSuggestionReasons = Array<{ type: number; platform_type: string; name: string }>;
 
-  interface MemberPartial { id: string; user: User; }
+  interface MemberPartial {
+    id: string;
+    user: User;
+  }
 
   interface OldPresence {
     status: string;
     game?: {
-      name: string,
-      type: number,
-      url?: string,
+      name: string;
+      type: number;
+      url?: string;
     };
   }
 
-  interface OldVoiceState { mute: boolean; deaf: boolean; selfMute: boolean; selfDeaf: boolean; }
+  interface OldVoiceState {
+    mute: boolean;
+    deaf: boolean;
+    selfMute: boolean;
+    selfDeaf: boolean;
+  }
 
   interface OAuthApplicationInfo {
-    description: string,
-    name: string,
+    description: string;
+    name: string;
     owner: {
-      username: string,
-      discriminator: string,
-      id: string,
-      avatar?: string,
-    },
-    bot_public: boolean,
-    bot_require_code_grant: boolean,
-    id: string,
-    icon?: string,
+      username: string;
+      discriminator: string;
+      id: string;
+      avatar?: string;
+    };
+    bot_public: boolean;
+    bot_require_code_grant: boolean;
+    id: string;
+    icon?: string;
   }
 
   // To anyone snooping around this snippet of code and wondering
@@ -117,102 +124,78 @@ declare namespace Eris {
   interface Emittable {
     on(event: "ready" | "disconnect", listener: () => void): this;
     on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
-    on(
-      event: "callUpdate",
-      listener: (
-        call: Call,
-        oldCall: OldCall,
-      ) => void,
-    ): this;
+    on(event: "callUpdate", listener: (call: Call, oldCall: OldCall) => void): this;
     on(event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): this;
     on(
       event: "channelPinUpdate",
-      listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void,
+      listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void
     ): this;
     on(
       event: "channelRecipientAdd" | "channelRecipientRemove",
-      listener: (channel: GroupChannel, user: User) => void,
+      listener: (channel: GroupChannel, user: User) => void
     ): this;
-    on(
-      event: "channelUpdate",
-      listener: (
-        channel: AnyChannel,
-        oldChannel: OldChannel,
-      ) => void,
-    ): this;
-    on(
-      event: "friendSuggestionCreate",
-      listener: (user: User, reasons: FriendSuggestionReasons) => void,
-    ): this;
+    on(event: "channelUpdate", listener: (channel: AnyChannel, oldChannel: OldChannel) => void): this;
+    on(event: "friendSuggestionCreate", listener: (user: User, reasons: FriendSuggestionReasons) => void): this;
     on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
-    on(
-      event: "guildAvailable" | "guildBanAdd" | "guildBanRemove",
-      listener: (guild: Guild, user: User) => void,
-    ): this;
+    on(event: "guildAvailable" | "guildBanAdd" | "guildBanRemove", listener: (guild: Guild, user: User) => void): this;
     on(event: "guildDelete" | "guildUnavailable" | "guildCreate", listener: (guild: Guild) => void): this;
     on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): this;
     on(event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): this;
     on(event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): this;
-    on(
-      event: "guildMemberRemove",
-      listener: (guild: Guild, member: Member | MemberPartial) => void,
-    ): this;
+    on(event: "guildMemberRemove", listener: (guild: Guild, member: Member | MemberPartial) => void): this;
     on(
       event: "guildMemberUpdate",
-      listener: (guild: Guild, member: Member, oldMember: { roles: string[], nick?: string }) => void,
+      listener: (guild: Guild, member: Member, oldMember: { roles: string[]; nick?: string }) => void
     ): this;
     on(event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): this;
     on(event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: RoleOptions) => void): this;
     on(event: "guildUpdate", listener: (guild: Guild, oldGuild: GuildOptions) => void): this;
     on(event: "hello", listener: (trace: string[], id: number) => void): this;
     on(event: "messageCreate", listener: (message: Message) => void): this;
-    on(
-      event: "messageDelete" | "messageReactionRemoveAll",
-      listener: (message: PossiblyUncachedMessage) => void,
-    ): this;
+    on(event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): this;
     on(event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): this;
     on(
       event: "messageReactionAdd" | "messageReactionRemove",
-      listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void,
+      listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void
     ): this;
-    on(event: "messageUpdate", listener: (message: Message, oldMessage?: {
-      attachments: Attachment[],
-      embeds: Embed[],
-      content: string,
-      editedTimestamp?: number,
-      mentionedBy?: any,
-      tts: boolean,
-      mentions: string[],
-      roleMentions: string[],
-      channelMentions: string[],
-    }) => void): this;
+    on(
+      event: "messageUpdate",
+      listener: (
+        message: Message,
+        oldMessage?: {
+          attachments: Attachment[];
+          embeds: Embed[];
+          content: string;
+          editedTimestamp?: number;
+          mentionedBy?: any;
+          tts: boolean;
+          mentions: string[];
+          roleMentions: string[];
+          channelMentions: string[];
+        }
+      ) => void
+    ): this;
     on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: OldPresence) => void): this;
     on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
     on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
     on(
       event: "relationshipUpdate",
-      listener: (relationship: Relationship, oldRelationship: { type: number }) => void,
+      listener: (relationship: Relationship, oldRelationship: { type: number }) => void
     ): this;
     on(event: "shardPreReady" | "connect", listener: (id: number) => void): this;
     on(event: "typingStart", listener: (channel: TextableChannel, user: User) => void): this;
     on(event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): this;
     on(
       event: "userUpdate",
-      listener: (user: User, oldUser: { username: string, discriminator: string, avatar?: string }) => void,
+      listener: (user: User, oldUser: { username: string; discriminator: string; avatar?: string }) => void
     ): this;
     on(event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): this;
     on(event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): this;
     on(
       event: "voiceChannelSwitch",
-      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void,
+      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void
     ): this;
-    on(
-      event: "voiceStateUpdate",
-      listener: (
-        member: Member,
-        oldState: OldVoiceState,
-      ) => void,
-    ): this;
+    on(event: "voiceStateUpdate", listener: (member: Member, oldState: OldVoiceState) => void): this;
     on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
     // tslint:disable-next-line
     on(event: string, listener: Function): this;
@@ -220,72 +203,72 @@ declare namespace Eris {
 
   interface Constants {
     ImageSizeBoundaries: {
-      MINIMUM: 16,
-      MAXIMUM: 2048
+      MINIMUM: 16;
+      MAXIMUM: 2048;
     };
     ImageFormats: ["jpg", "png", "webp", "gif"];
     GatewayOPCodes: {
-      EVENT:             0,
-      HEARTBEAT:         1,
-      IDENTIFY:          2,
-      STATUS_UPDATE:     3,
-      VOICE_STATE_UPDATE:4,
-      VOICE_SERVER_PING: 5,
-      RESUME:            6,
-      RECONNECT:         7,
-      GET_GUILD_MEMBERS: 8,
-      INVALID_SESSION:   9,
-      HELLO:            10,
-      HEARTBEAT_ACK:    11,
-      SYNC_GUILD:       12,
-      SYNC_CALL:        13
-  };
+      EVENT: 0;
+      HEARTBEAT: 1;
+      IDENTIFY: 2;
+      STATUS_UPDATE: 3;
+      VOICE_STATE_UPDATE: 4;
+      VOICE_SERVER_PING: 5;
+      RESUME: 6;
+      RECONNECT: 7;
+      GET_GUILD_MEMBERS: 8;
+      INVALID_SESSION: 9;
+      HELLO: 10;
+      HEARTBEAT_ACK: 11;
+      SYNC_GUILD: 12;
+      SYNC_CALL: 13;
+    };
     GATEWAY_VERSION: 6;
     REST_VERSION: 7;
     Permissions: {
-      createInstantInvite:  1,
-      kickMembers: 2,
-      banMembers:           4,
-      administrator:        8,
-      manageChannels:       16,
-      manageGuild:          32,
-      addReactions:         64,
-      viewAuditLogs:        128,
-      voicePrioritySpeaker: 256,
-      stream:               512,
-      readMessages:         1024,
-      sendMessages:         2048,
-      sendTTSMessages:      4096,
-      manageMessages:       8192,
-      embedLinks:           16384,
-      attachFiles:          32768,
-      readMessageHistory:   65536,
-      mentionEveryone:      131072,
-      externalEmojis:       262144,
-      viewGuildAnalytics:   524288,
-      voiceConnect:         1048576,
-      voiceSpeak:           2097152,
-      voiceMuteMembers:     4194304,
-      voiceDeafenMembers:   8388608,
-      voiceMoveMembers:     16777216,
-      voiceUseVAD:          33554432,
-      changeNickname:       67108864,
-      manageNicknames:      134217728,
-      manageRoles:          268435456,
-      manageWebhooks:       546870912,
-      manageEmojis:         1973741824,
-      all:      2147483647,
-      allGuild: 2080899263,
-      allText:  805829714,
-      allVoice: 871367441
+      createInstantInvite: 1;
+      kickMembers: 2;
+      banMembers: 4;
+      administrator: 8;
+      manageChannels: 16;
+      manageGuild: 32;
+      addReactions: 64;
+      viewAuditLogs: 128;
+      voicePrioritySpeaker: 256;
+      stream: 512;
+      readMessages: 1024;
+      sendMessages: 2048;
+      sendTTSMessages: 4096;
+      manageMessages: 8192;
+      embedLinks: 16384;
+      attachFiles: 32768;
+      readMessageHistory: 65536;
+      mentionEveryone: 131072;
+      externalEmojis: 262144;
+      viewGuildAnalytics: 524288;
+      voiceConnect: 1048576;
+      voiceSpeak: 2097152;
+      voiceMuteMembers: 4194304;
+      voiceDeafenMembers: 8388608;
+      voiceMoveMembers: 16777216;
+      voiceUseVAD: 33554432;
+      changeNickname: 67108864;
+      manageNicknames: 134217728;
+      manageRoles: 268435456;
+      manageWebhooks: 546870912;
+      manageEmojis: 1973741824;
+      all: 2147483647;
+      allGuild: 2080899263;
+      allText: 805829714;
+      allVoice: 871367441;
     };
     VoiceOPCodes: {
-      IDENTIFY:            0,
-      SELECT_PROTOCOL:     1,
-      READY:               2,
-      HEARTBEAT:           3,
-      SESSION_DESCRIPTION: 4,
-      SPEAKING:            5
+      IDENTIFY: 0;
+      SELECT_PROTOCOL: 1;
+      READY: 2;
+      HEARTBEAT: 3;
+      SESSION_DESCRIPTION: 4;
+      SPEAKING: 5;
     };
     SystemJoinMessages: [
       "%user% just joined the server - glhf!",
@@ -329,39 +312,39 @@ declare namespace Eris {
       "Roses are red, violets are blue, %user% joined this server with you"
     ];
     AuditLogActions: {
-      GUILD_UPDATE: 1,
+      GUILD_UPDATE: 1;
 
-      CHANNEL_CREATE: 10,
-      CHANNEL_UPDATE: 11,
-      CHANNEL_DELETE: 12,
-      CHANNEL_OVERWRITE_CREATE: 13,
-      CHANNEL_OVERWRITE_UPDATE: 14,
-      CHANNEL_OVERWRITE_DELETE: 15,
+      CHANNEL_CREATE: 10;
+      CHANNEL_UPDATE: 11;
+      CHANNEL_DELETE: 12;
+      CHANNEL_OVERWRITE_CREATE: 13;
+      CHANNEL_OVERWRITE_UPDATE: 14;
+      CHANNEL_OVERWRITE_DELETE: 15;
 
-      MEMBER_KICK: 20,
-      MEMBER_PRUNE: 21,
-      MEMBER_BAN_ADD: 22,
-      MEMBER_BAN_REMOVE: 23,
-      MEMBER_UPDATE: 24,
-      MEMBER_ROLE_UPDATE: 25,
+      MEMBER_KICK: 20;
+      MEMBER_PRUNE: 21;
+      MEMBER_BAN_ADD: 22;
+      MEMBER_BAN_REMOVE: 23;
+      MEMBER_UPDATE: 24;
+      MEMBER_ROLE_UPDATE: 25;
 
-      ROLE_CREATE: 30,
-      ROLE_UPDATE: 31,
-      ROLE_DELETE: 32,
+      ROLE_CREATE: 30;
+      ROLE_UPDATE: 31;
+      ROLE_DELETE: 32;
 
-      INVITE_CREATE: 40,
-      INVITE_UPDATE: 41,
-      INVITE_DELETE: 42,
+      INVITE_CREATE: 40;
+      INVITE_UPDATE: 41;
+      INVITE_DELETE: 42;
 
-      WEBHOOK_CREATE: 50,
-      WEBHOOK_UPDATE: 51,
-      WEBHOOK_DELETE: 52,
+      WEBHOOK_CREATE: 50;
+      WEBHOOK_UPDATE: 51;
+      WEBHOOK_DELETE: 52;
 
-      EMOJI_CREATE: 60,
-      EMOJI_UPDATE: 61,
-      EMOJI_DELETE: 62,
+      EMOJI_CREATE: 60;
+      EMOJI_UPDATE: 61;
+      EMOJI_DELETE: 62;
 
-      MESSAGE_DELETE: 72
+      MESSAGE_DELETE: 72;
     };
   }
 
@@ -369,7 +352,7 @@ declare namespace Eris {
 
   interface WebhookPayload {
     content?: string;
-    file?: { file: Buffer, name: string } | Array<{ file: Buffer, name: string}>;
+    file?: { file: Buffer; name: string } | Array<{ file: Buffer; name: string }>;
     embeds?: EmbedOptions[];
     username?: string;
     avatarURL?: string;
@@ -384,19 +367,19 @@ declare namespace Eris {
     url?: string;
     timestamp?: string;
     color?: number;
-    footer?: { text: string, icon_url?: string, proxy_icon_url?: string };
-    image?: { url?: string, proxy_url?: string, height?: number, width?: number };
-    thumbnail?: { url?: string, proxy_url?: string, height?: number, width?: number };
-    video?: { url: string, height?: number, width?: number };
-    provider?: { name: string, url?: string };
-    fields?: Array<{ name?: string, value?: string, inline?: boolean }>;
-    author?: { name: string, url?: string, icon_url?: string, proxy_icon_url?: string };
+    footer?: { text: string; icon_url?: string; proxy_icon_url?: string };
+    image?: { url?: string; proxy_url?: string; height?: number; width?: number };
+    thumbnail?: { url?: string; proxy_url?: string; height?: number; width?: number };
+    video?: { url: string; height?: number; width?: number };
+    provider?: { name: string; url?: string };
+    fields?: Array<{ name?: string; value?: string; inline?: boolean }>;
+    author?: { name: string; url?: string; icon_url?: string; proxy_icon_url?: string };
   }
   type Embed = {
-    type: string,
+    type: string;
   } & EmbedBase;
   type EmbedOptions = {
-    type?: string,
+    type?: string;
   } & EmbedBase;
 
   interface Webhook {
@@ -407,10 +390,10 @@ declare namespace Eris {
     guild_id: string;
     id: string;
     user: {
-      username: string,
-      discriminator: string,
-      id: string,
-      avatar?: string,
+      username: string;
+      discriminator: string;
+      id: string;
+      avatar?: string;
     };
   }
 
@@ -419,7 +402,13 @@ declare namespace Eris {
     enabled: boolean;
   }
 
-  interface Attachment { url: string; proxy_url: string; size: number; id: string; filename: string; }
+  interface Attachment {
+    url: string;
+    proxy_url: string;
+    size: number;
+    id: string;
+    filename: string;
+  }
 
   interface VoiceRegion {
     name: string;
@@ -443,7 +432,7 @@ declare namespace Eris {
     inline_attachment_media: boolean;
     guild_positions: string[];
     friend_source_flags: {
-      all: boolean, // not sure about other keys, abal heeeelp
+      all: boolean; // not sure about other keys, abal heeeelp
     };
     explicit_content_filter: number;
     enable_tts_command: boolean;
@@ -461,17 +450,17 @@ declare namespace Eris {
     message_notifications: number;
     guild_id: string;
     channel_override: Array<{
-      muted: boolean,
-      message_notifications: number,
-      channel_id: string,
+      muted: boolean;
+      message_notifications: number;
+      channel_id: string;
     }>;
   }
 
   interface UserProfile {
     premium_since?: number;
-    mutual_guilds: Array<{ nick?: string, id: string }>;
-    user: { username: string, discriminator: string, flags: number, id: string, avatar?: string };
-    connected_accounts: Array<{ verified: boolean, type: string, id: string, name: string }>;
+    mutual_guilds: Array<{ nick?: string; id: string }>;
+    user: { username: string; discriminator: string; flags: number; id: string; avatar?: string };
+    connected_accounts: Array<{ verified: boolean; type: string; id: string; name: string }>;
   }
 
   interface Connection {
@@ -496,24 +485,31 @@ declare namespace Eris {
     [key: string]: {};
   }
 
-  type MessageContent = string | { content?: string, tts?: boolean, disableEveryone?: boolean, embed?: EmbedOptions };
-  interface MessageFile { file: Buffer | string; name: string; }
+  type MessageContent = string | { content?: string; tts?: boolean; disableEveryone?: boolean; embed?: EmbedOptions };
+  interface MessageFile {
+    file: Buffer | string;
+    name: string;
+  }
   interface EmojiBase {
     name: string;
     icon?: string;
   }
   type EmojiOptions = {
-    roles?: string[],
+    roles?: string[];
   } & EmojiBase;
   type Emoji = {
-    roles: string[],
-    id: string,
-    require_colons: boolean,
-    animated: boolean,
-    managed: boolean,
-    user: { name: string, discriminator: string, id: string, avatar: string }
+    roles: string[];
+    id: string;
+    require_colons: boolean;
+    animated: boolean;
+    managed: boolean;
+    user: { name: string; discriminator: string; id: string; avatar: string };
   } & EmojiBase;
-  interface IntegrationOptions { expireBehavior: string; expireGracePeriod: string; enableEmoticons: string; }
+  interface IntegrationOptions {
+    expireBehavior: string;
+    expireGracePeriod: string;
+    enableEmoticons: string;
+  }
   interface GuildOptions {
     name?: string;
     region?: string;
@@ -527,24 +523,36 @@ declare namespace Eris {
     splash?: string;
     banner?: string;
   }
-  interface MemberOptions { roles?: string[]; nick?: string; mute?: boolean; deaf?: boolean; channelID?: string; }
-  interface RoleOptions { name?: string; permissions?: number; color?: number; hoist?: boolean; mentionable?: boolean; }
+  interface MemberOptions {
+    roles?: string[];
+    nick?: string;
+    mute?: boolean;
+    deaf?: boolean;
+    channelID?: string;
+  }
+  interface RoleOptions {
+    name?: string;
+    permissions?: number;
+    color?: number;
+    hoist?: boolean;
+    mentionable?: boolean;
+  }
   interface GamePresence {
     name: string;
     type?: number;
     url?: string;
-    timestamps?: { start: number, end?: number };
+    timestamps?: { start: number; end?: number };
     application_id?: string;
     sync_id?: string;
     details?: string;
     state?: string;
-    party?: { id?: string; };
+    party?: { id?: string };
     assets?: {
-      small_text?: string,
-      small_image?: string,
-      large_text?: string,
-      large_image?: string,
-      [key: string]: any,
+      small_text?: string;
+      small_image?: string;
+      large_text?: string;
+      large_image?: string;
+      [key: string]: any;
     };
     instance?: boolean;
     flags?: number;
@@ -568,7 +576,10 @@ declare namespace Eris {
     attachmentFilename?: string;
     channelIDs?: string[];
   }
-  interface SearchResults { totalResults: number; results: Array<Array<Message & { hit?: boolean }>>; }
+  interface SearchResults {
+    totalResults: number;
+    results: Array<Array<Message & { hit?: boolean }>>;
+  }
   interface VoiceResourceOptions {
     inlineVolume?: boolean;
     voiceDataTimeout?: number;
@@ -579,8 +590,13 @@ declare namespace Eris {
     frameSize?: number;
     sampleRate?: number;
   }
-  type PossiblyUncachedMessage = Message | { id: string, channel: TextableChannel };
-  interface RawPacket { op: number; t?: string; d?: any; s?: number; }
+  type PossiblyUncachedMessage = Message | { id: string; channel: TextableChannel };
+  interface RawPacket {
+    op: number;
+    t?: string;
+    d?: any;
+    s?: number;
+  }
   type ReconnectDelayFunction = (lastDelay: number, attempts: number) => number;
   interface ClientOptions {
     autoreconnect?: boolean;
@@ -635,17 +651,17 @@ declare namespace Eris {
     usage?: string;
     hooks?: Hooks;
     requirements?: {
-      userIDs?: string[] | GenericCheckFunction<string[]>,
-      roleIDs?: string[] | GenericCheckFunction<string[]>,
-      roleNames?: string[] | GenericCheckFunction<string[]>,
-      permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>,
-      custom?: GenericCheckFunction<void>,
+      userIDs?: string[] | GenericCheckFunction<string[]>;
+      roleIDs?: string[] | GenericCheckFunction<string[]>;
+      roleNames?: string[] | GenericCheckFunction<string[]>;
+      permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>;
+      custom?: GenericCheckFunction<void>;
     };
     cooldown?: number;
     cooldownExclusions?: {
-      userIDs?: string[],
-      guildIDs?: string[],
-      channelIDs?: string[],
+      userIDs?: string[];
+      guildIDs?: string[];
+      channelIDs?: string[];
     };
     restartCooldown?: boolean;
     cooldownReturns?: number;
@@ -653,13 +669,15 @@ declare namespace Eris {
     invalidUsageMessage?: string | GenericCheckFunction<string>;
     permissionMessage?: string | GenericCheckFunction<string>;
     errorMessage?: string | GenericCheckFunction<string>;
-    reactionButtons?: Array<{ emoji: string, type: string, response: CommandGenerator }>;
+    reactionButtons?: Array<{ emoji: string; type: string; response: CommandGenerator }>;
     reactionButtonTimeout?: number;
     defaultSubcommandOptions?: CommandOptions;
     hidden?: boolean;
   }
-  type CommandGeneratorFunction = (msg: Message, args: string[]) => Promise<MessageContent>
-    | Promise<void> | MessageContent | void;
+  type CommandGeneratorFunction = (
+    msg: Message,
+    args: string[]
+  ) => Promise<MessageContent> | Promise<void> | MessageContent | void;
   type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
 
   export class ShardManager extends Collection<Shard> {
@@ -694,60 +712,61 @@ declare namespace Eris {
     public constructor(token: string, options?: ClientOptions);
     public connect(): Promise<void>;
     public getGateway(): Promise<{ url: string }>;
-    public getBotGateway(): Promise<{ url: string, shards: number }>;
+    public getBotGateway(): Promise<{ url: string; shards: number }>;
     public disconnect(options: { reconnect: boolean }): void;
     public joinVoiceChannel(
       channelID: string,
-      options?: { shared?: boolean, opusOnly?: boolean },
+      options?: { shared?: boolean; opusOnly?: boolean }
     ): Promise<VoiceConnection>;
     public leaveVoiceChannel(channelID: string): void;
     public closeVoiceConnection(guildID: string): void;
     public editAFK(afk: boolean): void;
     public editStatus(status?: string, game?: GamePresence): void;
     public getChannel(channelID: string): AnyChannel;
-    public createChannel(
-      guildID: string,
-      name: string,
-    ): Promise<TextChannel>;
+    public createChannel(guildID: string, name: string): Promise<TextChannel>;
     public createChannel(
       guildID: string,
       name: string,
       type: 0,
       reason?: string,
-      parentID?: string,
+      parentID?: string
     ): Promise<TextChannel>;
     public createChannel(
       guildID: string,
       name: string,
       type: 2,
       reason?: string,
-      parentID?: string,
+      parentID?: string
     ): Promise<VoiceChannel>;
     public createChannel(
       guildID: string,
       name: string,
       type: 4,
       reason?: string,
-      parentID?: string,
+      parentID?: string
     ): Promise<CategoryChannel>;
     public createChannel(
       guildID: string,
       name: string,
       type?: number,
       reason?: string,
-      parentID?: string,
+      parentID?: string
     ): Promise<unknown>;
-    public editChannel(channelID: string, options: {
-      name?: string,
-      icon?: string,
-      ownerID?: string,
-      topic?: string,
-      bitrate?: number,
-      userLimit?: number,
-      rateLimitPerUser?: number,
-      nsfw?: boolean,
-      parentID?: string,
-    },                 reason?: string): Promise<GroupChannel | AnyGuildChannel>;
+    public editChannel(
+      channelID: string,
+      options: {
+        name?: string;
+        icon?: string;
+        ownerID?: string;
+        topic?: string;
+        bitrate?: number;
+        userLimit?: number;
+        rateLimitPerUser?: number;
+        nsfw?: boolean;
+        parentID?: string;
+      },
+      reason?: string
+    ): Promise<GroupChannel | AnyGuildChannel>;
     public editChannelPosition(channelID: string, position: number): Promise<void>;
     public deleteChannel(channelID: string, reason?: string): Promise<void>;
     public sendChannelTyping(channelID: string): Promise<void>;
@@ -757,27 +776,27 @@ declare namespace Eris {
       allow: number,
       deny: number,
       type: string,
-      reason?: string,
+      reason?: string
     ): Promise<void>;
     public deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
     public getChannelInvites(channelID: string): Promise<Invite[]>;
     public createChannelInvite(
       channelID: string,
-      options?: { maxAge?: number, maxUses?: number, temporary?: boolean, unique?: boolean },
-      reason?: string,
+      options?: { maxAge?: number; maxUses?: number; temporary?: boolean; unique?: boolean },
+      reason?: string
     ): Promise<Invite>;
     public getChannelWebhooks(channelID: string): Promise<Webhook[]>;
     public getWebhook(webhookID: string, token?: string): Promise<Webhook>;
     public createChannelWebhook(
       channelID: string,
-      options: { name: string, avatar: string },
-      reason?: string,
+      options: { name: string; avatar: string },
+      reason?: string
     ): Promise<Webhook>;
     public editWebhook(
       webhookID: string,
-      options: { name?: string, avatar?: string },
+      options: { name?: string; avatar?: string },
       token?: string,
-      reason?: string,
+      reason?: string
     ): Promise<Webhook>;
     public executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
     public executeSlackWebhook(webhookID: string, token: string, options?: { wait?: boolean }): Promise<void>;
@@ -787,23 +806,18 @@ declare namespace Eris {
       guildID: string,
       limit?: number,
       before?: string,
-      actionType?: number,
+      actionType?: number
     ): Promise<GuildAuditLog>;
     public createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
     public editGuildEmoji(
       guildID: string,
       emojiID: string,
-      options: { name?: string, roles?: string[] },
-      reason?: string,
+      options: { name?: string; roles?: string[] },
+      reason?: string
     ): Promise<Emoji>;
     public deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
     public createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
-    public editRole(
-      guildID: string,
-      roleID: string,
-      options: RoleOptions,
-      reason?: string,
-    ): Promise<Role>; // TODO not all options are available?
+    public editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
     public editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
     public deleteRole(guildID: string, roleID: string, reason?: string): Promise<void>;
     public getPruneCount(guildID: string, days: number): Promise<number>;
@@ -813,7 +827,7 @@ declare namespace Eris {
     public acceptInvite(inviteID: string): Promise<Invite>;
     public deleteInvite(inviteID: string, reason?: string): Promise<void>;
     public getSelf(): Promise<ExtendedUser>;
-    public editSelf(options: { username?: string, avatar?: string }): Promise<ExtendedUser>;
+    public editSelf(options: { username?: string; avatar?: string }): Promise<ExtendedUser>;
     public getDMChannel(userID: string): Promise<PrivateChannel>;
     public createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
     public getMessage(channelID: string, messageID: string): Promise<Message>;
@@ -822,7 +836,7 @@ declare namespace Eris {
       limit?: number,
       before?: string,
       after?: string,
-      around?: string,
+      around?: string
     ): Promise<Message[]>;
     public getPins(channelID: string): Promise<Message[]>;
     public createMessage(channelID: string, content: MessageContent, file?: MessageFile): Promise<Message>;
@@ -835,14 +849,14 @@ declare namespace Eris {
       reaction: string,
       limit?: number,
       before?: string,
-      after?: string,
+      after?: string
     ): Promise<User[]>;
     public addMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
     public removeMessageReaction(
       channelID: string,
       messageID: string,
       reaction: string,
-      userID?: string,
+      userID?: string
     ): Promise<void>;
     public removeMessageReactions(channelID: string, messageID: string): Promise<void>;
     public deleteMessage(channelID: string, messageID: string, reason?: string): Promise<void>;
@@ -852,7 +866,7 @@ declare namespace Eris {
       limit?: number,
       filter?: (m: Message) => boolean,
       before?: string,
-      after?: string,
+      after?: string
     ): Promise<number>;
     public getGuildEmbed(guildID: string): Promise<GuildEmbed>;
     public getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
@@ -860,13 +874,13 @@ declare namespace Eris {
     public deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     public syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     public getGuildInvites(guildID: string): Promise<Invite[]>;
-    public getGuildVanity(guildID: string): Promise<{code: Invite}>;
+    public getGuildVanity(guildID: string): Promise<{ code: Invite }>;
     public banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     public unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     public createGuild(name: string, region: string, icon?: string): Promise<Guild>;
     public editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
-    public getGuildBans(guildID: string): Promise<Array<{ reason?: string, user: User }>>;
-    public getGuildBan(guildID: string, userID: string): Promise<{ reason?: string, user: User }>;
+    public getGuildBans(guildID: string): Promise<Array<{ reason?: string; user: User }>>;
+    public getGuildBan(guildID: string, userID: string): Promise<{ reason?: string; user: User }>;
     public editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<void>;
     public addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
     public removeGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
@@ -886,48 +900,50 @@ declare namespace Eris {
     public editSelfConnection(
       platform: string,
       id: string,
-      data: { friendSync: boolean, visibility: number },
+      data: { friendSync: boolean; visibility: number }
     ): Promise<Connection>;
     public deleteSelfConnection(platform: string, id: string): Promise<void>;
     public getSelfSettings(): Promise<UserSettings>;
     public editSelfSettings(data: UserSettings): Promise<UserSettings>;
     public getSelfMFACodes(
       password: string,
-      regenerate?: boolean,
-    ): Promise<{ backup_codes: Array<{ code: string, consumed: boolean }> }>;
+      regenerate?: boolean
+    ): Promise<{ backup_codes: Array<{ code: string; consumed: boolean }> }>;
     public enableSelfMFATOTP(
       secret: string,
-      code: string,
-    ): Promise<{ token: string, backup_codes: Array<{ code: string, consumed: boolean }> }>;
+      code: string
+    ): Promise<{ token: string; backup_codes: Array<{ code: string; consumed: boolean }> }>;
     public disableSelfMFATOTP(code: string): Promise<{ token: string }>;
     public getSelfBilling(): Promise<{
       premium_subscription?: {
-        status: number,
-        ended_at?: string,
-        canceled_at?: string,
-        created_at: string,
-        current_period_end?: string,
-        current_period_start?: string,
-        plan: string,
-      },
+        status: number;
+        ended_at?: string;
+        canceled_at?: string;
+        created_at: string;
+        current_period_end?: string;
+        current_period_start?: string;
+        plan: string;
+      };
       payment_source?: {
-        type: string,
-        brand: string,
-        invalid: boolean,
-        last_4: number,
-        expires_year: number,
-        expires_month: number,
-      },
-      payment_gateway?: string,
+        type: string;
+        brand: string;
+        invalid: boolean;
+        last_4: number;
+        expires_year: number;
+        expires_month: number;
+      };
+      payment_gateway?: string;
     }>;
-    public getSelfPayments(): Promise<Array<{
-      status: number,
-      amount_refunded: number,
-      description: string,
-      created_at: string, // date
-      currency: string,
-      amount: number,
-    }>>;
+    public getSelfPayments(): Promise<
+      Array<{
+        status: number;
+        amount_refunded: number;
+        description: string;
+        created_at: string; // date
+        currency: string;
+        amount: number;
+      }>
+    >;
     public addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
     public deleteSelfPremiumSubscription(): Promise<void>;
     public getRESTChannel(channelID: string): Promise<AnyChannel>;
@@ -944,49 +960,31 @@ declare namespace Eris {
     public searchGuildMessages(guildID: string, query: SearchOptions): Promise<SearchResults>;
     public on(event: "ready" | "disconnect", listener: () => void): this;
     public on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
-    public on(
-      event: "callUpdate",
-      listener: (
-        call: Call,
-        oldCall: OldCall,
-      ) => void,
-    ): this;
+    public on(event: "callUpdate", listener: (call: Call, oldCall: OldCall) => void): this;
     public on(event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): this;
     public on(
       event: "channelPinUpdate",
-      listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void,
+      listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void
     ): this;
     public on(
       event: "channelRecipientAdd" | "channelRecipientRemove",
-      listener: (channel: GroupChannel, user: User) => void,
+      listener: (channel: GroupChannel, user: User) => void
     ): this;
-    public on(
-      event: "channelUpdate",
-      listener: (
-        channel: AnyChannel,
-        oldChannel: OldChannel,
-      ) => void,
-    ): this;
-    public on(
-      event: "friendSuggestionCreate",
-      listener: (user: User, reasons: FriendSuggestionReasons) => void,
-    ): this;
+    public on(event: "channelUpdate", listener: (channel: AnyChannel, oldChannel: OldChannel) => void): this;
+    public on(event: "friendSuggestionCreate", listener: (user: User, reasons: FriendSuggestionReasons) => void): this;
     public on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
     public on(
       event: "guildAvailable" | "guildBanAdd" | "guildBanRemove",
-      listener: (guild: Guild, user: User) => void,
+      listener: (guild: Guild, user: User) => void
     ): this;
     public on(event: "guildDelete" | "guildUnavailable" | "guildCreate", listener: (guild: Guild) => void): this;
     public on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): this;
     public on(event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): this;
     public on(event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): this;
-    public on(
-      event: "guildMemberRemove",
-      listener: (guild: Guild, member: Member | MemberPartial) => void,
-    ): this;
+    public on(event: "guildMemberRemove", listener: (guild: Guild, member: Member | MemberPartial) => void): this;
     public on(
       event: "guildMemberUpdate",
-      listener: (guild: Guild, member: Member, oldMember: { roles: string[], nick?: string }) => void,
+      listener: (guild: Guild, member: Member, oldMember: { roles: string[]; nick?: string }) => void
     ): this;
     public on(event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): this;
     public on(event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: RoleOptions) => void): this;
@@ -995,60 +993,57 @@ declare namespace Eris {
     public on(event: "messageCreate", listener: (message: Message) => void): this;
     public on(
       event: "messageDelete" | "messageReactionRemoveAll",
-      listener: (message: PossiblyUncachedMessage) => void,
+      listener: (message: PossiblyUncachedMessage) => void
     ): this;
     public on(event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): this;
     public on(
       event: "messageReactionAdd" | "messageReactionRemove",
-      listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void,
+      listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void
     ): this;
-    public on(event: "messageUpdate", listener: (message: Message, oldMessage?: {
-      attachments: Attachment[],
-      embeds: Embed[],
-      content: string,
-      editedTimestamp?: number,
-      mentionedBy?: any,
-      tts: boolean,
-      mentions: string[],
-      roleMentions: string[],
-      channelMentions: string[],
-    }) => void): this;
+    public on(
+      event: "messageUpdate",
+      listener: (
+        message: Message,
+        oldMessage?: {
+          attachments: Attachment[];
+          embeds: Embed[];
+          content: string;
+          editedTimestamp?: number;
+          mentionedBy?: any;
+          tts: boolean;
+          mentions: string[];
+          roleMentions: string[];
+          channelMentions: string[];
+        }
+      ) => void
+    ): this;
     public on(
       event: "presenceUpdate",
-      listener: (
-        other: Member | Relationship,
-        oldPresence?: OldPresence,
-      ) => void,
+      listener: (other: Member | Relationship, oldPresence?: OldPresence) => void
     ): this;
     public on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
     public on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
     public on(
       event: "relationshipUpdate",
-      listener: (relationship: Relationship, oldRelationship: { type: number }) => void,
+      listener: (relationship: Relationship, oldRelationship: { type: number }) => void
     ): this;
     public on(event: "typingStart", listener: (channel: TextableChannel, user: User) => void): this;
     public on(event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): this;
     public on(
       event: "userUpdate",
-      listener: (user: User, oldUser: { username: string, discriminator: string, avatar?: string }) => void,
+      listener: (user: User, oldUser: { username: string; discriminator: string; avatar?: string }) => void
     ): this;
     public on(event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): this;
     public on(event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): this;
     public on(
       event: "voiceChannelSwitch",
-      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void,
+      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void
     ): this;
-    public on(
-      event: "voiceStateUpdate",
-      listener: (
-        member: Member,
-        oldState: OldVoiceState,
-      ) => void,
-    ): this;
+    public on(event: "voiceStateUpdate", listener: (member: Member, oldState: OldVoiceState) => void): this;
     public on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
     public on(
       event: "shardDisconnect" | "error" | "shardPreReady" | "connect",
-      listener: (err: Error, id: number) => void,
+      listener: (err: Error, id: number) => void
     ): this;
     public on(event: "shardReady" | "shardResume", listener: (id: number) => void): this;
     // tslint:disable-next-line
@@ -1065,13 +1060,13 @@ declare namespace Eris {
     public paused: boolean;
     public volume: number;
     public current?: {
-      startTime: number,
-      playTime: number,
-      pausedTimestamp?: number,
-      pausedTime?: number,
-      options: VoiceResourceOptions,
+      startTime: number;
+      playTime: number;
+      pausedTimestamp?: number;
+      pausedTime?: number;
+      options: VoiceResourceOptions;
     };
-    public constructor(id: string, options?: { shard?: Shard, shared?: boolean, opusOnly?: boolean });
+    public constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean });
     public pause(): void;
     public play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
     public receive(type: string): VoiceDataStream;
@@ -1095,11 +1090,11 @@ declare namespace Eris {
     public volume: number;
     public speaking: boolean;
     public current?: {
-      startTime: number,
-      playTime: number,
-      pausedTimestamp?: number,
-      pausedTime?: number,
-      options: VoiceResourceOptions,
+      startTime: number;
+      playTime: number;
+      pausedTimestamp?: number;
+      pausedTime?: number;
+      options: VoiceResourceOptions;
     };
     public add(connection: VoiceConnection): void;
     public play(resource: ReadableStream | string, options: VoiceResourceOptions): void;
@@ -1111,11 +1106,15 @@ declare namespace Eris {
   export class VoiceDataStream extends EventEmitter {
     public type: string;
     public constructor(type: string);
-    public on(event: "data", listener: (data: Buffer, userID: string, timestamp: number, sequence: number) => void): this;
+    public on(
+      event: "data",
+      listener: (data: Buffer, userID: string, timestamp: number, sequence: number) => void
+    ): this;
   }
 
   // tslint:disable-next-line
-  export class VoiceConnectionManager<T extends VoiceConnection> extends Collection<T> implements SimpleJSON { // owo an undocumented class
+  export class VoiceConnectionManager<T extends VoiceConnection> extends Collection<T> implements SimpleJSON {
+    // owo an undocumented class
     public constructor(vcObject: new () => T);
     public join(guildID: string, channelID: string, options: VoiceResourceOptions): Promise<VoiceConnection>;
     public leave(guildID: string): void;
@@ -1191,7 +1190,7 @@ declare namespace Eris {
     public icon?: string;
     public iconURL?: string;
     public ownerID: string;
-    public edit(options: { name?: string, icon?: string, ownerID?: string }): Promise<GroupChannel>;
+    public edit(options: { name?: string; icon?: string; ownerID?: string }): Promise<GroupChannel>;
     public addRecipient(userID: string): Promise<void>;
     public removeRecipient(userID: string): Promise<void>;
     public dynamicIconURL(format: string, size: number): string;
@@ -1239,15 +1238,8 @@ declare namespace Eris {
     public createChannel(name: string, type: 2, reason?: string, parentID?: string): Promise<VoiceChannel>;
     public createChannel(name: string, type: 4, reason?: string, parentID?: string): Promise<CategoryChannel>;
     public createChannel(name: string, type?: number, reason?: string, parentID?: string): Promise<unknown>;
-    public createEmoji(
-      options: { name: string, image: string, roles?: string[] },
-      reason?: string,
-    ): Promise<Emoji>;
-    public editEmoji(
-      emojiID: string,
-      options: { name: string, roles?: string[] },
-      reason?: string,
-    ): Promise<Emoji>;
+    public createEmoji(options: { name: string; image: string; roles?: string[] }, reason?: string): Promise<Emoji>;
+    public editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     public deleteEmoji(emojiID: string, reason?: string): Promise<void>;
     public createRole(options: RoleOptions, reason?: string): Promise<Role>;
     public getPruneCount(days: number): Promise<number>;
@@ -1269,20 +1261,18 @@ declare namespace Eris {
     public syncIntegration(integrationID: string): Promise<void>;
     public deleteIntegration(integrationID: string): Promise<void>;
     public getInvites(): Promise<Invite[]>;
-    public getVanity(): Promise<{code: Invite}>;
+    public getVanity(): Promise<{ code: Invite }>;
     public editMember(memberID: string, options: MemberOptions, reason?: string): Promise<void>;
     public addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     public removeMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     public kickMember(userID: string, reason?: string): Promise<void>;
     public banMember(userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     public unbanMember(userID: string, reason?: string): Promise<void>;
-    public edit(
-      options: GuildOptions, reason?: string,
-    ): Promise<Guild>;
+    public edit(options: GuildOptions, reason?: string): Promise<Guild>;
     public delete(): Promise<void>;
     public leave(): Promise<void>;
-    public getBans(): Promise<{ reason?: string, user: User }[]>;
-    public getBan(userID: string): Promise<{ reason?: string, user: User }>;
+    public getBans(): Promise<{ reason?: string; user: User }[]>;
+    public getBan(userID: string): Promise<{ reason?: string; user: User }>;
     public editNickname(nick: string): Promise<void>;
     public getWebhooks(): Promise<Webhook[]>;
   }
@@ -1319,14 +1309,14 @@ declare namespace Eris {
     public permissionsOf(memberID: string): Permission;
     public edit(
       options: {
-        name?: string,
-        topic?: string,
-        bitrate?: number,
-        userLimit?: number,
-        rateLimitPerUser?: number,
-        nsfw?: boolean,
+        name?: string;
+        topic?: string;
+        bitrate?: number;
+        userLimit?: number;
+        rateLimitPerUser?: number;
+        nsfw?: boolean;
       },
-      reason?: string,
+      reason?: string
     ): Promise<AnyGuildChannel>;
     public editPosition(position: number): Promise<void>;
     public delete(reason?: string): Promise<void>;
@@ -1335,7 +1325,7 @@ declare namespace Eris {
       allow: number,
       deny: number,
       type: string,
-      reason?: string,
+      reason?: string
     ): Promise<PermissionOverwrite>;
     public deletePermission(overwriteID: string, reason?: string): Promise<void>;
   }
@@ -1354,15 +1344,12 @@ declare namespace Eris {
     public getInvites(): Promise<Invite[]>;
     public createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
     public getWebhooks(): Promise<Webhook[]>;
-    public createWebhook(options: { name: string, avatar: string }, reason?: string): Promise<Webhook>;
+    public createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
     public sendTyping(): Promise<void>;
     public getMessage(messageID: string): Promise<Message>;
     public getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
     public getPins(): Promise<Message[]>;
-    public createMessage(
-      content: MessageContent,
-      file?: MessageFile,
-    ): Promise<Message>;
+    public createMessage(content: MessageContent, file?: MessageFile): Promise<Message>;
     public editMessage(messageID: string, content: MessageContent): Promise<Message>;
     public pinMessage(messageID: string): Promise<void>;
     public unpinMessage(messageID: string): Promise<void>;
@@ -1371,13 +1358,16 @@ declare namespace Eris {
       reaction: string,
       limit?: number,
       before?: string,
-      after?: string,
+      after?: string
     ): Promise<User[]>;
     public addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     public removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     public removeMessageReactions(messageID: string): Promise<void>;
     public purge(
-      limit: number, filter?: (message: Message) => boolean, before?: string, after?: string
+      limit: number,
+      filter?: (message: Message) => boolean,
+      before?: string,
+      after?: string
     ): Promise<number>;
     public deleteMessage(messageID: string, reason?: string): Promise<void>;
     public deleteMessages(messageIDs: string[]): Promise<void>;
@@ -1401,7 +1391,7 @@ declare namespace Eris {
     public type: string;
     public roleID: string;
     public user: User;
-    public account: { id: string, name: string };
+    public account: { id: string; name: string };
     public enabled: boolean;
     public syncing: boolean;
     public expireBehavior: number;
@@ -1410,21 +1400,21 @@ declare namespace Eris {
     public subscriberCount: number;
     public syncedAt: number;
     public constructor(data: BaseData, guild: Guild);
-    public edit(options: { expireBehavior: string, expireGracePeriod: string, enableEmoticons: string }): Promise<void>;
+    public edit(options: { expireBehavior: string; expireGracePeriod: string; enableEmoticons: string }): Promise<void>;
     public delete(): Promise<void>;
     public sync(): Promise<void>;
   }
 
   export class Invite implements SimpleJSON {
     public code: string;
-    public channel: { id: string, name: string };
+    public channel: { id: string; name: string };
     public guild: {
-      id: string,
-      name: string,
-      splash?: string,
-      icon?: string,
-      textChannelCount?: number,
-      voiceChannelCount?: number,
+      id: string;
+      name: string;
+      splash?: string;
+      icon?: string;
+      textChannelCount?: number;
+      voiceChannelCount?: number;
     };
     public inviter?: User;
     public uses?: number;
@@ -1489,9 +1479,7 @@ declare namespace Eris {
     public avatarURL: string;
     public staticAvatarURL: string;
     public constructor(data: BaseData, guild: Guild);
-    public edit(
-      options: MemberOptions, reason?: string,
-    ): Promise<void>;
+    public edit(options: MemberOptions, reason?: string): Promise<void>;
     public addRole(roleID: string, reason?: string): Promise<void>;
     public removeRole(roleID: string, reason?: string): Promise<void>;
     public kick(reason?: string): Promise<void>;
@@ -1517,7 +1505,7 @@ declare namespace Eris {
     public mentionEveryone: boolean;
     public attachments: Attachment[];
     public embeds: Embed[];
-    public reactions: { [s: string]: any, count: number, me: boolean };
+    public reactions: { [s: string]: any; count: number; me: boolean };
     public prefix?: string;
     public command?: Command;
     public constructor(data: BaseData, client: Client);
@@ -1543,7 +1531,7 @@ declare namespace Eris {
     public id: string;
     public createdAt: number;
     public type: string;
-    public constructor(data: { allow: number, deny: number });
+    public constructor(data: { allow: number; deny: number });
   }
 
   export class PrivateChannel extends Channel implements Textable {
@@ -1557,10 +1545,7 @@ declare namespace Eris {
     public getMessage(messageID: string): Promise<Message>;
     public getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
     public getPins(): Promise<Message[]>;
-    public createMessage(
-      content: MessageContent,
-      file?: MessageFile,
-    ): Promise<Message>;
+    public createMessage(content: MessageContent, file?: MessageFile): Promise<Message>;
     public editMessage(messageID: string, content: MessageContent): Promise<Message>;
     public pinMessage(messageID: string): Promise<void>;
     public unpinMessage(messageID: string): Promise<void>;
@@ -1569,7 +1554,7 @@ declare namespace Eris {
       reaction: string,
       limit?: number,
       before?: string,
-      after?: string,
+      after?: string
     ): Promise<User[]>;
     public addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     public removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
@@ -1660,7 +1645,7 @@ declare namespace Eris {
     public lastHeartbeatSent: number;
     public latency: number;
     public client: Client;
-    public presence: {status: string, game?: GamePresence};
+    public presence: { status: string; game?: GamePresence };
     public constructor(id: number, client: Client);
     public connect(): void;
     public disconnect(options?: { reconnect: boolean }): void;
@@ -1670,49 +1655,31 @@ declare namespace Eris {
     public on(event: string, listener: Function): this;
     public on(event: "ready" | "disconnect", listener: () => void): this;
     public on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
-    public on(
-      event: "callUpdate",
-      listener: (
-        call: Call,
-        oldCall: OldCall,
-      ) => void,
-    ): this;
+    public on(event: "callUpdate", listener: (call: Call, oldCall: OldCall) => void): this;
     public on(event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): this;
     public on(
       event: "channelPinUpdate",
-      listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void,
+      listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void
     ): this;
     public on(
       event: "channelRecipientAdd" | "channelRecipientRemove",
-      listener: (channel: GroupChannel, user: User) => void,
+      listener: (channel: GroupChannel, user: User) => void
     ): this;
-    public on(
-      event: "channelUpdate",
-      listener: (
-        channel: AnyChannel,
-        oldChannel: OldChannel,
-      ) => void,
-    ): this;
-    public on(
-      event: "friendSuggestionCreate",
-      listener: (user: User, reasons: FriendSuggestionReasons) => void,
-    ): this;
+    public on(event: "channelUpdate", listener: (channel: AnyChannel, oldChannel: OldChannel) => void): this;
+    public on(event: "friendSuggestionCreate", listener: (user: User, reasons: FriendSuggestionReasons) => void): this;
     public on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
     public on(
       event: "guildAvailable" | "guildBanAdd" | "guildBanRemove",
-      listener: (guild: Guild, user: User) => void,
+      listener: (guild: Guild, user: User) => void
     ): this;
     public on(event: "guildDelete" | "guildUnavailable" | "guildCreate", listener: (guild: Guild) => void): this;
     public on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): this;
     public on(event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): this;
     public on(event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): this;
-    public on(
-      event: "guildMemberRemove",
-      listener: (guild: Guild, member: Member | MemberPartial) => void,
-    ): this;
+    public on(event: "guildMemberRemove", listener: (guild: Guild, member: Member | MemberPartial) => void): this;
     public on(
       event: "guildMemberUpdate",
-      listener: (guild: Guild, member: Member, oldMember: { roles: string[], nick?: string }) => void,
+      listener: (guild: Guild, member: Member, oldMember: { roles: string[]; nick?: string }) => void
     ): this;
     public on(event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): this;
     public on(event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: RoleOptions) => void): this;
@@ -1721,57 +1688,54 @@ declare namespace Eris {
     public on(event: "messageCreate", listener: (message: Message) => void): this;
     public on(
       event: "messageDelete" | "messageReactionRemoveAll",
-      listener: (message: PossiblyUncachedMessage) => void,
+      listener: (message: PossiblyUncachedMessage) => void
     ): this;
     public on(event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): this;
     public on(
       event: "messageReactionAdd" | "messageReactionRemove",
-      listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void,
+      listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void
     ): this;
-    public on(event: "messageUpdate", listener: (message: Message, oldMessage?: {
-      attachments: Attachment[],
-      embeds: Embed[],
-      content: string,
-      editedTimestamp?: number,
-      mentionedBy?: any,
-      tts: boolean,
-      mentions: string[],
-      roleMentions: string[],
-      channelMentions: string[],
-    }) => void): this;
+    public on(
+      event: "messageUpdate",
+      listener: (
+        message: Message,
+        oldMessage?: {
+          attachments: Attachment[];
+          embeds: Embed[];
+          content: string;
+          editedTimestamp?: number;
+          mentionedBy?: any;
+          tts: boolean;
+          mentions: string[];
+          roleMentions: string[];
+          channelMentions: string[];
+        }
+      ) => void
+    ): this;
     public on(
       event: "presenceUpdate",
-      listener: (
-        other: Member | Relationship,
-        oldPresence?: OldPresence,
-      ) => void,
+      listener: (other: Member | Relationship, oldPresence?: OldPresence) => void
     ): this;
     public on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
     public on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
     public on(
       event: "relationshipUpdate",
-      listener: (relationship: Relationship, oldRelationship: { type: number }) => void,
+      listener: (relationship: Relationship, oldRelationship: { type: number }) => void
     ): this;
     public on(event: "shardPreReady" | "connect", listener: (id: number) => void): this;
     public on(event: "typingStart", listener: (channel: TextableChannel, user: User) => void): this;
     public on(event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): this;
     public on(
       event: "userUpdate",
-      listener: (user: User, oldUser: { username: string, discriminator: string, avatar?: string }) => void,
+      listener: (user: User, oldUser: { username: string; discriminator: string; avatar?: string }) => void
     ): this;
     public on(event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): this;
     public on(event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): this;
     public on(
       event: "voiceChannelSwitch",
-      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void,
+      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void
     ): this;
-    public on(
-      event: "voiceStateUpdate",
-      listener: (
-        member: Member,
-        oldState: OldVoiceState,
-      ) => void,
-    ): this;
+    public on(event: "voiceStateUpdate", listener: (member: Member, oldState: OldVoiceState) => void): this;
     public on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
     public on(event: "disconnect", listener: (err: Error) => void): this;
     // FIXME
@@ -1794,11 +1758,11 @@ declare namespace Eris {
     public caseInsensitive: boolean;
     public hooks: Hooks;
     public requirements: {
-      userIDs?: string[] | GenericCheckFunction<string[]>,
-      roleIDs?: string[] | GenericCheckFunction<string[]>,
-      roleNames?: string[] | GenericCheckFunction<string[]>,
-      permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>,
-      custom?: GenericCheckFunction<void>,
+      userIDs?: string[] | GenericCheckFunction<string[]>;
+      roleIDs?: string[] | GenericCheckFunction<string[]>;
+      roleNames?: string[] | GenericCheckFunction<string[]>;
+      permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>;
+      custom?: GenericCheckFunction<void>;
     };
     public deleteCommand: boolean;
     public argsRequired: boolean;
@@ -1806,9 +1770,9 @@ declare namespace Eris {
     public dmOnly: boolean;
     public cooldown: number;
     public cooldownExclusions: {
-      userIDs?: string[],
-      guildIDs?: string[],
-      channelIDs?: string[],
+      userIDs?: string[];
+      guildIDs?: string[];
+      channelIDs?: string[];
     };
     public restartCooldown: boolean;
     public cooldownReturns: number;
@@ -1817,7 +1781,11 @@ declare namespace Eris {
     public permissionMessage: string | boolean | GenericCheckFunction<string>;
     public errorMessage: string | GenericCheckFunction<string>;
     public reactionButtons: null | Array<{
-      emoji: string, type: string, response: CommandGenerator, execute?: () => string, responses?: Array<() => string>,
+      emoji: string;
+      type: string;
+      response: CommandGenerator;
+      execute?: () => string;
+      responses?: Array<() => string>;
     }>;
     public reactionButtonTimeout: number;
     public defaultSubcommandOptions: CommandOptions;
@@ -1837,7 +1805,6 @@ declare namespace Eris {
     public registerCommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
     public unregisterCommand(label: string): void;
   }
-
 }
 
 export = Eris;
