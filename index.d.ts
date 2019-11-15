@@ -1304,13 +1304,39 @@ declare namespace Eris {
     public toJSON(simple?: boolean): JSONCache;
   }
 
+  interface Activity {
+    type: 0 | 1 | 2 | 3;
+    state: string;
+    name: string;
+    id: string;
+    details: string;
+    created_at: number;
+    assets: ActivityAssets[];
+    application_id: string;
+    url?: string;
+  }
+
+  interface ActivityAssets {
+    large_image: string;
+  }
+
+  type Status = "online" | "idle" | "dnd" | "offline";
+
+  interface ClientStatus {
+    web: Status;
+    desktop: Status;
+    mobile: Status;
+  }
+
   export class Member extends Base {
+    public activities: Activity[];
+    public clientStatus: ClientStatus;
     public id: string;
     public mention: string;
     public guild: Guild;
     public joinedAt: number;
     public premiumSince: number;
-    public status: string;
+    public status: Status;
     public game?: GamePresence;
     public voiceState: VoiceState;
     public nick?: string;
