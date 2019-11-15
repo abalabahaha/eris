@@ -223,10 +223,10 @@ declare namespace Eris {
     ImageFormats: string[];
     GatewayOPCodes: {[key: string]: number};
     GATEWAY_VERSION: number;
-    Permissions: {[key: string]: number};
+    Permissions: PermissionConstants;
     VoiceOPCodes: {[key: string]: number};
     SystemJoinMessages: string[];
-    AuditLogActions: {[key: string]: number};
+    AuditLogActions: AuditLogActions;
   }
 
   export const Constants: Constants;
@@ -1146,7 +1146,7 @@ declare namespace Eris {
     public delete(): Promise<void>;
     public leave(): Promise<void>;
     public getBans(): Promise<{ reason?: string, user: User }[]>;
-    public getBan(): Promise<{ reason?: string, user: User }>;
+    public getBan(userID: string): Promise<{ reason?: string, user: User }>;
     public editNickname(nick: string): Promise<void>;
     public getWebhooks(): Promise<Webhook[]>;
   }
@@ -1305,14 +1305,14 @@ declare namespace Eris {
   }
 
   interface Activity {
-    type: 0 | 1 | 2 | 3;
-    state: string;
-    name: string;
-    id: string;
-    details: string;
+    application_id?: string;
+    assets?: ActivityAssets[];
     created_at: number;
-    assets: ActivityAssets[];
-    application_id: string;
+    details?: string;
+    id: string;
+    name: string;
+    state?: string;
+    type: 0 | 1 | 2 | 3;
     url?: string;
   }
 
