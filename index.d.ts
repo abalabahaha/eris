@@ -219,14 +219,150 @@ declare namespace Eris {
   }
 
   interface Constants {
-    DefaultAvatarHashes: string[];
-    ImageFormats: string[];
-    GatewayOPCodes: {[key: string]: number};
-    GATEWAY_VERSION: number;
-    Permissions: PermissionConstants;
-    VoiceOPCodes: {[key: string]: number};
-    SystemJoinMessages: string[];
-    AuditLogActions: AuditLogActions;
+    ImageSizeBoundaries: {
+      MINIMUM: 16,
+      MAXIMUM: 2048
+    };
+    ImageFormats: ["jpg", "png", "webp", "gif"];
+    GatewayOPCodes: {
+      EVENT:             0,
+      HEARTBEAT:         1,
+      IDENTIFY:          2,
+      STATUS_UPDATE:     3,
+      VOICE_STATE_UPDATE:4,
+      VOICE_SERVER_PING: 5,
+      RESUME:            6,
+      RECONNECT:         7,
+      GET_GUILD_MEMBERS: 8,
+      INVALID_SESSION:   9,
+      HELLO:            10,
+      HEARTBEAT_ACK:    11,
+      SYNC_GUILD:       12,
+      SYNC_CALL:        13
+  };
+    GATEWAY_VERSION: 6;
+    REST_VERSION: 7;
+    Permissions: {
+      createInstantInvite:  1,
+      kickMembers: 2,
+      banMembers:           4,
+      administrator:        8,
+      manageChannels:       16,
+      manageGuild:          32,
+      addReactions:         64,
+      viewAuditLogs:        128,
+      voicePrioritySpeaker: 256,
+      stream:               512,
+      readMessages:         1024,
+      sendMessages:         2048,
+      sendTTSMessages:      4096,
+      manageMessages:       8192,
+      embedLinks:           16384,
+      attachFiles:          32768,
+      readMessageHistory:   65536,
+      mentionEveryone:      131072,
+      externalEmojis:       262144,
+      viewGuildAnalytics:   524288,
+      voiceConnect:         1048576,
+      voiceSpeak:           2097152,
+      voiceMuteMembers:     4194304,
+      voiceDeafenMembers:   8388608,
+      voiceMoveMembers:     16777216,
+      voiceUseVAD:          33554432,
+      changeNickname:       67108864,
+      manageNicknames:      134217728,
+      manageRoles:          268435456,
+      manageWebhooks:       546870912,
+      manageEmojis:         1973741824,
+      all:      2147483647,
+      allGuild: 2080899263,
+      allText:  805829714,
+      allVoice: 871367441
+    };
+    VoiceOPCodes: {
+      IDENTIFY:            0,
+      SELECT_PROTOCOL:     1,
+      READY:               2,
+      HEARTBEAT:           3,
+      SESSION_DESCRIPTION: 4,
+      SPEAKING:            5
+    };
+    SystemJoinMessages: [
+      "%user% just joined the server - glhf!",
+      "%user% just joined. Everyone, look busy!",
+      "%user% just joined. Can I get a heal?",
+      "%user% joined your party.",
+      "%user% joined. You must construct additional pylons.",
+      "Ermagherd. %user% is here.",
+      "Welcome, %user%. Stay awhile and listen.",
+      "Welcome, %user%. We were expecting you ( ͡° ͜ʖ ͡°)",
+      "Welcome, %user%. We hope you brought pizza.",
+      "Welcome %user%. Leave your weapons by the door.",
+      "A wild %user% appeared.",
+      "Swoooosh. %user% just landed.",
+      "Brace yourselves. %user% just joined the server.",
+      "%user% just joined... or did they?",
+      "%user% just arrived. Seems OP - please nerf.",
+      "%user% just slid into the server.",
+      "A %user% has spawned in the server.",
+      "Big %user% showed up!",
+      "Where’s %user%? In the server!",
+      "%user% hopped into the server. Kangaroo!!",
+      "%user% just showed up. Hold my beer.",
+      "Challenger approaching - %user% has appeared!",
+      "It's a bird! It's a plane! Nevermind, it's just %user%.",
+      "It's %user%! Praise the sun! \\\\[T]/",
+      "Never gonna give %user% up. Never gonna let %user% down.",
+      "%user% has joined the battle bus.",
+      "Cheers, love! %user%'s here!",
+      "Hey! Listen! %user% has joined!",
+      "We've been expecting you %user%",
+      "It's dangerous to go alone, take %user%!",
+      "%user% has joined the server! It's super effective!",
+      "Cheers, love! %user% is here!",
+      "%user% is here, as the prophecy foretold.",
+      "%user% has arrived. Party's over.",
+      "Ready player %user%",
+      "%user% is here to kick butt and chew bubblegum. And %user% is all out of gum.",
+      "Hello. Is it %user% you're looking for?",
+      "%user% has joined. Stay a while and listen!",
+      "Roses are red, violets are blue, %user% joined this server with you"
+    ];
+    AuditLogActions: {
+      GUILD_UPDATE: 1,
+
+      CHANNEL_CREATE: 10,
+      CHANNEL_UPDATE: 11,
+      CHANNEL_DELETE: 12,
+      CHANNEL_OVERWRITE_CREATE: 13,
+      CHANNEL_OVERWRITE_UPDATE: 14,
+      CHANNEL_OVERWRITE_DELETE: 15,
+
+      MEMBER_KICK: 20,
+      MEMBER_PRUNE: 21,
+      MEMBER_BAN_ADD: 22,
+      MEMBER_BAN_REMOVE: 23,
+      MEMBER_UPDATE: 24,
+      MEMBER_ROLE_UPDATE: 25,
+
+      ROLE_CREATE: 30,
+      ROLE_UPDATE: 31,
+      ROLE_DELETE: 32,
+
+      INVITE_CREATE: 40,
+      INVITE_UPDATE: 41,
+      INVITE_DELETE: 42,
+
+      WEBHOOK_CREATE: 50,
+      WEBHOOK_UPDATE: 51,
+      WEBHOOK_DELETE: 52,
+
+      EMOJI_CREATE: 60,
+      EMOJI_UPDATE: 61,
+      EMOJI_DELETE: 62,
+
+      MESSAGE_DELETE: 72
+    };
   }
 
   export const Constants: Constants;
@@ -1700,73 +1836,6 @@ declare namespace Eris {
     public registerCommandAlias(alias: string, label: string): void;
     public registerCommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
     public unregisterCommand(label: string): void;
-  }
-
-  export enum AuditLogActions {
-    GUILD_UPDATE = 1,
-    CHANNEL_CREATE = 10,
-    CHANNEL_UPDATE = 11,
-    CHANNEL_DELETE = 12,
-    CHANNEL_OVERWRITE_CREATE = 13,
-    CHANNEL_OVERWRITE_UPDATE = 14,
-    CHANNEL_OVERWRITE_DELETE = 15,
-    MEMBER_KICK = 20,
-    MEMBER_PRUNE = 21,
-    MEMBER_BAN_ADD = 22,
-    MEMBER_BAN_REMOVE = 23,
-    MEMBER_UPDATE = 24,
-    MEMBER_ROLE_UPDATE = 25,
-    ROLE_CREATE = 30,
-    ROLE_UPDATE = 31,
-    ROLE_DELETE = 32,
-    INVITE_CREATE = 40,
-    INVITE_UPDATE = 41,
-    INVITE_DELETE = 42,
-    WEBHOOK_CREATE = 50,
-    WEBHOOK_UPDATE = 51,
-    WEBHOOK_DELETE = 52,
-    EMOJI_CREATE = 60,
-    EMOJI_UPDATE = 61,
-    EMOJI_DELETE = 62,
-    MESSAGE_DELETE = 72
-  }
-
-  export enum PermissionConstants {
-    createInstantInvite = 1,
-    kickMembers = 2,
-    banMembers = 4,
-    administrator = 8,
-    manageChannels = 16,
-    manageGuild = 32,
-    addReactions = 64,
-    viewAuditLogs = 128,
-    voicePrioritySpeaker = 256,
-    stream = 512,
-    readMessages = 1024,
-    sendMessages = 2048,
-    sendTTSMessages = 4096,
-    manageMessages = 8192,
-    embedLinks = 16384,
-    attachFiles = 32768,
-    readMessageHistory = 65536,
-    mentionEveryone = 131072,
-    externalEmojis = 262144,
-    viewGuildAnalytics = 524288,
-    voiceConnect = 1048576,
-    voiceSpeak = 2097152,
-    voiceMuteMembers = 4194304,
-    voiceDeafenMembers = 8388608,
-    voiceMoveMembers = 16777216,
-    voiceUseVAD = 33554432,
-    changeNickname = 67108864,
-    manageNicknames = 134217728,
-    manageRoles = 268435456,
-    manageWebhooks = 536870912,
-    manageEmojis = 1073741824,
-    all = 2147483647,
-    allGuild = 2080899263,
-    allText = 805829713,
-    allVoice = 871367441
   }
 
 }
