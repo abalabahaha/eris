@@ -7,7 +7,10 @@
     "node": ">=8.0.0"
   },
   "scripts": {
-    "eslint": "eslint --fix lib examples index.js && echo \"\u001b[1m\u001b[32mOK\u001b[39m\u001b[22m\" || echo \"\u001b[1m\u001b[31mNot OK\u001b[39m\u001b[22m\""
+    "lint:js": "eslint -c .eslintrc.yml lib examples *.js",
+    "lint:js:fix": "eslint -c .eslintrc.yml lib examples *.js --fix && echo \"\u001b[1m\u001b[32mOK\u001b[39m\u001b[22m\" || echo \"\u001b[1m\u001b[31mNot OK\u001b[39m\u001b[22m\"",
+    "lint:ts": "eslint -c .eslintrc.ts.yml *.ts",
+    "lint:ts:fix": "eslint -c .eslintrc.ts.yml *.ts --fix && echo \"\u001b[1m\u001b[32mOK\u001b[39m\u001b[22m\" || echo \"\u001b[1m\u001b[31mNot OK\u001b[39m\u001b[22m\""
   },
   "repository": {
     "type": "git",
@@ -29,6 +32,12 @@
   "dependencies": {
     "ws": "^7.1.2"
   },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "@typescript-eslint/parser": "^2.7.0",
+    "eslint": "^6.6.0",
+    "typescript": "^3.7.2"
+  },
   "optionalDependencies": {
     "opusscript": "^0.0.4",
     "tweetnacl": "^1.0.0"
@@ -42,8 +51,5 @@
     "tls": false,
     "tweetnacl": false,
     "ws": false
-  },
-  "devDependencies": {
-    "eslint": "^6.5.1"
   }
 }
