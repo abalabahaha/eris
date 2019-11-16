@@ -23,7 +23,7 @@ rules:
     "SwitchCase": 1,
     "ignoreComments": false
   }]
-  "@typescript-eslint/member-delimiter-style": 0
+  "@typescript-eslint/member-delimiter-style": 2
   "@typescript-eslint/no-use-before-define": [2, {
     classes: false
   }]
