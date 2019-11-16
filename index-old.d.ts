@@ -1,9 +1,11 @@
-declare module "eris" {
+import { EventEmitter } from "events";
+import { Readable as ReadableStream } from "stream";
+import { Agent as HTTPSAgent } from "https";
+
+declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
+
+declare namespace Eris {
   // TODO good hacktoberfest PR: implement ShardManager, RequestHandler and other stuff
-  import { EventEmitter } from "events";
-  import { Readable as ReadableStream } from "stream";
-  import { Agent as HTTPAgent } from "http";
-  import { Agent as HTTPSAgent } from "https";
 
   export const VERSION: string;
   interface JSONCache { [s: string]: any; }
@@ -113,8 +115,6 @@ declare module "eris" {
   // I could, but TypeScript isn't smart enough to properly inherit overloaded methods,
   // so `on` event listeners would loose their type-safety.
   interface Emittable {
-    // tslint:disable-next-line
-    on(event: string, listener: Function): this;
     on(event: "ready" | "disconnect", listener: () => void): this;
     on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
     on(
@@ -214,6 +214,8 @@ declare module "eris" {
       ) => void,
     ): this;
     on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
+    // tslint:disable-next-line
+    on(event: string, listener: Function): this;
   }
 
   interface Constants {
@@ -382,6 +384,7 @@ declare module "eris" {
     icon?: string;
     verificationLevel?: number;
     defaultNotifications?: number;
+    explicitContentFilter?: number;
     afkChannelID?: string;
     afkTimeout?: number;
     ownerID?: string;
@@ -390,7 +393,28 @@ declare module "eris" {
   }
   interface MemberOptions { roles?: string[]; nick?: string; mute?: boolean; deaf?: boolean; channelID?: string; }
   interface RoleOptions { name?: string; permissions?: number; color?: number; hoist?: boolean; mentionable?: boolean; }
-  interface GamePresence { name: string; type?: number; url?: string; }
+  interface GamePresence {
+    name: string;
+    type?: number;
+    url?: string;
+    timestamps?: { start: number, end?: number };
+    application_id?: string;
+    sync_id?: string;
+    details?: string;
+    state?: string;
+    party?: { id?: string; };
+    assets?: {
+      small_text?: string,
+      small_image?: string,
+      large_text?: string,
+      large_image?: string,
+      [key: string]: any,
+    };
+    instance?: boolean;
+    flags?: number;
+    // the stuff attached to this object apparently varies even more than documented, so...
+    [key: string]: any;
+  }
   interface SearchOptions {
     sortBy?: string;
     sortOrder?: string;
@@ -421,6 +445,7 @@ declare module "eris" {
   }
   type PossiblyUncachedMessage = Message | { id: string, channel: TextableChannel };
   interface RawPacket { op: number; t?: string; d?: any; s?: number; }
+  type ReconnectDelayFunction = (lastDelay: number, attempts: number) => number;
   interface ClientOptions {
     autoreconnect?: boolean;
     compress?: boolean;
@@ -441,7 +466,9 @@ declare module "eris" {
     defaultImageSize?: number;
     ws?: any;
     latencyThreshold?: number;
-    agent?: HTTPAgent | HTTPSAgent
+    agent?: HTTPSAgent;
+    reconnectAttempts?: number;
+    reconnectDelay?: ReconnectDelayFunction;
   }
   interface CommandClientOptions {
     defaultHelpCommand?: boolean;
@@ -530,7 +557,7 @@ declare module "eris" {
     public notes: { [s: string]: string };
     public constructor(token: string, options?: ClientOptions);
     public connect(): Promise<void>;
-    public getGateway(): Promise<string>;
+    public getGateway(): Promise<{ url: string }>;
     public getBotGateway(): Promise<{ url: string, shards: number }>;
     public disconnect(options: { reconnect: boolean }): void;
     public joinVoiceChannel(
@@ -545,10 +572,35 @@ declare module "eris" {
     public createChannel(
       guildID: string,
       name: string,
+    ): Promise<TextChannel>;
+    public createChannel(
+      guildID: string,
+      name: string,
+      type: 0,
+      reason?: string,
+      parentID?: string,
+    ): Promise<TextChannel>;
+    public createChannel(
+      guildID: string,
+      name: string,
+      type: 2,
+      reason?: string,
+      parentID?: string,
+    ): Promise<VoiceChannel>;
+    public createChannel(
+      guildID: string,
+      name: string,
+      type: 4,
+      reason?: string,
+      parentID?: string,
+    ): Promise<CategoryChannel>;
+    public createChannel(
+      guildID: string,
+      name: string,
       type?: number,
       reason?: string,
       parentID?: string,
-    ): Promise<AnyGuildChannel>;
+    ): Promise<unknown>;
     public editChannel(channelID: string, options: {
       name?: string,
       icon?: string,
@@ -591,6 +643,7 @@ declare module "eris" {
       token?: string,
       reason?: string,
     ): Promise<Webhook>;
+    public executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true; }): Promise<Message>;
     public executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
     public executeSlackWebhook(webhookID: string, token: string, options?: { wait?: boolean }): Promise<void>;
     public deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
@@ -754,8 +807,6 @@ declare module "eris" {
     public getRESTUser(userID: string): Promise<User>;
     public searchChannelMessages(channelID: string, query: SearchOptions): Promise<SearchResults>;
     public searchGuildMessages(guildID: string, query: SearchOptions): Promise<SearchResults>;
-    // tslint:disable-next-line
-    public on(event: string, listener: Function): this;
     public on(event: "ready" | "disconnect", listener: () => void): this;
     public on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
     public on(
@@ -865,6 +916,8 @@ declare module "eris" {
       listener: (err: Error, id: number) => void,
     ): this;
     public on(event: "shardReady" | "shardResume", listener: (id: number) => void): this;
+    // tslint:disable-next-line
+    public on(event: string, listener: Function): this;
     public toJSON(simple?: boolean): JSONCache;
   }
 
@@ -963,7 +1016,7 @@ declare module "eris" {
     public random(): T;
     public filter(func: (i: T) => boolean): T[];
     public map<R>(func: (i: T) => R): R[];
-    public reduce<U>(func: (accumulator: U, val: T) => U, initial?: U): U;
+    public reduce<U>(func: (accumulator: U, val: T) => U, initialValue?: U): U;
     public every(func: (i: T) => boolean): boolean;
     public some(func: (i: T) => boolean): boolean;
     public update(obj: T, extra?: any, replace?: boolean): T;
@@ -1025,6 +1078,12 @@ declare module "eris" {
     public ownerID: string;
     public splash?: string;
     public banner?: string;
+    public premiumTier: number;
+    public premiumSubscriptionCount?: number;
+    public vanityURL?: string;
+    public preferredLocale: string;
+    public description?: string;
+    public maxMembers: number;
     public unavailable: boolean;
     public large: boolean;
     public maxPresences: number;
@@ -1040,7 +1099,11 @@ declare module "eris" {
     public constructor(data: BaseData, client: Client);
     public fetchAllMembers(): void;
     public dynamicIconURL(format: string, size: number): string;
-    public createChannel(name: string, type: string, parentID?: string): Promise<AnyGuildChannel>;
+    public createChannel(name: string): Promise<TextChannel>;
+    public createChannel(name: string, type: 0, reason?: string, parentID?: string): Promise<TextChannel>;
+    public createChannel(name: string, type: 2, reason?: string, parentID?: string): Promise<VoiceChannel>;
+    public createChannel(name: string, type: 4, reason?: string, parentID?: string): Promise<CategoryChannel>;
+    public createChannel(name: string, type?: number, reason?: string, parentID?: string): Promise<unknown>;
     public createEmoji(
       options: { name: string, image: string, roles?: string[] },
       reason?: string,
@@ -1083,8 +1146,8 @@ declare module "eris" {
     ): Promise<Guild>;
     public delete(): Promise<void>;
     public leave(): Promise<void>;
-    public getBans(): Promise<User[]>;
-    public getBan(): Promise<{ reason?: string, user: User }>;
+    public getBans(): Promise<{ reason?: string, user: User }[]>;
+    public getBan(userID: string): Promise<{ reason?: string, user: User }>;
     public editNickname(nick: string): Promise<void>;
     public getWebhooks(): Promise<Webhook[]>;
   }
@@ -1143,7 +1206,7 @@ declare module "eris" {
   }
 
   export class CategoryChannel extends GuildChannel {
-    public channels?: Collection<AnyGuildChannel>;
+    public channels: Collection<TextChannel | VoiceChannel>;
   }
 
   export class TextChannel extends GuildChannel implements Textable, Invitable {
@@ -1151,6 +1214,7 @@ declare module "eris" {
     public lastMessageID: string;
     public rateLimitPerUser: number;
     public messages: Collection<Message>;
+    public lastPinTimestamp?: number;
     public constructor(data: BaseData, guild: Guild, messageLimit: number);
     public getInvites(): Promise<Invite[]>;
     public createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
@@ -1181,6 +1245,7 @@ declare module "eris" {
       limit: number, filter?: (message: Message) => boolean, before?: string, after?: string
     ): Promise<number>;
     public deleteMessage(messageID: string, reason?: string): Promise<void>;
+    public deleteMessages(messageIDs: string[]): Promise<void>;
     public unsendMessage(messageID: string): Promise<void>;
   }
 
@@ -1245,6 +1310,7 @@ declare module "eris" {
     public mention: string;
     public guild: Guild;
     public joinedAt: number;
+    public premiumSince: number;
     public status: string;
     public game?: GamePresence;
     public voiceState: VoiceState;
@@ -1284,7 +1350,7 @@ declare module "eris" {
     public content: string;
     public cleanContent?: string;
     public roleMentions: string[];
-    public channelMentions?: string[];
+    public channelMentions: string[];
     public editedTimestamp?: number;
     public tts: boolean;
     public mentionEveryone: boolean;
@@ -1433,6 +1499,7 @@ declare module "eris" {
     public lastHeartbeatSent: number;
     public latency: number;
     public client: Client;
+    public presence: {status: string, game?: GamePresence};
     public constructor(id: number, client: Client);
     public connect(): void;
     public disconnect(options?: { reconnect: boolean }): void;
@@ -1596,7 +1663,7 @@ declare module "eris" {
     public hidden: boolean;
     public constructor(label: string, generate: CommandGenerator, options?: CommandOptions);
     public registerSubcommandAlias(alias: string, label: string): void;
-    public registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): void;
+    public registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
     public unregisterSubcommand(label: string): void;
   }
 
@@ -1610,3 +1677,5 @@ declare module "eris" {
     public unregisterCommand(label: string): void;
   }
 }
+
+export = Eris;
