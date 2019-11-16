@@ -1310,7 +1310,7 @@ declare namespace Eris {
       overwriteID: string,
       allow: number,
       deny: number,
-      type: `role` | `member`,
+      type: "role" | "member",
       reason?: string
     ): Promise<PermissionOverwrite>;
     deletePermission(overwriteID: string, reason?: string): Promise<void>;
@@ -1510,7 +1510,7 @@ declare namespace Eris {
 
   interface Overwrite {
     id: string;
-    type: `user` | `member`;
+    type: "user" | "member";
     allow: number;
     deny: number;
   }
