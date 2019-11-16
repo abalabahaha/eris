@@ -1,0 +1,30 @@
+parser: "@typescript-eslint/parser"
+plugins:
+  - "@typescript-eslint"
+extends:
+  - "eslint:recommended"
+  - "plugin:@typescript-eslint/eslint-recommended"
+  - "plugin:@typescript-eslint/recommended"
+rules:
+  semi: [2, "always"]
+  no-prototype-builtins: 0
+  quotes: [2, "double"]
+  eol-last: [2, "always"]
+  no-trailing-spaces: 2
+  keyword-spacing: [2, {
+    "after": true
+  }]
+  brace-style: [2, "1tbs", { "allowSingleLine": false }]
+  object-curly-spacing: [2, "always"]
+  array-bracket-spacing: [2, "never"]
+  comma-dangle: [2, "never"]
+  arrow-parens: 2
+  indent: [2, 2, {
+    "SwitchCase": 1,
+    "ignoreComments": false
+  }]
+  "@typescript-eslint/member-delimiter-style": 0
+  "@typescript-eslint/no-use-before-define": [2, {
+    classes: false
+  }]
+  "@typescript-eslint/no-explicit-any": 0
