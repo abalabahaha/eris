@@ -687,6 +687,16 @@ declare namespace Eris {
     toJSON(): string;
   }
 
+  interface CreateChannelOptions {
+    topic?: string;
+    nsfw?: boolean;
+    bitrate?: number;
+    userLimt?: number;
+    rateLimitPerUser?: number;
+    parentID?: string;
+    permissionOverwrites?: Overwrite[];
+  }
+
   export class Client extends EventEmitter implements SimpleJSON, Emittable {
     token?: string;
     gatewayURL?: string;
@@ -714,10 +724,7 @@ declare namespace Eris {
     getGateway(): Promise<{ url: string }>;
     getBotGateway(): Promise<{ url: string; shards: number }>;
     disconnect(options: { reconnect: boolean }): void;
-    joinVoiceChannel(
-      channelID: string,
-      options?: { shared?: boolean; opusOnly?: boolean }
-    ): Promise<VoiceConnection>;
+    joinVoiceChannel(channelID: string, options?: { shared?: boolean; opusOnly?: boolean }): Promise<VoiceConnection>;
     leaveVoiceChannel(channelID: string): void;
     closeVoiceConnection(guildID: string): void;
     editAFK(afk: boolean): void;
@@ -729,28 +736,28 @@ declare namespace Eris {
       name: string,
       type: 0,
       reason?: string,
-      parentID?: string
+      options?: CreateChannelOptions | string
     ): Promise<TextChannel>;
     createChannel(
       guildID: string,
       name: string,
       type: 2,
       reason?: string,
-      parentID?: string
+      options?: CreateChannelOptions | string
     ): Promise<VoiceChannel>;
     createChannel(
       guildID: string,
       name: string,
       type: 4,
       reason?: string,
-      parentID?: string
+      options?: CreateChannelOptions | string
     ): Promise<CategoryChannel>;
     createChannel(
       guildID: string,
       name: string,
       type?: number,
       reason?: string,
-      parentID?: string
+      options?: CreateChannelOptions | string
     ): Promise<unknown>;
     editChannel(
       channelID: string,
@@ -802,12 +809,7 @@ declare namespace Eris {
     executeSlackWebhook(webhookID: string, token: string, options?: { wait?: boolean }): Promise<void>;
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
     getGuildWebhooks(guildID: string): Promise<Webhook[]>;
-    getGuildAuditLogs(
-      guildID: string,
-      limit?: number,
-      before?: string,
-      actionType?: number
-    ): Promise<GuildAuditLog>;
+    getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number): Promise<GuildAuditLog>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
     editGuildEmoji(
       guildID: string,
@@ -852,12 +854,7 @@ declare namespace Eris {
       after?: string
     ): Promise<User[]>;
     addMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
-    removeMessageReaction(
-      channelID: string,
-      messageID: string,
-      reaction: string,
-      userID?: string
-    ): Promise<void>;
+    removeMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactions(channelID: string, messageID: string): Promise<void>;
     deleteMessage(channelID: string, messageID: string, reason?: string): Promise<void>;
     deleteMessages(channelID: string, messageIDs: string[], reason?: string): Promise<void>;
@@ -973,10 +970,7 @@ declare namespace Eris {
     on(event: "channelUpdate", listener: (channel: AnyChannel, oldChannel: OldChannel) => void): this;
     on(event: "friendSuggestionCreate", listener: (user: User, reasons: FriendSuggestionReasons) => void): this;
     on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
-    on(
-      event: "guildAvailable" | "guildBanAdd" | "guildBanRemove",
-      listener: (guild: Guild, user: User) => void
-    ): this;
+    on(event: "guildAvailable" | "guildBanAdd" | "guildBanRemove", listener: (guild: Guild, user: User) => void): this;
     on(event: "guildDelete" | "guildUnavailable" | "guildCreate", listener: (guild: Guild) => void): this;
     on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): this;
     on(event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): this;
@@ -991,10 +985,7 @@ declare namespace Eris {
     on(event: "guildUpdate", listener: (guild: Guild, oldGuild: GuildOptions) => void): this;
     on(event: "hello", listener: (trace: string[], id: number) => void): this;
     on(event: "messageCreate", listener: (message: Message) => void): this;
-    on(
-      event: "messageDelete" | "messageReactionRemoveAll",
-      listener: (message: PossiblyUncachedMessage) => void
-    ): this;
+    on(event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): this;
     on(event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): this;
     on(
       event: "messageReactionAdd" | "messageReactionRemove",
@@ -1017,10 +1008,7 @@ declare namespace Eris {
         }
       ) => void
     ): this;
-    on(
-      event: "presenceUpdate",
-      listener: (other: Member | Relationship, oldPresence?: OldPresence) => void
-    ): this;
+    on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: OldPresence) => void): this;
     on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
     on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
     on(
@@ -1106,10 +1094,7 @@ declare namespace Eris {
   export class VoiceDataStream extends EventEmitter {
     type: string;
     constructor(type: string);
-    on(
-      event: "data",
-      listener: (data: Buffer, userID: string, timestamp: number, sequence: number) => void
-    ): this;
+    on(event: "data", listener: (data: Buffer, userID: string, timestamp: number, sequence: number) => void): this;
   }
 
   // tslint:disable-next-line
@@ -1234,10 +1219,10 @@ declare namespace Eris {
     fetchAllMembers(): void;
     dynamicIconURL(format: string, size: number): string;
     createChannel(name: string): Promise<TextChannel>;
-    createChannel(name: string, type: 0, reason?: string, parentID?: string): Promise<TextChannel>;
-    createChannel(name: string, type: 2, reason?: string, parentID?: string): Promise<VoiceChannel>;
-    createChannel(name: string, type: 4, reason?: string, parentID?: string): Promise<CategoryChannel>;
-    createChannel(name: string, type?: number, reason?: string, parentID?: string): Promise<unknown>;
+    createChannel(name: string, type: 0, reason?: string, options?: CreateChannelOptions | string): Promise<TextChannel>;
+    createChannel(name: string, type: 2, reason?: string, options?: CreateChannelOptions | string): Promise<VoiceChannel>;
+    createChannel(name: string, type: 4, reason?: string, options?: CreateChannelOptions | string): Promise<CategoryChannel>;
+    createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
     createEmoji(options: { name: string; image: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     deleteEmoji(emojiID: string, reason?: string): Promise<void>;
@@ -1324,7 +1309,7 @@ declare namespace Eris {
       overwriteID: string,
       allow: number,
       deny: number,
-      type: string,
+      type: `role` | `member`,
       reason?: string
     ): Promise<PermissionOverwrite>;
     deletePermission(overwriteID: string, reason?: string): Promise<void>;
@@ -1363,12 +1348,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
-    purge(
-      limit: number,
-      filter?: (message: Message) => boolean,
-      before?: string,
-      after?: string
-    ): Promise<number>;
+    purge(limit: number, filter?: (message: Message) => boolean, before?: string, after?: string): Promise<number>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[]): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
@@ -1527,6 +1507,13 @@ declare namespace Eris {
     has(permission: string): boolean;
   }
 
+  interface Overwrite {
+    id: string;
+    type: `user` | `member`;
+    allow: number;
+    deny: number;
+  }
+
   export class PermissionOverwrite extends Permission {
     id: string;
     createdAt: number;
@@ -1668,10 +1655,7 @@ declare namespace Eris {
     on(event: "channelUpdate", listener: (channel: AnyChannel, oldChannel: OldChannel) => void): this;
     on(event: "friendSuggestionCreate", listener: (user: User, reasons: FriendSuggestionReasons) => void): this;
     on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
-    on(
-      event: "guildAvailable" | "guildBanAdd" | "guildBanRemove",
-      listener: (guild: Guild, user: User) => void
-    ): this;
+    on(event: "guildAvailable" | "guildBanAdd" | "guildBanRemove", listener: (guild: Guild, user: User) => void): this;
     on(event: "guildDelete" | "guildUnavailable" | "guildCreate", listener: (guild: Guild) => void): this;
     on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): this;
     on(event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): this;
@@ -1686,10 +1670,7 @@ declare namespace Eris {
     on(event: "guildUpdate", listener: (guild: Guild, oldGuild: GuildOptions) => void): this;
     on(event: "hello", listener: (trace: string[], id: number) => void): this;
     on(event: "messageCreate", listener: (message: Message) => void): this;
-    on(
-      event: "messageDelete" | "messageReactionRemoveAll",
-      listener: (message: PossiblyUncachedMessage) => void
-    ): this;
+    on(event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): this;
     on(event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): this;
     on(
       event: "messageReactionAdd" | "messageReactionRemove",
@@ -1712,10 +1693,7 @@ declare namespace Eris {
         }
       ) => void
     ): this;
-    on(
-      event: "presenceUpdate",
-      listener: (other: Member | Relationship, oldPresence?: OldPresence) => void
-    ): this;
+    on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: OldPresence) => void): this;
     on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
     on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
     on(
