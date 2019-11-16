@@ -798,11 +798,12 @@ declare namespace Eris {
       token?: string,
       reason?: string
     ): Promise<Webhook>;
-    executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
-    executeSlackWebhook(webhookID: string, token: string, options?: { wait?: boolean }): Promise<void>;
-    deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
-    getGuildWebhooks(guildID: string): Promise<Webhook[]>;
-    getGuildAuditLogs(
+    public executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true; }): Promise<Message>;
+    public executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
+    public executeSlackWebhook(webhookID: string, token: string, options?: { wait?: boolean }): Promise<void>;
+    public deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
+    public getGuildWebhooks(guildID: string): Promise<Webhook[]>;
+    public getGuildAuditLogs(
       guildID: string,
       limit?: number,
       before?: string,
