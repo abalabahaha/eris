@@ -8,7 +8,9 @@ declare namespace Eris {
   // TODO good hacktoberfest PR: implement ShardManager, RequestHandler and other stuff
 
   export const VERSION: string;
-  interface JSONCache { [s: string]: any; }
+  interface JSONCache {
+    [s: string]: any;
+  }
 
   interface SimpleJSON {
     toJSON(simple?: boolean): JSONCache;
@@ -43,10 +45,7 @@ declare namespace Eris {
     getMessage(messageID: string): Promise<Message>;
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
     getPins(): Promise<Message[]>;
-    createMessage(
-      content: MessageContent,
-      file?: MessageFile,
-    ): Promise<Message>;
+    createMessage(content: MessageContent, file?: MessageFile): Promise<Message>;
     editMessage(messageID: string, content: MessageContent): Promise<Message>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
@@ -55,7 +54,7 @@ declare namespace Eris {
       reaction: string,
       limit?: number,
       before?: string,
-      after?: string,
+      after?: string
     ): Promise<User[]>;
     addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
@@ -80,34 +79,42 @@ declare namespace Eris {
     permissionOverwrites: Collection<PermissionOverwrite>;
   }
 
-  type FriendSuggestionReasons = Array<{ type: number, platform_type: string, name: string }>;
+  type FriendSuggestionReasons = Array<{ type: number; platform_type: string; name: string }>;
 
-  interface MemberPartial { id: string; user: User; }
+  interface MemberPartial {
+    id: string;
+    user: User;
+  }
 
   interface OldPresence {
     status: string;
     game?: {
-      name: string,
-      type: number,
-      url?: string,
+      name: string;
+      type: number;
+      url?: string;
     };
   }
 
-  interface OldVoiceState { mute: boolean; deaf: boolean; selfMute: boolean; selfDeaf: boolean; }
+  interface OldVoiceState {
+    mute: boolean;
+    deaf: boolean;
+    selfMute: boolean;
+    selfDeaf: boolean;
+  }
 
   interface OAuthApplicationInfo {
-    description: string,
-    name: string,
+    description: string;
+    name: string;
     owner: {
-      username: string,
-      discriminator: string,
-      id: string,
-      avatar?: string,
-    },
-    bot_public: boolean,
-    bot_require_code_grant: boolean,
-    id: string,
-    icon?: string,
+      username: string;
+      discriminator: string;
+      id: string;
+      avatar?: string;
+    };
+    bot_public: boolean;
+    bot_require_code_grant: boolean;
+    id: string;
+    icon?: string;
   }
 
   // To anyone snooping around this snippet of code and wondering
@@ -117,123 +124,235 @@ declare namespace Eris {
   interface Emittable {
     on(event: "ready" | "disconnect", listener: () => void): this;
     on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
-    on(
-      event: "callUpdate",
-      listener: (
-        call: Call,
-        oldCall: OldCall,
-      ) => void,
-    ): this;
+    on(event: "callUpdate", listener: (call: Call, oldCall: OldCall) => void): this;
     on(event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): this;
     on(
       event: "channelPinUpdate",
-      listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void,
+      listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void
     ): this;
     on(
       event: "channelRecipientAdd" | "channelRecipientRemove",
-      listener: (channel: GroupChannel, user: User) => void,
+      listener: (channel: GroupChannel, user: User) => void
     ): this;
-    on(
-      event: "channelUpdate",
-      listener: (
-        channel: AnyChannel,
-        oldChannel: OldChannel,
-      ) => void,
-    ): this;
-    on(
-      event: "friendSuggestionCreate",
-      listener: (user: User, reasons: FriendSuggestionReasons) => void,
-    ): this;
+    on(event: "channelUpdate", listener: (channel: AnyChannel, oldChannel: OldChannel) => void): this;
+    on(event: "friendSuggestionCreate", listener: (user: User, reasons: FriendSuggestionReasons) => void): this;
     on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
-    on(
-      event: "guildAvailable" | "guildBanAdd" | "guildBanRemove",
-      listener: (guild: Guild, user: User) => void,
-    ): this;
+    on(event: "guildAvailable" | "guildBanAdd" | "guildBanRemove", listener: (guild: Guild, user: User) => void): this;
     on(event: "guildDelete" | "guildUnavailable" | "guildCreate", listener: (guild: Guild) => void): this;
     on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): this;
     on(event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): this;
     on(event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): this;
-    on(
-      event: "guildMemberRemove",
-      listener: (guild: Guild, member: Member | MemberPartial) => void,
-    ): this;
+    on(event: "guildMemberRemove", listener: (guild: Guild, member: Member | MemberPartial) => void): this;
     on(
       event: "guildMemberUpdate",
-      listener: (guild: Guild, member: Member, oldMember: { roles: string[], nick?: string }) => void,
+      listener: (guild: Guild, member: Member, oldMember: { roles: string[]; nick?: string }) => void
     ): this;
     on(event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): this;
     on(event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: RoleOptions) => void): this;
     on(event: "guildUpdate", listener: (guild: Guild, oldGuild: GuildOptions) => void): this;
     on(event: "hello", listener: (trace: string[], id: number) => void): this;
     on(event: "messageCreate", listener: (message: Message) => void): this;
-    on(
-      event: "messageDelete" | "messageReactionRemoveAll",
-      listener: (message: PossiblyUncachedMessage) => void,
-    ): this;
+    on(event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): this;
     on(event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): this;
     on(
       event: "messageReactionAdd" | "messageReactionRemove",
-      listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void,
+      listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void
     ): this;
-    on(event: "messageUpdate", listener: (message: Message, oldMessage?: {
-      attachments: Attachment[],
-      embeds: Embed[],
-      content: string,
-      editedTimestamp?: number,
-      mentionedBy?: any,
-      tts: boolean,
-      mentions: string[],
-      roleMentions: string[],
-      channelMentions: string[],
-    }) => void): this;
+    on(
+      event: "messageUpdate",
+      listener: (
+        message: Message,
+        oldMessage?: {
+          attachments: Attachment[];
+          embeds: Embed[];
+          content: string;
+          editedTimestamp?: number;
+          mentionedBy?: any;
+          tts: boolean;
+          mentions: string[];
+          roleMentions: string[];
+          channelMentions: string[];
+        }
+      ) => void
+    ): this;
     on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: OldPresence) => void): this;
     on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
     on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
     on(
       event: "relationshipUpdate",
-      listener: (relationship: Relationship, oldRelationship: { type: number }) => void,
+      listener: (relationship: Relationship, oldRelationship: { type: number }) => void
     ): this;
     on(event: "shardPreReady" | "connect", listener: (id: number) => void): this;
     on(event: "typingStart", listener: (channel: TextableChannel, user: User) => void): this;
     on(event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): this;
     on(
       event: "userUpdate",
-      listener: (user: User, oldUser: { username: string, discriminator: string, avatar?: string }) => void,
+      listener: (user: User, oldUser: { username: string; discriminator: string; avatar?: string }) => void
     ): this;
     on(event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): this;
     on(event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): this;
     on(
       event: "voiceChannelSwitch",
-      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void,
+      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void
     ): this;
-    on(
-      event: "voiceStateUpdate",
-      listener: (
-        member: Member,
-        oldState: OldVoiceState,
-      ) => void,
-    ): this;
+    on(event: "voiceStateUpdate", listener: (member: Member, oldState: OldVoiceState) => void): this;
     on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
     // tslint:disable-next-line
     on(event: string, listener: Function): this;
   }
 
   interface Constants {
-    DefaultAvatarHashes: string[];
-    ImageFormats: string[];
-    GatewayOPCodes: {[key: string]: number};
-    GATEWAY_VERSION: number;
-    Permissions: {[key: string]: number};
-    VoiceOPCodes: {[key: string]: number};
-    SystemJoinMessages: string[];
-    AuditLogActions: {[key: string]: number};
+    ImageSizeBoundaries: {
+      MINIMUM: 16;
+      MAXIMUM: 2048;
+    };
+    ImageFormats: ["jpg", "png", "webp", "gif"];
+    GatewayOPCodes: {
+      EVENT: 0;
+      HEARTBEAT: 1;
+      IDENTIFY: 2;
+      STATUS_UPDATE: 3;
+      VOICE_STATE_UPDATE: 4;
+      VOICE_SERVER_PING: 5;
+      RESUME: 6;
+      RECONNECT: 7;
+      GET_GUILD_MEMBERS: 8;
+      INVALID_SESSION: 9;
+      HELLO: 10;
+      HEARTBEAT_ACK: 11;
+      SYNC_GUILD: 12;
+      SYNC_CALL: 13;
+    };
+    GATEWAY_VERSION: 6;
+    REST_VERSION: 7;
+    Permissions: {
+      createInstantInvite: 1;
+      kickMembers: 2;
+      banMembers: 4;
+      administrator: 8;
+      manageChannels: 16;
+      manageGuild: 32;
+      addReactions: 64;
+      viewAuditLogs: 128;
+      voicePrioritySpeaker: 256;
+      stream: 512;
+      readMessages: 1024;
+      sendMessages: 2048;
+      sendTTSMessages: 4096;
+      manageMessages: 8192;
+      embedLinks: 16384;
+      attachFiles: 32768;
+      readMessageHistory: 65536;
+      mentionEveryone: 131072;
+      externalEmojis: 262144;
+      viewGuildAnalytics: 524288;
+      voiceConnect: 1048576;
+      voiceSpeak: 2097152;
+      voiceMuteMembers: 4194304;
+      voiceDeafenMembers: 8388608;
+      voiceMoveMembers: 16777216;
+      voiceUseVAD: 33554432;
+      changeNickname: 67108864;
+      manageNicknames: 134217728;
+      manageRoles: 268435456;
+      manageWebhooks: 546870912;
+      manageEmojis: 1973741824;
+      all: 2147483647;
+      allGuild: 2080899263;
+      allText: 805829714;
+      allVoice: 871367441;
+    };
+    VoiceOPCodes: {
+      IDENTIFY: 0;
+      SELECT_PROTOCOL: 1;
+      READY: 2;
+      HEARTBEAT: 3;
+      SESSION_DESCRIPTION: 4;
+      SPEAKING: 5;
+    };
+    SystemJoinMessages: [
+      "%user% just joined the server - glhf!",
+      "%user% just joined. Everyone, look busy!",
+      "%user% just joined. Can I get a heal?",
+      "%user% joined your party.",
+      "%user% joined. You must construct additional pylons.",
+      "Ermagherd. %user% is here.",
+      "Welcome, %user%. Stay awhile and listen.",
+      "Welcome, %user%. We were expecting you ( ͡° ͜ʖ ͡°)",
+      "Welcome, %user%. We hope you brought pizza.",
+      "Welcome %user%. Leave your weapons by the door.",
+      "A wild %user% appeared.",
+      "Swoooosh. %user% just landed.",
+      "Brace yourselves. %user% just joined the server.",
+      "%user% just joined... or did they?",
+      "%user% just arrived. Seems OP - please nerf.",
+      "%user% just slid into the server.",
+      "A %user% has spawned in the server.",
+      "Big %user% showed up!",
+      "Where’s %user%? In the server!",
+      "%user% hopped into the server. Kangaroo!!",
+      "%user% just showed up. Hold my beer.",
+      "Challenger approaching - %user% has appeared!",
+      "It's a bird! It's a plane! Nevermind, it's just %user%.",
+      "It's %user%! Praise the sun! \\\\[T]/",
+      "Never gonna give %user% up. Never gonna let %user% down.",
+      "%user% has joined the battle bus.",
+      "Cheers, love! %user%'s here!",
+      "Hey! Listen! %user% has joined!",
+      "We've been expecting you %user%",
+      "It's dangerous to go alone, take %user%!",
+      "%user% has joined the server! It's super effective!",
+      "Cheers, love! %user% is here!",
+      "%user% is here, as the prophecy foretold.",
+      "%user% has arrived. Party's over.",
+      "Ready player %user%",
+      "%user% is here to kick butt and chew bubblegum. And %user% is all out of gum.",
+      "Hello. Is it %user% you're looking for?",
+      "%user% has joined. Stay a while and listen!",
+      "Roses are red, violets are blue, %user% joined this server with you"
+    ];
+    AuditLogActions: {
+      GUILD_UPDATE: 1;
+
+      CHANNEL_CREATE: 10;
+      CHANNEL_UPDATE: 11;
+      CHANNEL_DELETE: 12;
+      CHANNEL_OVERWRITE_CREATE: 13;
+      CHANNEL_OVERWRITE_UPDATE: 14;
+      CHANNEL_OVERWRITE_DELETE: 15;
+
+      MEMBER_KICK: 20;
+      MEMBER_PRUNE: 21;
+      MEMBER_BAN_ADD: 22;
+      MEMBER_BAN_REMOVE: 23;
+      MEMBER_UPDATE: 24;
+      MEMBER_ROLE_UPDATE: 25;
+
+      ROLE_CREATE: 30;
+      ROLE_UPDATE: 31;
+      ROLE_DELETE: 32;
+
+      INVITE_CREATE: 40;
+      INVITE_UPDATE: 41;
+      INVITE_DELETE: 42;
+
+      WEBHOOK_CREATE: 50;
+      WEBHOOK_UPDATE: 51;
+      WEBHOOK_DELETE: 52;
+
+      EMOJI_CREATE: 60;
+      EMOJI_UPDATE: 61;
+      EMOJI_DELETE: 62;
+
+      MESSAGE_DELETE: 72;
+    };
   }
 
   export const Constants: Constants;
 
   interface WebhookPayload {
     content?: string;
-    file?: { file: Buffer, name: string } | Array<{ file: Buffer, name: string}>;
+    file?: { file: Buffer; name: string } | Array<{ file: Buffer; name: string }>;
     embeds?: EmbedOptions[];
     username?: string;
     avatarURL?: string;
@@ -248,19 +367,19 @@ declare namespace Eris {
     url?: string;
     timestamp?: string;
     color?: number;
-    footer?: { text: string, icon_url?: string, proxy_icon_url?: string };
-    image?: { url?: string, proxy_url?: string, height?: number, width?: number };
-    thumbnail?: { url?: string, proxy_url?: string, height?: number, width?: number };
-    video?: { url: string, height?: number, width?: number };
-    provider?: { name: string, url?: string };
-    fields?: Array<{ name?: string, value?: string, inline?: boolean }>;
-    author?: { name: string, url?: string, icon_url?: string, proxy_icon_url?: string };
+    footer?: { text: string; icon_url?: string; proxy_icon_url?: string };
+    image?: { url?: string; proxy_url?: string; height?: number; width?: number };
+    thumbnail?: { url?: string; proxy_url?: string; height?: number; width?: number };
+    video?: { url: string; height?: number; width?: number };
+    provider?: { name: string; url?: string };
+    fields?: Array<{ name?: string; value?: string; inline?: boolean }>;
+    author?: { name: string; url?: string; icon_url?: string; proxy_icon_url?: string };
   }
   type Embed = {
-    type: string,
+    type: string;
   } & EmbedBase;
   type EmbedOptions = {
-    type?: string,
+    type?: string;
   } & EmbedBase;
 
   interface Webhook {
@@ -271,10 +390,10 @@ declare namespace Eris {
     guild_id: string;
     id: string;
     user: {
-      username: string,
-      discriminator: string,
-      id: string,
-      avatar?: string,
+      username: string;
+      discriminator: string;
+      id: string;
+      avatar?: string;
     };
   }
 
@@ -283,7 +402,13 @@ declare namespace Eris {
     enabled: boolean;
   }
 
-  interface Attachment { url: string; proxy_url: string; size: number; id: string; filename: string; }
+  interface Attachment {
+    url: string;
+    proxy_url: string;
+    size: number;
+    id: string;
+    filename: string;
+  }
 
   interface VoiceRegion {
     name: string;
@@ -307,7 +432,7 @@ declare namespace Eris {
     inline_attachment_media: boolean;
     guild_positions: string[];
     friend_source_flags: {
-      all: boolean, // not sure about other keys, abal heeeelp
+      all: boolean; // not sure about other keys, abal heeeelp
     };
     explicit_content_filter: number;
     enable_tts_command: boolean;
@@ -325,17 +450,17 @@ declare namespace Eris {
     message_notifications: number;
     guild_id: string;
     channel_override: Array<{
-      muted: boolean,
-      message_notifications: number,
-      channel_id: string,
+      muted: boolean;
+      message_notifications: number;
+      channel_id: string;
     }>;
   }
 
   interface UserProfile {
     premium_since?: number;
-    mutual_guilds: Array<{ nick?: string, id: string }>;
-    user: { username: string, discriminator: string, flags: number, id: string, avatar?: string };
-    connected_accounts: Array<{ verified: boolean, type: string, id: string, name: string }>;
+    mutual_guilds: Array<{ nick?: string; id: string }>;
+    user: { username: string; discriminator: string; flags: number; id: string; avatar?: string };
+    connected_accounts: Array<{ verified: boolean; type: string; id: string; name: string }>;
   }
 
   interface Connection {
@@ -360,24 +485,31 @@ declare namespace Eris {
     [key: string]: {};
   }
 
-  type MessageContent = string | { content?: string, tts?: boolean, disableEveryone?: boolean, embed?: EmbedOptions };
-  interface MessageFile { file: Buffer | string; name: string; }
+  type MessageContent = string | { content?: string; tts?: boolean; disableEveryone?: boolean; embed?: EmbedOptions };
+  interface MessageFile {
+    file: Buffer | string;
+    name: string;
+  }
   interface EmojiBase {
     name: string;
     icon?: string;
   }
   type EmojiOptions = {
-    roles?: string[],
+    roles?: string[];
   } & EmojiBase;
   type Emoji = {
-    roles: string[],
-    id: string,
-    require_colons: boolean,
-    animated: boolean,
-    managed: boolean,
-    user: { name: string, discriminator: string, id: string, avatar: string }
+    roles: string[];
+    id: string;
+    require_colons: boolean;
+    animated: boolean;
+    managed: boolean;
+    user: { name: string; discriminator: string; id: string; avatar: string };
   } & EmojiBase;
-  interface IntegrationOptions { expireBehavior: string; expireGracePeriod: string; enableEmoticons: string; }
+  interface IntegrationOptions {
+    expireBehavior: string;
+    expireGracePeriod: string;
+    enableEmoticons: string;
+  }
   interface GuildOptions {
     name?: string;
     region?: string;
@@ -391,24 +523,36 @@ declare namespace Eris {
     splash?: string;
     banner?: string;
   }
-  interface MemberOptions { roles?: string[]; nick?: string; mute?: boolean; deaf?: boolean; channelID?: string; }
-  interface RoleOptions { name?: string; permissions?: number; color?: number; hoist?: boolean; mentionable?: boolean; }
+  interface MemberOptions {
+    roles?: string[];
+    nick?: string;
+    mute?: boolean;
+    deaf?: boolean;
+    channelID?: string;
+  }
+  interface RoleOptions {
+    name?: string;
+    permissions?: number;
+    color?: number;
+    hoist?: boolean;
+    mentionable?: boolean;
+  }
   interface GamePresence {
     name: string;
     type?: number;
     url?: string;
-    timestamps?: { start: number, end?: number };
+    timestamps?: { start: number; end?: number };
     application_id?: string;
     sync_id?: string;
     details?: string;
     state?: string;
-    party?: { id?: string; };
+    party?: { id?: string };
     assets?: {
-      small_text?: string,
-      small_image?: string,
-      large_text?: string,
-      large_image?: string,
-      [key: string]: any,
+      small_text?: string;
+      small_image?: string;
+      large_text?: string;
+      large_image?: string;
+      [key: string]: any;
     };
     instance?: boolean;
     flags?: number;
@@ -432,7 +576,10 @@ declare namespace Eris {
     attachmentFilename?: string;
     channelIDs?: string[];
   }
-  interface SearchResults { totalResults: number; results: Array<Array<Message & { hit?: boolean }>>; }
+  interface SearchResults {
+    totalResults: number;
+    results: Array<Array<Message & { hit?: boolean }>>;
+  }
   interface VoiceResourceOptions {
     inlineVolume?: boolean;
     voiceDataTimeout?: number;
@@ -443,8 +590,13 @@ declare namespace Eris {
     frameSize?: number;
     sampleRate?: number;
   }
-  type PossiblyUncachedMessage = Message | { id: string, channel: TextableChannel };
-  interface RawPacket { op: number; t?: string; d?: any; s?: number; }
+  type PossiblyUncachedMessage = Message | { id: string; channel: TextableChannel };
+  interface RawPacket {
+    op: number;
+    t?: string;
+    d?: any;
+    s?: number;
+  }
   type ReconnectDelayFunction = (lastDelay: number, attempts: number) => number;
   interface ClientOptions {
     autoreconnect?: boolean;
@@ -499,17 +651,17 @@ declare namespace Eris {
     usage?: string;
     hooks?: Hooks;
     requirements?: {
-      userIDs?: string[] | GenericCheckFunction<string[]>,
-      roleIDs?: string[] | GenericCheckFunction<string[]>,
-      roleNames?: string[] | GenericCheckFunction<string[]>,
-      permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>,
-      custom?: GenericCheckFunction<void>,
+      userIDs?: string[] | GenericCheckFunction<string[]>;
+      roleIDs?: string[] | GenericCheckFunction<string[]>;
+      roleNames?: string[] | GenericCheckFunction<string[]>;
+      permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>;
+      custom?: GenericCheckFunction<void>;
     };
     cooldown?: number;
     cooldownExclusions?: {
-      userIDs?: string[],
-      guildIDs?: string[],
-      channelIDs?: string[],
+      userIDs?: string[];
+      guildIDs?: string[];
+      channelIDs?: string[];
     };
     restartCooldown?: boolean;
     cooldownReturns?: number;
@@ -517,1164 +669,1120 @@ declare namespace Eris {
     invalidUsageMessage?: string | GenericCheckFunction<string>;
     permissionMessage?: string | GenericCheckFunction<string>;
     errorMessage?: string | GenericCheckFunction<string>;
-    reactionButtons?: Array<{ emoji: string, type: string, response: CommandGenerator }>;
+    reactionButtons?: Array<{ emoji: string; type: string; response: CommandGenerator }>;
     reactionButtonTimeout?: number;
     defaultSubcommandOptions?: CommandOptions;
     hidden?: boolean;
   }
-  type CommandGeneratorFunction = (msg: Message, args: string[]) => Promise<MessageContent>
-    | Promise<void> | MessageContent | void;
+  type CommandGeneratorFunction = (
+    msg: Message,
+    args: string[]
+  ) => Promise<MessageContent> | Promise<void> | MessageContent | void;
   type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
 
   export class ShardManager extends Collection<Shard> {
-    public constructor(client: Client);
-    public connect(shard: Shard): void;
-    public spawn(id: number): void;
-    public toJSON(): string;
+    constructor(client: Client);
+    connect(shard: Shard): void;
+    spawn(id: number): void;
+    toJSON(): string;
+  }
+
+  interface CreateChannelOptions {
+    topic?: string;
+    nsfw?: boolean;
+    bitrate?: number;
+    userLimt?: number;
+    rateLimitPerUser?: number;
+    parentID?: string;
+    permissionOverwrites?: Overwrite[];
   }
 
   export class Client extends EventEmitter implements SimpleJSON, Emittable {
-    public token?: string;
-    public gatewayURL?: string;
-    public bot?: boolean;
-    public options: ClientOptions;
-    public channelGuildMap: { [s: string]: string };
-    public shards: ShardManager;
-    public guilds: Collection<Guild>;
-    public privateChannelMap: { [s: string]: string };
-    public privateChannels: Collection<PrivateChannel>;
-    public groupChannels: Collection<GroupChannel>;
-    public voiceConnections: Collection<VoiceConnection>;
-    public guildShardMap: { [s: string]: number };
-    public startTime: number;
-    public unavailableGuilds: Collection<UnavailableGuild>;
-    public uptime: number;
-    public user: ExtendedUser;
-    public users: Collection<User>;
-    public relationships: Collection<Relationship>;
-    public userGuildSettings: { [s: string]: GuildSettings };
-    public userSettings: UserSettings;
-    public notes: { [s: string]: string };
-    public constructor(token: string, options?: ClientOptions);
-    public connect(): Promise<void>;
-    public getGateway(): Promise<{ url: string }>;
-    public getBotGateway(): Promise<{ url: string, shards: number }>;
-    public disconnect(options: { reconnect: boolean }): void;
-    public joinVoiceChannel(
-      channelID: string,
-      options?: { shared?: boolean, opusOnly?: boolean },
-    ): Promise<VoiceConnection>;
-    public leaveVoiceChannel(channelID: string): void;
-    public closeVoiceConnection(guildID: string): void;
-    public editAFK(afk: boolean): void;
-    public editStatus(status?: string, game?: GamePresence): void;
-    public getChannel(channelID: string): AnyChannel;
-    public createChannel(
-      guildID: string,
-      name: string,
-    ): Promise<TextChannel>;
-    public createChannel(
+    token?: string;
+    gatewayURL?: string;
+    bot?: boolean;
+    options: ClientOptions;
+    channelGuildMap: { [s: string]: string };
+    shards: ShardManager;
+    guilds: Collection<Guild>;
+    privateChannelMap: { [s: string]: string };
+    privateChannels: Collection<PrivateChannel>;
+    groupChannels: Collection<GroupChannel>;
+    voiceConnections: Collection<VoiceConnection>;
+    guildShardMap: { [s: string]: number };
+    startTime: number;
+    unavailableGuilds: Collection<UnavailableGuild>;
+    uptime: number;
+    user: ExtendedUser;
+    users: Collection<User>;
+    relationships: Collection<Relationship>;
+    userGuildSettings: { [s: string]: GuildSettings };
+    userSettings: UserSettings;
+    notes: { [s: string]: string };
+    constructor(token: string, options?: ClientOptions);
+    connect(): Promise<void>;
+    getGateway(): Promise<{ url: string }>;
+    getBotGateway(): Promise<{ url: string; shards: number }>;
+    disconnect(options: { reconnect: boolean }): void;
+    joinVoiceChannel(channelID: string, options?: { shared?: boolean; opusOnly?: boolean }): Promise<VoiceConnection>;
+    leaveVoiceChannel(channelID: string): void;
+    closeVoiceConnection(guildID: string): void;
+    editAFK(afk: boolean): void;
+    editStatus(status?: string, game?: GamePresence): void;
+    getChannel(channelID: string): AnyChannel;
+    createChannel(guildID: string, name: string): Promise<TextChannel>;
+    createChannel(
       guildID: string,
       name: string,
       type: 0,
       reason?: string,
-      parentID?: string,
+      options?: CreateChannelOptions | string
     ): Promise<TextChannel>;
-    public createChannel(
+    createChannel(
       guildID: string,
       name: string,
       type: 2,
       reason?: string,
-      parentID?: string,
+      options?: CreateChannelOptions | string
     ): Promise<VoiceChannel>;
-    public createChannel(
+    createChannel(
       guildID: string,
       name: string,
       type: 4,
       reason?: string,
-      parentID?: string,
+      options?: CreateChannelOptions | string
     ): Promise<CategoryChannel>;
-    public createChannel(
+    createChannel(
       guildID: string,
       name: string,
       type?: number,
       reason?: string,
-      parentID?: string,
+      options?: CreateChannelOptions | string
     ): Promise<unknown>;
-    public editChannel(channelID: string, options: {
-      name?: string,
-      icon?: string,
-      ownerID?: string,
-      topic?: string,
-      bitrate?: number,
-      userLimit?: number,
-      rateLimitPerUser?: number,
-      nsfw?: boolean,
-      parentID?: string,
-    },                 reason?: string): Promise<GroupChannel | AnyGuildChannel>;
-    public editChannelPosition(channelID: string, position: number): Promise<void>;
-    public deleteChannel(channelID: string, reason?: string): Promise<void>;
-    public sendChannelTyping(channelID: string): Promise<void>;
-    public editChannelPermission(
+    editChannel(
+      channelID: string,
+      options: {
+        name?: string;
+        icon?: string;
+        ownerID?: string;
+        topic?: string;
+        bitrate?: number;
+        userLimit?: number;
+        rateLimitPerUser?: number;
+        nsfw?: boolean;
+        parentID?: string;
+      },
+      reason?: string
+    ): Promise<GroupChannel | AnyGuildChannel>;
+    editChannelPosition(channelID: string, position: number): Promise<void>;
+    deleteChannel(channelID: string, reason?: string): Promise<void>;
+    sendChannelTyping(channelID: string): Promise<void>;
+    editChannelPermission(
       channelID: string,
       overwriteID: string,
       allow: number,
       deny: number,
       type: string,
-      reason?: string,
+      reason?: string
     ): Promise<void>;
-    public deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
-    public getChannelInvites(channelID: string): Promise<Invite[]>;
-    public createChannelInvite(
+    deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
+    getChannelInvites(channelID: string): Promise<Invite[]>;
+    createChannelInvite(
       channelID: string,
-      options?: { maxAge?: number, maxUses?: number, temporary?: boolean, unique?: boolean },
-      reason?: string,
+      options?: { maxAge?: number; maxUses?: number; temporary?: boolean; unique?: boolean },
+      reason?: string
     ): Promise<Invite>;
-    public getChannelWebhooks(channelID: string): Promise<Webhook[]>;
-    public getWebhook(webhookID: string, token?: string): Promise<Webhook>;
-    public createChannelWebhook(
+    getChannelWebhooks(channelID: string): Promise<Webhook[]>;
+    getWebhook(webhookID: string, token?: string): Promise<Webhook>;
+    createChannelWebhook(
       channelID: string,
-      options: { name: string, avatar: string },
-      reason?: string,
+      options: { name: string; avatar: string },
+      reason?: string
     ): Promise<Webhook>;
-    public editWebhook(
+    editWebhook(
       webhookID: string,
-      options: { name?: string, avatar?: string },
+      options: { name?: string; avatar?: string },
       token?: string,
-      reason?: string,
+      reason?: string
     ): Promise<Webhook>;
-    public executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true; }): Promise<Message>;
-    public executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
-    public executeSlackWebhook(webhookID: string, token: string, options?: { wait?: boolean }): Promise<void>;
-    public deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
-    public getGuildWebhooks(guildID: string): Promise<Webhook[]>;
-    public getGuildAuditLogs(
-      guildID: string,
-      limit?: number,
-      before?: string,
-      actionType?: number,
-    ): Promise<GuildAuditLog>;
-    public createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
-    public editGuildEmoji(
+    executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message>;
+    executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
+    executeSlackWebhook(webhookID: string, token: string, options?: { wait?: boolean }): Promise<void>;
+    deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
+    getGuildWebhooks(guildID: string): Promise<Webhook[]>;
+    getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number): Promise<GuildAuditLog>;
+    createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
+    editGuildEmoji(
       guildID: string,
       emojiID: string,
-      options: { name?: string, roles?: string[] },
-      reason?: string,
+      options: { name?: string; roles?: string[] },
+      reason?: string
     ): Promise<Emoji>;
-    public deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
-    public createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
-    public editRole(
-      guildID: string,
-      roleID: string,
-      options: RoleOptions,
-      reason?: string,
-    ): Promise<Role>; // TODO not all options are available?
-    public editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
-    public deleteRole(guildID: string, roleID: string, reason?: string): Promise<void>;
-    public getPruneCount(guildID: string, days: number): Promise<number>;
-    public pruneMembers(guildID: string, days: number, reason?: string): Promise<number>;
-    public getVoiceRegions(guildID: string): Promise<VoiceRegion[]>;
-    public getInvite(inviteID: string, withCounts?: boolean): Promise<Invite>;
-    public acceptInvite(inviteID: string): Promise<Invite>;
-    public deleteInvite(inviteID: string, reason?: string): Promise<void>;
-    public getSelf(): Promise<ExtendedUser>;
-    public editSelf(options: { username?: string, avatar?: string }): Promise<ExtendedUser>;
-    public getDMChannel(userID: string): Promise<PrivateChannel>;
-    public createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
-    public getMessage(channelID: string, messageID: string): Promise<Message>;
-    public getMessages(
+    deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
+    createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
+    editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
+    editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
+    deleteRole(guildID: string, roleID: string, reason?: string): Promise<void>;
+    getPruneCount(guildID: string, days: number): Promise<number>;
+    pruneMembers(guildID: string, days: number, reason?: string): Promise<number>;
+    getVoiceRegions(guildID: string): Promise<VoiceRegion[]>;
+    getInvite(inviteID: string, withCounts?: boolean): Promise<Invite>;
+    acceptInvite(inviteID: string): Promise<Invite>;
+    deleteInvite(inviteID: string, reason?: string): Promise<void>;
+    getSelf(): Promise<ExtendedUser>;
+    editSelf(options: { username?: string; avatar?: string }): Promise<ExtendedUser>;
+    getDMChannel(userID: string): Promise<PrivateChannel>;
+    createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
+    getMessage(channelID: string, messageID: string): Promise<Message>;
+    getMessages(
       channelID: string,
       limit?: number,
       before?: string,
       after?: string,
-      around?: string,
+      around?: string
     ): Promise<Message[]>;
-    public getPins(channelID: string): Promise<Message[]>;
-    public createMessage(channelID: string, content: MessageContent, file?: MessageFile): Promise<Message>;
-    public editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
-    public pinMessage(channelID: string, messageID: string): Promise<void>;
-    public unpinMessage(channelID: string, messageID: string): Promise<void>;
-    public getMessageReaction(
+    getPins(channelID: string): Promise<Message[]>;
+    createMessage(channelID: string, content: MessageContent, file?: MessageFile): Promise<Message>;
+    editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
+    pinMessage(channelID: string, messageID: string): Promise<void>;
+    unpinMessage(channelID: string, messageID: string): Promise<void>;
+    getMessageReaction(
       channelID: string,
       messageID: string,
       reaction: string,
       limit?: number,
       before?: string,
-      after?: string,
+      after?: string
     ): Promise<User[]>;
-    public addMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
-    public removeMessageReaction(
-      channelID: string,
-      messageID: string,
-      reaction: string,
-      userID?: string,
-    ): Promise<void>;
-    public removeMessageReactions(channelID: string, messageID: string): Promise<void>;
-    public deleteMessage(channelID: string, messageID: string, reason?: string): Promise<void>;
-    public deleteMessages(channelID: string, messageIDs: string[], reason?: string): Promise<void>;
-    public purgeChannel(
+    addMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
+    removeMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
+    removeMessageReactions(channelID: string, messageID: string): Promise<void>;
+    deleteMessage(channelID: string, messageID: string, reason?: string): Promise<void>;
+    deleteMessages(channelID: string, messageIDs: string[], reason?: string): Promise<void>;
+    purgeChannel(
       channelID: string,
       limit?: number,
       filter?: (m: Message) => boolean,
       before?: string,
-      after?: string,
+      after?: string
     ): Promise<number>;
-    public getGuildEmbed(guildID: string): Promise<GuildEmbed>;
-    public getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
-    public editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
-    public deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
-    public syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
-    public getGuildInvites(guildID: string): Promise<Invite[]>;
-    public getGuildVanity(guildID: string): Promise<{code: Invite}>;
-    public banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
-    public unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
-    public createGuild(name: string, region: string, icon?: string): Promise<Guild>;
-    public editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
-    public getGuildBans(guildID: string): Promise<Array<{ reason?: string, user: User }>>;
-    public getGuildBan(guildID: string, userID: string): Promise<{ reason?: string, user: User }>;
-    public editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<void>;
-    public addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
-    public removeGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
-    public editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
-    public kickGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
-    public deleteGuild(guildID: string): Promise<void>;
-    public leaveGuild(guildID: string): Promise<void>;
-    public getOAuthApplication(appID?: string): Promise<OAuthApplicationInfo>;
-    public addRelationship(userID: string, block?: boolean): Promise<void>;
-    public removeRelationship(userID: string): Promise<void>;
-    public addGroupRecipient(groupID: string, userID: string): Promise<void>;
-    public removeGroupRecipient(groupID: string, userID: string): Promise<void>;
-    public getUserProfile(userID: string): Promise<UserProfile>;
-    public editUserNote(userID: string, note: string): Promise<void>;
-    public deleteUserNote(userID: string): Promise<void>;
-    public getSelfConnections(): Promise<Connection[]>;
-    public editSelfConnection(
+    getGuildEmbed(guildID: string): Promise<GuildEmbed>;
+    getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
+    editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
+    deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
+    syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
+    getGuildInvites(guildID: string): Promise<Invite[]>;
+    getGuildVanity(guildID: string): Promise<{ code: Invite }>;
+    banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
+    unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
+    createGuild(name: string, region: string, icon?: string): Promise<Guild>;
+    editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
+    getGuildBans(guildID: string): Promise<Array<{ reason?: string; user: User }>>;
+    getGuildBan(guildID: string, userID: string): Promise<{ reason?: string; user: User }>;
+    editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<void>;
+    addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
+    removeGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
+    editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
+    kickGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
+    deleteGuild(guildID: string): Promise<void>;
+    leaveGuild(guildID: string): Promise<void>;
+    getOAuthApplication(appID?: string): Promise<OAuthApplicationInfo>;
+    addRelationship(userID: string, block?: boolean): Promise<void>;
+    removeRelationship(userID: string): Promise<void>;
+    addGroupRecipient(groupID: string, userID: string): Promise<void>;
+    removeGroupRecipient(groupID: string, userID: string): Promise<void>;
+    getUserProfile(userID: string): Promise<UserProfile>;
+    editUserNote(userID: string, note: string): Promise<void>;
+    deleteUserNote(userID: string): Promise<void>;
+    getSelfConnections(): Promise<Connection[]>;
+    editSelfConnection(
       platform: string,
       id: string,
-      data: { friendSync: boolean, visibility: number },
+      data: { friendSync: boolean; visibility: number }
     ): Promise<Connection>;
-    public deleteSelfConnection(platform: string, id: string): Promise<void>;
-    public getSelfSettings(): Promise<UserSettings>;
-    public editSelfSettings(data: UserSettings): Promise<UserSettings>;
-    public getSelfMFACodes(
+    deleteSelfConnection(platform: string, id: string): Promise<void>;
+    getSelfSettings(): Promise<UserSettings>;
+    editSelfSettings(data: UserSettings): Promise<UserSettings>;
+    getSelfMFACodes(
       password: string,
-      regenerate?: boolean,
-    ): Promise<{ backup_codes: Array<{ code: string, consumed: boolean }> }>;
-    public enableSelfMFATOTP(
+      regenerate?: boolean
+    ): Promise<{ backup_codes: Array<{ code: string; consumed: boolean }> }>;
+    enableSelfMFATOTP(
       secret: string,
-      code: string,
-    ): Promise<{ token: string, backup_codes: Array<{ code: string, consumed: boolean }> }>;
-    public disableSelfMFATOTP(code: string): Promise<{ token: string }>;
-    public getSelfBilling(): Promise<{
+      code: string
+    ): Promise<{ token: string; backup_codes: Array<{ code: string; consumed: boolean }> }>;
+    disableSelfMFATOTP(code: string): Promise<{ token: string }>;
+    getSelfBilling(): Promise<{
       premium_subscription?: {
-        status: number,
-        ended_at?: string,
-        canceled_at?: string,
-        created_at: string,
-        current_period_end?: string,
-        current_period_start?: string,
-        plan: string,
-      },
+        status: number;
+        ended_at?: string;
+        canceled_at?: string;
+        created_at: string;
+        current_period_end?: string;
+        current_period_start?: string;
+        plan: string;
+      };
       payment_source?: {
-        type: string,
-        brand: string,
-        invalid: boolean,
-        last_4: number,
-        expires_year: number,
-        expires_month: number,
-      },
-      payment_gateway?: string,
+        type: string;
+        brand: string;
+        invalid: boolean;
+        last_4: number;
+        expires_year: number;
+        expires_month: number;
+      };
+      payment_gateway?: string;
     }>;
-    public getSelfPayments(): Promise<Array<{
-      status: number,
-      amount_refunded: number,
-      description: string,
-      created_at: string, // date
-      currency: string,
-      amount: number,
-    }>>;
-    public addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
-    public deleteSelfPremiumSubscription(): Promise<void>;
-    public getRESTChannel(channelID: string): Promise<AnyChannel>;
-    public getRESTGuild(guildID: string): Promise<Guild>;
-    public getRESTGuilds(limit?: number, before?: string, after?: string): Promise<Guild[]>;
-    public getRESTGuildChannels(guildID: string): Promise<AnyGuildChannel[]>;
-    public getRESTGuildEmojis(guildID: string): Promise<Emoji[]>;
-    public getRESTGuildEmoji(guildID: string, emojiID: string): Promise<Emoji>;
-    public getRESTGuildMembers(guildID: string, limit?: number, after?: string): Promise<Member[]>;
-    public getRESTGuildMember(guildID: string, memberID: string): Promise<Member>;
-    public getRESTGuildRoles(guildID: string): Promise<Role[]>;
-    public getRESTUser(userID: string): Promise<User>;
-    public searchChannelMessages(channelID: string, query: SearchOptions): Promise<SearchResults>;
-    public searchGuildMessages(guildID: string, query: SearchOptions): Promise<SearchResults>;
-    public on(event: "ready" | "disconnect", listener: () => void): this;
-    public on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
-    public on(
-      event: "callUpdate",
-      listener: (
-        call: Call,
-        oldCall: OldCall,
-      ) => void,
-    ): this;
-    public on(event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): this;
-    public on(
+    getSelfPayments(): Promise<
+      Array<{
+        status: number;
+        amount_refunded: number;
+        description: string;
+        created_at: string; // date
+        currency: string;
+        amount: number;
+      }>
+    >;
+    addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
+    deleteSelfPremiumSubscription(): Promise<void>;
+    getRESTChannel(channelID: string): Promise<AnyChannel>;
+    getRESTGuild(guildID: string): Promise<Guild>;
+    getRESTGuilds(limit?: number, before?: string, after?: string): Promise<Guild[]>;
+    getRESTGuildChannels(guildID: string): Promise<AnyGuildChannel[]>;
+    getRESTGuildEmojis(guildID: string): Promise<Emoji[]>;
+    getRESTGuildEmoji(guildID: string, emojiID: string): Promise<Emoji>;
+    getRESTGuildMembers(guildID: string, limit?: number, after?: string): Promise<Member[]>;
+    getRESTGuildMember(guildID: string, memberID: string): Promise<Member>;
+    getRESTGuildRoles(guildID: string): Promise<Role[]>;
+    getRESTUser(userID: string): Promise<User>;
+    searchChannelMessages(channelID: string, query: SearchOptions): Promise<SearchResults>;
+    searchGuildMessages(guildID: string, query: SearchOptions): Promise<SearchResults>;
+    on(event: "ready" | "disconnect", listener: () => void): this;
+    on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
+    on(event: "callUpdate", listener: (call: Call, oldCall: OldCall) => void): this;
+    on(event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): this;
+    on(
       event: "channelPinUpdate",
-      listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void,
+      listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void
     ): this;
-    public on(
+    on(
       event: "channelRecipientAdd" | "channelRecipientRemove",
-      listener: (channel: GroupChannel, user: User) => void,
+      listener: (channel: GroupChannel, user: User) => void
     ): this;
-    public on(
-      event: "channelUpdate",
-      listener: (
-        channel: AnyChannel,
-        oldChannel: OldChannel,
-      ) => void,
-    ): this;
-    public on(
-      event: "friendSuggestionCreate",
-      listener: (user: User, reasons: FriendSuggestionReasons) => void,
-    ): this;
-    public on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
-    public on(
-      event: "guildAvailable" | "guildBanAdd" | "guildBanRemove",
-      listener: (guild: Guild, user: User) => void,
-    ): this;
-    public on(event: "guildDelete" | "guildUnavailable" | "guildCreate", listener: (guild: Guild) => void): this;
-    public on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): this;
-    public on(event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): this;
-    public on(event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): this;
-    public on(
-      event: "guildMemberRemove",
-      listener: (guild: Guild, member: Member | MemberPartial) => void,
-    ): this;
-    public on(
+    on(event: "channelUpdate", listener: (channel: AnyChannel, oldChannel: OldChannel) => void): this;
+    on(event: "friendSuggestionCreate", listener: (user: User, reasons: FriendSuggestionReasons) => void): this;
+    on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
+    on(event: "guildAvailable" | "guildBanAdd" | "guildBanRemove", listener: (guild: Guild, user: User) => void): this;
+    on(event: "guildDelete" | "guildUnavailable" | "guildCreate", listener: (guild: Guild) => void): this;
+    on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): this;
+    on(event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): this;
+    on(event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): this;
+    on(event: "guildMemberRemove", listener: (guild: Guild, member: Member | MemberPartial) => void): this;
+    on(
       event: "guildMemberUpdate",
-      listener: (guild: Guild, member: Member, oldMember: { roles: string[], nick?: string }) => void,
+      listener: (guild: Guild, member: Member, oldMember: { roles: string[]; nick?: string }) => void
     ): this;
-    public on(event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): this;
-    public on(event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: RoleOptions) => void): this;
-    public on(event: "guildUpdate", listener: (guild: Guild, oldGuild: GuildOptions) => void): this;
-    public on(event: "hello", listener: (trace: string[], id: number) => void): this;
-    public on(event: "messageCreate", listener: (message: Message) => void): this;
-    public on(
-      event: "messageDelete" | "messageReactionRemoveAll",
-      listener: (message: PossiblyUncachedMessage) => void,
-    ): this;
-    public on(event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): this;
-    public on(
+    on(event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): this;
+    on(event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: RoleOptions) => void): this;
+    on(event: "guildUpdate", listener: (guild: Guild, oldGuild: GuildOptions) => void): this;
+    on(event: "hello", listener: (trace: string[], id: number) => void): this;
+    on(event: "messageCreate", listener: (message: Message) => void): this;
+    on(event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): this;
+    on(event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): this;
+    on(
       event: "messageReactionAdd" | "messageReactionRemove",
-      listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void,
+      listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void
     ): this;
-    public on(event: "messageUpdate", listener: (message: Message, oldMessage?: {
-      attachments: Attachment[],
-      embeds: Embed[],
-      content: string,
-      editedTimestamp?: number,
-      mentionedBy?: any,
-      tts: boolean,
-      mentions: string[],
-      roleMentions: string[],
-      channelMentions: string[],
-    }) => void): this;
-    public on(
-      event: "presenceUpdate",
+    on(
+      event: "messageUpdate",
       listener: (
-        other: Member | Relationship,
-        oldPresence?: OldPresence,
-      ) => void,
+        message: Message,
+        oldMessage?: {
+          attachments: Attachment[];
+          embeds: Embed[];
+          content: string;
+          editedTimestamp?: number;
+          mentionedBy?: any;
+          tts: boolean;
+          mentions: string[];
+          roleMentions: string[];
+          channelMentions: string[];
+        }
+      ) => void
     ): this;
-    public on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
-    public on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
-    public on(
+    on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: OldPresence) => void): this;
+    on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
+    on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
+    on(
       event: "relationshipUpdate",
-      listener: (relationship: Relationship, oldRelationship: { type: number }) => void,
+      listener: (relationship: Relationship, oldRelationship: { type: number }) => void
     ): this;
-    public on(event: "typingStart", listener: (channel: TextableChannel, user: User) => void): this;
-    public on(event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): this;
-    public on(
+    on(event: "typingStart", listener: (channel: TextableChannel, user: User) => void): this;
+    on(event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): this;
+    on(
       event: "userUpdate",
-      listener: (user: User, oldUser: { username: string, discriminator: string, avatar?: string }) => void,
+      listener: (user: User, oldUser: { username: string; discriminator: string; avatar?: string }) => void
     ): this;
-    public on(event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): this;
-    public on(event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): this;
-    public on(
+    on(event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): this;
+    on(event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): this;
+    on(
       event: "voiceChannelSwitch",
-      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void,
+      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void
     ): this;
-    public on(
-      event: "voiceStateUpdate",
-      listener: (
-        member: Member,
-        oldState: OldVoiceState,
-      ) => void,
-    ): this;
-    public on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
-    public on(
+    on(event: "voiceStateUpdate", listener: (member: Member, oldState: OldVoiceState) => void): this;
+    on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
+    on(
       event: "shardDisconnect" | "error" | "shardPreReady" | "connect",
-      listener: (err: Error, id: number) => void,
+      listener: (err: Error, id: number) => void
     ): this;
-    public on(event: "shardReady" | "shardResume", listener: (id: number) => void): this;
+    on(event: "shardReady" | "shardResume", listener: (id: number) => void): this;
     // tslint:disable-next-line
-    public on(event: string, listener: Function): this;
-    public toJSON(simple?: boolean): JSONCache;
+    on(event: string, listener: Function): this;
+    toJSON(simple?: boolean): JSONCache;
   }
 
   export class VoiceConnection extends EventEmitter implements SimpleJSON {
-    public id: string;
-    public channelID: string;
-    public connecting: boolean;
-    public ready: boolean;
-    public playing: boolean;
-    public paused: boolean;
-    public volume: number;
-    public current?: {
-      startTime: number,
-      playTime: number,
-      pausedTimestamp?: number,
-      pausedTime?: number,
-      options: VoiceResourceOptions,
+    id: string;
+    channelID: string;
+    connecting: boolean;
+    ready: boolean;
+    playing: boolean;
+    paused: boolean;
+    volume: number;
+    current?: {
+      startTime: number;
+      playTime: number;
+      pausedTimestamp?: number;
+      pausedTime?: number;
+      options: VoiceResourceOptions;
     };
-    public constructor(id: string, options?: { shard?: Shard, shared?: boolean, opusOnly?: boolean });
-    public pause(): void;
-    public play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
-    public receive(type: string): VoiceDataStream;
-    public resume(): void;
-    public setVolume(volume: number): void;
-    public stopPlaying(): void;
-    public switchChannel(channelID: string): void;
-    public updateVoiceState(selfMute: boolean, selfDeaf: boolean): void;
-    public on(event: "debug" | "warn", listener: (message: string) => void): this;
-    public on(event: "error" | "disconnect", listener: (err: Error) => void): this;
-    public on(event: "pong", listener: (latency: number) => void): this;
-    public on(event: "speakingStart", listener: (userID: string) => void): this;
-    public on(event: "speakingStop", listener: (userID: string) => void): this;
-    public on(event: "end", listener: () => void): this;
-    public toJSON(simple?: boolean): JSONCache;
+    constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean });
+    pause(): void;
+    play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
+    receive(type: string): VoiceDataStream;
+    resume(): void;
+    setVolume(volume: number): void;
+    stopPlaying(): void;
+    switchChannel(channelID: string): void;
+    updateVoiceState(selfMute: boolean, selfDeaf: boolean): void;
+    on(event: "debug" | "warn", listener: (message: string) => void): this;
+    on(event: "error" | "disconnect", listener: (err: Error) => void): this;
+    on(event: "pong", listener: (latency: number) => void): this;
+    on(event: "speakingStart", listener: (userID: string) => void): this;
+    on(event: "speakingStop", listener: (userID: string) => void): this;
+    on(event: "end", listener: () => void): this;
+    toJSON(simple?: boolean): JSONCache;
   }
 
   export class SharedStream extends EventEmitter {
-    public playing: boolean;
-    public ended: boolean;
-    public volume: number;
-    public speaking: boolean;
-    public current?: {
-      startTime: number,
-      playTime: number,
-      pausedTimestamp?: number,
-      pausedTime?: number,
-      options: VoiceResourceOptions,
+    playing: boolean;
+    ended: boolean;
+    volume: number;
+    speaking: boolean;
+    current?: {
+      startTime: number;
+      playTime: number;
+      pausedTimestamp?: number;
+      pausedTime?: number;
+      options: VoiceResourceOptions;
     };
-    public add(connection: VoiceConnection): void;
-    public play(resource: ReadableStream | string, options: VoiceResourceOptions): void;
-    public remove(connection: VoiceConnection): void;
-    public setVolume(volume: number): void;
-    public stopPlaying(): void;
+    add(connection: VoiceConnection): void;
+    play(resource: ReadableStream | string, options: VoiceResourceOptions): void;
+    remove(connection: VoiceConnection): void;
+    setVolume(volume: number): void;
+    stopPlaying(): void;
   }
 
   export class VoiceDataStream extends EventEmitter {
-    public type: string;
-    public constructor(type: string);
-    public on(event: "data", listener: (data: Buffer, userID: string, timestamp: number, sequence: number) => void): this;
+    type: string;
+    constructor(type: string);
+    on(event: "data", listener: (data: Buffer, userID: string, timestamp: number, sequence: number) => void): this;
   }
 
   // tslint:disable-next-line
-  export class VoiceConnectionManager<T extends VoiceConnection> extends Collection<T> implements SimpleJSON { // owo an undocumented class
-    public constructor(vcObject: new () => T);
-    public join(guildID: string, channelID: string, options: VoiceResourceOptions): Promise<VoiceConnection>;
-    public leave(guildID: string): void;
-    public switch(guildID: string, channelID: string): void;
-    public toJSON(simple?: boolean): JSONCache;
+  export class VoiceConnectionManager<T extends VoiceConnection> extends Collection<T> implements SimpleJSON {
+    // owo an undocumented class
+    constructor(vcObject: new () => T);
+    join(guildID: string, channelID: string, options: VoiceResourceOptions): Promise<VoiceConnection>;
+    leave(guildID: string): void;
+    switch(guildID: string, channelID: string): void;
+    toJSON(simple?: boolean): JSONCache;
   }
 
   class Base implements SimpleJSON {
-    public id: string;
-    public createdAt: number;
-    public constructor(id: string);
-    public inspect(): this;
-    public toJSON(simple?: boolean): JSONCache;
+    id: string;
+    createdAt: number;
+    constructor(id: string);
+    inspect(): this;
+    toJSON(simple?: boolean): JSONCache;
   }
 
   export class Bucket {
-    public tokens: number;
-    public lastReset: number;
-    public lastSend: number;
-    public tokenLimit: number;
-    public interval: number;
-    public constructor(tokenLimit: number, interval: number, latencyRef: { latency: number });
+    tokens: number;
+    lastReset: number;
+    lastSend: number;
+    tokenLimit: number;
+    interval: number;
+    constructor(tokenLimit: number, interval: number, latencyRef: { latency: number });
     // tslint:disable-next-line
-    public queue(func: Function): void;
+    queue(func: Function): void;
   }
 
   export class Collection<T extends { id: string | number }> extends Map<string | number, T> {
-    public baseObject: new (...args: any[]) => T;
-    public limit?: number;
-    public constructor(baseObject: new (...args: any[]) => T, limit?: number);
-    public add(obj: T, extra?: any, replace?: boolean): T;
-    public find(func: (i: T) => boolean): T;
-    public random(): T;
-    public filter(func: (i: T) => boolean): T[];
-    public map<R>(func: (i: T) => R): R[];
-    public reduce<U>(func: (accumulator: U, val: T) => U, initialValue?: U): U;
-    public every(func: (i: T) => boolean): boolean;
-    public some(func: (i: T) => boolean): boolean;
-    public update(obj: T, extra?: any, replace?: boolean): T;
-    public remove(obj: T | { id: string }): T;
+    baseObject: new (...args: any[]) => T;
+    limit?: number;
+    constructor(baseObject: new (...args: any[]) => T, limit?: number);
+    add(obj: T, extra?: any, replace?: boolean): T;
+    find(func: (i: T) => boolean): T;
+    random(): T;
+    filter(func: (i: T) => boolean): T[];
+    map<R>(func: (i: T) => R): R[];
+    reduce<U>(func: (accumulator: U, val: T) => U, initialValue?: U): U;
+    every(func: (i: T) => boolean): boolean;
+    some(func: (i: T) => boolean): boolean;
+    update(obj: T, extra?: any, replace?: boolean): T;
+    remove(obj: T | { id: string }): T;
   }
 
   export class Call extends Base {
-    public id: string;
-    public createdAt: number;
-    public channel: GroupChannel;
-    public voiceStates: Collection<VoiceState>;
-    public participants: string[];
-    public endedTimestamp?: number;
-    public ringing?: string[];
-    public region?: string;
-    public unavailable: boolean;
-    public constructor(data: BaseData, channel: GroupChannel);
+    id: string;
+    createdAt: number;
+    channel: GroupChannel;
+    voiceStates: Collection<VoiceState>;
+    participants: string[];
+    endedTimestamp?: number;
+    ringing?: string[];
+    region?: string;
+    unavailable: boolean;
+    constructor(data: BaseData, channel: GroupChannel);
   }
 
   export class Channel extends Base {
-    public id: string;
-    public mention: string;
-    public type: number;
-    public createdAt: number;
-    public constructor(data: BaseData);
+    id: string;
+    mention: string;
+    type: number;
+    createdAt: number;
+    constructor(data: BaseData);
   }
 
   export class ExtendedUser extends User {
-    public email: string;
-    public verified: boolean;
-    public mfaEnabled: boolean;
+    email: string;
+    verified: boolean;
+    mfaEnabled: boolean;
   }
 
   export class GroupChannel extends PrivateChannel {
-    public recipients: Collection<User>;
-    public name: string;
-    public icon?: string;
-    public iconURL?: string;
-    public ownerID: string;
-    public edit(options: { name?: string, icon?: string, ownerID?: string }): Promise<GroupChannel>;
-    public addRecipient(userID: string): Promise<void>;
-    public removeRecipient(userID: string): Promise<void>;
-    public dynamicIconURL(format: string, size: number): string;
+    recipients: Collection<User>;
+    name: string;
+    icon?: string;
+    iconURL?: string;
+    ownerID: string;
+    edit(options: { name?: string; icon?: string; ownerID?: string }): Promise<GroupChannel>;
+    addRecipient(userID: string): Promise<void>;
+    removeRecipient(userID: string): Promise<void>;
+    dynamicIconURL(format: string, size: number): string;
   }
 
   export class Guild extends Base {
-    public id: string;
-    public createdAt: number;
-    public name: string;
-    public verificationLevel: number;
-    public region: string;
-    public icon?: string;
-    public afkChannelID?: string;
-    public systemChannelID?: string;
-    public afkTimeout: number;
-    public defaultNotifications: number;
-    public mfaLevel: number;
-    public joinedAt: number;
-    public ownerID: string;
-    public splash?: string;
-    public banner?: string;
-    public premiumTier: number;
-    public premiumSubscriptionCount?: number;
-    public vanityURL?: string;
-    public preferredLocale: string;
-    public description?: string;
-    public maxMembers: number;
-    public unavailable: boolean;
-    public large: boolean;
-    public maxPresences: number;
-    public channels: Collection<AnyGuildChannel>;
-    public members: Collection<Member>;
-    public memberCount: number;
-    public roles: Collection<Role>;
-    public shard: Shard;
-    public features: string[];
-    public emojis: Emoji[];
-    public iconURL?: string;
-    public explicitContentFilter: number;
-    public constructor(data: BaseData, client: Client);
-    public fetchAllMembers(): void;
-    public dynamicIconURL(format: string, size: number): string;
-    public createChannel(name: string): Promise<TextChannel>;
-    public createChannel(name: string, type: 0, reason?: string, parentID?: string): Promise<TextChannel>;
-    public createChannel(name: string, type: 2, reason?: string, parentID?: string): Promise<VoiceChannel>;
-    public createChannel(name: string, type: 4, reason?: string, parentID?: string): Promise<CategoryChannel>;
-    public createChannel(name: string, type?: number, reason?: string, parentID?: string): Promise<unknown>;
-    public createEmoji(
-      options: { name: string, image: string, roles?: string[] },
-      reason?: string,
-    ): Promise<Emoji>;
-    public editEmoji(
-      emojiID: string,
-      options: { name: string, roles?: string[] },
-      reason?: string,
-    ): Promise<Emoji>;
-    public deleteEmoji(emojiID: string, reason?: string): Promise<void>;
-    public createRole(options: RoleOptions, reason?: string): Promise<Role>;
-    public getPruneCount(days: number): Promise<number>;
-    public pruneMembers(days: number, reason?: string): Promise<number>;
-    public getRESTChannels(): Promise<AnyGuildChannel[]>;
-    public getRESTEmojis(): Promise<Emoji[]>;
-    public getRESTEmoji(emojiID: string): Promise<Emoji>;
-    public getRESTMembers(limit?: number, after?: string): Promise<Member[]>;
-    public getRESTMember(memberID: string): Promise<Member>;
-    public getRESTRoles(): Promise<Role[]>;
-    public getEmbed(): Promise<GuildEmbed>;
-    public getVoiceRegions(): Promise<VoiceRegion[]>;
-    public leaveVoiceChannel(): void;
-    public editRole(roleID: string, options: RoleOptions): Promise<Role>;
-    public deleteRole(roleID: string): Promise<void>;
-    public getAuditLogs(limit?: number, before?: string, actionType?: number): Promise<GuildAuditLog>;
-    public getIntegrations(): Promise<GuildIntegration>;
-    public editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
-    public syncIntegration(integrationID: string): Promise<void>;
-    public deleteIntegration(integrationID: string): Promise<void>;
-    public getInvites(): Promise<Invite[]>;
-    public getVanity(): Promise<{code: Invite}>;
-    public editMember(memberID: string, options: MemberOptions, reason?: string): Promise<void>;
-    public addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
-    public removeMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
-    public kickMember(userID: string, reason?: string): Promise<void>;
-    public banMember(userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
-    public unbanMember(userID: string, reason?: string): Promise<void>;
-    public edit(
-      options: GuildOptions, reason?: string,
-    ): Promise<Guild>;
-    public delete(): Promise<void>;
-    public leave(): Promise<void>;
-    public getBans(): Promise<{ reason?: string, user: User }[]>;
-    public getBan(userID: string): Promise<{ reason?: string, user: User }>;
-    public editNickname(nick: string): Promise<void>;
-    public getWebhooks(): Promise<Webhook[]>;
+    id: string;
+    createdAt: number;
+    name: string;
+    verificationLevel: number;
+    region: string;
+    icon?: string;
+    afkChannelID?: string;
+    systemChannelID?: string;
+    afkTimeout: number;
+    defaultNotifications: number;
+    mfaLevel: number;
+    joinedAt: number;
+    ownerID: string;
+    splash?: string;
+    banner?: string;
+    premiumTier: number;
+    premiumSubscriptionCount?: number;
+    vanityURL?: string;
+    preferredLocale: string;
+    description?: string;
+    maxMembers: number;
+    unavailable: boolean;
+    large: boolean;
+    maxPresences: number;
+    channels: Collection<AnyGuildChannel>;
+    members: Collection<Member>;
+    memberCount: number;
+    roles: Collection<Role>;
+    shard: Shard;
+    features: string[];
+    emojis: Emoji[];
+    iconURL?: string;
+    explicitContentFilter: number;
+    constructor(data: BaseData, client: Client);
+    fetchAllMembers(): void;
+    dynamicIconURL(format: string, size: number): string;
+    createChannel(name: string): Promise<TextChannel>;
+    createChannel(name: string, type: 0, reason?: string, options?: CreateChannelOptions | string): Promise<TextChannel>;
+    createChannel(name: string, type: 2, reason?: string, options?: CreateChannelOptions | string): Promise<VoiceChannel>;
+    createChannel(name: string, type: 4, reason?: string, options?: CreateChannelOptions | string): Promise<CategoryChannel>;
+    createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
+    createEmoji(options: { name: string; image: string; roles?: string[] }, reason?: string): Promise<Emoji>;
+    editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
+    deleteEmoji(emojiID: string, reason?: string): Promise<void>;
+    createRole(options: RoleOptions, reason?: string): Promise<Role>;
+    getPruneCount(days: number): Promise<number>;
+    pruneMembers(days: number, reason?: string): Promise<number>;
+    getRESTChannels(): Promise<AnyGuildChannel[]>;
+    getRESTEmojis(): Promise<Emoji[]>;
+    getRESTEmoji(emojiID: string): Promise<Emoji>;
+    getRESTMembers(limit?: number, after?: string): Promise<Member[]>;
+    getRESTMember(memberID: string): Promise<Member>;
+    getRESTRoles(): Promise<Role[]>;
+    getEmbed(): Promise<GuildEmbed>;
+    getVoiceRegions(): Promise<VoiceRegion[]>;
+    leaveVoiceChannel(): void;
+    editRole(roleID: string, options: RoleOptions): Promise<Role>;
+    deleteRole(roleID: string): Promise<void>;
+    getAuditLogs(limit?: number, before?: string, actionType?: number): Promise<GuildAuditLog>;
+    getIntegrations(): Promise<GuildIntegration>;
+    editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
+    syncIntegration(integrationID: string): Promise<void>;
+    deleteIntegration(integrationID: string): Promise<void>;
+    getInvites(): Promise<Invite[]>;
+    getVanity(): Promise<{ code: Invite }>;
+    editMember(memberID: string, options: MemberOptions, reason?: string): Promise<void>;
+    addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
+    removeMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
+    kickMember(userID: string, reason?: string): Promise<void>;
+    banMember(userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
+    unbanMember(userID: string, reason?: string): Promise<void>;
+    edit(options: GuildOptions, reason?: string): Promise<Guild>;
+    delete(): Promise<void>;
+    leave(): Promise<void>;
+    getBans(): Promise<{ reason?: string; user: User }[]>;
+    getBan(userID: string): Promise<{ reason?: string; user: User }>;
+    editNickname(nick: string): Promise<void>;
+    getWebhooks(): Promise<Webhook[]>;
   }
 
   export class GuildAuditLogEntry extends Base {
-    public id: string;
-    public guild: Guild;
-    public actionType: number;
-    public reason?: string;
-    public user: User;
-    public targetID: string;
-    public target?: Guild | AnyGuildChannel | Member | Invite | Role | any;
-    public before?: any;
-    public after?: any;
-    public count?: number;
-    public channel?: AnyGuildChannel;
-    public deleteMemberDays?: number;
-    public membersRemoved?: number;
-    public member?: Member | any;
-    public role?: Role | any;
-    public constructor(data: BaseData, guild: Guild);
+    id: string;
+    guild: Guild;
+    actionType: number;
+    reason?: string;
+    user: User;
+    targetID: string;
+    target?: Guild | AnyGuildChannel | Member | Invite | Role | any;
+    before?: any;
+    after?: any;
+    count?: number;
+    channel?: AnyGuildChannel;
+    deleteMemberDays?: number;
+    membersRemoved?: number;
+    member?: Member | any;
+    role?: Role | any;
+    constructor(data: BaseData, guild: Guild);
   }
 
   export class GuildChannel extends Channel {
-    public guild: Guild;
-    public parentID?: string;
-    public name: string;
-    public position: number;
-    public permissionOverwrites: Collection<PermissionOverwrite>;
-    public nsfw: boolean;
-    public constructor(data: BaseData, guild: Guild);
-    public getInvites(): Promise<Invite[]>;
-    public createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
-    public permissionsOf(memberID: string): Permission;
-    public edit(
+    guild: Guild;
+    parentID?: string;
+    name: string;
+    position: number;
+    permissionOverwrites: Collection<PermissionOverwrite>;
+    nsfw: boolean;
+    constructor(data: BaseData, guild: Guild);
+    getInvites(): Promise<Invite[]>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
+    permissionsOf(memberID: string): Permission;
+    edit(
       options: {
-        name?: string,
-        topic?: string,
-        bitrate?: number,
-        userLimit?: number,
-        rateLimitPerUser?: number,
-        nsfw?: boolean,
+        name?: string;
+        topic?: string;
+        bitrate?: number;
+        userLimit?: number;
+        rateLimitPerUser?: number;
+        nsfw?: boolean;
       },
-      reason?: string,
+      reason?: string
     ): Promise<AnyGuildChannel>;
-    public editPosition(position: number): Promise<void>;
-    public delete(reason?: string): Promise<void>;
-    public editPermission(
+    editPosition(position: number): Promise<void>;
+    delete(reason?: string): Promise<void>;
+    editPermission(
       overwriteID: string,
       allow: number,
       deny: number,
-      type: string,
-      reason?: string,
+      type: "role" | "member",
+      reason?: string
     ): Promise<PermissionOverwrite>;
-    public deletePermission(overwriteID: string, reason?: string): Promise<void>;
+    deletePermission(overwriteID: string, reason?: string): Promise<void>;
   }
 
   export class CategoryChannel extends GuildChannel {
-    public channels: Collection<TextChannel | VoiceChannel>;
+    channels: Collection<TextChannel | VoiceChannel>;
   }
 
   export class TextChannel extends GuildChannel implements Textable, Invitable {
-    public topic?: string;
-    public lastMessageID: string;
-    public rateLimitPerUser: number;
-    public messages: Collection<Message>;
-    public lastPinTimestamp?: number;
-    public constructor(data: BaseData, guild: Guild, messageLimit: number);
-    public getInvites(): Promise<Invite[]>;
-    public createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
-    public getWebhooks(): Promise<Webhook[]>;
-    public createWebhook(options: { name: string, avatar: string }, reason?: string): Promise<Webhook>;
-    public sendTyping(): Promise<void>;
-    public getMessage(messageID: string): Promise<Message>;
-    public getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
-    public getPins(): Promise<Message[]>;
-    public createMessage(
-      content: MessageContent,
-      file?: MessageFile,
-    ): Promise<Message>;
-    public editMessage(messageID: string, content: MessageContent): Promise<Message>;
-    public pinMessage(messageID: string): Promise<void>;
-    public unpinMessage(messageID: string): Promise<void>;
-    public getMessageReaction(
+    topic?: string;
+    lastMessageID: string;
+    rateLimitPerUser: number;
+    messages: Collection<Message>;
+    lastPinTimestamp?: number;
+    constructor(data: BaseData, guild: Guild, messageLimit: number);
+    getInvites(): Promise<Invite[]>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
+    getWebhooks(): Promise<Webhook[]>;
+    createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
+    sendTyping(): Promise<void>;
+    getMessage(messageID: string): Promise<Message>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
+    getPins(): Promise<Message[]>;
+    createMessage(content: MessageContent, file?: MessageFile): Promise<Message>;
+    editMessage(messageID: string, content: MessageContent): Promise<Message>;
+    pinMessage(messageID: string): Promise<void>;
+    unpinMessage(messageID: string): Promise<void>;
+    getMessageReaction(
       messageID: string,
       reaction: string,
       limit?: number,
       before?: string,
-      after?: string,
+      after?: string
     ): Promise<User[]>;
-    public addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
-    public removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
-    public removeMessageReactions(messageID: string): Promise<void>;
-    public purge(
-      limit: number, filter?: (message: Message) => boolean, before?: string, after?: string
-    ): Promise<number>;
-    public deleteMessage(messageID: string, reason?: string): Promise<void>;
-    public deleteMessages(messageIDs: string[]): Promise<void>;
-    public unsendMessage(messageID: string): Promise<void>;
+    addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
+    removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
+    removeMessageReactions(messageID: string): Promise<void>;
+    purge(limit: number, filter?: (message: Message) => boolean, before?: string, after?: string): Promise<number>;
+    deleteMessage(messageID: string, reason?: string): Promise<void>;
+    deleteMessages(messageIDs: string[]): Promise<void>;
+    unsendMessage(messageID: string): Promise<void>;
   }
 
   export class VoiceChannel extends GuildChannel implements Invitable {
-    public bitrate?: number;
-    public userLimit?: number;
-    public voiceMembers?: Collection<Member>;
-    public getInvites(): Promise<Invite[]>;
-    public createInvite(options: CreateInviteOptions, reason?: string): Promise<Invite>;
-    public join(options: VoiceResourceOptions): Promise<VoiceConnection>;
-    public leave(): void;
+    bitrate?: number;
+    userLimit?: number;
+    voiceMembers?: Collection<Member>;
+    getInvites(): Promise<Invite[]>;
+    createInvite(options: CreateInviteOptions, reason?: string): Promise<Invite>;
+    join(options: VoiceResourceOptions): Promise<VoiceConnection>;
+    leave(): void;
   }
 
   export class GuildIntegration extends Base {
-    public id: string;
-    public createdAt: number;
-    public name: string;
-    public type: string;
-    public roleID: string;
-    public user: User;
-    public account: { id: string, name: string };
-    public enabled: boolean;
-    public syncing: boolean;
-    public expireBehavior: number;
-    public expireGracePeriod: number;
-    public enableEmoticons: boolean;
-    public subscriberCount: number;
-    public syncedAt: number;
-    public constructor(data: BaseData, guild: Guild);
-    public edit(options: { expireBehavior: string, expireGracePeriod: string, enableEmoticons: string }): Promise<void>;
-    public delete(): Promise<void>;
-    public sync(): Promise<void>;
+    id: string;
+    createdAt: number;
+    name: string;
+    type: string;
+    roleID: string;
+    user: User;
+    account: { id: string; name: string };
+    enabled: boolean;
+    syncing: boolean;
+    expireBehavior: number;
+    expireGracePeriod: number;
+    enableEmoticons: boolean;
+    subscriberCount: number;
+    syncedAt: number;
+    constructor(data: BaseData, guild: Guild);
+    edit(options: { expireBehavior: string; expireGracePeriod: string; enableEmoticons: string }): Promise<void>;
+    delete(): Promise<void>;
+    sync(): Promise<void>;
   }
 
   export class Invite implements SimpleJSON {
-    public code: string;
-    public channel: { id: string, name: string };
-    public guild: {
-      id: string,
-      name: string,
-      splash?: string,
-      icon?: string,
-      textChannelCount?: number,
-      voiceChannelCount?: number,
+    code: string;
+    channel: { id: string; name: string };
+    guild: {
+      id: string;
+      name: string;
+      splash?: string;
+      icon?: string;
+      textChannelCount?: number;
+      voiceChannelCount?: number;
     };
-    public inviter?: User;
-    public uses?: number;
-    public maxUses?: number;
-    public maxAge?: number;
-    public temporary?: boolean;
-    public createdAt?: number;
-    public revoked?: boolean;
-    public presenceCount?: number;
-    public memberCount?: number;
-    public constructor(data: BaseData, client: Client);
-    public delete(reason?: string): Promise<void>;
-    public toJSON(simple?: boolean): JSONCache;
+    inviter?: User;
+    uses?: number;
+    maxUses?: number;
+    maxAge?: number;
+    temporary?: boolean;
+    createdAt?: number;
+    revoked?: boolean;
+    presenceCount?: number;
+    memberCount?: number;
+    constructor(data: BaseData, client: Client);
+    delete(reason?: string): Promise<void>;
+    toJSON(simple?: boolean): JSONCache;
+  }
+
+  interface Activity {
+    application_id?: string;
+    assets?: ActivityAssets[];
+    created_at: number;
+    details?: string;
+    id: string;
+    name: string;
+    state?: string;
+    type: 0 | 1 | 2 | 3;
+    url?: string;
+  }
+
+  interface ActivityAssets {
+    large_image: string;
+  }
+
+  type Status = "online" | "idle" | "dnd" | "offline";
+
+  interface ClientStatus {
+    web: Status;
+    desktop: Status;
+    mobile: Status;
   }
 
   export class Member extends Base {
-    public id: string;
-    public mention: string;
-    public guild: Guild;
-    public joinedAt: number;
-    public premiumSince: number;
-    public status: string;
-    public game?: GamePresence;
-    public voiceState: VoiceState;
-    public nick?: string;
-    public roles: string[];
-    public user: User;
-    public permission: Permission;
-    public defaultAvatar: string;
-    public createdAt: number;
-    public bot: boolean;
-    public username: string;
-    public discriminator: string;
-    public avatar?: string;
-    public defaultAvatarURL: string;
-    public avatarURL: string;
-    public staticAvatarURL: string;
-    public constructor(data: BaseData, guild: Guild);
-    public edit(
-      options: MemberOptions, reason?: string,
-    ): Promise<void>;
-    public addRole(roleID: string, reason?: string): Promise<void>;
-    public removeRole(roleID: string, reason?: string): Promise<void>;
-    public kick(reason?: string): Promise<void>;
-    public ban(deleteMessageDays?: number, reason?: string): Promise<void>;
-    public unban(reason?: string): Promise<void>;
+    activities: Activity[];
+    clientStatus: ClientStatus;
+    id: string;
+    mention: string;
+    guild: Guild;
+    joinedAt: number;
+    premiumSince: number;
+    status: Status;
+    game?: GamePresence;
+    voiceState: VoiceState;
+    nick?: string;
+    roles: string[];
+    user: User;
+    permission: Permission;
+    defaultAvatar: string;
+    createdAt: number;
+    bot: boolean;
+    username: string;
+    discriminator: string;
+    avatar?: string;
+    defaultAvatarURL: string;
+    avatarURL: string;
+    staticAvatarURL: string;
+    constructor(data: BaseData, guild: Guild);
+    edit(options: MemberOptions, reason?: string): Promise<void>;
+    addRole(roleID: string, reason?: string): Promise<void>;
+    removeRole(roleID: string, reason?: string): Promise<void>;
+    kick(reason?: string): Promise<void>;
+    ban(deleteMessageDays?: number, reason?: string): Promise<void>;
+    unban(reason?: string): Promise<void>;
   }
 
   export class Message extends Base {
-    public id: string;
-    public createdAt: number;
-    public channel: TextableChannel;
-    public timestamp: number;
-    public type: number;
-    public author: User;
-    public member?: Member;
-    public mentions: User[];
-    public content: string;
-    public cleanContent?: string;
-    public roleMentions: string[];
-    public channelMentions: string[];
-    public editedTimestamp?: number;
-    public tts: boolean;
-    public mentionEveryone: boolean;
-    public attachments: Attachment[];
-    public embeds: Embed[];
-    public reactions: { [s: string]: any, count: number, me: boolean };
-    public prefix?: string;
-    public command?: Command;
-    public constructor(data: BaseData, client: Client);
-    public edit(content: MessageContent): Promise<Message>;
-    public pin(): Promise<void>;
-    public unpin(): Promise<void>;
-    public getReaction(reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
-    public addReaction(reaction: string, userID?: string): Promise<void>;
-    public removeReaction(reaction: string, userID?: string): Promise<void>;
-    public removeReactions(): Promise<void>;
-    public delete(reason?: string): Promise<void>;
+    id: string;
+    createdAt: number;
+    channel: TextableChannel;
+    timestamp: number;
+    type: number;
+    author: User;
+    member?: Member;
+    mentions: User[];
+    content: string;
+    cleanContent?: string;
+    roleMentions: string[];
+    channelMentions: string[];
+    editedTimestamp?: number;
+    tts: boolean;
+    mentionEveryone: boolean;
+    attachments: Attachment[];
+    embeds: Embed[];
+    reactions: { [s: string]: any; count: number; me: boolean };
+    prefix?: string;
+    command?: Command;
+    constructor(data: BaseData, client: Client);
+    edit(content: MessageContent): Promise<Message>;
+    pin(): Promise<void>;
+    unpin(): Promise<void>;
+    getReaction(reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
+    addReaction(reaction: string, userID?: string): Promise<void>;
+    removeReaction(reaction: string, userID?: string): Promise<void>;
+    removeReactions(): Promise<void>;
+    delete(reason?: string): Promise<void>;
   }
 
   export class Permission {
-    public allow: number;
-    public deny: number;
-    public json: { [s: string]: boolean };
-    public constructor(allow: number, deny: number);
-    public has(permission: string): boolean;
+    allow: number;
+    deny: number;
+    json: { [s: string]: boolean };
+    constructor(allow: number, deny: number);
+    has(permission: string): boolean;
+  }
+
+  interface Overwrite {
+    id: string;
+    type: "user" | "member";
+    allow: number;
+    deny: number;
   }
 
   export class PermissionOverwrite extends Permission {
-    public id: string;
-    public createdAt: number;
-    public type: string;
-    public constructor(data: { allow: number, deny: number });
+    id: string;
+    createdAt: number;
+    type: string;
+    constructor(data: { allow: number; deny: number });
   }
 
   export class PrivateChannel extends Channel implements Textable {
-    public lastMessageID: string;
-    public recipient: User;
-    public messages: Collection<Message>;
-    public ring(recipient: string[]): void;
-    public syncCall(): void;
-    public leave(): Promise<void>;
-    public sendTyping(): Promise<void>;
-    public getMessage(messageID: string): Promise<Message>;
-    public getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
-    public getPins(): Promise<Message[]>;
-    public createMessage(
-      content: MessageContent,
-      file?: MessageFile,
-    ): Promise<Message>;
-    public editMessage(messageID: string, content: MessageContent): Promise<Message>;
-    public pinMessage(messageID: string): Promise<void>;
-    public unpinMessage(messageID: string): Promise<void>;
-    public getMessageReaction(
+    lastMessageID: string;
+    recipient: User;
+    messages: Collection<Message>;
+    ring(recipient: string[]): void;
+    syncCall(): void;
+    leave(): Promise<void>;
+    sendTyping(): Promise<void>;
+    getMessage(messageID: string): Promise<Message>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
+    getPins(): Promise<Message[]>;
+    createMessage(content: MessageContent, file?: MessageFile): Promise<Message>;
+    editMessage(messageID: string, content: MessageContent): Promise<Message>;
+    pinMessage(messageID: string): Promise<void>;
+    unpinMessage(messageID: string): Promise<void>;
+    getMessageReaction(
       messageID: string,
       reaction: string,
       limit?: number,
       before?: string,
-      after?: string,
+      after?: string
     ): Promise<User[]>;
-    public addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
-    public removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
-    public removeMessageReactions(messageID: string): Promise<void>;
-    public deleteMessage(messageID: string, reason?: string): Promise<void>;
-    public unsendMessage(messageID: string): Promise<void>;
+    addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
+    removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
+    removeMessageReactions(messageID: string): Promise<void>;
+    deleteMessage(messageID: string, reason?: string): Promise<void>;
+    unsendMessage(messageID: string): Promise<void>;
   }
 
   export class Relationship {
-    public id: string;
-    public user: User;
-    public type: number;
-    public status: string;
-    public game?: GamePresence;
-    public constructor(data: BaseData, client: Client);
+    id: string;
+    user: User;
+    type: number;
+    status: string;
+    game?: GamePresence;
+    constructor(data: BaseData, client: Client);
   }
 
   export class Role extends Base {
-    public id: string;
-    public createdAt: number;
-    public guild: Guild;
-    public mention: string;
-    public name: string;
-    public mentionable: boolean;
-    public managed: boolean;
-    public hoist: boolean;
-    public color: number;
-    public position: number;
-    public permissions: Permission;
-    public json: { [s: string]: boolean };
-    public constructor(data: BaseData, guild: Guild);
-    public edit(options: RoleOptions, reason?: string): Promise<Role>;
-    public editPosition(position: number): Promise<void>;
-    public delete(reason?: string): Promise<void>;
+    id: string;
+    createdAt: number;
+    guild: Guild;
+    mention: string;
+    name: string;
+    mentionable: boolean;
+    managed: boolean;
+    hoist: boolean;
+    color: number;
+    position: number;
+    permissions: Permission;
+    json: { [s: string]: boolean };
+    constructor(data: BaseData, guild: Guild);
+    edit(options: RoleOptions, reason?: string): Promise<Role>;
+    editPosition(position: number): Promise<void>;
+    delete(reason?: string): Promise<void>;
   }
 
   export class UnavailableGuild extends Base {
-    public id: string;
-    public createdAt: number;
-    public unavailable: boolean;
-    public shard: Shard;
-    public constructor(data: BaseData, client: Client);
+    id: string;
+    createdAt: number;
+    unavailable: boolean;
+    shard: Shard;
+    constructor(data: BaseData, client: Client);
   }
 
   export class User extends Base {
-    public id: string;
-    public mention: string;
-    public defaultAvatar: string;
-    public createdAt: number;
-    public bot: boolean;
-    public username: string;
-    public discriminator: string;
-    public avatar?: string;
-    public defaultAvatarURL: string;
-    public avatarURL: string;
-    public staticAvatarURL: string;
-    public constructor(data: BaseData, client: Client);
-    public dynamicAvatarURL(format?: string, size?: number): string;
-    public getDMChannel(): Promise<PrivateChannel>;
-    public addRelationship(block?: boolean): Promise<void>;
-    public removeRelationship(): Promise<void>;
-    public getProfile(): Promise<UserProfile>;
-    public editNote(note: string): Promise<void>;
-    public deleteNote(): Promise<void>;
+    id: string;
+    mention: string;
+    defaultAvatar: string;
+    createdAt: number;
+    bot: boolean;
+    username: string;
+    discriminator: string;
+    avatar?: string;
+    defaultAvatarURL: string;
+    avatarURL: string;
+    staticAvatarURL: string;
+    constructor(data: BaseData, client: Client);
+    dynamicAvatarURL(format?: string, size?: number): string;
+    getDMChannel(): Promise<PrivateChannel>;
+    addRelationship(block?: boolean): Promise<void>;
+    removeRelationship(): Promise<void>;
+    getProfile(): Promise<UserProfile>;
+    editNote(note: string): Promise<void>;
+    deleteNote(): Promise<void>;
   }
 
   export class VoiceState extends Base implements NestedJSON {
-    public id: string;
-    public createdAt: number;
-    public sessionID?: string;
-    public channelID?: string;
-    public mute: boolean;
-    public deaf: boolean;
-    public suppress: boolean;
-    public selfMute: boolean;
-    public selfDeaf: boolean;
-    public constructor(data: BaseData);
-    public toJSON(arg?: any, cache?: Array<string | any>): JSONCache;
+    id: string;
+    createdAt: number;
+    sessionID?: string;
+    channelID?: string;
+    mute: boolean;
+    deaf: boolean;
+    suppress: boolean;
+    selfMute: boolean;
+    selfDeaf: boolean;
+    constructor(data: BaseData);
+    toJSON(arg?: any, cache?: Array<string | any>): JSONCache;
   }
 
   export class Shard extends EventEmitter implements SimpleJSON, Emittable {
-    public id: number;
-    public connecting: boolean;
-    public ready: boolean;
-    public discordServerTrace?: string[];
-    public status: string;
-    public lastHeartbeatReceived: number;
-    public lastHeartbeatSent: number;
-    public latency: number;
-    public client: Client;
-    public presence: {status: string, game?: GamePresence};
-    public constructor(id: number, client: Client);
-    public connect(): void;
-    public disconnect(options?: { reconnect: boolean }): void;
-    public editAFK(afk: boolean): void;
-    public editStatus(status?: string, game?: GamePresence): void;
+    id: number;
+    connecting: boolean;
+    ready: boolean;
+    discordServerTrace?: string[];
+    status: string;
+    lastHeartbeatReceived: number;
+    lastHeartbeatSent: number;
+    latency: number;
+    client: Client;
+    presence: { status: string; game?: GamePresence };
+    constructor(id: number, client: Client);
+    connect(): void;
+    disconnect(options?: { reconnect: boolean }): void;
+    editAFK(afk: boolean): void;
+    editStatus(status?: string, game?: GamePresence): void;
     // tslint:disable-next-line
-    public on(event: string, listener: Function): this;
-    public on(event: "ready" | "disconnect", listener: () => void): this;
-    public on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
-    public on(
-      event: "callUpdate",
-      listener: (
-        call: Call,
-        oldCall: OldCall,
-      ) => void,
-    ): this;
-    public on(event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): this;
-    public on(
+    on(event: string, listener: Function): this;
+    on(event: "ready" | "disconnect", listener: () => void): this;
+    on(event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): this;
+    on(event: "callUpdate", listener: (call: Call, oldCall: OldCall) => void): this;
+    on(event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): this;
+    on(
       event: "channelPinUpdate",
-      listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void,
+      listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void
     ): this;
-    public on(
+    on(
       event: "channelRecipientAdd" | "channelRecipientRemove",
-      listener: (channel: GroupChannel, user: User) => void,
+      listener: (channel: GroupChannel, user: User) => void
     ): this;
-    public on(
-      event: "channelUpdate",
-      listener: (
-        channel: AnyChannel,
-        oldChannel: OldChannel,
-      ) => void,
-    ): this;
-    public on(
-      event: "friendSuggestionCreate",
-      listener: (user: User, reasons: FriendSuggestionReasons) => void,
-    ): this;
-    public on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
-    public on(
-      event: "guildAvailable" | "guildBanAdd" | "guildBanRemove",
-      listener: (guild: Guild, user: User) => void,
-    ): this;
-    public on(event: "guildDelete" | "guildUnavailable" | "guildCreate", listener: (guild: Guild) => void): this;
-    public on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): this;
-    public on(event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): this;
-    public on(event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): this;
-    public on(
-      event: "guildMemberRemove",
-      listener: (guild: Guild, member: Member | MemberPartial) => void,
-    ): this;
-    public on(
+    on(event: "channelUpdate", listener: (channel: AnyChannel, oldChannel: OldChannel) => void): this;
+    on(event: "friendSuggestionCreate", listener: (user: User, reasons: FriendSuggestionReasons) => void): this;
+    on(event: "friendSuggestionDelete", listener: (user: User) => void): this;
+    on(event: "guildAvailable" | "guildBanAdd" | "guildBanRemove", listener: (guild: Guild, user: User) => void): this;
+    on(event: "guildDelete" | "guildUnavailable" | "guildCreate", listener: (guild: Guild) => void): this;
+    on(event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): this;
+    on(event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): this;
+    on(event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): this;
+    on(event: "guildMemberRemove", listener: (guild: Guild, member: Member | MemberPartial) => void): this;
+    on(
       event: "guildMemberUpdate",
-      listener: (guild: Guild, member: Member, oldMember: { roles: string[], nick?: string }) => void,
+      listener: (guild: Guild, member: Member, oldMember: { roles: string[]; nick?: string }) => void
     ): this;
-    public on(event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): this;
-    public on(event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: RoleOptions) => void): this;
-    public on(event: "guildUpdate", listener: (guild: Guild, oldGuild: GuildOptions) => void): this;
-    public on(event: "hello", listener: (trace: string[], id: number) => void): this;
-    public on(event: "messageCreate", listener: (message: Message) => void): this;
-    public on(
-      event: "messageDelete" | "messageReactionRemoveAll",
-      listener: (message: PossiblyUncachedMessage) => void,
-    ): this;
-    public on(event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): this;
-    public on(
+    on(event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): this;
+    on(event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: RoleOptions) => void): this;
+    on(event: "guildUpdate", listener: (guild: Guild, oldGuild: GuildOptions) => void): this;
+    on(event: "hello", listener: (trace: string[], id: number) => void): this;
+    on(event: "messageCreate", listener: (message: Message) => void): this;
+    on(event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): this;
+    on(event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): this;
+    on(
       event: "messageReactionAdd" | "messageReactionRemove",
-      listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void,
+      listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void
     ): this;
-    public on(event: "messageUpdate", listener: (message: Message, oldMessage?: {
-      attachments: Attachment[],
-      embeds: Embed[],
-      content: string,
-      editedTimestamp?: number,
-      mentionedBy?: any,
-      tts: boolean,
-      mentions: string[],
-      roleMentions: string[],
-      channelMentions: string[],
-    }) => void): this;
-    public on(
-      event: "presenceUpdate",
+    on(
+      event: "messageUpdate",
       listener: (
-        other: Member | Relationship,
-        oldPresence?: OldPresence,
-      ) => void,
+        message: Message,
+        oldMessage?: {
+          attachments: Attachment[];
+          embeds: Embed[];
+          content: string;
+          editedTimestamp?: number;
+          mentionedBy?: any;
+          tts: boolean;
+          mentions: string[];
+          roleMentions: string[];
+          channelMentions: string[];
+        }
+      ) => void
     ): this;
-    public on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
-    public on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
-    public on(
+    on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: OldPresence) => void): this;
+    on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
+    on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
+    on(
       event: "relationshipUpdate",
-      listener: (relationship: Relationship, oldRelationship: { type: number }) => void,
+      listener: (relationship: Relationship, oldRelationship: { type: number }) => void
     ): this;
-    public on(event: "shardPreReady" | "connect", listener: (id: number) => void): this;
-    public on(event: "typingStart", listener: (channel: TextableChannel, user: User) => void): this;
-    public on(event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): this;
-    public on(
+    on(event: "shardPreReady" | "connect", listener: (id: number) => void): this;
+    on(event: "typingStart", listener: (channel: TextableChannel, user: User) => void): this;
+    on(event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): this;
+    on(
       event: "userUpdate",
-      listener: (user: User, oldUser: { username: string, discriminator: string, avatar?: string }) => void,
+      listener: (user: User, oldUser: { username: string; discriminator: string; avatar?: string }) => void
     ): this;
-    public on(event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): this;
-    public on(event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): this;
-    public on(
+    on(event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): this;
+    on(event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): this;
+    on(
       event: "voiceChannelSwitch",
-      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void,
+      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void
     ): this;
-    public on(
-      event: "voiceStateUpdate",
-      listener: (
-        member: Member,
-        oldState: OldVoiceState,
-      ) => void,
-    ): this;
-    public on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
-    public on(event: "disconnect", listener: (err: Error) => void): this;
+    on(event: "voiceStateUpdate", listener: (member: Member, oldState: OldVoiceState) => void): this;
+    on(event: "warn" | "debug", listener: (message: string, id: number) => void): this;
+    on(event: "disconnect", listener: (err: Error) => void): this;
     // FIXME
     // tslint:disable-next-line
-    public on(event: "resume", listener: () => void): this;
-    public toJSON(simple?: boolean): JSONCache;
+    on(event: "resume", listener: () => void): this;
+    toJSON(simple?: boolean): JSONCache;
     // tslint:disable-next-line
-    public sendWS(op: number, _data: object): void;
+    sendWS(op: number, _data: object): void;
   }
 
   export class Command {
-    public subcommands: { [s: string]: Command };
-    public subcommandAliases: { [alias: string]: Command };
-    public label: string;
-    public parentCommand?: Command;
-    public description: string;
-    public fullDescription: string;
-    public usage: string;
-    public aliases: string[];
-    public caseInsensitive: boolean;
-    public hooks: Hooks;
-    public requirements: {
-      userIDs?: string[] | GenericCheckFunction<string[]>,
-      roleIDs?: string[] | GenericCheckFunction<string[]>,
-      roleNames?: string[] | GenericCheckFunction<string[]>,
-      permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>,
-      custom?: GenericCheckFunction<void>,
+    subcommands: { [s: string]: Command };
+    subcommandAliases: { [alias: string]: Command };
+    label: string;
+    parentCommand?: Command;
+    description: string;
+    fullDescription: string;
+    usage: string;
+    aliases: string[];
+    caseInsensitive: boolean;
+    hooks: Hooks;
+    requirements: {
+      userIDs?: string[] | GenericCheckFunction<string[]>;
+      roleIDs?: string[] | GenericCheckFunction<string[]>;
+      roleNames?: string[] | GenericCheckFunction<string[]>;
+      permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>;
+      custom?: GenericCheckFunction<void>;
     };
-    public deleteCommand: boolean;
-    public argsRequired: boolean;
-    public guildOnly: boolean;
-    public dmOnly: boolean;
-    public cooldown: number;
-    public cooldownExclusions: {
-      userIDs?: string[],
-      guildIDs?: string[],
-      channelIDs?: string[],
+    deleteCommand: boolean;
+    argsRequired: boolean;
+    guildOnly: boolean;
+    dmOnly: boolean;
+    cooldown: number;
+    cooldownExclusions: {
+      userIDs?: string[];
+      guildIDs?: string[];
+      channelIDs?: string[];
     };
-    public restartCooldown: boolean;
-    public cooldownReturns: number;
-    public cooldownMessage: string | boolean | GenericCheckFunction<string>;
-    public invalidUsageMessage: string | boolean | GenericCheckFunction<string>;
-    public permissionMessage: string | boolean | GenericCheckFunction<string>;
-    public errorMessage: string | GenericCheckFunction<string>;
-    public reactionButtons: null | Array<{
-      emoji: string, type: string, response: CommandGenerator, execute?: () => string, responses?: Array<() => string>,
+    restartCooldown: boolean;
+    cooldownReturns: number;
+    cooldownMessage: string | boolean | GenericCheckFunction<string>;
+    invalidUsageMessage: string | boolean | GenericCheckFunction<string>;
+    permissionMessage: string | boolean | GenericCheckFunction<string>;
+    errorMessage: string | GenericCheckFunction<string>;
+    reactionButtons: null | Array<{
+      emoji: string;
+      type: string;
+      response: CommandGenerator;
+      execute?: () => string;
+      responses?: Array<() => string>;
     }>;
-    public reactionButtonTimeout: number;
-    public defaultSubcommandOptions: CommandOptions;
-    public hidden: boolean;
-    public constructor(label: string, generate: CommandGenerator, options?: CommandOptions);
-    public registerSubcommandAlias(alias: string, label: string): void;
-    public registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
-    public unregisterSubcommand(label: string): void;
+    reactionButtonTimeout: number;
+    defaultSubcommandOptions: CommandOptions;
+    hidden: boolean;
+    constructor(label: string, generate: CommandGenerator, options?: CommandOptions);
+    registerSubcommandAlias(alias: string, label: string): void;
+    registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
+    unregisterSubcommand(label: string): void;
   }
 
   export class CommandClient extends Client {
-    public commands: { [s: string]: Command };
-    public constructor(token: string, options?: ClientOptions, commandOptions?: CommandClientOptions);
-    public onMessageCreate(msg: Message): void;
-    public registerGuildPrefix(guildID: string, prefix: string[] | string): void;
-    public registerCommandAlias(alias: string, label: string): void;
-    public registerCommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
-    public unregisterCommand(label: string): void;
+    commands: { [s: string]: Command };
+    constructor(token: string, options?: ClientOptions, commandOptions?: CommandClientOptions);
+    onMessageCreate(msg: Message): void;
+    registerGuildPrefix(guildID: string, prefix: string[] | string): void;
+    registerCommandAlias(alias: string, label: string): void;
+    registerCommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
+    unregisterCommand(label: string): void;
   }
 }
 
