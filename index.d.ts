@@ -691,7 +691,7 @@ declare namespace Eris {
     topic?: string;
     nsfw?: boolean;
     bitrate?: number;
-    userLimt?: number;
+    userLimit?: number;
     rateLimitPerUser?: number;
     parentID?: string;
     permissionOverwrites?: Overwrite[];
