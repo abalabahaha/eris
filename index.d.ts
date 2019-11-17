@@ -695,6 +695,7 @@ declare namespace Eris {
     rateLimitPerUser?: number;
     parentID?: string;
     permissionOverwrites?: Overwrite[];
+    reason?: string;
   }
 
   export class Client extends EventEmitter implements SimpleJSON, Emittable {
@@ -758,6 +759,30 @@ declare namespace Eris {
       type?: number,
       reason?: string,
       options?: CreateChannelOptions | string
+    ): Promise<unknown>;
+    createChannel(
+      guildID: string,
+      name: string,
+      type: 0,
+      options?: CreateChannelOptions
+    ): Promise<TextChannel>;
+    createChannel(
+      guildID: string,
+      name: string,
+      type: 2,
+      options?: CreateChannelOptions
+    ): Promise<VoiceChannel>;
+    createChannel(
+      guildID: string,
+      name: string,
+      type: 4,
+      options?: CreateChannelOptions
+    ): Promise<CategoryChannel>;
+    createChannel(
+      guildID: string,
+      name: string,
+      type?: number,
+      options?: CreateChannelOptions
     ): Promise<unknown>;
     editChannel(
       channelID: string,
@@ -1224,6 +1249,10 @@ declare namespace Eris {
     createChannel(name: string, type: 2, reason?: string, options?: CreateChannelOptions | string): Promise<VoiceChannel>;
     createChannel(name: string, type: 4, reason?: string, options?: CreateChannelOptions | string): Promise<CategoryChannel>;
     createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
+    createChannel(name: string, type: 0, options?: CreateChannelOptions): Promise<TextChannel>;
+    createChannel(name: string, type: 2, options?: CreateChannelOptions): Promise<VoiceChannel>;
+    createChannel(name: string, type: 4, options?: CreateChannelOptions): Promise<CategoryChannel>;
+    createChannel(name: string, type?: number, options?: CreateChannelOptions): Promise<unknown>;
     createEmoji(options: { name: string; image: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     deleteEmoji(emojiID: string, reason?: string): Promise<void>;

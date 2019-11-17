@@ -1,10 +1,10 @@
 .DS_Store
+.eslintrc*.yml
 *.log
 *.tar.gz
+CONTRIBUTING.md
 examples
 docgen
 docs
 node_modules
 test
-CONTRIBUTING.md
-.eslintrc.yml
