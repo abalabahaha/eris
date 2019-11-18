@@ -1539,7 +1539,7 @@ declare namespace Eris {
 
   interface Overwrite {
     id: string;
-    type: "user" | "member";
+    type: "role" | "member";
     allow: number;
     deny: number;
   }
