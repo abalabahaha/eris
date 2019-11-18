@@ -1330,6 +1330,7 @@ declare namespace Eris {
         userLimit?: number;
         rateLimitPerUser?: number;
         nsfw?: boolean;
+        parentID?: string;
       },
       reason?: string
     ): Promise<AnyGuildChannel>;
