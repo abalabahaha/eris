@@ -17,7 +17,7 @@ declare namespace Eris {
   }
 
   interface NestedJSON {
-    toJSON(arg?: any, cache?: Array<string | any>): JSONCache;
+    toJSON(arg?: any, cache?: (string | any)[]): JSONCache;
   }
 
   // TODO there's also toJSON(): JSONCache, though, SimpleJSON should suffice
@@ -79,7 +79,7 @@ declare namespace Eris {
     permissionOverwrites: Collection<PermissionOverwrite>;
   }
 
-  type FriendSuggestionReasons = Array<{ type: number; platform_type: string; name: string }>;
+  type FriendSuggestionReasons = { type: number; platform_type: string; name: string }[];
 
   interface MemberPartial {
     id: string;
@@ -352,7 +352,7 @@ declare namespace Eris {
 
   interface WebhookPayload {
     content?: string;
-    file?: { file: Buffer; name: string } | Array<{ file: Buffer; name: string }>;
+    file?: { file: Buffer; name: string } | { file: Buffer; name: string }[];
     embeds?: EmbedOptions[];
     username?: string;
     avatarURL?: string;
@@ -372,7 +372,7 @@ declare namespace Eris {
     thumbnail?: { url?: string; proxy_url?: string; height?: number; width?: number };
     video?: { url: string; height?: number; width?: number };
     provider?: { name: string; url?: string };
-    fields?: Array<{ name?: string; value?: string; inline?: boolean }>;
+    fields?: { name?: string; value?: string; inline?: boolean }[];
     author?: { name: string; url?: string; icon_url?: string; proxy_icon_url?: string };
   }
   type Embed = {
@@ -449,18 +449,18 @@ declare namespace Eris {
     mobile_push: boolean;
     message_notifications: number;
     guild_id: string;
-    channel_override: Array<{
+    channel_override: {
       muted: boolean;
       message_notifications: number;
       channel_id: string;
-    }>;
+    }[];
   }
 
   interface UserProfile {
     premium_since?: number;
-    mutual_guilds: Array<{ nick?: string; id: string }>;
+    mutual_guilds: { nick?: string; id: string }[];
     user: { username: string; discriminator: string; flags: number; id: string; avatar?: string };
-    connected_accounts: Array<{ verified: boolean; type: string; id: string; name: string }>;
+    connected_accounts: { verified: boolean; type: string; id: string; name: string }[];
   }
 
   interface Connection {
@@ -578,7 +578,7 @@ declare namespace Eris {
   }
   interface SearchResults {
     totalResults: number;
-    results: Array<Array<Message & { hit?: boolean }>>;
+    results: (Message & { hit?: boolean })[][];
   }
   interface VoiceResourceOptions {
     inlineVolume?: boolean;
@@ -669,7 +669,7 @@ declare namespace Eris {
     invalidUsageMessage?: string | GenericCheckFunction<string>;
     permissionMessage?: string | GenericCheckFunction<string>;
     errorMessage?: string | GenericCheckFunction<string>;
-    reactionButtons?: Array<{ emoji: string; type: string; response: CommandGenerator }>;
+    reactionButtons?: { emoji: string; type: string; response: CommandGenerator }[];
     reactionButtonTimeout?: number;
     defaultSubcommandOptions?: CommandOptions;
     hidden?: boolean;
@@ -902,7 +902,7 @@ declare namespace Eris {
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     createGuild(name: string, region: string, icon?: string): Promise<Guild>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
-    getGuildBans(guildID: string): Promise<Array<{ reason?: string; user: User }>>;
+    getGuildBans(guildID: string): Promise<{ reason?: string; user: User }[]>;
     getGuildBan(guildID: string, userID: string): Promise<{ reason?: string; user: User }>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<void>;
     addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
@@ -931,11 +931,11 @@ declare namespace Eris {
     getSelfMFACodes(
       password: string,
       regenerate?: boolean
-    ): Promise<{ backup_codes: Array<{ code: string; consumed: boolean }> }>;
+    ): Promise<{ backup_codes: { code: string; consumed: boolean }[] }>;
     enableSelfMFATOTP(
       secret: string,
       code: string
-    ): Promise<{ token: string; backup_codes: Array<{ code: string; consumed: boolean }> }>;
+    ): Promise<{ token: string; backup_codes: { code: string; consumed: boolean }[] }>;
     disableSelfMFATOTP(code: string): Promise<{ token: string }>;
     getSelfBilling(): Promise<{
       premium_subscription?: {
@@ -958,14 +958,14 @@ declare namespace Eris {
       payment_gateway?: string;
     }>;
     getSelfPayments(): Promise<
-      Array<{
+      {
         status: number;
         amount_refunded: number;
         description: string;
         created_at: string; // date
         currency: string;
         amount: number;
-      }>
+      }[]
     >;
     addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
     deleteSelfPremiumSubscription(): Promise<void>;
@@ -1649,7 +1649,7 @@ declare namespace Eris {
     selfMute: boolean;
     selfDeaf: boolean;
     constructor(data: BaseData);
-    toJSON(arg?: any, cache?: Array<string | any>): JSONCache;
+    toJSON(arg?: any, cache?: (string | any)[]): JSONCache;
   }
 
   export class Shard extends EventEmitter implements SimpleJSON, Emittable {
@@ -1788,13 +1788,13 @@ declare namespace Eris {
     invalidUsageMessage: string | boolean | GenericCheckFunction<string>;
     permissionMessage: string | boolean | GenericCheckFunction<string>;
     errorMessage: string | GenericCheckFunction<string>;
-    reactionButtons: null | Array<{
+    reactionButtons: null | {
       emoji: string;
       type: string;
       response: CommandGenerator;
       execute?: () => string;
-      responses?: Array<() => string>;
-    }>;
+      responses?: (() => string)[];
+    }[];
     reactionButtonTimeout: number;
     defaultSubcommandOptions: CommandOptions;
     hidden: boolean;
