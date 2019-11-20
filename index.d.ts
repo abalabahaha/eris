@@ -372,7 +372,7 @@ declare namespace Eris {
     thumbnail?: { url?: string; proxy_url?: string; height?: number; width?: number };
     video?: { url: string; height?: number; width?: number };
     provider?: { name: string; url?: string };
-    fields?: { name?: string; value?: string; inline?: boolean }[];
+    fields?: { name: string; value: string; inline?: boolean }[];
     author?: { name: string; url?: string; icon_url?: string; proxy_icon_url?: string };
   }
   type Embed = {
