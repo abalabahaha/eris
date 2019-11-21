@@ -86,15 +86,6 @@ declare namespace Eris {
     user: User;
   }
 
-  // interface OldPresence {
-  //   status: string;
-  //   game?: {
-  //     name: string;
-  //     type: number;
-  //     url?: string;
-  //   };
-  // }
-
   interface OldVoiceState {
     mute: boolean;
     deaf: boolean;
@@ -175,7 +166,6 @@ declare namespace Eris {
         }
       ) => void
     ): this;
-    on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: OldPresence) => void): this;
     on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
     on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
     on(
@@ -1034,7 +1024,6 @@ declare namespace Eris {
         }
       ) => void
     ): this;
-    on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: OldPresence) => void): this;
     on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
     on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
     on(
@@ -1717,7 +1706,6 @@ declare namespace Eris {
         }
       ) => void
     ): this;
-    on(event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: OldPresence) => void): this;
     on(event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): this;
     on(event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): this;
     on(
