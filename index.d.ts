@@ -86,14 +86,14 @@ declare namespace Eris {
     user: User;
   }
 
-  interface OldPresence {
-    status: string;
-    game?: {
-      name: string;
-      type: number;
-      url?: string;
-    };
-  }
+  // interface OldPresence {
+  //   status: string;
+  //   game?: {
+  //     name: string;
+  //     type: number;
+  //     url?: string;
+  //   };
+  // }
 
   interface OldVoiceState {
     mute: boolean;
@@ -1458,20 +1458,13 @@ declare namespace Eris {
 
   type Status = "online" | "idle" | "dnd" | "offline";
 
-  interface ClientStatus {
-    web: Status;
-    desktop: Status;
-    mobile: Status;
-  }
-
   export class Member extends Base {
-    activities: Activity[];
-    clientStatus: ClientStatus;
+    // activities: Activity[];
     id: string;
     mention: string;
     guild: Guild;
     joinedAt: number;
-    premiumSince: number;
+    // premiumSince: number;
     status: Status;
     game?: GamePresence;
     voiceState: VoiceState;
