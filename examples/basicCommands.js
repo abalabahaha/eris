@@ -1,7 +1,7 @@
 const Eris = require("eris");
 
 // Replace BOT_TOKEN with your bot account's token
-var bot = new Eris.CommandClient("BOT_TOKEN", {}, {
+const bot = new Eris.CommandClient("BOT_TOKEN", {}, {
     description: "A test bot made with Eris",
     owner: "somebody",
     prefix: "!"
@@ -25,11 +25,11 @@ bot.registerCommand("pong", ["Pang!", "Peng!", "Ping!", "Pung!"], { // Make a po
     fullDescription: "This command could also be used to check if the bot is up. Or entertainment when you're bored."
 });
 
-var echoCommand = bot.registerCommand("echo", (msg, args) => { // Make an echo command
+const echoCommand = bot.registerCommand("echo", (msg, args) => { // Make an echo command
     if(args.length === 0) { // If the user just typed "!echo", say "Invalid input"
         return "Invalid input";
     }
-    var text = args.join(" "); // Make a string of the text after the command label
+    const text = args.join(" "); // Make a string of the text after the command label
     return text; // Return the generated string
 }, {
     description: "Make the bot say something",
@@ -41,7 +41,7 @@ echoCommand.registerSubcommand("reverse", (msg, args) => { // Make a reverse sub
     if(args.length === 0) { // If the user just typed "!echo reverse", say "Invalid input"
         return "Invalid input";
     }
-    var text = args.join(" "); // Make a string of the text after the command label
+    let text = args.join(" "); // Make a string of the text after the command label
     text = text.split("").reverse().join(""); // Reverse the string
     return text; // Return the generated string
 }, {

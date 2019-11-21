@@ -1,3 +1,4 @@
+---
 env:
   es6: true
   node: true
@@ -7,6 +8,53 @@ globals:
 parserOptions:
   ecmaVersion: 2017
 rules:
+  array-bracket-spacing:
+    - 2
+    - never
+  arrow-parens: 2
+  brace-style:
+    - 2
+    - 1tbs
+    - allowSingleLine: false
+  comma-dangle:
+    - 2
+    - never
+  eol-last:
+    - 2
+    - always
+  indent:
+    - 2
+    - 4
+    - SwitchCase: 1
+      ignoreComments: false
+  keyword-spacing:
+    - 2
+    - after: true
+      overrides:
+        catch:
+          after: false
+        for:
+          after: false
+        if:
+          after: false
+        switch:
+          after: false
+        while:
+          after: false
+  no-prototype-builtins: 0
+  no-trailing-spaces: 2
   no-var: 2
+  object-curly-spacing:
+    - 2
+    - never
+  object-shorthand:
+    - 2
+    - consistent-as-needed
   prefer-const: 2
-  semi: [2, "always"]
+  quotes:
+    - 2
+    - double
+  require-atomic-updates: 1
+  semi:
+    - 2
+    - always

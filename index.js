@@ -34,13 +34,13 @@ Eris.Shard = require("./lib/gateway/Shard");
 Eris.SharedStream = require("./lib/voice/SharedStream");
 Eris.TextChannel = require("./lib/structures/TextChannel");
 Eris.User = require("./lib/structures/User");
-Eris.VERSION = require('./package.json').version;
+Eris.VERSION = require("./package.json").version;
 Eris.VoiceChannel = require("./lib/structures/VoiceChannel");
 Eris.VoiceConnection = require("./lib/voice/VoiceConnection");
 Eris.VoiceConnectionManager = require("./lib/voice/VoiceConnectionManager");
 Eris.VoiceState = require("./lib/structures/VoiceState");
 
-Object.keys(Eris).filter(prop => Eris.hasOwnProperty(prop) && typeof Eris[prop] === "function" && !(Eris[prop] instanceof Eris.Base)).forEach(prop => {
+Object.keys(Eris).filter((prop) => Eris.hasOwnProperty(prop) && typeof Eris[prop] === "function" && !(Eris[prop] instanceof Eris.Base)).forEach((prop) => {
     Eris[prop].prototype.toString = Eris.Base.prototype.toString;
 });
 
