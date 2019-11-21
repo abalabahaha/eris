@@ -1,0 +1,21 @@
+extends:
+  - "./.eslintrc.yml"
+  - "plugin:@typescript-eslint/eslint-recommended"
+  - "plugin:@typescript-eslint/recommended"
+rules:
+  "@typescript-eslint/member-delimiter-style": 2
+  "@typescript-eslint/no-explicit-any": 0
+  "@typescript-eslint/no-use-before-define":
+    - 2
+    - classes: false
+  indent:
+    - 2
+    - 2
+    - SwitchCase: 1
+      ignoreComments: false
+  keyword-spacing:
+    - 2
+    - after: true
+  object-curly-spacing:
+    - 2
+    - always
