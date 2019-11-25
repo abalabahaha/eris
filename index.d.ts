@@ -562,7 +562,7 @@ declare namespace Eris {
     nick?: string;
     mute?: boolean;
     deaf?: boolean;
-    channelID?: string;
+    channelID?: string | null;
   }
   interface RoleOptions {
     name?: string;
