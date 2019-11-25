@@ -22,9 +22,9 @@ declare namespace Eris {
 
   // TODO there's also toJSON(): JSONCache, though, SimpleJSON should suffice
 
-  type TextableChannel = TextChannel | PrivateChannel | GroupChannel;
-  type AnyChannel = TextChannel | VoiceChannel | CategoryChannel | PrivateChannel | GroupChannel;
-  type AnyGuildChannel = TextChannel | VoiceChannel | CategoryChannel;
+  type TextableChannel = TextChannel | PrivateChannel | GroupChannel | NewsChannel;
+  type AnyChannel = AnyGuildChannel | PrivateChannel | GroupChannel;
+  type AnyGuildChannel = TextChannel | VoiceChannel | CategoryChannel | StoreChannel | NewsChannel;
 
   interface CreateInviteOptions {
     maxAge?: number;
@@ -1382,6 +1382,14 @@ declare namespace Eris {
 
   export class CategoryChannel extends GuildChannel {
     channels: Collection<TextChannel | VoiceChannel>;
+  }
+
+  // Intentionally left empty as it has no unique properties from GuildChannel
+  export class StoreChannel extends GuildChannel {}
+
+  // News channel rate limit is always 0
+  export class NewsChannel extends TextChannel {
+    rateLimitPerUser: 0;
   }
 
   export class TextChannel extends GuildChannel implements Textable, Invitable {
