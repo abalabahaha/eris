@@ -13,7 +13,7 @@ declare namespace Eris {
   }
 
   interface SimpleJSON {
-    toJSON(simple?: boolean): JSONCache;
+    toJSON(props?: string[]): JSONCache;
   }
 
   interface NestedJSON {
@@ -694,7 +694,7 @@ declare namespace Eris {
     constructor(client: Client);
     connect(shard: Shard): void;
     spawn(id: number): void;
-    toJSON(): string;
+    toJSON(props?: string[]): string;
   }
 
   interface CreateChannelOptions {
@@ -1072,7 +1072,7 @@ declare namespace Eris {
     on(event: "shardReady" | "shardResume", listener: (id: number) => void): this;
     // tslint:disable-next-line
     on(event: string, listener: Function): this;
-    toJSON(simple?: boolean): JSONCache;
+    toJSON(props?: string[]): JSONCache;
   }
 
   export class VoiceConnection extends EventEmitter implements SimpleJSON {
@@ -1105,7 +1105,7 @@ declare namespace Eris {
     on(event: "speakingStart", listener: (userID: string) => void): this;
     on(event: "speakingStop", listener: (userID: string) => void): this;
     on(event: "end", listener: () => void): this;
-    toJSON(simple?: boolean): JSONCache;
+    toJSON(props?: string[]): JSONCache;
   }
 
   export class SharedStream extends EventEmitter {
@@ -1140,7 +1140,7 @@ declare namespace Eris {
     join(guildID: string, channelID: string, options: VoiceResourceOptions): Promise<VoiceConnection>;
     leave(guildID: string): void;
     switch(guildID: string, channelID: string): void;
-    toJSON(simple?: boolean): JSONCache;
+    toJSON(props?: string[]): JSONCache;
   }
 
   class Base implements SimpleJSON {
@@ -1148,7 +1148,7 @@ declare namespace Eris {
     createdAt: number;
     constructor(id: string);
     inspect(): this;
-    toJSON(simple?: boolean): JSONCache;
+    toJSON(props?: string[]): JSONCache;
   }
 
   export class Bucket {
@@ -1448,7 +1448,7 @@ declare namespace Eris {
     memberCount?: number;
     constructor(data: BaseData, client: Client);
     delete(reason?: string): Promise<void>;
-    toJSON(simple?: boolean): JSONCache;
+    toJSON(props?: string[]): JSONCache;
   }
 
   interface Activity {
@@ -1760,7 +1760,7 @@ declare namespace Eris {
     // FIXME
     // tslint:disable-next-line
     on(event: "resume", listener: () => void): this;
-    toJSON(simple?: boolean): JSONCache;
+    toJSON(props?: string[]): JSONCache;
     // tslint:disable-next-line
     sendWS(op: number, _data: object): void;
   }
