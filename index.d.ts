@@ -1221,7 +1221,7 @@ declare namespace Eris {
     type: number;
     createdAt: number;
     constructor(data: BaseData);
-    static from(data: Channel, client: Client): AnyChannel;
+    static from(data: AnyChannel, client: Client): AnyChannel;
   }
 
   export class ExtendedUser extends User {
