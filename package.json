@@ -3,6 +3,7 @@
   "version": "0.11.1",
   "description": "A NodeJS Discord library",
   "main": "./index.js",
+  "typings": "./index.d.ts",
   "engines": {
     "node": ">=8.0.0"
   },
