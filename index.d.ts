@@ -740,6 +740,32 @@ declare namespace Eris {
     (event: "resume", listener: () => void): T;
   }
 
+  interface WebhookResponse {
+    id: string;
+    type: number;
+    content: string;
+    channel_id: string;
+    author: {
+      bot?: true;
+      id: string;
+      username: string;
+      avatar?: string;
+      discriminator: string;
+    };
+    attachments: Attachment[];
+    embeds: EmbedOptions[];
+    mentions: string[];
+    mention_roles: string[];
+    pinned: boolean;
+    mention_everyone: boolean;
+    tts: boolean;
+    timestamp: string;
+    edited_timestamp?: string;
+    flags: number;
+    nonce?: string;
+    webhook_id: string;
+  }
+
   export class Client extends EventEmitter {
     token?: string;
     gatewayURL?: string;
@@ -872,7 +898,7 @@ declare namespace Eris {
       token?: string,
       reason?: string
     ): Promise<Webhook>;
-    executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message>;
+    executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<WebhookResponse>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
     executeSlackWebhook(webhookID: string, token: string, options?: { wait?: boolean }): Promise<void>;
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
