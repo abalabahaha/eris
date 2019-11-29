@@ -873,7 +873,7 @@ declare namespace Eris {
       reason?: string
     ): Promise<Webhook>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message>;
-    executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<any>;
+    executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<"">;
     executeSlackWebhook(webhookID: string, token: string, options?: { wait?: boolean }): Promise<void>;
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
     getGuildWebhooks(guildID: string): Promise<Webhook[]>;
