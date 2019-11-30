@@ -1144,9 +1144,9 @@ declare namespace Eris {
   }
 
   export class Channel extends Base {
-    type: 0 | 1 | 2 | 3 | 4 | 5 | 6;
     id: string;
     mention: string;
+    type: 0 | 1 | 2 | 3 | 4 | 5 | 6;
     createdAt: number;
     constructor(data: BaseData);
     static from(data: object, client: Client): AnyChannel;
@@ -1158,7 +1158,7 @@ declare namespace Eris {
     mfaEnabled: boolean;
   }
 
-  export class GroupChannel extends PrivateChannel {
+  export class GroupChannel extends PrivateTextableChannel {
     type: 3;
     recipients: Collection<User>;
     name: string;
@@ -1311,30 +1311,13 @@ declare namespace Eris {
     deletePermission(overwriteID: string, reason?: string): Promise<void>;
   }
 
-  export class CategoryChannel extends GuildChannel {
-    type: 4;
-    channels: Collection<TextChannel | VoiceChannel>;
-  }
-
-  // Intentionally left mostly empty as it has no other unique properties from GuildChannel
-  export class StoreChannel extends GuildChannel {
-    type: 6;
-  }
-
-  // News channel rate limit is always 0
-  export class NewsChannel extends TextChannel {
-    type: 5;
-    rateLimitPerUser: 0;
-  }
-
-  export class TextChannel extends GuildChannel implements Textable, Invitable {
+  export class GuildTextableChannel extends GuildChannel implements Textable, Invitable {
     type: 0 | 5;
     topic?: string;
     lastMessageID: string;
     rateLimitPerUser: number;
     messages: Collection<Message>;
     lastPinTimestamp?: number;
-    constructor(data: BaseData, guild: Guild, messageLimit: number);
     getInvites(): Promise<Invite[]>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
     getWebhooks(): Promise<Webhook[]>;
@@ -1361,6 +1344,27 @@ declare namespace Eris {
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[]): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
+  }
+
+  export class CategoryChannel extends GuildChannel {
+    type: 4;
+    channels: Collection<TextChannel | VoiceChannel>;
+  }
+
+  // Intentionally left mostly empty as it has no other unique properties from GuildChannel
+  export class StoreChannel extends GuildChannel {
+    type: 6;
+  }
+
+  // News channel rate limit is always 0
+  export class NewsChannel extends GuildTextableChannel implements Invitable, Textable {
+    type: 5;
+    rateLimitPerUser: 0;
+  }
+
+  export class TextChannel extends GuildTextableChannel implements Invitable, Textable {
+    type: 0;
+    constructor(data: BaseData, guild: Guild, messageLimit: number);
   }
 
   export class VoiceChannel extends GuildChannel implements Invitable {
@@ -1531,7 +1535,7 @@ declare namespace Eris {
     constructor(data: { allow: number; deny: number });
   }
 
-  export class PrivateChannel extends Channel implements Textable {
+  export class PrivateTextableChannel extends Channel implements Textable {
     type: 1 | 3;
     lastMessageID: string;
     recipient: User;
@@ -1559,6 +1563,9 @@ declare namespace Eris {
     removeMessageReactions(messageID: string): Promise<void>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
+  }
+  export class PrivateChannel extends PrivateTextableChannel implements Textable {
+    type: 1;
   }
 
   export class Relationship {
