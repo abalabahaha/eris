@@ -1085,7 +1085,6 @@ declare namespace Eris {
     on(event: "data", listener: (data: Buffer, userID: string, timestamp: number, sequence: number) => void): this;
   }
 
-  // tslint:disable-next-line
   export class VoiceConnectionManager<T extends VoiceConnection> extends Collection<T> implements SimpleJSON {
     // owo an undocumented class
     constructor(vcObject: new () => T);
@@ -1110,7 +1109,6 @@ declare namespace Eris {
     tokenLimit: number;
     interval: number;
     constructor(tokenLimit: number, interval: number, latencyRef: { latency: number });
-    // tslint:disable-next-line
     queue(func: Function): void;
   }
 
