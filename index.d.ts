@@ -286,17 +286,17 @@ declare namespace Eris {
       USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2: 10;
       USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3: 11;
       CHANNEL_FOLLOW_ADD: 12;
-  };
-  ChannelTypes: {
-    GUILD_TEXT: 0;
-    DM: 1;
-    GUILD_VOICE: 2;
-    GROUP_DM: 3;
-    GUILD_CATEGORY: 4;
-    GUILD_NEWS: 5;
-    GUILD_STORE: 6;
-  };
-}
+    };
+    ChannelTypes: {
+      GUILD_TEXT: 0;
+      DM: 1;
+      GUILD_VOICE: 2;
+      GROUP_DM: 3;
+      GUILD_CATEGORY: 4;
+      GUILD_NEWS: 5;
+      GUILD_STORE: 6;
+    };
+  }
 
   export const Constants: Constants;
 
@@ -1144,9 +1144,9 @@ declare namespace Eris {
   }
 
   export class Channel extends Base {
+    type: 0 | 1 | 2 | 3 | 4 | 5 | 6;
     id: string;
     mention: string;
-    type: number;
     createdAt: number;
     constructor(data: BaseData);
     static from(data: object, client: Client): AnyChannel;
@@ -1159,6 +1159,7 @@ declare namespace Eris {
   }
 
   export class GroupChannel extends PrivateChannel {
+    type: 3;
     recipients: Collection<User>;
     name: string;
     icon?: string;
@@ -1275,6 +1276,7 @@ declare namespace Eris {
   }
 
   export class GuildChannel extends Channel {
+    type: 0 | 2 | 4 | 5 | 6;
     guild: Guild;
     parentID?: string;
     name: string;
@@ -1310,18 +1312,23 @@ declare namespace Eris {
   }
 
   export class CategoryChannel extends GuildChannel {
+    type: 4;
     channels: Collection<TextChannel | VoiceChannel>;
   }
 
-  // Intentionally left empty as it has no unique properties from GuildChannel
-  export class StoreChannel extends GuildChannel {}
+  // Intentionally left mostly empty as it has no other unique properties from GuildChannel
+  export class StoreChannel extends GuildChannel {
+    type: 6;
+  }
 
   // News channel rate limit is always 0
   export class NewsChannel extends TextChannel {
+    type: 5;
     rateLimitPerUser: 0;
   }
 
   export class TextChannel extends GuildChannel implements Textable, Invitable {
+    type: 0 | 5;
     topic?: string;
     lastMessageID: string;
     rateLimitPerUser: number;
@@ -1357,6 +1364,7 @@ declare namespace Eris {
   }
 
   export class VoiceChannel extends GuildChannel implements Invitable {
+    type: 2;
     bitrate?: number;
     userLimit?: number;
     voiceMembers?: Collection<Member>;
@@ -1524,6 +1532,7 @@ declare namespace Eris {
   }
 
   export class PrivateChannel extends Channel implements Textable {
+    type: 1 | 3;
     lastMessageID: string;
     recipient: User;
     messages: Collection<Message>;
