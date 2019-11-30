@@ -100,6 +100,7 @@ declare namespace Eris {
     deaf: boolean;
     selfMute: boolean;
     selfDeaf: boolean;
+    selfStream: boolean;
   }
 
   interface OAuthApplicationInfo {
@@ -1620,6 +1621,7 @@ declare namespace Eris {
     suppress: boolean;
     selfMute: boolean;
     selfDeaf: boolean;
+    selfStream: boolean;
     constructor(data: BaseData);
     toJSON(arg?: any, cache?: (string | any)[]): JSONCache;
   }
