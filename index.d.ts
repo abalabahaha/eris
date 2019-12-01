@@ -286,17 +286,17 @@ declare namespace Eris {
       USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2: 10;
       USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3: 11;
       CHANNEL_FOLLOW_ADD: 12;
-  };
-  ChannelTypes: {
-    GUILD_TEXT: 0;
-    DM: 1;
-    GUILD_VOICE: 2;
-    GROUP_DM: 3;
-    GUILD_CATEGORY: 4;
-    GUILD_NEWS: 5;
-    GUILD_STORE: 6;
-  };
-}
+    };
+    ChannelTypes: {
+      GUILD_TEXT: 0;
+      DM: 1;
+      GUILD_VOICE: 2;
+      GROUP_DM: 3;
+      GUILD_CATEGORY: 4;
+      GUILD_NEWS: 5;
+      GUILD_STORE: 6;
+    };
+  }
 
   export const Constants: Constants;
 
@@ -1085,7 +1085,6 @@ declare namespace Eris {
     on(event: "data", listener: (data: Buffer, userID: string, timestamp: number, sequence: number) => void): this;
   }
 
-  // tslint:disable-next-line
   export class VoiceConnectionManager<T extends VoiceConnection> extends Collection<T> implements SimpleJSON {
     // owo an undocumented class
     constructor(vcObject: new () => T);
@@ -1110,7 +1109,6 @@ declare namespace Eris {
     tokenLimit: number;
     interval: number;
     constructor(tokenLimit: number, interval: number, latencyRef: { latency: number });
-    // tslint:disable-next-line
     queue(func: Function): void;
   }
 
@@ -1146,7 +1144,7 @@ declare namespace Eris {
   export class Channel extends Base {
     id: string;
     mention: string;
-    type: number;
+    type: 0 | 1 | 2 | 3 | 4 | 5 | 6;
     createdAt: number;
     constructor(data: BaseData);
     static from(data: object, client: Client): AnyChannel;
@@ -1158,7 +1156,8 @@ declare namespace Eris {
     mfaEnabled: boolean;
   }
 
-  export class GroupChannel extends PrivateChannel {
+  export class GroupChannel extends PrivateTextableChannel {
+    type: 3;
     recipients: Collection<User>;
     name: string;
     icon?: string;
@@ -1275,6 +1274,7 @@ declare namespace Eris {
   }
 
   export class GuildChannel extends Channel {
+    type: 0 | 2 | 4 | 5 | 6;
     guild: Guild;
     parentID?: string;
     name: string;
@@ -1309,25 +1309,13 @@ declare namespace Eris {
     deletePermission(overwriteID: string, reason?: string): Promise<void>;
   }
 
-  export class CategoryChannel extends GuildChannel {
-    channels: Collection<TextChannel | VoiceChannel>;
-  }
-
-  // Intentionally left empty as it has no unique properties from GuildChannel
-  export class StoreChannel extends GuildChannel {}
-
-  // News channel rate limit is always 0
-  export class NewsChannel extends TextChannel {
-    rateLimitPerUser: 0;
-  }
-
-  export class TextChannel extends GuildChannel implements Textable, Invitable {
+  export class GuildTextableChannel extends GuildChannel implements Textable, Invitable {
+    type: 0 | 5;
     topic?: string;
     lastMessageID: string;
     rateLimitPerUser: number;
     messages: Collection<Message>;
     lastPinTimestamp?: number;
-    constructor(data: BaseData, guild: Guild, messageLimit: number);
     getInvites(): Promise<Invite[]>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
     getWebhooks(): Promise<Webhook[]>;
@@ -1356,7 +1344,29 @@ declare namespace Eris {
     unsendMessage(messageID: string): Promise<void>;
   }
 
+  export class CategoryChannel extends GuildChannel {
+    type: 4;
+    channels: Collection<TextChannel | VoiceChannel>;
+  }
+
+  // Intentionally left mostly empty as it has no other unique properties from GuildChannel
+  export class StoreChannel extends GuildChannel {
+    type: 6;
+  }
+
+  // News channel rate limit is always 0
+  export class NewsChannel extends GuildTextableChannel implements Invitable, Textable {
+    type: 5;
+    rateLimitPerUser: 0;
+  }
+
+  export class TextChannel extends GuildTextableChannel implements Invitable, Textable {
+    type: 0;
+    constructor(data: BaseData, guild: Guild, messageLimit: number);
+  }
+
   export class VoiceChannel extends GuildChannel implements Invitable {
+    type: 2;
     bitrate?: number;
     userLimit?: number;
     voiceMembers?: Collection<Member>;
@@ -1523,7 +1533,8 @@ declare namespace Eris {
     constructor(data: { allow: number; deny: number });
   }
 
-  export class PrivateChannel extends Channel implements Textable {
+  export class PrivateTextableChannel extends Channel implements Textable {
+    type: 1 | 3;
     lastMessageID: string;
     recipient: User;
     messages: Collection<Message>;
@@ -1550,6 +1561,9 @@ declare namespace Eris {
     removeMessageReactions(messageID: string): Promise<void>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
+  }
+  export class PrivateChannel extends PrivateTextableChannel implements Textable {
+    type: 1;
   }
 
   export class Relationship {
