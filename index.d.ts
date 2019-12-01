@@ -1205,7 +1205,7 @@ declare namespace Eris {
     iconURL?: string;
     explicitContentFilter: number;
     constructor(data: BaseData, client: Client);
-    fetchAllMembers(): void;
+    fetchAllMembers(timeout?: number): Promise<number>;
     dynamicIconURL(format: string, size: number): string;
     createChannel(name: string): Promise<TextChannel>;
     createChannel(name: string, type: 0, reason?: string, options?: CreateChannelOptions | string): Promise<TextChannel>;
