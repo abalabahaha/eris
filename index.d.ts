@@ -273,6 +273,13 @@ declare namespace Eris {
       INTEGRATION_UPDATE: 81;
       INTEGRATION_DELETE: 82;
     };
+    MessageFlags: {
+      CROSSPOSTED: 0;
+      IS_CROSSPOST: 2;
+      SUPPRESS_EMBEDS: 4;
+      SOURCE_MESSAGE_DELETED: 8;
+      URGENT: 16;
+    };
     MessageTypes: {
       DEFAULT: 0;
       RECIPIENT_ADD: 1;
