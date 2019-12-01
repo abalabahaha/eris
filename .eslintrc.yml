@@ -19,6 +19,7 @@ rules:
   comma-dangle:
     - 2
     - never
+  curly: 2
   eol-last:
     - 2
     - always
