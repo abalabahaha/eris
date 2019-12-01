@@ -1622,6 +1622,7 @@ declare namespace Eris {
     defaultAvatarURL: string;
     avatarURL: string;
     staticAvatarURL: string;
+    system: boolean;
     constructor(data: BaseData, client: Client);
     dynamicAvatarURL(format?: string, size?: number): string;
     getDMChannel(): Promise<PrivateChannel>;
