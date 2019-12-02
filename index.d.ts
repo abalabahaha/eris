@@ -71,16 +71,13 @@ declare namespace Eris {
     unavailable: boolean;
   }
 
-  interface OldChannel {
+  interface GenericOldChannel {
     name: string;
     position: string;
     nsfw: boolean;
-    topic?: string;
     type: 1 | 2 | 4 | 5 | 6;
-    bitrate?: number;
     permissionOverwrites: Collection<PermissionOverwrite>;
     parentID?: string;
-    rateLimitPerUser?: number;
   }
 
   type FriendSuggestionReasons = { type: number; platform_type: string; name: string }[];
@@ -666,7 +663,7 @@ declare namespace Eris {
       event: "channelRecipientAdd" | "channelRecipientRemove",
       listener: (channel: GroupChannel, user: User) => void
     ): T;
-    (event: "channelUpdate", listener: (channel: AnyChannel, oldChannel: OldChannel) => void): T;
+    (event: "channelUpdate", listener: (channel: AnyChannel, oldChannel: GenericOldChannel & ({ type: 0; topic?: string; rateLimitPerUser: number; } | { type: 2; bitrate: number; } | { type: 5; topic?: string; rateLimitPerUser: 0 } | { type: 4 | 6; })) => void): T;
     (event: "friendSuggestionCreate", listener: (user: User, reasons: FriendSuggestionReasons) => void): T;
     (event: "friendSuggestionDelete", listener: (user: User) => void): T;
     (event: "guildAvailable" | "guildBanAdd" | "guildBanRemove", listener: (guild: Guild, user: User) => void): T;
