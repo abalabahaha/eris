@@ -79,6 +79,8 @@ declare namespace Eris {
     type: 1 | 2 | 4 | 5 | 6;
     bitrate?: number;
     permissionOverwrites: Collection<PermissionOverwrite>;
+    parentID?: string;
+    rateLimitPerUser?: number;
   }
 
   type FriendSuggestionReasons = { type: number; platform_type: string; name: string }[];
