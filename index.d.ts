@@ -75,7 +75,6 @@ declare namespace Eris {
     name: string;
     position: string;
     nsfw: boolean;
-    type: 1 | 2 | 4 | 5 | 6;
     permissionOverwrites: Collection<PermissionOverwrite>;
     parentID?: string;
   }
