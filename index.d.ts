@@ -80,6 +80,7 @@ declare namespace Eris {
     topic?: string;
     rateLimitPerUser?: number;
     type: 0 | 2 | 4 | 5 | 6;
+    bitrate?: number;
   }
 
   type FriendSuggestionReasons = { type: number; platform_type: string; name: string }[];
