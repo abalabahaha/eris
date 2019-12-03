@@ -71,12 +71,15 @@ declare namespace Eris {
     unavailable: boolean;
   }
 
-  interface GenericOldChannel {
+  interface OldChannel {
     name: string;
-    position: string;
-    nsfw: boolean;
-    permissionOverwrites: Collection<PermissionOverwrite>;
+    position?: string;
+    nsfw?: boolean;
+    permissionOverwrites?: Collection<PermissionOverwrite>;
     parentID?: string;
+    topic?: string;
+    rateLimitPerUser?: number;
+    type?: 0 | 2 | 4 | 5 | 6;
   }
 
   type FriendSuggestionReasons = { type: number; platform_type: string; name: string }[];
@@ -487,7 +490,19 @@ declare namespace Eris {
     color?: number;
     hoist?: boolean;
     mentionable?: boolean;
+    managed?: boolean;
   }
+
+  interface OldRole {
+    color: number;
+    hoist: boolean;
+    managed: boolean;
+    name: string;
+    permissions: Permission;
+    position: number;
+    mentionable: boolean;
+  }
+
   interface GamePresence {
     name: string;
     type?: number;
@@ -662,7 +677,7 @@ declare namespace Eris {
       event: "channelRecipientAdd" | "channelRecipientRemove",
       listener: (channel: GroupChannel, user: User) => void
     ): T;
-    (event: "channelUpdate", listener: (channel: AnyChannel, oldChannel: GenericOldChannel & ({ type: 0; topic?: string; rateLimitPerUser: number } | { type: 2; bitrate: number } | { type: 5; topic?: string; rateLimitPerUser: 0 } | { type: 4 | 6 })) => void): T;
+    (event: "channelUpdate", listener: (channel: AnyGuildChannel, oldChannel: OldChannel) => void): T;
     (event: "friendSuggestionCreate", listener: (user: User, reasons: FriendSuggestionReasons) => void): T;
     (event: "friendSuggestionDelete", listener: (user: User) => void): T;
     (event: "guildAvailable" | "guildBanAdd" | "guildBanRemove", listener: (guild: Guild, user: User) => void): T;
@@ -676,7 +691,7 @@ declare namespace Eris {
       listener: (guild: Guild, member: Member, oldMember: { roles: string[]; nick?: string }) => void
     ): T;
     (event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): T;
-    (event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: RoleOptions) => void): T;
+    (event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: OldRole) => void): T;
     (event: "guildUpdate", listener: (guild: Guild, oldGuild: GuildOptions) => void): T;
     (event: "hello", listener: (trace: string[], id: number) => void): T;
     (event: "messageCreate", listener: (message: Message) => void): T;
