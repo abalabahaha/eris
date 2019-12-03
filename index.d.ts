@@ -491,7 +491,6 @@ declare namespace Eris {
     color?: number;
     hoist?: boolean;
     mentionable?: boolean;
-    managed?: boolean;
   }
 
   interface OldRole {
