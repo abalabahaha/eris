@@ -73,13 +73,13 @@ declare namespace Eris {
 
   interface OldChannel {
     name: string;
-    position?: string;
-    nsfw?: boolean;
-    permissionOverwrites?: Collection<PermissionOverwrite>;
+    position: string;
+    nsfw: boolean;
+    permissionOverwrites: Collection<PermissionOverwrite>;
     parentID?: string;
     topic?: string;
     rateLimitPerUser?: number;
-    type?: 0 | 2 | 4 | 5 | 6;
+    type: 0 | 2 | 4 | 5 | 6;
   }
 
   type FriendSuggestionReasons = { type: number; platform_type: string; name: string }[];
