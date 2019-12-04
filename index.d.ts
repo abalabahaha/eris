@@ -724,7 +724,7 @@ declare namespace Eris {
       listener: (user: User, oldUser: { username: string; discriminator: string; avatar?: string }) => void
     ): T;
     (event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): T;
-    (event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): T;
+    (event: "voiceChannelLeave", listener: (member: Member | null, oldChannel: VoiceChannel) => void): T;
     (
       event: "voiceChannelSwitch",
       listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void
