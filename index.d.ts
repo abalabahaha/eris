@@ -486,22 +486,22 @@ declare namespace Eris {
     banner?: string;
   }
   interface OldGuild {
-    name: string,
-    verificationLevel: 0 | 1 | 2 | 3 | 4,
-    splash?: string,
-    banner?: string,
-    region: string,
-    ownerID: string,
-    icon: string,
-    features: string[],
+    name: string;
+    verificationLevel: 0 | 1 | 2 | 3 | 4;
+    splash?: string;
+    banner?: string;
+    region: string;
+    ownerID: string;
+    icon: string;
+    features: string[];
     emojis: Emoji[],
-    afkChannelID?: string,
-    afkTimeout: number,
-    mfaLevel: 0 | 1,
-    large: boolean,
-    maxPresences?: number,
-    explicitContentFilter: 0 | 1 | 2,
-    systemChannelID?: string
+    afkChannelID?: string;
+    afkTimeout: number;
+    mfaLevel: 0 | 1;
+    large: boolean;
+    maxPresences?: number;
+    explicitContentFilter: 0 | 1 | 2;
+    systemChannelID?: string;
   }
   interface MemberOptions {
     roles?: string[];
