@@ -277,6 +277,13 @@ declare namespace Eris {
       INTEGRATION_UPDATE: 81;
       INTEGRATION_DELETE: 82;
     };
+    MessageFlags: {
+      CROSSPOSTED: 0;
+      IS_CROSSPOST: 2;
+      SUPPRESS_EMBEDS: 4;
+      SOURCE_MESSAGE_DELETED: 8;
+      URGENT: 16;
+    };
     MessageTypes: {
       DEFAULT: 0;
       RECIPIENT_ADD: 1;
@@ -320,7 +327,7 @@ declare namespace Eris {
     title?: string;
     description?: string;
     url?: string;
-    timestamp?: string;
+    timestamp?: Date | string;
     color?: number;
     footer?: { text: string; icon_url?: string; proxy_icon_url?: string };
     image?: { url?: string; proxy_url?: string; height?: number; width?: number };
@@ -1630,6 +1637,7 @@ declare namespace Eris {
     defaultAvatarURL: string;
     avatarURL: string;
     staticAvatarURL: string;
+    system: boolean;
     constructor(data: BaseData, client: Client);
     dynamicAvatarURL(format?: string, size?: number): string;
     getDMChannel(): Promise<PrivateChannel>;
