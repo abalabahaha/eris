@@ -323,7 +323,7 @@ declare namespace Eris {
     title?: string;
     description?: string;
     url?: string;
-    timestamp?: string;
+    timestamp?: Date | string;
     color?: number;
     footer?: { text: string; icon_url?: string; proxy_icon_url?: string };
     image?: { url?: string; proxy_url?: string; height?: number; width?: number };
