@@ -485,6 +485,24 @@ declare namespace Eris {
     splash?: string;
     banner?: string;
   }
+  interface OldGuild {
+    name: string,
+    verificationLevel: 0 | 1 | 2 | 3 | 4,
+    splash?: string,
+    banner?: string,
+    region: string,
+    ownerID: string,
+    icon: string,
+    features: string[],
+    emojis: Emoji[],
+    afkChannelID?: string,
+    afkTimeout: number,
+    mfaLevel: 0 | 1,
+    large: boolean,
+    maxPresences?: number,
+    explicitContentFilter: 0 | 1 | 2,
+    systemChannelID?: string
+  }
   interface MemberOptions {
     roles?: string[];
     nick?: string;
@@ -699,7 +717,7 @@ declare namespace Eris {
     ): T;
     (event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): T;
     (event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: OldRole) => void): T;
-    (event: "guildUpdate", listener: (guild: Guild, oldGuild: GuildOptions) => void): T;
+    (event: "guildUpdate", listener: (guild: Guild, oldGuild: OldGuild) => void): T;
     (event: "hello", listener: (trace: string[], id: number) => void): T;
     (event: "messageCreate", listener: (message: Message) => void): T;
     (event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): T;
