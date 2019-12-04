@@ -494,7 +494,7 @@ declare namespace Eris {
     ownerID: string;
     icon: string;
     features: string[];
-    emojis: (Omit<Emoji, "user" | "icon"> & { available: boolean; })[];
+    emojis: (Omit<Emoji, "user" | "icon"> & { available: boolean })[];
     afkChannelID?: string;
     afkTimeout: number;
     mfaLevel: 0 | 1;
