@@ -71,12 +71,16 @@ declare namespace Eris {
     unavailable: boolean;
   }
 
-  interface OldChannel {
+  interface OldGuildChannel {
     name: string;
     position: string;
-    topic?: string;
-    bitrate?: number;
+    nsfw: boolean;
     permissionOverwrites: Collection<PermissionOverwrite>;
+    parentID?: string;
+    topic?: string;
+    rateLimitPerUser?: number;
+    type: 0 | 2 | 4 | 5 | 6;
+    bitrate?: number;
   }
 
   type FriendSuggestionReasons = { type: number; platform_type: string; name: string }[];
@@ -481,6 +485,24 @@ declare namespace Eris {
     splash?: string;
     banner?: string;
   }
+  interface OldGuild {
+    name: string;
+    verificationLevel: 0 | 1 | 2 | 3 | 4;
+    splash?: string;
+    banner?: string;
+    region: string;
+    ownerID: string;
+    icon: string;
+    features: string[];
+    emojis: (Omit<Emoji, "user" | "icon"> & { available: boolean })[];
+    afkChannelID?: string;
+    afkTimeout: number;
+    mfaLevel: 0 | 1;
+    large: boolean;
+    maxPresences?: number;
+    explicitContentFilter: 0 | 1 | 2;
+    systemChannelID?: string;
+  }
   interface MemberOptions {
     roles?: string[];
     nick?: string;
@@ -495,6 +517,17 @@ declare namespace Eris {
     hoist?: boolean;
     mentionable?: boolean;
   }
+
+  interface OldRole {
+    color: number;
+    hoist: boolean;
+    managed: boolean;
+    name: string;
+    permissions: Permission;
+    position: number;
+    mentionable: boolean;
+  }
+
   interface GamePresence {
     name: string;
     type?: number;
@@ -669,7 +702,7 @@ declare namespace Eris {
       event: "channelRecipientAdd" | "channelRecipientRemove",
       listener: (channel: GroupChannel, user: User) => void
     ): T;
-    (event: "channelUpdate", listener: (channel: AnyChannel, oldChannel: OldChannel) => void): T;
+    (event: "channelUpdate", listener: (channel: AnyGuildChannel, oldChannel: OldGuildChannel) => void): T;
     (event: "friendSuggestionCreate", listener: (user: User, reasons: FriendSuggestionReasons) => void): T;
     (event: "friendSuggestionDelete", listener: (user: User) => void): T;
     (event: "guildAvailable" | "guildBanAdd" | "guildBanRemove", listener: (guild: Guild, user: User) => void): T;
@@ -683,8 +716,8 @@ declare namespace Eris {
       listener: (guild: Guild, member: Member, oldMember: { roles: string[]; nick?: string }) => void
     ): T;
     (event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): T;
-    (event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: RoleOptions) => void): T;
-    (event: "guildUpdate", listener: (guild: Guild, oldGuild: GuildOptions) => void): T;
+    (event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: OldRole) => void): T;
+    (event: "guildUpdate", listener: (guild: Guild, oldGuild: OldGuild) => void): T;
     (event: "hello", listener: (trace: string[], id: number) => void): T;
     (event: "messageCreate", listener: (message: Message) => void): T;
     (event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): T;
