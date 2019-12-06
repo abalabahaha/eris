@@ -71,7 +71,7 @@ declare namespace Eris {
     unavailable: boolean;
   }
 
-  interface OldChannel {
+  interface OldGuildChannel {
     name: string;
     position: string;
     nsfw: boolean;
@@ -702,7 +702,7 @@ declare namespace Eris {
       event: "channelRecipientAdd" | "channelRecipientRemove",
       listener: (channel: GroupChannel, user: User) => void
     ): T;
-    (event: "channelUpdate", listener: (channel: AnyGuildChannel, oldChannel: OldChannel) => void): T;
+    (event: "channelUpdate", listener: (channel: AnyGuildChannel, oldChannel: OldGuildChannel) => void): T;
     (event: "friendSuggestionCreate", listener: (user: User, reasons: FriendSuggestionReasons) => void): T;
     (event: "friendSuggestionDelete", listener: (user: User) => void): T;
     (event: "guildAvailable" | "guildBanAdd" | "guildBanRemove", listener: (guild: Guild, user: User) => void): T;
