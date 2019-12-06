@@ -1158,7 +1158,7 @@ declare namespace Eris {
     limit?: number;
     constructor(baseObject: new (...args: any[]) => T, limit?: number);
     add(obj: T, extra?: any, replace?: boolean): T;
-    find(func: (i: T) => boolean): T;
+    find(func: (i: T) => boolean): T | undefined;
     random(): T;
     filter(func: (i: T) => boolean): T[];
     map<R>(func: (i: T) => R): R[];
