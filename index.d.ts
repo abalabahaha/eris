@@ -81,6 +81,7 @@ declare namespace Eris {
     rateLimitPerUser?: number;
     type: 0 | 2 | 4 | 5 | 6;
     bitrate?: number;
+    userLimit?: number;
   }
 
   type FriendSuggestionReasons = { type: number; platform_type: string; name: string }[];
