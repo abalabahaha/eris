@@ -83,7 +83,7 @@ declare namespace Eris {
     bitrate?: number;
     userLimit?: number;
   }
-  
+
   interface OldMessage {
     attachments: Attachment[];
     embeds: Embed[];
