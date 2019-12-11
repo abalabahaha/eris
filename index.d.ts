@@ -1157,7 +1157,7 @@ declare namespace Eris {
     baseObject: new (...args: any[]) => T;
     limit?: number;
     constructor(baseObject: new (...args: any[]) => T, limit?: number, iterable?: object | any[]);
-    static from(array: any[], key: string): Collection<any>;
+    static from(array: any[], key: string, limit: number): Collection<any>;
     toArray(): any[];
     toObject(): object;
     apply(key: string, func: string, ...args: any[]): Collection<any>;
