@@ -1156,11 +1156,11 @@ declare namespace Eris {
   export class Collection<T extends { id: string | number }> extends Map<string | number, T> {
     baseObject: new (...args: any[]) => T;
     limit?: number;
-    constructor(baseObject: new (...args: any[]) => T, limit?: number, iterable?: object | any[]);
+    constructor(baseObject: new (...args: T[]) => T, limit?: number, iterable?: object | T[]);
     static from(array: any[], key: string, limit: number): Collection<any>;
-    toArray(): any[];
+    toArray(): T[];
     toObject(): object;
-    apply(key: string, func: string, ...args: any[]): Collection<any>;
+    apply(key: string, func: string, ...args: any[]): Collection<T>;
     add(obj: T, extra?: any, replace?: boolean): T;
     find(func: (i: T) => boolean): T | undefined;
     random(): T;
