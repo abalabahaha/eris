@@ -1225,6 +1225,7 @@ declare namespace Eris {
     joinedAt: number;
     ownerID: string;
     splash?: string;
+    splashURL?: string;
     banner?: string;
     bannerURL?: string;
     premiumTier: number;
