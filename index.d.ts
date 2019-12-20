@@ -91,6 +91,8 @@ declare namespace Eris {
   }
 
   interface OldPresence {
+    activities?: Activity[];
+    clientStatus: ClientStatus;
     status: string;
     game?: {
       name: string;
@@ -1488,7 +1490,7 @@ declare namespace Eris {
   }
 
   export class Member extends Base {
-    activities: Activity[];
+    activities?: Activity[];
     clientStatus: ClientStatus;
     id: string;
     mention: string;
