@@ -1227,7 +1227,7 @@ declare namespace Eris {
     splash?: string;
     splashURL: string | null;
     banner?: string;
-    bannerURL?: string;
+    bannerURL: string | null;
     premiumTier: number;
     premiumSubscriptionCount?: number;
     vanityURL?: string;
