@@ -81,6 +81,19 @@ declare namespace Eris {
     rateLimitPerUser?: number;
     type: 0 | 2 | 4 | 5 | 6;
     bitrate?: number;
+    userLimit?: number;
+  }
+
+  interface OldMessage {
+    attachments: Attachment[];
+    embeds: Embed[];
+    content: string;
+    editedTimestamp?: number;
+    mentionedBy?: any;
+    tts: boolean;
+    mentions: string[];
+    roleMentions: string[];
+    channelMentions: string[];
   }
 
   type FriendSuggestionReasons = { type: number; platform_type: string; name: string }[];
@@ -729,22 +742,7 @@ declare namespace Eris {
       event: "messageReactionAdd" | "messageReactionRemove",
       listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void
     ): T;
-    (
-      event: "messageUpdate",
-      listener: (
-        message: Message,
-        oldMessage?: {
-          attachments: Attachment[];
-          embeds: Embed[];
-          content: string;
-          editedTimestamp?: number;
-          mentionedBy?: any;
-          tts: boolean;
-          mentions: string[];
-          roleMentions: string[];
-          channelMentions: string[];
-        }
-      ) => void
+    (event: "messageUpdate", listener: (message: Message, oldMessage?: OldMessage) => void
     ): T;
     (event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: OldPresence) => void): T;
     (event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): T;
