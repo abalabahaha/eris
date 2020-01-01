@@ -31,17 +31,17 @@
   },
   "homepage": "https://abal.moe/Eris/",
   "dependencies": {
-    "ws": "^7.1.2"
+    "ws": "^7.2.1"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.7.0",
-    "@typescript-eslint/parser": "^2.7.0",
-    "eslint": "^6.6.0",
-    "typescript": "^3.7.2"
+    "@typescript-eslint/eslint-plugin": "^2.14.0",
+    "@typescript-eslint/parser": "^2.14.0",
+    "eslint": "^6.8.0",
+    "typescript": "^3.7.4"
   },
   "optionalDependencies": {
-    "opusscript": "^0.0.4",
-    "tweetnacl": "^1.0.0"
+    "opusscript": "^0.0.7",
+    "tweetnacl": "^1.0.1"
   },
   "browser": {
     "child_process": false,
