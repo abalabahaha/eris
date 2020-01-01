@@ -3,6 +3,16 @@
   "version": "0.11.1",
   "description": "A NodeJS Discord library",
   "main": "./index.js",
+  "exports": {
+    ".": [
+      {
+        "require": "./index.js",
+        "import": "./esm.mjs"
+      },
+      "./index.js"
+    ],
+    "./esm": "./esm.mjs"
+  },
   "typings": "./index.d.ts",
   "engines": {
     "node": ">=8.0.0"
