@@ -91,6 +91,8 @@ declare namespace Eris {
   }
 
   interface OldPresence {
+    activities?: Activity[];
+    clientStatus?: ClientStatus;
     status: string;
     game?: {
       name: string;
@@ -530,7 +532,7 @@ declare namespace Eris {
 
   interface GamePresence {
     name: string;
-    type?: number;
+    type?: 0 | 1 | 2 | 3 | 4;
     url?: string;
     timestamps?: { start: number; end?: number };
     application_id?: string;
@@ -675,6 +677,7 @@ declare namespace Eris {
     constructor(client: Client);
     connect(shard: Shard): void;
     spawn(id: number): void;
+    toString(): string;
     toJSON(props?: string[]): string;
   }
 
@@ -1065,6 +1068,7 @@ declare namespace Eris {
     searchChannelMessages(channelID: string, query: SearchOptions): Promise<SearchResults>;
     searchGuildMessages(guildID: string, query: SearchOptions): Promise<SearchResults>;
     on: ClientEvents<this>;
+    toString(): string;
     toJSON(props?: string[]): JSONCache;
   }
 
@@ -1098,6 +1102,7 @@ declare namespace Eris {
     on(event: "speakingStart", listener: (userID: string) => void): this;
     on(event: "speakingStop", listener: (userID: string) => void): this;
     on(event: "end", listener: () => void): this;
+    toString(): string;
     toJSON(props?: string[]): JSONCache;
   }
 
@@ -1132,6 +1137,7 @@ declare namespace Eris {
     join(guildID: string, channelID: string, options: VoiceResourceOptions): Promise<VoiceConnection>;
     leave(guildID: string): void;
     switch(guildID: string, channelID: string): void;
+    toString(): string;
     toJSON(props?: string[]): JSONCache;
   }
 
@@ -1473,7 +1479,7 @@ declare namespace Eris {
     id: string;
     name: string;
     state?: string;
-    type: 0 | 1 | 2 | 3;
+    type: 0 | 1 | 2 | 3 | 4;
     url?: string;
   }
 
@@ -1490,8 +1496,8 @@ declare namespace Eris {
   }
 
   export class Member extends Base {
-    activities: Activity[];
-    clientStatus: ClientStatus;
+    activities?: Activity[];
+    clientStatus?: ClientStatus;
     id: string;
     mention: string;
     guild: Guild;
@@ -1700,6 +1706,7 @@ declare namespace Eris {
     editAFK(afk: boolean): void;
     editStatus(status?: string, game?: GamePresence): void;
     on: ShardEvents<this>;
+    toString(): string;
     toJSON(props?: string[]): JSONCache;
     sendWS(op: number, _data: object): void;
   }
@@ -1752,6 +1759,7 @@ declare namespace Eris {
     registerSubcommandAlias(alias: string, label: string): void;
     registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
     unregisterSubcommand(label: string): void;
+    toString(): string;
   }
 
   export class CommandClient extends Client {
@@ -1762,6 +1770,7 @@ declare namespace Eris {
     registerCommandAlias(alias: string, label: string): void;
     registerCommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
     unregisterCommand(label: string): void;
+    toString(): string;
   }
 }
 
