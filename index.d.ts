@@ -675,6 +675,7 @@ declare namespace Eris {
     constructor(client: Client);
     connect(shard: Shard): void;
     spawn(id: number): void;
+    toString(): string;
     toJSON(props?: string[]): string;
   }
 
@@ -1065,6 +1066,7 @@ declare namespace Eris {
     searchChannelMessages(channelID: string, query: SearchOptions): Promise<SearchResults>;
     searchGuildMessages(guildID: string, query: SearchOptions): Promise<SearchResults>;
     on: ClientEvents<this>;
+    toString(): string;
     toJSON(props?: string[]): JSONCache;
   }
 
@@ -1098,6 +1100,7 @@ declare namespace Eris {
     on(event: "speakingStart", listener: (userID: string) => void): this;
     on(event: "speakingStop", listener: (userID: string) => void): this;
     on(event: "end", listener: () => void): this;
+    toString(): string;
     toJSON(props?: string[]): JSONCache;
   }
 
@@ -1132,6 +1135,7 @@ declare namespace Eris {
     join(guildID: string, channelID: string, options: VoiceResourceOptions): Promise<VoiceConnection>;
     leave(guildID: string): void;
     switch(guildID: string, channelID: string): void;
+    toString(): string;
     toJSON(props?: string[]): JSONCache;
   }
 
@@ -1698,6 +1702,7 @@ declare namespace Eris {
     editAFK(afk: boolean): void;
     editStatus(status?: string, game?: GamePresence): void;
     on: ShardEvents<this>;
+    toString(): string;
     toJSON(props?: string[]): JSONCache;
     sendWS(op: number, _data: object): void;
   }
@@ -1750,6 +1755,7 @@ declare namespace Eris {
     registerSubcommandAlias(alias: string, label: string): void;
     registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
     unregisterSubcommand(label: string): void;
+    toString(): string;
   }
 
   export class CommandClient extends Client {
@@ -1760,6 +1766,7 @@ declare namespace Eris {
     registerCommandAlias(alias: string, label: string): void;
     registerCommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
     unregisterCommand(label: string): void;
+    toString(): string;
   }
 }
 
