@@ -530,7 +530,7 @@ declare namespace Eris {
 
   interface GamePresence {
     name: string;
-    type?: number;
+    type?: 0 | 1 | 2 | 3 | 4;
     url?: string;
     timestamps?: { start: number; end?: number };
     application_id?: string;
@@ -1475,7 +1475,7 @@ declare namespace Eris {
     id: string;
     name: string;
     state?: string;
-    type: 0 | 1 | 2 | 3;
+    type: 0 | 1 | 2 | 3 | 4;
     url?: string;
   }
 
