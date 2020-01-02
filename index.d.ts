@@ -1495,7 +1495,7 @@ declare namespace Eris {
 
   export class Member extends Base {
     activities?: Activity[];
-    clientStatus?: ClientStatus;
+    clientStatus: ClientStatus;
     id: string;
     mention: string;
     guild: Guild;
