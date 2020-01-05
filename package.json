@@ -1,5 +1,5 @@
 {
-  "name": "eris",
+  "name": "eris-dramex",
   "version": "0.11.2",
   "description": "A NodeJS Discord library",
   "main": "./index.js",
