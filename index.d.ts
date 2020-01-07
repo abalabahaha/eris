@@ -1446,12 +1446,21 @@ declare namespace Eris {
 
   export class Invite implements SimpleJSON {
     code: string;
-    channel: { id: string; name: string };
+    channel: {
+      id: string;
+      name: string;
+      type: 0 | 2 | 4 | 5 | 6;
+    };
     guild: {
       id: string;
       name: string;
       splash?: string;
+      banner?: string;
+      description?: string;
       icon?: string;
+      features: string[];
+      verification_level?: 0 | 1 | 2 | 3 | 4;
+      vanity_url_code?: string;
       textChannelCount?: number;
       voiceChannelCount?: number;
     };
