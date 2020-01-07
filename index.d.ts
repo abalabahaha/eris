@@ -1461,8 +1461,6 @@ declare namespace Eris {
       features: string[];
       verificationLevel?: 0 | 1 | 2 | 3 | 4;
       vanityUrlCode?: string;
-      textChannelCount?: number;
-      voiceChannelCount?: number;
     };
     inviter?: User;
     uses?: number;
@@ -1470,7 +1468,6 @@ declare namespace Eris {
     maxAge?: number;
     temporary?: boolean;
     createdAt?: number;
-    revoked?: boolean;
     presenceCount?: number;
     memberCount?: number;
     constructor(data: BaseData, client: Client);
