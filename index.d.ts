@@ -1459,8 +1459,8 @@ declare namespace Eris {
       description?: string;
       icon?: string;
       features: string[];
-      verification_level?: 0 | 1 | 2 | 3 | 4;
-      vanity_url_code?: string;
+      verificationLevel?: 0 | 1 | 2 | 3 | 4;
+      vanityUrlCode?: string;
       textChannelCount?: number;
       voiceChannelCount?: number;
     };
