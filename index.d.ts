@@ -1393,7 +1393,7 @@ declare namespace Eris {
 
   export class CategoryChannel extends GuildChannel {
     type: 4;
-    channels: Collection<TextChannel | VoiceChannel>;
+    channels: Collection<TextChannel | VoiceChannel | NewsChannel | StoreChannel>;
   }
 
   // Intentionally left mostly empty as it has no other unique properties from GuildChannel
