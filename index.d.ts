@@ -34,8 +34,8 @@ declare namespace Eris {
   }
 
   interface Invitable {
-    getInvites(): Promise<Invite[]>;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
+    getInvites(): Promise<ChannelInvite[]>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<ChannelInvite>;
   }
 
   interface Textable {
@@ -895,12 +895,12 @@ declare namespace Eris {
       reason?: string
     ): Promise<void>;
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
-    getChannelInvites(channelID: string): Promise<Invite[]>;
+    getChannelInvites(channelID: string): Promise<ChannelInvite[]>;
     createChannelInvite(
       channelID: string,
       options?: { maxAge?: number; maxUses?: number; temporary?: boolean; unique?: boolean },
       reason?: string
-    ): Promise<Invite>;
+    ): Promise<ChannelInvite>;
     getChannelWebhooks(channelID: string): Promise<Webhook[]>;
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
     createChannelWebhook(
@@ -935,8 +935,8 @@ declare namespace Eris {
     getPruneCount(guildID: string, days: number): Promise<number>;
     pruneMembers(guildID: string, days: number, reason?: string): Promise<number>;
     getVoiceRegions(guildID: string): Promise<VoiceRegion[]>;
-    getInvite(inviteID: string, withCounts?: boolean): Promise<Invite>;
-    acceptInvite(inviteID: string): Promise<Invite>;
+    getInvite(inviteID: string, withCounts?: boolean): Promise<RestInvite>;
+    acceptInvite(inviteID: string): Promise<RestInvite>;
     deleteInvite(inviteID: string, reason?: string): Promise<void>;
     getSelf(): Promise<ExtendedUser>;
     editSelf(options: { username?: string; avatar?: string }): Promise<ExtendedUser>;
@@ -980,8 +980,8 @@ declare namespace Eris {
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
-    getGuildInvites(guildID: string): Promise<Invite[]>;
-    getGuildVanity(guildID: string): Promise<{ code: Invite }>;
+    getGuildInvites(guildID: string): Promise<ChannelInvite[]>;
+    getGuildVanity(guildID: string): Promise<{ code?: string; uses?: number }>;
     banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     createGuild(name: string, region: string, icon?: string): Promise<Guild>;
@@ -1284,8 +1284,8 @@ declare namespace Eris {
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
     syncIntegration(integrationID: string): Promise<void>;
     deleteIntegration(integrationID: string): Promise<void>;
-    getInvites(): Promise<Invite[]>;
-    getVanity(): Promise<{ code: Invite }>;
+    getInvites(): Promise<ChannelInvite[]>;
+    getVanity(): Promise<{ code?: string; uses?: number }>;
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<void>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     removeMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
@@ -1329,8 +1329,8 @@ declare namespace Eris {
     permissionOverwrites: Collection<PermissionOverwrite>;
     nsfw: boolean;
     constructor(data: BaseData, guild: Guild);
-    getInvites(): Promise<Invite[]>;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
+    getInvites(): Promise<ChannelInvite[]>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<ChannelInvite>;
     permissionsOf(memberID: string): Permission;
     edit(
       options: {
@@ -1363,8 +1363,8 @@ declare namespace Eris {
     rateLimitPerUser: number;
     messages: Collection<Message>;
     lastPinTimestamp?: number;
-    getInvites(): Promise<Invite[]>;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
+    getInvites(): Promise<ChannelInvite[]>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<ChannelInvite>;
     getWebhooks(): Promise<Webhook[]>;
     createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
     sendTyping(): Promise<void>;
@@ -1417,8 +1417,8 @@ declare namespace Eris {
     bitrate?: number;
     userLimit?: number;
     voiceMembers?: Collection<Member>;
-    getInvites(): Promise<Invite[]>;
-    createInvite(options: CreateInviteOptions, reason?: string): Promise<Invite>;
+    getInvites(): Promise<ChannelInvite[]>;
+    createInvite(options: CreateInviteOptions, reason?: string): Promise<ChannelInvite>;
     join(options: VoiceResourceOptions): Promise<VoiceConnection>;
     leave(): void;
   }
@@ -1448,13 +1448,9 @@ declare namespace Eris {
     code: string;
     channel: {
       id: string;
-      name: string;
-      type: 0 | 2 | 4 | 5 | 6;
-    } & {
-      id: string;
       name?: string;
       icon?: string;
-      type: 3;
+      type: 0 | 2 | 3 | 4 | 5 | 6;
     };
     guild?: {
       id: string;
@@ -1478,6 +1474,65 @@ declare namespace Eris {
     constructor(data: BaseData, client: Client);
     delete(reason?: string): Promise<void>;
     toJSON(props?: string[]): JSONCache;
+  }
+
+  type RestInvite = RestChannelInvite | RestPrivateInvite;
+  type AnyInvite = RestInvite | ChannelInvite;
+  interface BaseInvite {
+    code: string;
+    channel: {
+      id: string;
+      name?: string;
+      type: 0 | 2 | 3 | 4 | 5 | 6;
+    };
+    inviter?: User;
+    delete(reason?: string): Promise<void>;
+    toJSON(props?: string[]): JSONCache;
+  }
+
+  // when fetched from /api/v7/channels/:id/invites
+  interface GuildInvite extends BaseInvite {
+    channel: {
+      id: string;
+      name: string;
+      type: 0 | 2 | 4 | 5 | 6;
+    };
+    guild?: {
+      id: string;
+      name: string;
+      splash?: string;
+      banner?: string;
+      description?: string;
+      icon?: string;
+      features: string[];
+      verificationLevel?: 0 | 1 | 2 | 3 | 4;
+      vanityUrlCode?: string;
+    };
+  }
+
+  // when fetched from /api/v7/channels/:id/invites
+  interface ChannelInvite extends GuildInvite {
+    uses?: number;
+    maxUses?: number;
+    maxAge?: number;
+    temporary?: boolean;
+    createdAt?: number;
+  }
+
+  // when fetched from /api/v7/invites/:code (guild invite)
+  interface RestChannelInvite extends GuildInvite {
+    code: string; // have to have something or linter will complain
+  }
+
+  // when fetched from /api/v7/invites/:code (dm group invite)
+  interface RestPrivateInvite extends BaseInvite {
+    code: string;
+    channel: {
+      id: string;
+      name?: string;
+      icon?: string;
+      type: 3;
+    };
   }
 
   interface Activity {
