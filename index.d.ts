@@ -1450,7 +1450,7 @@ declare namespace Eris {
       id: string;
       name?: string;
       icon?: string;
-      type: 0 | 2 | 3 | 4 | 5 | 6;
+      type: 0 | 2 | 3 | 5 | 6;
     };
     guild?: {
       id: string;
