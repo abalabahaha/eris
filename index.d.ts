@@ -1308,7 +1308,7 @@ declare namespace Eris {
     reason?: string;
     user: User;
     targetID: string;
-    target?: Guild | AnyGuildChannel | Member | Invite | Role | any;
+    target?: Guild | AnyGuildChannel | Member | RestChannelInvite | Role | any;
     before?: any;
     after?: any;
     count?: number;
@@ -1444,38 +1444,6 @@ declare namespace Eris {
     sync(): Promise<void>;
   }
 
-  export class Invite implements SimpleJSON {
-    code: string;
-    channel: {
-      id: string;
-      name?: string;
-      icon?: string;
-      type: 0 | 2 | 3 | 5 | 6;
-    };
-    guild?: {
-      id: string;
-      name: string;
-      splash?: string;
-      banner?: string;
-      description?: string;
-      icon?: string;
-      features: string[];
-      verificationLevel?: 0 | 1 | 2 | 3 | 4;
-      vanityUrlCode?: string;
-    };
-    inviter?: User;
-    uses?: number;
-    maxUses?: number;
-    maxAge?: number;
-    temporary?: boolean;
-    createdAt?: number;
-    presenceCount?: number;
-    memberCount?: number;
-    constructor(data: BaseData, client: Client);
-    delete(reason?: string): Promise<void>;
-    toJSON(props?: string[]): JSONCache;
-  }
-
   type RestInvite = RestChannelInvite | RestPrivateInvite;
   type AnyInvite = RestInvite | ChannelInvite;
   interface BaseInvite {
@@ -1521,7 +1489,8 @@ declare namespace Eris {
 
   // when fetched from /api/v7/invites/:code (guild invite)
   interface RestChannelInvite extends GuildInvite {
-    code: string; // have to have something or linter will complain
+    presenceCount?: number;
+    memberCount?: number;
   }
 
   // when fetched from /api/v7/invites/:code (dm group invite)
