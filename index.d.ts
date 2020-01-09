@@ -1308,7 +1308,7 @@ declare namespace Eris {
     reason?: string;
     user: User;
     targetID: string;
-    target?: Guild | AnyGuildChannel | Member | RestChannelInvite | Role | any;
+    target?: Guild | AnyGuildChannel | Member | Role | any;
     before?: any;
     after?: any;
     count?: number;
