@@ -1497,7 +1497,7 @@ declare namespace Eris {
       name: string;
       type: 0 | 2 | 4 | 5 | 6;
     };
-    guild?: {
+    guild: {
       id: string;
       name: string;
       splash?: string;
@@ -1526,7 +1526,6 @@ declare namespace Eris {
 
   // when fetched from /api/v7/invites/:code (dm group invite)
   interface RestPrivateInvite extends BaseInvite {
-    code: string;
     channel: {
       id: string;
       name?: string;
