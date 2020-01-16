@@ -337,7 +337,7 @@ declare namespace Eris {
     wait?: boolean;
     disableEveryone?: boolean;
   }
-  
+
   interface EmbedAuthorOptions {
     name: string;
     url?: string;
@@ -346,13 +346,13 @@ declare namespace Eris {
   interface EmbedAuthor extends EmbedAuthorOptions {
     proxy_icon_url?: string;
   }
-  
+
   interface EmbedField {
     name: string;
     value: string;
     inline?: boolean;
   }
-  
+
   interface EmbedFooterOptions {
     text: string;
     icon_url?: string;
@@ -360,7 +360,7 @@ declare namespace Eris {
   interface EmbedFooter extends EmbedFooterOptions {
     proxy_icon_url?: string;
   }
-  
+
   interface EmbedImageOptions {
     url?: string;
   }
@@ -375,7 +375,7 @@ declare namespace Eris {
     height?: number;
     width?: number;
   }
-  
+
   interface EmbedProvider {
     name?: string;
     url?: string;
@@ -402,8 +402,8 @@ declare namespace Eris {
     footer?: EmbedFooter;
     image?: EmbedImage;
     thumbnail?: EmbedImage; // REVIEW: same as line 392
-    author?: EmbedAuthor;    
-  };
+    author?: EmbedAuthor;
+  }
 
   interface Webhook {
     name: string;
