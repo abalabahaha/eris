@@ -111,14 +111,16 @@ declare namespace Eris {
   }
 
   type BotActivityType = 0 | 1 | 2 | 3
-  type ActivityType = BotActivityType | 4;
+  type ActivityType = BotActivityType & 4;
 
-  interface Activity {
+  interface ActivityPartial<T extends BotActivityType> {
     name: string;
-    type: ActivityType;
+    type: T;
+    url?: string;
+  }
+  interface Activity extends ActivityPartial<ActivityType> {
     id: string;
     created_at: number;
-    url?: string;
   }
 
   interface RichActivity extends Activity {
@@ -818,7 +820,7 @@ declare namespace Eris {
     leaveVoiceChannel(channelID: string): void;
     closeVoiceConnection(guildID: string): void;
     editAFK(afk: boolean): void;
-    editStatus(status?: Status, game?: { name: string; type?: BotActivityType; url?: string; }): void;
+    editStatus(status?: Status, game?: ActivityPartial<BotActivityType>): void;
     getChannel(channelID: string): AnyChannel;
     createChannel(guildID: string, name: string): Promise<TextChannel>;
     createChannel(
@@ -1693,7 +1695,7 @@ declare namespace Eris {
     connect(): void;
     disconnect(options?: { reconnect: boolean }): void;
     editAFK(afk: boolean): void;
-    editStatus(status?: Status, game?: { name: string; type?: BotActivityType; url?: string; }): void;
+    editStatus(status?: Status, game?: ActivityPartial<BotActivityType>): void;
     on: ShardEvents<this>;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
