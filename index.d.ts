@@ -104,10 +104,10 @@ declare namespace Eris {
   }
 
   interface Presence {
-    activities?: (Activity | RichActivity)[];
+    activities?: AnyActivity[];
     clientStatus?: ClientStatus;
     status: Status;
-    game?: Activity | RichActivity;
+    game?: AnyActivity;
   }
 
   type BotActivityType = 0 | 1 | 2 | 3
@@ -142,6 +142,8 @@ declare namespace Eris {
     // the stuff attached to this object apparently varies even more than documented, so...
     [key: string]: any;
   }
+
+  type AnyActivity = Activity | RichActivity
 
   interface OldVoiceState {
     mute: boolean;
@@ -1504,10 +1506,10 @@ declare namespace Eris {
     defaultAvatarURL: string;
     avatarURL: string;
     staticAvatarURL: string;
-    game?: RichActivity | Activity;
+    game?: AnyActivity;
     status: Status;
     clientStatus?: ClientStatus;
-    activities?: RichActivity[] | Activity[];
+    activities?: AnyActivity[];
     constructor(data: BaseData, guild: Guild);
     edit(options: MemberOptions, reason?: string): Promise<void>;
     addRole(roleID: string, reason?: string): Promise<void>;
@@ -1608,10 +1610,10 @@ declare namespace Eris {
     id: string;
     user: User;
     type: number;
-    game?: Activity | RichActivity;
+    game?: AnyActivity;
     status: Status;
     clientStatus?: ClientStatus;
-    activities?: (Activity | RichActivity)[];
+    activities?: AnyActivity[];
     constructor(data: BaseData, client: Client);
   }
 
