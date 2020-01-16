@@ -337,27 +337,73 @@ declare namespace Eris {
     wait?: boolean;
     disableEveryone?: boolean;
   }
+  
+  interface EmbedAuthorOptions {
+    name: string;
+    url?: string;
+    icon_url?: string;
+  }
+  interface EmbedAuthor extends EmbedAuthorOptions {
+    proxy_icon_url?: string;
+  }
+  
+  interface EmbedField {
+    name: string;
+    value: string;
+    inline?: boolean;
+  }
+  
+  interface EmbedFooterOptions {
+    text: string;
+    icon_url?: string;
+  }
+  interface EmbedFooter extends EmbedFooterOptions {
+    proxy_icon_url?: string;
+  }
+  
+  interface EmbedImageOptions {
+    url?: string;
+  }
+  interface EmbedImage extends EmbedImageOptions {
+    proxy_url?: string;
+    height?: number;
+    width?: number;
+  }
 
-  interface EmbedBase {
+  interface EmbedVideo {
+    url?: string;
+    height?: number;
+    width?: number;
+  }
+  
+  interface EmbedProvider {
+    name?: string;
+    url?: string;
+  }
+
+  interface EmbedOptions {
     title?: string;
     description?: string;
     url?: string;
     timestamp?: Date | string;
     color?: number;
-    footer?: { text: string; icon_url?: string; proxy_icon_url?: string };
-    image?: { url?: string; proxy_url?: string; height?: number; width?: number };
-    thumbnail?: { url?: string; proxy_url?: string; height?: number; width?: number };
-    video?: { url: string; height?: number; width?: number };
-    provider?: { name: string; url?: string };
-    fields?: { name: string; value: string; inline?: boolean }[];
-    author?: { name: string; url?: string; icon_url?: string; proxy_icon_url?: string };
+    footer?: EmbedFooterOptions;
+    image?: EmbedImageOptions;
+    thumbnail?: EmbedImageOptions; // REVIEW: Image and thumbnail structures are identical, but discord does have separate entries for them. Could this change in the future?
+    fields?: EmbedField[];
+    author?: EmbedAuthorOptions;
   }
-  type Embed = {
+
+  // Omit<T, K> used to override
+  interface Embed extends Omit<EmbedOptions, "footer" | "image" | "thumbnail" | "author"> {
     type: string;
-  } & EmbedBase;
-  type EmbedOptions = {
-    type?: string;
-  } & EmbedBase;
+    video?: EmbedVideo;
+    provider?: EmbedProvider;
+    footer?: EmbedFooter;
+    image?: EmbedImage;
+    thumbnail?: EmbedImage; // REVIEW: same as line 392
+    author?: EmbedAuthor;    
+  };
 
   interface Webhook {
     name: string;
