@@ -389,7 +389,7 @@ declare namespace Eris {
     color?: number;
     footer?: EmbedFooterOptions;
     image?: EmbedImageOptions;
-    thumbnail?: EmbedImageOptions; // REVIEW: Image and thumbnail structures are identical, but discord does have separate entries for them. Could this change in the future?
+    thumbnail?: EmbedImageOptions;
     fields?: EmbedField[];
     author?: EmbedAuthorOptions;
   }
@@ -401,7 +401,7 @@ declare namespace Eris {
     provider?: EmbedProvider;
     footer?: EmbedFooter;
     image?: EmbedImage;
-    thumbnail?: EmbedImage; // REVIEW: same as line 392
+    thumbnail?: EmbedImage;
     author?: EmbedAuthor;
   }
 
