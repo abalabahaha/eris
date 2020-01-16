@@ -1530,7 +1530,7 @@ declare namespace Eris {
     id: string;
     createdAt: number;
     channel: TextableChannel;
-    guildID: string;
+    guildID?: string;
     timestamp: number;
     type: number;
     author: User;
