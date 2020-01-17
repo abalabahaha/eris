@@ -1545,6 +1545,7 @@ declare namespace Eris {
     attachments: Attachment[];
     embeds: Embed[];
     reactions: { [s: string]: any; count: number; me: boolean };
+    webhookID?: string;
     prefix?: string;
     command?: Command;
     constructor(data: BaseData, client: Client);
