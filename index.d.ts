@@ -1101,7 +1101,7 @@ declare namespace Eris {
     on(event: "speakingStart", listener: (userID: string) => void): this;
     on(event: "speakingStop", listener: (userID: string) => void): this;
     on(event: "end", listener: () => void): this;
-    on(event: "disconnect", listener: (userID: string) => void): this;
+    on(event: "userDisconnect", listener: (userID: string) => void): this;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
   }
