@@ -573,7 +573,7 @@ declare namespace Eris {
     position: number;
     mentionable: boolean;
   }
-  
+
   interface SearchOptions {
     sortBy?: string;
     sortOrder?: string;
