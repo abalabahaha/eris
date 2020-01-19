@@ -205,6 +205,7 @@ declare namespace Eris {
       HEARTBEAT: 3;
       SESSION_DESCRIPTION: 4;
       SPEAKING: 5;
+      DISCONNECT: 13;
     };
     SystemJoinMessages: [
       "%user% just joined the server - glhf!",
@@ -1147,6 +1148,7 @@ declare namespace Eris {
     on(event: "speakingStart", listener: (userID: string) => void): this;
     on(event: "speakingStop", listener: (userID: string) => void): this;
     on(event: "end", listener: () => void): this;
+    on(event: "userDisconnect", listener: (userID: string) => void): this;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
   }
