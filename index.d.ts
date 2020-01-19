@@ -613,6 +613,7 @@ declare namespace Eris {
     firstShardID?: number;
     getAllUsers?: boolean;
     guildCreateTimeout?: number;
+    guildSubscriptions?: boolean;
     largeThreshold?: number;
     lastShardID?: number;
     maxShards?: number | "auto";
