@@ -735,6 +735,7 @@ declare namespace Eris {
     (event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: OldRole) => void): T;
     (event: "guildUpdate", listener: (guild: Guild, oldGuild: OldGuild) => void): T;
     (event: "hello", listener: (trace: string[], id: number) => void): T;
+    (event: "inviteCreate" | "inviteDelete", listener: (invite: Invite) => void): T;
     (event: "messageCreate", listener: (message: Message) => void): T;
     (event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): T;
     (event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): T;
@@ -1243,6 +1244,7 @@ declare namespace Eris {
     maxPresences: number;
     channels: Collection<AnyGuildChannel>;
     members: Collection<Member>;
+    invites: Collection<Invite>;
     memberCount: number;
     roles: Collection<Role>;
     shard: Shard;
@@ -1445,6 +1447,7 @@ declare namespace Eris {
   }
 
   export class Invite implements SimpleJSON {
+    id: string;
     code: string;
     channel: { id: string; name: string };
     guild: {
