@@ -659,6 +659,7 @@ declare namespace Eris {
     firstShardID?: number;
     getAllUsers?: boolean;
     guildCreateTimeout?: number;
+    guildSubscriptions?: boolean;
     largeThreshold?: number;
     lastShardID?: number;
     maxShards?: number | "auto";
@@ -1593,6 +1594,7 @@ declare namespace Eris {
     reactions: { [s: string]: any; count: number; me: boolean };
     prefix?: string;
     command?: Command;
+    pinned: boolean;
     constructor(data: BaseData, client: Client);
     edit(content: MessageContent): Promise<Message>;
     pin(): Promise<void>;
