@@ -1450,14 +1450,7 @@ declare namespace Eris {
     id: string;
     code: string;
     channel: { id: string; name: string };
-    guild: {
-      id: string;
-      name: string;
-      splash?: string;
-      icon?: string;
-      textChannelCount?: number;
-      voiceChannelCount?: number;
-    };
+    guild?: Guild;
     inviter?: User;
     uses?: number;
     maxUses?: number;
