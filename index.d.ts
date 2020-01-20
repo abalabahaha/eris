@@ -205,6 +205,7 @@ declare namespace Eris {
       HEARTBEAT: 3;
       SESSION_DESCRIPTION: 4;
       SPEAKING: 5;
+      DISCONNECT: 13;
     };
     SystemJoinMessages: [
       "%user% just joined the server - glhf!",
@@ -338,26 +339,72 @@ declare namespace Eris {
     disableEveryone?: boolean;
   }
 
-  interface EmbedBase {
+  interface EmbedAuthorOptions {
+    name: string;
+    url?: string;
+    icon_url?: string;
+  }
+  interface EmbedAuthor extends EmbedAuthorOptions {
+    proxy_icon_url?: string;
+  }
+
+  interface EmbedField {
+    name: string;
+    value: string;
+    inline?: boolean;
+  }
+
+  interface EmbedFooterOptions {
+    text: string;
+    icon_url?: string;
+  }
+  interface EmbedFooter extends EmbedFooterOptions {
+    proxy_icon_url?: string;
+  }
+
+  interface EmbedImageOptions {
+    url?: string;
+  }
+  interface EmbedImage extends EmbedImageOptions {
+    proxy_url?: string;
+    height?: number;
+    width?: number;
+  }
+
+  interface EmbedVideo {
+    url?: string;
+    height?: number;
+    width?: number;
+  }
+
+  interface EmbedProvider {
+    name?: string;
+    url?: string;
+  }
+
+  interface EmbedOptions {
     title?: string;
     description?: string;
     url?: string;
     timestamp?: Date | string;
     color?: number;
-    footer?: { text: string; icon_url?: string; proxy_icon_url?: string };
-    image?: { url?: string; proxy_url?: string; height?: number; width?: number };
-    thumbnail?: { url?: string; proxy_url?: string; height?: number; width?: number };
-    video?: { url: string; height?: number; width?: number };
-    provider?: { name: string; url?: string };
-    fields?: { name: string; value: string; inline?: boolean }[];
-    author?: { name: string; url?: string; icon_url?: string; proxy_icon_url?: string };
+    footer?: EmbedFooterOptions;
+    image?: EmbedImageOptions;
+    thumbnail?: EmbedImageOptions;
+    fields?: EmbedField[];
+    author?: EmbedAuthorOptions;
   }
-  type Embed = {
+
+  // Omit<T, K> used to override
+  interface Embed extends Omit<EmbedOptions, "footer" | "image" | "thumbnail" | "author"> {
     type: string;
-  } & EmbedBase;
-  type EmbedOptions = {
-    type?: string;
-  } & EmbedBase;
+    video?: EmbedVideo;
+    provider?: EmbedProvider;
+    footer?: EmbedFooter;
+    image?: EmbedImage;
+    thumbnail?: EmbedImage;
+    author?: EmbedAuthor;
+  }
 
   interface Webhook {
     name: string;
@@ -1101,6 +1148,7 @@ declare namespace Eris {
     on(event: "speakingStart", listener: (userID: string) => void): this;
     on(event: "speakingStop", listener: (userID: string) => void): this;
     on(event: "end", listener: () => void): this;
+    on(event: "userDisconnect", listener: (userID: string) => void): this;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
   }
@@ -1527,10 +1575,10 @@ declare namespace Eris {
     unban(reason?: string): Promise<void>;
   }
 
-  export class Message extends Base {
+  export class Message<T extends Textable = TextableChannel> extends Base {
     id: string;
     createdAt: number;
-    channel: TextableChannel;
+    channel: T;
     guildID?: string;
     timestamp: number;
     type: number;
@@ -1547,10 +1595,12 @@ declare namespace Eris {
     attachments: Attachment[];
     embeds: Embed[];
     reactions: { [s: string]: any; count: number; me: boolean };
+    webhookID?: string;
     prefix?: string;
     command?: Command;
+    pinned: boolean;
     constructor(data: BaseData, client: Client);
-    edit(content: MessageContent): Promise<Message>;
+    edit(content: MessageContent): Promise<Message<T>>;
     pin(): Promise<void>;
     unpin(): Promise<void>;
     getReaction(reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
