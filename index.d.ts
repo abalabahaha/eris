@@ -1239,6 +1239,7 @@ declare namespace Eris {
     id: string;
     mention: string;
     type: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+    client: Client;
     createdAt: number;
     constructor(data: BaseData);
     static from(data: object, client: Client): AnyChannel;
