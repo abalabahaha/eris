@@ -1260,7 +1260,7 @@ declare namespace Eris {
     edit(options: { name?: string; icon?: string; ownerID?: string }): Promise<GroupChannel>;
     addRecipient(userID: string): Promise<void>;
     removeRecipient(userID: string): Promise<void>;
-    dynamicIconURL(format: string, size: number): string;
+    dynamicIconURL(format?: string, size?: number): string;
   }
 
   export class Guild extends Base {
@@ -1301,7 +1301,7 @@ declare namespace Eris {
     explicitContentFilter: number;
     constructor(data: BaseData, client: Client);
     fetchAllMembers(timeout?: number): Promise<number>;
-    dynamicIconURL(format: string, size: number): string;
+    dynamicIconURL(format?: string, size?: number): string;
     createChannel(name: string): Promise<TextChannel>;
     createChannel(name: string, type: 0, reason?: string, options?: CreateChannelOptions | string): Promise<TextChannel>;
     createChannel(name: string, type: 2, reason?: string, options?: CreateChannelOptions | string): Promise<VoiceChannel>;
