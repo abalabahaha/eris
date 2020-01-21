@@ -1489,11 +1489,13 @@ declare namespace Eris {
     rateLimitPerUser: 0;
   }
 
-  export class VoiceChannel extends GuildChannel {
+  export class VoiceChannel extends GuildChannel implements Invitable {
     type: 2;
     bitrate?: number;
     userLimit?: number;
     voiceMembers?: Collection<Member>;
+    getInvites(): Promise<Invite[]>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
     join(options: VoiceResourceOptions): Promise<VoiceConnection>;
     leave(): void;
   }
