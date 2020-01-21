@@ -1358,7 +1358,7 @@ declare namespace Eris {
     constructor(data: BaseData, guild: Guild);
   }
 
-  export class GuildChannel extends Channel implements Invitable {
+  export class GuildChannel extends Channel {
     type: 0 | 2 | 4 | 5 | 6;
     guild: Guild;
     parentID?: string;
@@ -1367,8 +1367,6 @@ declare namespace Eris {
     permissionOverwrites: Collection<PermissionOverwrite>;
     nsfw: boolean;
     constructor(data: BaseData, guild: Guild);
-    getInvites(): Promise<Invite[]>;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
     permissionsOf(memberID: string): Permission;
     edit(
       options: {
@@ -1438,13 +1436,16 @@ declare namespace Eris {
     ): Promise<this>;
   }
 
-  export class NewsChannel extends GuildChannel implements GuildTextable {
-    type: 5;
-    rateLimitPerUser: 0;
+  export class TextChannel extends GuildChannel implements GuildTextable, Invitable {
+    type: 0 | 5;
+    rateLimitPerUser: number;
     topic?: string;
     lastMessageID: string;
     messages: Collection<Message>;
     lastPinTimestamp?: number;
+    constructor(data: BaseData, guild: Guild, messageLimit: number);
+    getInvites(): Promise<Invite[]>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
     getWebhooks(): Promise<Webhook[]>;
     createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
     sendTyping(): Promise<void>;
@@ -1483,50 +1484,9 @@ declare namespace Eris {
     unsendMessage(messageID: string): Promise<void>;
   }
 
-  export class TextChannel extends GuildChannel implements GuildTextable {
-    type: 0;
-    rateLimitPerUser: number;
-    topic?: string;
-    lastMessageID: string;
-    messages: Collection<Message>;
-    lastPinTimestamp?: number;
-    constructor(data: BaseData, guild: Guild, messageLimit: number);
-    getWebhooks(): Promise<Webhook[]>;
-    createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
-    sendTyping(): Promise<void>;
-    getMessage(messageID: string): Promise<Message>;
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
-    getPins(): Promise<Message[]>;
-    createMessage(content: MessageContent, file?: MessageFile): Promise<Message>;
-    editMessage(messageID: string, content: MessageContent): Promise<Message>;
-    pinMessage(messageID: string): Promise<void>;
-    unpinMessage(messageID: string): Promise<void>;
-    edit(
-      options: {
-        name?: string;
-        topic?: string;
-        bitrate?: number;
-        userLimit?: number;
-        rateLimitPerUser?: number;
-        nsfw?: boolean;
-        parentID?: string;
-      },
-      reason?: string
-    ): Promise<this>;
-    getMessageReaction(
-      messageID: string,
-      reaction: string,
-      limit?: number,
-      before?: string,
-      after?: string
-    ): Promise<User[]>;
-    addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
-    removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
-    removeMessageReactions(messageID: string): Promise<void>;
-    purge(limit: number, filter?: (message: Message) => boolean, before?: string, after?: string): Promise<number>;
-    deleteMessage(messageID: string, reason?: string): Promise<void>;
-    deleteMessages(messageIDs: string[]): Promise<void>;
-    unsendMessage(messageID: string): Promise<void>;
+  export class NewsChannel extends TextChannel {
+    type: 5;
+    rateLimitPerUser: 0;
   }
 
   export class VoiceChannel extends GuildChannel {
