@@ -22,9 +22,10 @@ declare namespace Eris {
 
   // TODO there's also toJSON(): JSONCache, though, SimpleJSON should suffice
 
-  type TextableChannel = TextChannel | PrivateChannel | GroupChannel | NewsChannel;
-  type AnyChannel = AnyGuildChannel | PrivateChannel | GroupChannel;
-  type AnyGuildChannel = TextChannel | VoiceChannel | CategoryChannel | StoreChannel | NewsChannel;
+  type GuildTextableChannel = TextChannel | NewsChannel
+  type TextableChannel = GuildTextableChannel | PrivateChannel;
+  type AnyChannel = AnyGuildChannel | PrivateChannel;
+  type AnyGuildChannel = GuildTextableChannel | VoiceChannel | CategoryChannel | StoreChannel;
 
   interface CreateInviteOptions {
     maxAge?: number;
@@ -999,7 +1000,7 @@ declare namespace Eris {
       around?: string
     ): Promise<Message[]>;
     getPins(channelID: string): Promise<Message[]>;
-    createMessage(channelID: string, content: MessageContent, file?: MessageFile): Promise<Message>;
+    createMessage<T extends Textable = TextableChannel>(channelID: string, content: MessageContent, file?: MessageFile): Promise<Message<T>>;
     editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
     pinMessage(channelID: string, messageID: string): Promise<void>;
     unpinMessage(channelID: string, messageID: string): Promise<void>;
@@ -1251,19 +1252,6 @@ declare namespace Eris {
     mfaEnabled: boolean;
   }
 
-  export class GroupChannel extends PrivateTextableChannel {
-    type: 3;
-    recipients: Collection<User>;
-    name: string;
-    icon?: string;
-    iconURL?: string;
-    ownerID: string;
-    edit(options: { name?: string; icon?: string; ownerID?: string }): Promise<GroupChannel>;
-    addRecipient(userID: string): Promise<void>;
-    removeRecipient(userID: string): Promise<void>;
-    dynamicIconURL(format?: string, size?: number): string;
-  }
-
   export class Guild extends Base {
     id: string;
     createdAt: number;
@@ -1370,7 +1358,7 @@ declare namespace Eris {
     constructor(data: BaseData, guild: Guild);
   }
 
-  export class GuildChannel extends Channel {
+  export class GuildChannel extends Channel implements Invitable {
     type: 0 | 2 | 4 | 5 | 6;
     guild: Guild;
     parentID?: string;
@@ -1393,7 +1381,7 @@ declare namespace Eris {
         parentID?: string;
       },
       reason?: string
-    ): Promise<AnyGuildChannel>;
+    ): Promise<this>;
     editPosition(position: number): Promise<void>;
     delete(reason?: string): Promise<void>;
     editPermission(
@@ -1406,15 +1394,57 @@ declare namespace Eris {
     deletePermission(overwriteID: string, reason?: string): Promise<void>;
   }
 
-  export class GuildTextableChannel extends GuildChannel implements Textable, Invitable {
-    type: 0 | 5;
+  export interface GuildTextable extends Textable {
+    topic?: string;
+    rateLimitPerUser: number;
+    lastPinTimestamp?: number;
+    getWebhooks(): Promise<Webhook[]>;
+    createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
+    sendTyping(): Promise<void>;
+    purge(limit: number, filter?: (message: Message) => boolean, before?: string, after?: string): Promise<number>;
+    deleteMessages(messageIDs: string[]): Promise<void>;
+  }
+
+  export class CategoryChannel extends GuildChannel {
+    type: 4;
+    channels: Collection<GuildChannel>;
+    edit(
+      options: {
+        name?: string;
+        topic?: string;
+        bitrate?: number;
+        userLimit?: number;
+        rateLimitPerUser?: number;
+        nsfw?: boolean;
+        parentID?: string;
+      },
+      reason?: string
+    ): Promise<this>;
+  }
+
+  export class StoreChannel extends GuildChannel {
+    type: 6;
+    edit(
+      options: {
+        name?: string;
+        topic?: string;
+        bitrate?: number;
+        userLimit?: number;
+        rateLimitPerUser?: number;
+        nsfw?: boolean;
+        parentID?: string;
+      },
+      reason?: string
+    ): Promise<this>;
+  }
+
+  export class NewsChannel extends GuildChannel implements GuildTextable {
+    type: 5;
+    rateLimitPerUser: 0;
     topic?: string;
     lastMessageID: string;
-    rateLimitPerUser: number;
     messages: Collection<Message>;
     lastPinTimestamp?: number;
-    getInvites(): Promise<Invite[]>;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
     getWebhooks(): Promise<Webhook[]>;
     createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
     sendTyping(): Promise<void>;
@@ -1425,6 +1455,18 @@ declare namespace Eris {
     editMessage(messageID: string, content: MessageContent): Promise<Message>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
+    edit(
+      options: {
+        name?: string;
+        topic?: string;
+        bitrate?: number;
+        userLimit?: number;
+        rateLimitPerUser?: number;
+        nsfw?: boolean;
+        parentID?: string;
+      },
+      reason?: string
+    ): Promise<this>;
     getMessageReaction(
       messageID: string,
       reaction: string,
@@ -1441,34 +1483,57 @@ declare namespace Eris {
     unsendMessage(messageID: string): Promise<void>;
   }
 
-  export class CategoryChannel extends GuildChannel {
-    type: 4;
-    channels: Collection<TextChannel | VoiceChannel>;
-  }
-
-  // Intentionally left mostly empty as it has no other unique properties from GuildChannel
-  export class StoreChannel extends GuildChannel {
-    type: 6;
-  }
-
-  // News channel rate limit is always 0
-  export class NewsChannel extends GuildTextableChannel implements Invitable, Textable {
-    type: 5;
-    rateLimitPerUser: 0;
-  }
-
-  export class TextChannel extends GuildTextableChannel implements Invitable, Textable {
+  export class TextChannel extends GuildChannel implements GuildTextable {
     type: 0;
+    rateLimitPerUser: number;
+    topic?: string;
+    lastMessageID: string;
+    messages: Collection<Message>;
+    lastPinTimestamp?: number;
     constructor(data: BaseData, guild: Guild, messageLimit: number);
+    getWebhooks(): Promise<Webhook[]>;
+    createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
+    sendTyping(): Promise<void>;
+    getMessage(messageID: string): Promise<Message>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
+    getPins(): Promise<Message[]>;
+    createMessage(content: MessageContent, file?: MessageFile): Promise<Message>;
+    editMessage(messageID: string, content: MessageContent): Promise<Message>;
+    pinMessage(messageID: string): Promise<void>;
+    unpinMessage(messageID: string): Promise<void>;
+    edit(
+      options: {
+        name?: string;
+        topic?: string;
+        bitrate?: number;
+        userLimit?: number;
+        rateLimitPerUser?: number;
+        nsfw?: boolean;
+        parentID?: string;
+      },
+      reason?: string
+    ): Promise<this>;
+    getMessageReaction(
+      messageID: string,
+      reaction: string,
+      limit?: number,
+      before?: string,
+      after?: string
+    ): Promise<User[]>;
+    addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
+    removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
+    removeMessageReactions(messageID: string): Promise<void>;
+    purge(limit: number, filter?: (message: Message) => boolean, before?: string, after?: string): Promise<number>;
+    deleteMessage(messageID: string, reason?: string): Promise<void>;
+    deleteMessages(messageIDs: string[]): Promise<void>;
+    unsendMessage(messageID: string): Promise<void>;
   }
 
-  export class VoiceChannel extends GuildChannel implements Invitable {
+  export class VoiceChannel extends GuildChannel {
     type: 2;
     bitrate?: number;
     userLimit?: number;
     voiceMembers?: Collection<Member>;
-    getInvites(): Promise<Invite[]>;
-    createInvite(options: CreateInviteOptions, reason?: string): Promise<Invite>;
     join(options: VoiceResourceOptions): Promise<VoiceConnection>;
     leave(): void;
   }
@@ -1633,10 +1698,10 @@ declare namespace Eris {
     constructor(data: { allow: number; deny: number });
   }
 
-  export class PrivateTextableChannel extends Channel implements Textable {
+  export class PrivateChannel extends Channel implements Textable {
     type: 1 | 3;
-    lastMessageID: string;
     recipient: User;
+    lastMessageID: string;
     messages: Collection<Message>;
     ring(recipient: string[]): void;
     syncCall(): void;
@@ -1662,8 +1727,18 @@ declare namespace Eris {
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
   }
-  export class PrivateChannel extends PrivateTextableChannel implements Textable {
-    type: 1;
+
+  export class GroupChannel extends PrivateChannel {
+    type: 3;
+    recipients: Collection<User>;
+    name: string;
+    icon?: string;
+    iconURL?: string;
+    ownerID: string;
+    edit(options: { name?: string; icon?: string; ownerID?: string }): Promise<GroupChannel>;
+    addRecipient(userID: string): Promise<void>;
+    removeRecipient(userID: string): Promise<void>;
+    dynamicIconURL(format?: string, size?: number): string;
   }
 
   export class Relationship {
