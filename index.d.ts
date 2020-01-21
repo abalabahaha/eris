@@ -103,16 +103,47 @@ declare namespace Eris {
     user: User;
   }
 
-  interface OldPresence {
-    activities?: Activity[];
+  interface Presence {
+    activities?: AnyActivity[];
     clientStatus?: ClientStatus;
-    status: string;
-    game?: {
-      name: string;
-      type: number;
-      url?: string;
-    };
+    status: Status;
+    game?: AnyActivity;
   }
+
+  type BotActivityType = 0 | 1 | 2 | 3
+  type ActivityType = BotActivityType & 4;
+
+  interface ActivityPartial<T extends BotActivityType> {
+    name: string;
+    type: T;
+    url?: string;
+  }
+  interface Activity extends ActivityPartial<ActivityType> {
+    id: string;
+    created_at: number;
+  }
+
+  interface RichActivity extends Activity {
+    timestamps?: { start: number; end?: number };
+    application_id?: string;
+    sync_id?: string;
+    details?: string;
+    state?: string;
+    party?: { id?: string };
+    assets?: {
+      small_text?: string;
+      small_image?: string;
+      large_text?: string;
+      large_image?: string;
+      [key: string]: unknown;
+    };
+    instance?: boolean;
+    flags?: number;
+    // the stuff attached to this object apparently varies even more than documented, so...
+    [key: string]: unknown;
+  }
+
+  type AnyActivity = Activity | RichActivity
 
   interface OldVoiceState {
     mute: boolean;
@@ -590,28 +621,6 @@ declare namespace Eris {
     mentionable: boolean;
   }
 
-  interface GamePresence {
-    name: string;
-    type?: 0 | 1 | 2 | 3 | 4;
-    url?: string;
-    timestamps?: { start: number; end?: number };
-    application_id?: string;
-    sync_id?: string;
-    details?: string;
-    state?: string;
-    party?: { id?: string };
-    assets?: {
-      small_text?: string;
-      small_image?: string;
-      large_text?: string;
-      large_image?: string;
-      [key: string]: any;
-    };
-    instance?: boolean;
-    flags?: number;
-    // the stuff attached to this object apparently varies even more than documented, so...
-    [key: string]: any;
-  }
   interface SearchOptions {
     sortBy?: string;
     sortOrder?: string;
@@ -792,7 +801,7 @@ declare namespace Eris {
     ): T;
     (event: "messageUpdate", listener: (message: Message, oldMessage?: OldMessage) => void
     ): T;
-    (event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: OldPresence) => void): T;
+    (event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: Presence) => void): T;
     (event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): T;
     (event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): T;
     (
@@ -861,7 +870,7 @@ declare namespace Eris {
     leaveVoiceChannel(channelID: string): void;
     closeVoiceConnection(guildID: string): void;
     editAFK(afk: boolean): void;
-    editStatus(status?: string, game?: GamePresence): void;
+    editStatus(status?: Status, game?: ActivityPartial<BotActivityType>): void;
     getChannel(channelID: string): AnyChannel;
     createChannel(guildID: string, name: string): Promise<TextChannel>;
     createChannel(
@@ -1519,22 +1528,6 @@ declare namespace Eris {
     toJSON(props?: string[]): JSONCache;
   }
 
-  interface Activity {
-    application_id?: string;
-    assets?: ActivityAssets[];
-    created_at: number;
-    details?: string;
-    id: string;
-    name: string;
-    state?: string;
-    type: 0 | 1 | 2 | 3 | 4;
-    url?: string;
-  }
-
-  interface ActivityAssets {
-    large_image: string;
-  }
-
   type Status = "online" | "idle" | "dnd" | "offline";
 
   interface ClientStatus {
@@ -1543,16 +1536,12 @@ declare namespace Eris {
     mobile: Status;
   }
 
-  export class Member extends Base {
-    activities?: Activity[];
-    clientStatus?: ClientStatus;
+  export class Member extends Base implements Presence {
     id: string;
     mention: string;
     guild: Guild;
     joinedAt: number;
     premiumSince: number;
-    status: Status;
-    game?: GamePresence;
     voiceState: VoiceState;
     nick?: string;
     roles: string[];
@@ -1567,6 +1556,10 @@ declare namespace Eris {
     defaultAvatarURL: string;
     avatarURL: string;
     staticAvatarURL: string;
+    game?: AnyActivity;
+    status: Status;
+    clientStatus?: ClientStatus;
+    activities?: AnyActivity[];
     constructor(data: BaseData, guild: Guild);
     edit(options: MemberOptions, reason?: string): Promise<void>;
     addRole(roleID: string, reason?: string): Promise<void>;
@@ -1666,12 +1659,14 @@ declare namespace Eris {
     type: 1;
   }
 
-  export class Relationship {
+  export class Relationship implements Presence {
     id: string;
     user: User;
     type: number;
-    status: string;
-    game?: GamePresence;
+    game?: AnyActivity;
+    status: Status;
+    clientStatus?: ClientStatus;
+    activities?: AnyActivity[];
     constructor(data: BaseData, client: Client);
   }
 
@@ -1750,12 +1745,12 @@ declare namespace Eris {
     lastHeartbeatSent: number;
     latency: number;
     client: Client;
-    presence: { status: string; game?: GamePresence };
+    presence: Presence;
     constructor(id: number, client: Client);
     connect(): void;
     disconnect(options?: { reconnect: boolean }): void;
     editAFK(afk: boolean): void;
-    editStatus(status?: string, game?: GamePresence): void;
+    editStatus(status?: Status, game?: ActivityPartial<BotActivityType>): void;
     on: ShardEvents<this>;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
