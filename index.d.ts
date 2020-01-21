@@ -135,12 +135,12 @@ declare namespace Eris {
       small_image?: string;
       large_text?: string;
       large_image?: string;
-      [key: string]: any;
+      [key: string]: unknown;
     };
     instance?: boolean;
     flags?: number;
     // the stuff attached to this object apparently varies even more than documented, so...
-    [key: string]: any;
+    [key: string]: unknown;
   }
 
   type AnyActivity = Activity | RichActivity
