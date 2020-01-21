@@ -40,13 +40,13 @@ declare namespace Eris {
 
   interface Textable {
     lastMessageID: string;
-    messages: Collection<Message<this>>;
+    messages: Collection<Message>;
     sendTyping(): Promise<void>;
-    getMessage(messageID: string): Promise<Message<this>>;
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
-    getPins(): Promise<Message<this>[]>;
-    createMessage(content: MessageContent, file?: MessageFile): Promise<Message<this>>;
-    editMessage(messageID: string, content: MessageContent): Promise<Message<this>>;
+    getMessage(messageID: string): Promise<Message>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
+    getPins(): Promise<Message[]>;
+    createMessage(content: MessageContent, file?: MessageFile): Promise<Message>;
+    editMessage(messageID: string, content: MessageContent): Promise<Message>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
     getMessageReaction(
@@ -1248,6 +1248,7 @@ declare namespace Eris {
     id: string;
     mention: string;
     type: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+    client: Client;
     createdAt: number;
     constructor(data: BaseData);
     static from(data: object, client: Client): AnyChannel;
@@ -1269,7 +1270,7 @@ declare namespace Eris {
     edit(options: { name?: string; icon?: string; ownerID?: string }): Promise<GroupChannel>;
     addRecipient(userID: string): Promise<void>;
     removeRecipient(userID: string): Promise<void>;
-    dynamicIconURL(format: string, size: number): string;
+    dynamicIconURL(format?: string, size?: number): string;
   }
 
   export class Guild extends Base {
@@ -1310,7 +1311,7 @@ declare namespace Eris {
     explicitContentFilter: number;
     constructor(data: BaseData, client: Client);
     fetchAllMembers(timeout?: number): Promise<number>;
-    dynamicIconURL(format: string, size: number): string;
+    dynamicIconURL(format?: string, size?: number): string;
     createChannel(name: string): Promise<TextChannel>;
     createChannel(name: string, type: 0, reason?: string, options?: CreateChannelOptions | string): Promise<TextChannel>;
     createChannel(name: string, type: 2, reason?: string, options?: CreateChannelOptions | string): Promise<VoiceChannel>;
@@ -1419,18 +1420,18 @@ declare namespace Eris {
     topic?: string;
     lastMessageID: string;
     rateLimitPerUser: number;
-    messages: Collection<Message<this>>;
+    messages: Collection<Message>;
     lastPinTimestamp?: number;
     getInvites(): Promise<Invite[]>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
     getWebhooks(): Promise<Webhook[]>;
     createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
     sendTyping(): Promise<void>;
-    getMessage(messageID: string): Promise<Message<this>>;
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
-    getPins(): Promise<Message<this>[]>;
-    createMessage(content: MessageContent, file?: MessageFile): Promise<Message<this>>;
-    editMessage(messageID: string, content: MessageContent): Promise<Message<this>>;
+    getMessage(messageID: string): Promise<Message>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
+    getPins(): Promise<Message[]>;
+    createMessage(content: MessageContent, file?: MessageFile): Promise<Message>;
+    editMessage(messageID: string, content: MessageContent): Promise<Message>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
     getMessageReaction(
@@ -1443,7 +1444,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
-    purge(limit: number, filter?: (message: Message<this>) => boolean, before?: string, after?: string): Promise<number>;
+    purge(limit: number, filter?: (message: Message) => boolean, before?: string, after?: string): Promise<number>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[]): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
@@ -1572,6 +1573,7 @@ declare namespace Eris {
     id: string;
     createdAt: number;
     channel: T;
+    guildID?: string;
     timestamp: number;
     type: number;
     author: User;
@@ -1628,16 +1630,16 @@ declare namespace Eris {
     type: 1 | 3;
     lastMessageID: string;
     recipient: User;
-    messages: Collection<Message<this>>;
+    messages: Collection<Message>;
     ring(recipient: string[]): void;
     syncCall(): void;
     leave(): Promise<void>;
     sendTyping(): Promise<void>;
-    getMessage(messageID: string): Promise<Message<this>>;
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
-    getPins(): Promise<Message<this>[]>;
-    createMessage(content: MessageContent, file?: MessageFile): Promise<Message<this>>;
-    editMessage(messageID: string, content: MessageContent): Promise<Message<this>>;
+    getMessage(messageID: string): Promise<Message>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
+    getPins(): Promise<Message[]>;
+    createMessage(content: MessageContent, file?: MessageFile): Promise<Message>;
+    editMessage(messageID: string, content: MessageContent): Promise<Message>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
     getMessageReaction(
