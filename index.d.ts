@@ -59,6 +59,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
+    removeMessageReactionsForEmoji(messageID: string, reaction: string): Promise<void>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
   }
@@ -966,6 +967,7 @@ declare namespace Eris {
     addMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactions(channelID: string, messageID: string): Promise<void>;
+    removeMessageReactionsForEmoji(channelID: string, messageID: string, reaction: string): Promise<void>;
     deleteMessage(channelID: string, messageID: string, reason?: string): Promise<void>;
     deleteMessages(channelID: string, messageIDs: string[], reason?: string): Promise<void>;
     purgeChannel(
@@ -1385,6 +1387,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
+    removeMessageReactionsForEmoji(messageID: string, reaction: string): Promise<void>;
     purge(limit: number, filter?: (message: Message) => boolean, before?: string, after?: string): Promise<number>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[]): Promise<void>;
@@ -1606,6 +1609,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
+    removeMessageReactionsForEmoji(messageID: string, reaction: string): Promise<void>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
   }
