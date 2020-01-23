@@ -1502,7 +1502,7 @@ declare namespace Eris {
     type: 2;
     bitrate?: number;
     userLimit?: number;
-    voiceMembers?: Collection<Member>;
+    voiceMembers: Collection<Member>;
     getInvites(): Promise<Invite[]>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
     join(options: VoiceResourceOptions): Promise<VoiceConnection>;
