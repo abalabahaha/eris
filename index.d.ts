@@ -1687,6 +1687,7 @@ declare namespace Eris {
     color: number;
     position: number;
     permissions: Permission;
+    members: String[];
     json: { [s: string]: boolean };
     constructor(data: BaseData, guild: Guild);
     edit(options: RoleOptions, reason?: string): Promise<Role>;
