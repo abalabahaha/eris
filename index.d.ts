@@ -130,7 +130,7 @@ declare namespace Eris {
     application_id?: string;
     details?: string;
     state?: string;
-    emoji?: { name: string; id?: string; animated?: boolean }
+    emoji?: { name: string; id?: string; animated?: boolean };
     party?: { id?: string; size?: [number, number] };
     assets?: {
       small_text?: string;
@@ -139,7 +139,7 @@ declare namespace Eris {
       large_image?: string;
       [key: string]: unknown;
     };
-    secrets?: { join?: string; spectate?: string; match?: string }
+    secrets?: { join?: string; spectate?: string; match?: string };
     instance?: boolean;
     flags?: number;
     // the stuff attached to this object apparently varies even more than documented, so...
