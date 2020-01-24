@@ -120,11 +120,6 @@ declare namespace Eris {
     url?: string;
   }
   interface Activity extends ActivityPartial<ActivityType> {
-    // start undocumented props
-    id: string;
-    sync_id?: string;
-    session_id?: string;
-    // end undocumented props
     created_at: number;
     timestamps?: { start: number; end?: number };
     application_id?: string;
