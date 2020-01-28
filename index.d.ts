@@ -564,7 +564,7 @@ declare namespace Eris {
   } & EmojiBase;
   interface PartialEmoji {
     id?: string;
-    name: string
+    name: string;
   }
   interface IntegrationOptions {
     expireBehavior: string;
