@@ -800,7 +800,7 @@ declare namespace Eris {
     (event: "hello", listener: (trace: string[], id: number) => void): T;
     (event: "messageCreate", listener: (message: Message) => void): T;
     (event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): T;
-    (event: "messageReactionRemoveAllForEmoji", listener: (message: PossiblyUncachedMessage, emoji: PartialEmoji) => void): T;
+    (event: "messageReactionRemoveEmoji", listener: (message: PossiblyUncachedMessage, emoji: PartialEmoji) => void): T;
     (event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): T;
     (
       event: "messageReactionAdd" | "messageReactionRemove",
