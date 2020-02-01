@@ -547,7 +547,7 @@ declare namespace Eris {
     tts?: boolean;
     disableEveryone?: boolean;
     embed?: EmbedOptions;
-    flags?: number
+    flags?: number;
   }
 
   interface MessageFile {
