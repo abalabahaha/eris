@@ -207,6 +207,23 @@ declare namespace Eris {
       SPEAKING: 5;
       DISCONNECT: 13;
     };
+    Intents: {
+      guilds: 1;
+      guildMembers: 2;
+      guildBans: 4;
+      guildEmojis: 8;
+      guildIntegrations: 16;
+      guildWebhooks: 32;
+      guildInvites: 64;
+      guildVoiceStates: 128;
+      guildPresences: 256;
+      guildMessages: 512;
+      guildMessageReactions: 1024;
+      guildMessageTyping: 2048;
+      directMessages: 4096;
+      directMessageReactions: 8192;
+      directMessageTyping: 16384;
+    };
     SystemJoinMessages: [
       "%user% just joined the server - glhf!",
       "%user% just joined. Everyone, look busy!",
@@ -661,6 +678,7 @@ declare namespace Eris {
     getAllUsers?: boolean;
     guildCreateTimeout?: number;
     guildSubscriptions?: boolean;
+    intents?: number | string;
     largeThreshold?: number;
     lastShardID?: number;
     maxShards?: number | "auto";
