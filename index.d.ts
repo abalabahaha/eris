@@ -801,6 +801,7 @@ declare namespace Eris {
     (event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: OldRole) => void): T;
     (event: "guildUpdate", listener: (guild: Guild, oldGuild: OldGuild) => void): T;
     (event: "hello", listener: (trace: string[], id: number) => void): T;
+    (event: "inviteCreate" | "inviteDelete", listener: (guild: Guild, invite: Invite) => void): T;
     (event: "messageCreate", listener: (message: Message) => void): T;
     (event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): T;
     (event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): T;
@@ -1437,7 +1438,7 @@ declare namespace Eris {
     ): Promise<this>;
   }
 
-  export class StoreChannel extends GuildChannel {
+  export class StoreChannel extends GuildChannel implements Invitable {
     type: 6;
     edit(
       options: {
@@ -1451,6 +1452,8 @@ declare namespace Eris {
       },
       reason?: string
     ): Promise<this>;
+    getInvites(): Promise<Invite[]>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
   }
 
   export class TextChannel extends GuildChannel implements GuildTextable, Invitable {
@@ -1510,7 +1513,7 @@ declare namespace Eris {
     type: 2;
     bitrate?: number;
     userLimit?: number;
-    voiceMembers?: Collection<Member>;
+    voiceMembers: Collection<Member>;
     getInvites(): Promise<Invite[]>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
     join(options: VoiceResourceOptions): Promise<VoiceConnection>;
@@ -1541,7 +1544,7 @@ declare namespace Eris {
   export class Invite implements SimpleJSON {
     code: string;
     channel: { id: string; name: string };
-    guild: {
+    guild?: {
       id: string;
       name: string;
       splash?: string;
