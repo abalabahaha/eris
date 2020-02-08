@@ -541,7 +541,15 @@ declare namespace Eris {
     [key: string]: {};
   }
 
-  type MessageContent = string | { content?: string; tts?: boolean; disableEveryone?: boolean; embed?: EmbedOptions; flags?: number };
+  type MessageContent = string | AdvancedMessageContent;
+  type AdvancedMessageContent = {
+    content?: string;
+    tts?: boolean;
+    disableEveryone?: boolean;
+    embed?: EmbedOptions;
+    flags?: number;
+  }
+
   interface MessageFile {
     file: Buffer | string;
     name: string;
