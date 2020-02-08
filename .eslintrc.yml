@@ -6,7 +6,7 @@ extends: "eslint:recommended"
 globals:
   window: true
 parserOptions:
-  ecmaVersion: 2017
+  ecmaVersion: 2018
 rules:
   array-bracket-spacing:
     - 2
