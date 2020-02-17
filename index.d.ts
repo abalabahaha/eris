@@ -668,6 +668,7 @@ declare namespace Eris {
     s?: number;
   }
   type ReconnectDelayFunction = (lastDelay: number, attempts: number) => number;
+  type IntentStrings = keyof Constants["Intents"];
   interface ClientOptions {
     autoreconnect?: boolean;
     compress?: boolean;
@@ -678,7 +679,7 @@ declare namespace Eris {
     getAllUsers?: boolean;
     guildCreateTimeout?: number;
     guildSubscriptions?: boolean;
-    intents?: number | string;
+    intents?: number | IntentStrings[];
     largeThreshold?: number;
     lastShardID?: number;
     maxShards?: number | "auto";
