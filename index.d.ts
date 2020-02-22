@@ -1306,6 +1306,7 @@ declare namespace Eris {
     emojis: Emoji[];
     iconURL?: string;
     explicitContentFilter: number;
+    publicUpdatesChannelID: string;
     constructor(data: BaseData, client: Client);
     fetchAllMembers(timeout?: number): Promise<number>;
     dynamicIconURL(format?: string, size?: number): string;
