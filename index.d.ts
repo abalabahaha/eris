@@ -581,11 +581,16 @@ declare namespace Eris {
     verificationLevel?: number;
     defaultNotifications?: number;
     explicitContentFilter?: number;
+    systemChannelID?: string;
+    rulesChannelID?: string;
+    publicUpdatesChannelID?: string;
+    preferredLocale?: string;
     afkChannelID?: string;
     afkTimeout?: number;
     ownerID?: string;
     splash?: string;
     banner?: string;
+    description?: string;
   }
   interface OldGuild {
     name: string;
@@ -1307,6 +1312,7 @@ declare namespace Eris {
     iconURL?: string;
     explicitContentFilter: number;
     publicUpdatesChannelID: string;
+    rulesChannelID: string;
     constructor(data: BaseData, client: Client);
     fetchAllMembers(timeout?: number): Promise<number>;
     dynamicIconURL(format?: string, size?: number): string;
