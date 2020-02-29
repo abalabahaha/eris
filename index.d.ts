@@ -60,6 +60,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
+    removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
   }
@@ -569,6 +570,10 @@ declare namespace Eris {
     managed: boolean;
     user: { name: string; discriminator: string; id: string; avatar: string };
   } & EmojiBase;
+  interface PartialEmoji {
+    id?: string;
+    name: string;
+  }
   interface IntegrationOptions {
     expireBehavior: string;
     expireGracePeriod: string;
@@ -804,6 +809,7 @@ declare namespace Eris {
     (event: "inviteCreate" | "inviteDelete", listener: (guild: Guild, invite: Invite) => void): T;
     (event: "messageCreate", listener: (message: Message) => void): T;
     (event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): T;
+    (event: "messageReactionRemoveEmoji", listener: (message: PossiblyUncachedMessage, emoji: PartialEmoji) => void): T;
     (event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): T;
     (
       event: "messageReactionAdd" | "messageReactionRemove",
@@ -1033,6 +1039,7 @@ declare namespace Eris {
     addMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactions(channelID: string, messageID: string): Promise<void>;
+    removeMessageReactionEmoji(channelID: string, messageID: string, reaction: string): Promise<void>;
     deleteMessage(channelID: string, messageID: string, reason?: string): Promise<void>;
     deleteMessages(channelID: string, messageIDs: string[], reason?: string): Promise<void>;
     purgeChannel(
@@ -1498,6 +1505,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
+    removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
     purge(limit: number, filter?: (message: Message) => boolean, before?: string, after?: string): Promise<number>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[]): Promise<void>;
@@ -1639,6 +1647,7 @@ declare namespace Eris {
     addReaction(reaction: string, userID?: string): Promise<void>;
     removeReaction(reaction: string, userID?: string): Promise<void>;
     removeReactions(): Promise<void>;
+    removeMessageReactionEmoji(reaction: string): Promise<void>;
     delete(reason?: string): Promise<void>;
   }
 
@@ -1690,6 +1699,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
+    removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
   }
