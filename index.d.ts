@@ -935,8 +935,8 @@ declare namespace Eris {
     getPruneCount(guildID: string, days: number): Promise<number>;
     pruneMembers(guildID: string, days: number, reason?: string): Promise<number>;
     getVoiceRegions(guildID: string): Promise<VoiceRegion[]>;
-    getInvite(inviteID: string, withCounts?: boolean): Promise<RestInvite>;
-    acceptInvite(inviteID: string): Promise<RestInvite>;
+    getInvite(inviteID: string, withCounts?: boolean): Promise<RESTInvite>;
+    acceptInvite(inviteID: string): Promise<RESTInvite>;
     deleteInvite(inviteID: string, reason?: string): Promise<void>;
     getSelf(): Promise<ExtendedUser>;
     editSelf(options: { username?: string; avatar?: string }): Promise<ExtendedUser>;
@@ -1444,8 +1444,8 @@ declare namespace Eris {
     sync(): Promise<void>;
   }
 
-  type RestInvite = RestChannelInvite | RestPrivateInvite;
-  type AnyInvite = RestInvite | ChannelInvite;
+  type RESTInvite = RESTChannelInvite | RESTPrivateInvite;
+  type AnyInvite = RESTInvite | ChannelInvite;
   interface BaseInvite {
     code: string;
     channel: {
@@ -1488,13 +1488,13 @@ declare namespace Eris {
   }
 
   // when fetched from /api/v7/invites/:code (guild invite)
-  interface RestChannelInvite extends GuildInvite {
+  interface RESTChannelInvite extends GuildInvite {
     presenceCount?: number;
     memberCount?: number;
   }
 
   // when fetched from /api/v7/invites/:code (dm group invite)
-  interface RestPrivateInvite extends BaseInvite {
+  interface RESTPrivateInvite extends BaseInvite {
     channel: {
       id: string;
       name?: string;
