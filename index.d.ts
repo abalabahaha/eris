@@ -372,7 +372,7 @@ declare namespace Eris {
     avatarURL?: string;
     tts?: boolean;
     wait?: boolean;
-    disableEveryone?: boolean;
+    allowedMentions?: AllowedMentions;
   }
 
   interface EmbedAuthorOptions {
@@ -545,11 +545,16 @@ declare namespace Eris {
     [key: string]: {};
   }
 
+  interface AllowedMentions {
+    everyone?: boolean;
+    roles?: boolean | string[];
+    users?: boolean | string[];
+  }
   type MessageContent = string | AdvancedMessageContent;
   type AdvancedMessageContent = {
     content?: string;
     tts?: boolean;
-    disableEveryone?: boolean;
+    allowedMentions?: AllowedMentions;
     embed?: EmbedOptions;
     flags?: number;
   }
@@ -682,7 +687,7 @@ declare namespace Eris {
     compress?: boolean;
     connectionTimeout?: number;
     disableEvents?: { [s: string]: boolean };
-    disableEveryone?: boolean;
+    allowedMentions?: AllowedMentions;
     firstShardID?: number;
     getAllUsers?: boolean;
     guildCreateTimeout?: number;
