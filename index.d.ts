@@ -859,7 +859,7 @@ declare namespace Eris {
   }
 
   export class Client extends EventEmitter {
-    token?: string;
+    _token?: string;
     gatewayURL?: string;
     bot?: boolean;
     options: ClientOptions;
