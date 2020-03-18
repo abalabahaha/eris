@@ -46,7 +46,7 @@ declare namespace Eris {
     getMessage(messageID: string): Promise<Message>;
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
     getPins(): Promise<Message[]>;
-    createMessage(content: MessageContent, file?: MessageFile): Promise<Message>;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
     editMessage(messageID: string, content: MessageContent): Promise<Message>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
@@ -1027,7 +1027,7 @@ declare namespace Eris {
       around?: string
     ): Promise<Message[]>;
     getPins(channelID: string): Promise<Message[]>;
-    createMessage<T extends Textable = TextableChannel>(channelID: string, content: MessageContent, file?: MessageFile): Promise<Message<T>>;
+    createMessage<T extends Textable = TextableChannel>(channelID: string, content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<T>>;
     editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
     pinMessage(channelID: string, messageID: string): Promise<void>;
     unpinMessage(channelID: string, messageID: string): Promise<void>;
@@ -1482,7 +1482,7 @@ declare namespace Eris {
     getMessage(messageID: string): Promise<Message>;
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
     getPins(): Promise<Message[]>;
-    createMessage(content: MessageContent, file?: MessageFile): Promise<Message>;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
     editMessage(messageID: string, content: MessageContent): Promise<Message>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
@@ -1688,7 +1688,7 @@ declare namespace Eris {
     getMessage(messageID: string): Promise<Message>;
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
     getPins(): Promise<Message[]>;
-    createMessage(content: MessageContent, file?: MessageFile): Promise<Message>;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
     editMessage(messageID: string, content: MessageContent): Promise<Message>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
