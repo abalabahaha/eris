@@ -209,7 +209,7 @@ declare namespace Eris {
       readMessageHistory: 65536;
       mentionEveryone: 131072;
       externalEmojis: 262144;
-      viewGuildAnalytics: 524288;
+      viewGuildInsights: 524288;
       voiceConnect: 1048576;
       voiceSpeak: 2097152;
       voiceMuteMembers: 4194304;
