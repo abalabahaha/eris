@@ -59,8 +59,6 @@ declare namespace Eris {
     ): Promise<User[]>;
     addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
-    removeMessageReactions(messageID: string): Promise<void>;
-    removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
   }
@@ -1468,6 +1466,8 @@ declare namespace Eris {
     sendTyping(): Promise<void>;
     purge(limit: number, filter?: (message: Message) => boolean, before?: string, after?: string): Promise<number>;
     deleteMessages(messageIDs: string[]): Promise<void>;
+    removeMessageReactions(messageID: string): Promise<void>;
+    removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
   }
 
   export class CategoryChannel extends GuildChannel {
@@ -1740,8 +1740,6 @@ declare namespace Eris {
     ): Promise<User[]>;
     addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
-    removeMessageReactions(messageID: string): Promise<void>;
-    removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
   }
