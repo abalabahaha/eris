@@ -577,6 +577,38 @@ declare namespace Eris {
     expireGracePeriod: string;
     enableEmoticons: string;
   }
+  interface PartialRole {
+    id?: number;
+    color?: number;
+    hoist?: boolean;
+    name?: string;
+    permissions?: number;
+    position?: number;
+    mentionable?: boolean;
+  }
+  interface PartialChannel {
+    id?: number;
+    type: number;
+    permission_overwrites?: Overwrite[];
+    name?: string;
+    topic?: string;
+    nsfw?: boolean;
+    bitrate?: number;
+    user_limit?: number;
+    rate_limit_per_user?: number;
+    parent_id?: number;
+  }
+  interface CreateGuildOptions {
+    region?: string;
+    icon?: string;
+    verificationLevel?: number;
+    defaultNotifications?: number;
+    explicitContentFilter?: number;
+    afkChannelID?: string;
+    afkTimeout?: number;
+    roles?: PartialRole[];
+    channels?: PartialChannel[];
+  }
   interface GuildOptions {
     name?: string;
     region?: string;
@@ -1061,7 +1093,7 @@ declare namespace Eris {
     getGuildVanity(guildID: string): Promise<{ code: Invite }>;
     banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
-    createGuild(name: string, region: string, icon?: string): Promise<Guild>;
+    createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
     getGuildBans(guildID: string): Promise<{ reason?: string; user: User }[]>;
     getGuildBan(guildID: string, userID: string): Promise<{ reason?: string; user: User }>;
