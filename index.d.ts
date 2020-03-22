@@ -1085,7 +1085,8 @@ declare namespace Eris {
       limit?: number,
       filter?: (m: Message) => boolean,
       before?: string,
-      after?: string
+      after?: string,
+      reason?: string
     ): Promise<number>;
     getGuildEmbed(guildID: string): Promise<GuildEmbed>;
     getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
@@ -1464,8 +1465,8 @@ declare namespace Eris {
     getWebhooks(): Promise<Webhook[]>;
     createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
     sendTyping(): Promise<void>;
-    purge(limit: number, filter?: (message: Message) => boolean, before?: string, after?: string): Promise<number>;
-    deleteMessages(messageIDs: string[]): Promise<void>;
+    purge(limit: number, filter?: (message: Message) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
+    deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
     removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
   }
@@ -1548,9 +1549,9 @@ declare namespace Eris {
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
     removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
-    purge(limit: number, filter?: (message: Message) => boolean, before?: string, after?: string): Promise<number>;
+    purge(limit: number, filter?: (message: Message) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
-    deleteMessages(messageIDs: string[]): Promise<void>;
+    deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
   }
 
