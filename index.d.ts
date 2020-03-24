@@ -1821,7 +1821,7 @@ declare namespace Eris {
     on: ShardEvents<this>;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
-    sendWS(op: number, _data: object): void;
+    sendWS(op: number, _data: object, priority: boolean): void;
   }
 
   export class Command {
