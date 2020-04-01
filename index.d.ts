@@ -1039,7 +1039,7 @@ declare namespace Eris {
       reason?: string
     ): Promise<Emoji>;
     deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
-    createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
+    createRole(guildID: string, options?: RoleOptions | Role, reason?: string): Promise<Role>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
     editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
     deleteRole(guildID: string, roleID: string, reason?: string): Promise<void>;
@@ -1368,7 +1368,7 @@ declare namespace Eris {
     createEmoji(options: { name: string; image: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     deleteEmoji(emojiID: string, reason?: string): Promise<void>;
-    createRole(options: RoleOptions, reason?: string): Promise<Role>;
+    createRole(options: RoleOptions | Role, reason?: string): Promise<Role>;
     getPruneCount(days: number): Promise<number>;
     pruneMembers(days: number, reason?: string): Promise<number>;
     getRESTChannels(): Promise<AnyGuildChannel[]>;
