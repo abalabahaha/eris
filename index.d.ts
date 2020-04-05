@@ -1240,7 +1240,7 @@ declare namespace Eris {
     lastSend: number;
     tokenLimit: number;
     interval: number;
-    constructor(tokenLimit: number, interval: number, latencyRef: { latency: number });
+    constructor(tokenLimit: number, interval: number, options: { reservedTokens: number; latencyRef: { latency: number } });
     queue(func: Function): void;
   }
 
