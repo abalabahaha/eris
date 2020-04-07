@@ -1241,7 +1241,7 @@ declare namespace Eris {
     tokenLimit: number;
     interval: number;
     constructor(tokenLimit: number, interval: number, options: { reservedTokens: number; latencyRef: { latency: number } });
-    queue(func: Function): void;
+    queue(func: Function, priority?: boolean): void;
   }
 
   export class Collection<T extends { id: string | number }> extends Map<string | number, T> {
