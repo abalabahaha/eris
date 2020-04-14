@@ -166,9 +166,9 @@ declare namespace Eris {
   interface Constants {
     ImageSizeBoundaries: {
       MINIMUM: 16;
-      MAXIMUM: 2048;
+      MAXIMUM: 4096;
     };
-    ImageFormats: ["jpg", "png", "webp", "gif"];
+    ImageFormats: ["jpg", "jpeg", "png", "webp", "gif"];
     GatewayOPCodes: {
       EVENT: 0;
       HEARTBEAT: 1;
