@@ -1616,7 +1616,7 @@ declare namespace Eris {
     id: string;
     name: string;
     icon: string | null;
-    description: string;
+    description: string | null;
     splash: string | null;
     discovery_splash: string | null;
     features: string[];
