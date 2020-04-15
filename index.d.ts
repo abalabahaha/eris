@@ -1618,7 +1618,7 @@ declare namespace Eris {
     icon: string | null;
     description: string;
     splash: string | null;
-    discovery_splash: string;
+    discovery_splash: string | null;
     features: string[];
     approximate_member_count: number;
     approximate_presence_count: number;
