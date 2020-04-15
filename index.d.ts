@@ -721,7 +721,7 @@ declare namespace Eris {
     frameSize?: number;
     sampleRate?: number;
   }
-  type PossiblyUncachedMessage = Message | { id: string; channel: TextableChannel };
+  type PossiblyUncachedMessage = Message | { id: string; channel: TextableChannel } | { id: string; channel: { id: string } };
   interface RawPacket {
     op: number;
     t?: string;
