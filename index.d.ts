@@ -1530,7 +1530,7 @@ declare namespace Eris {
     rateLimitPerUser: number;
     topic?: string;
     lastMessageID: string;
-    messages: Collection<Message>;
+    messages: Collection<Message<GuildTextableChannel>>;
     lastPinTimestamp?: number;
     constructor(data: BaseData, guild: Guild, messageLimit: number);
     getInvites(): Promise<Invite[]>;
@@ -1739,7 +1739,7 @@ declare namespace Eris {
     type: 1 | 3;
     recipient: User;
     lastMessageID: string;
-    messages: Collection<Message>;
+    messages: Collection<Message<PrivateChannel>>;
     ring(recipient: string[]): void;
     syncCall(): void;
     leave(): Promise<void>;
