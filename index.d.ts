@@ -1538,11 +1538,11 @@ declare namespace Eris {
     getWebhooks(): Promise<Webhook[]>;
     createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
     sendTyping(): Promise<void>;
-    getMessage(messageID: string): Promise<Message>;
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
-    getPins(): Promise<Message[]>;
-    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
-    editMessage(messageID: string, content: MessageContent): Promise<Message>;
+    getMessage(messageID: string): Promise<Message<GuildTextableChannel>>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<GuildTextableChannel>[]>;
+    getPins(): Promise<Message<GuildTextableChannel>[]>;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<GuildTextableChannel>>;
+    editMessage(messageID: string, content: MessageContent): Promise<Message<GuildTextableChannel>>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
     edit(
@@ -1568,7 +1568,7 @@ declare namespace Eris {
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
     removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
-    purge(limit: number, filter?: (message: Message) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
+    purge(limit: number, filter?: (message: Message<GuildTextableChannel>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
@@ -1744,11 +1744,11 @@ declare namespace Eris {
     syncCall(): void;
     leave(): Promise<void>;
     sendTyping(): Promise<void>;
-    getMessage(messageID: string): Promise<Message>;
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
-    getPins(): Promise<Message[]>;
-    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
-    editMessage(messageID: string, content: MessageContent): Promise<Message>;
+    getMessage(messageID: string): Promise<Message<PrivateChannel>>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<PrivateChannel>[]>;
+    getPins(): Promise<Message<PrivateChannel>[]>;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<PrivateChannel>>;
+    editMessage(messageID: string, content: MessageContent): Promise<Message<PrivateChannel>>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
     getMessageReaction(
