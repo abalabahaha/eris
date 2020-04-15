@@ -1578,7 +1578,7 @@ declare namespace Eris {
   export class NewsChannel extends TextChannel {
     type: 5;
     rateLimitPerUser: 0;
-    crosspost(messageID: string): Promise<Message>;
+    crosspostMessage(messageID: string): Promise<Message>;
   }
 
   export class VoiceChannel extends GuildChannel implements Invitable {
