@@ -1615,7 +1615,7 @@ declare namespace Eris {
   export interface GuildPreview {
     id: string;
     name: string;
-    icon: string;
+    icon: string | null;
     description: string;
     splash: string;
     discovery_splash: string;
