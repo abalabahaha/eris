@@ -360,7 +360,6 @@ declare namespace Eris {
       VERIFIED_BOT: 65536;
       VERIFIED_BOT_DEVELOPER: 131072;
     }
-
   }
 
   export const Constants: Constants;
