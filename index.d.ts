@@ -344,6 +344,22 @@ declare namespace Eris {
       GUILD_NEWS: 5;
       GUILD_STORE: 6;
     };
+    UserFlags: {
+      NONE: 0;
+      DISCORD_EMPLOYEE: 1;
+      DISCORD_PARTNER: 2;
+      HYPESQUAD_EVENTS: 4;
+      BUG_HUNTER_LEVEL_1: 8;
+      HOUSE_BRAVERY: 64;
+      HOUSE_BRILLIANCE: 128;
+      HOUSE_BALANCE: 256;
+      EARLY_SUPPORTER: 512;
+      TEAM_USER: 1024;
+      SYSTEM: 4096
+      BUG_HUNTER_LEVEL_2: 16384;
+      VERIFIED_BOT: 65536;
+      VERIFIED_BOT_DEVELOPER: 131072;
+    }
   }
 
   export const Constants: Constants;
@@ -1805,6 +1821,7 @@ declare namespace Eris {
     avatarURL: string;
     staticAvatarURL: string;
     system: boolean;
+    publicFlags: number;
     constructor(data: BaseData, client: Client);
     dynamicAvatarURL(format?: string, size?: number): string;
     getDMChannel(): Promise<PrivateChannel>;
