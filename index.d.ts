@@ -1081,6 +1081,7 @@ declare namespace Eris {
       after?: string,
       reason?: string
     ): Promise<number>;
+    crosspostMessage(channelID: string, messageID: string): Promise<Message>;
     getGuildEmbed(guildID: string): Promise<GuildEmbed>;
     getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
@@ -1551,6 +1552,7 @@ declare namespace Eris {
   export class NewsChannel extends TextChannel {
     type: 5;
     rateLimitPerUser: 0;
+    crosspostMessage(messageID: string): Promise<Message>;
   }
 
   export class VoiceChannel extends GuildChannel implements Invitable {
@@ -1685,6 +1687,7 @@ declare namespace Eris {
     removeReactions(): Promise<void>;
     removeMessageReactionEmoji(reaction: string): Promise<void>;
     delete(reason?: string): Promise<void>;
+    crosspost(): Promise<Message>;
   }
 
   export class Permission {
