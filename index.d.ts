@@ -829,7 +829,7 @@ declare namespace Eris {
     url: string;
     auth: boolean;
     body: unknown;
-    file: MessageFile;
+    file?: MessageFile;
     route: string;
     short: boolean;
     resp: IncomingMessage;
