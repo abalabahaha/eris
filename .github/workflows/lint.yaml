@@ -22,3 +22,5 @@ jobs:
         run: npm install
       - name: Run Linter
         run: npm run lint:js
+      - name: Run TS Linter
+        run: npm run lint:ts
