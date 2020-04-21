@@ -1612,17 +1612,21 @@ declare namespace Eris {
     sync(): Promise<void>;
   }
 
-  export interface GuildPreview {
+  export class GuildPreview {
     id: string;
     name: string;
     icon: string | null;
+    iconURL: string | null;
     description: string | null;
     splash: string | null;
-    discovery_splash: string | null;
+    splashURL: string | null;
+    discoverySplash: string | null;
     features: string[];
-    approximate_member_count: number;
-    approximate_presence_count: number;
+    approximateMemberCount: number;
+    approximatePresenceCount: number;
     emojis: Emoji[];
+    dynamicIconURL(format?: string, size?: number): string;
+    dynamicSplashURL(format?: string, size?: number): string;
   }
 
   export class Invite implements SimpleJSON {
