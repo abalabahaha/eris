@@ -1612,7 +1612,7 @@ declare namespace Eris {
     sync(): Promise<void>;
   }
 
-  export class GuildPreview {
+  export class GuildPreview extends Base {
     id: string;
     name: string;
     icon: string | null;
