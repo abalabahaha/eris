@@ -1367,6 +1367,8 @@ declare namespace Eris {
     constructor(data: BaseData, client: Client);
     fetchAllMembers(timeout?: number): Promise<number>;
     dynamicIconURL(format?: string, size?: number): string;
+    dynamicBannerURL(format?: string, size?: number): string;
+    dynamicSplashURL(format?: string, size?: number): string;
     createChannel(name: string): Promise<TextChannel>;
     createChannel(name: string, type: 0, reason?: string, options?: CreateChannelOptions | string): Promise<TextChannel>;
     createChannel(name: string, type: 2, reason?: string, options?: CreateChannelOptions | string): Promise<VoiceChannel>;
