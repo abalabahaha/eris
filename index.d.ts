@@ -355,11 +355,11 @@ declare namespace Eris {
       HOUSE_BALANCE: 256;
       EARLY_SUPPORTER: 512;
       TEAM_USER: 1024;
-      SYSTEM: 4096
+      SYSTEM: 4096;
       BUG_HUNTER_LEVEL_2: 16384;
       VERIFIED_BOT: 65536;
       VERIFIED_BOT_DEVELOPER: 131072;
-    }
+    };
   }
 
   export const Constants: Constants;
