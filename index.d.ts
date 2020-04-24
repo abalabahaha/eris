@@ -1177,7 +1177,7 @@ declare namespace Eris {
     addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
     deleteSelfPremiumSubscription(): Promise<void>;
     getRESTChannel(channelID: string): Promise<AnyChannel>;
-    getRESTGuild(guildID: string): Promise<Guild>;
+    getRESTGuild(guildID: string, withCount?: boolean): Promise<Guild>;
     getRESTGuilds(limit?: number, before?: string, after?: string): Promise<Guild[]>;
     getRESTGuildChannels(guildID: string): Promise<AnyGuildChannel[]>;
     getRESTGuildEmojis(guildID: string): Promise<Emoji[]>;
@@ -1364,6 +1364,8 @@ declare namespace Eris {
     explicitContentFilter: number;
     publicUpdatesChannelID: string;
     rulesChannelID: string;
+    approximateMemberCount?: number;
+    approximatePresenceCount?: number;
     constructor(data: BaseData, client: Client);
     fetchAllMembers(timeout?: number): Promise<number>;
     dynamicIconURL(format?: string, size?: number): string;
