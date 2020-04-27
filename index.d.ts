@@ -1,6 +1,7 @@
 import { EventEmitter } from "events";
 import { Readable as ReadableStream } from "stream";
 import { Agent as HTTPSAgent } from "https";
+import { IncomingMessage } from "http";
 
 declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
 
@@ -823,6 +824,17 @@ declare namespace Eris {
     reason?: string;
   }
 
+  interface RawRESTRequest {
+    method: string;
+    url: string;
+    auth: boolean;
+    body: unknown;
+    file?: MessageFile;
+    route: string;
+    short: boolean;
+    resp: IncomingMessage;
+  }
+
   interface EventListeners<T> {
     (event: "ready" | "disconnect", listener: () => void): T;
     (event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): T;
@@ -865,6 +877,7 @@ declare namespace Eris {
     (event: "messageUpdate", listener: (message: Message, oldMessage?: OldMessage) => void
     ): T;
     (event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: Presence) => void): T;
+    (event: "rawREST", listener: (request: RawRESTRequest) => void): T;
     (event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): T;
     (event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): T;
     (
