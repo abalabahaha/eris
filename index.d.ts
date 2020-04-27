@@ -1491,7 +1491,7 @@ declare namespace Eris {
     getWebhooks(): Promise<Webhook[]>;
     createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
     sendTyping(): Promise<void>;
-    purge(limit: number, filter?: (message: Message) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
+    purge(limit: number, filter?: (message: Message<GuildTextable>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
     removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
@@ -1537,7 +1537,7 @@ declare namespace Eris {
     rateLimitPerUser: number;
     topic?: string;
     lastMessageID: string;
-    messages: Collection<Message>;
+    messages: Collection<Message<TextChannel>>;
     lastPinTimestamp?: number;
     constructor(data: BaseData, guild: Guild, messageLimit: number);
     getInvites(): Promise<Invite[]>;
@@ -1545,11 +1545,11 @@ declare namespace Eris {
     getWebhooks(): Promise<Webhook[]>;
     createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
     sendTyping(): Promise<void>;
-    getMessage(messageID: string): Promise<Message>;
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
-    getPins(): Promise<Message[]>;
-    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
-    editMessage(messageID: string, content: MessageContent): Promise<Message>;
+    getMessage(messageID: string): Promise<Message<TextChannel>>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<TextChannel>[]>;
+    getPins(): Promise<Message<TextChannel>[]>;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<TextChannel>>;
+    editMessage(messageID: string, content: MessageContent): Promise<Message<TextChannel>>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
     edit(
@@ -1575,7 +1575,7 @@ declare namespace Eris {
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
     removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
-    purge(limit: number, filter?: (message: Message) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
+    purge(limit: number, filter?: (message: Message<TextChannel>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
@@ -1584,7 +1584,14 @@ declare namespace Eris {
   export class NewsChannel extends TextChannel {
     type: 5;
     rateLimitPerUser: 0;
-    crosspostMessage(messageID: string): Promise<Message>;
+    messages: Collection<Message<NewsChannel>>;
+    crosspostMessage(messageID: string): Promise<Message<NewsChannel>>;
+    getMessage(messageID: string): Promise<Message<NewsChannel>>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<NewsChannel>[]>;
+    getPins(): Promise<Message<NewsChannel>[]>;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<NewsChannel>>;
+    editMessage(messageID: string, content: MessageContent): Promise<Message<NewsChannel>>;
+    purge(limit: number, filter?: (message: Message<NewsChannel>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
   }
 
   export class VoiceChannel extends GuildChannel implements Invitable {
@@ -1736,7 +1743,7 @@ declare namespace Eris {
     removeReactions(): Promise<void>;
     removeMessageReactionEmoji(reaction: string): Promise<void>;
     delete(reason?: string): Promise<void>;
-    crosspost(): Promise<Message>;
+    crosspost(): Promise<Message<T>>;
   }
 
   export class Permission {
@@ -1765,16 +1772,16 @@ declare namespace Eris {
     type: 1 | 3;
     recipient: User;
     lastMessageID: string;
-    messages: Collection<Message>;
+    messages: Collection<Message<PrivateChannel>>;
     ring(recipient: string[]): void;
     syncCall(): void;
     leave(): Promise<void>;
     sendTyping(): Promise<void>;
-    getMessage(messageID: string): Promise<Message>;
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
-    getPins(): Promise<Message[]>;
-    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
-    editMessage(messageID: string, content: MessageContent): Promise<Message>;
+    getMessage(messageID: string): Promise<Message<PrivateChannel>>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<PrivateChannel>[]>;
+    getPins(): Promise<Message<PrivateChannel>[]>;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<PrivateChannel>>;
+    editMessage(messageID: string, content: MessageContent): Promise<Message<PrivateChannel>>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
     getMessageReaction(
