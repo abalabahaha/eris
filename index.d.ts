@@ -1458,7 +1458,7 @@ declare namespace Eris {
     toJSON(props?: string[]): JSONCache;
   }
 
-  // when fetched from /api/v7/channels/:id/invites
+  // when fetched from /channels/:id/invites
   interface GuildInvite extends BaseInvite {
     channel: {
       id: string;
@@ -1478,7 +1478,7 @@ declare namespace Eris {
     };
   }
 
-  // when fetched from /api/v7/channels/:id/invites
+  // when fetched from /channels/:id/invites
   interface ChannelInvite extends GuildInvite {
     uses?: number;
     maxUses?: number;
@@ -1487,13 +1487,13 @@ declare namespace Eris {
     createdAt?: number;
   }
 
-  // when fetched from /api/v7/invites/:code (guild invite)
+  // when fetched from /invites/:code (guild invite)
   interface RESTChannelInvite extends GuildInvite {
     presenceCount?: number;
     memberCount?: number;
   }
 
-  // when fetched from /api/v7/invites/:code (dm group invite)
+  // when fetched from /invites/:code (dm group invite)
   interface RESTPrivateInvite extends BaseInvite {
     channel: {
       id: string;
