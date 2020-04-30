@@ -1516,7 +1516,7 @@ declare namespace Eris {
     ): Promise<this>;
   }
 
-  export class StoreChannel extends GuildChannel implements Invitable {
+  export class StoreChannel extends GuildChannel {
     type: 6;
     edit(
       options: {
@@ -1530,8 +1530,6 @@ declare namespace Eris {
       },
       reason?: string
     ): Promise<this>;
-    getInvites(): Promise<ChannelInvite[]>;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<ChannelInvite>;
   }
 
   export class TextChannel extends GuildChannel implements GuildTextable, Invitable {
