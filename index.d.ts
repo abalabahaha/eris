@@ -1112,7 +1112,7 @@ declare namespace Eris {
     ): Promise<number>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
     getGuildEmbed(guildID: string): Promise<GuildEmbed>;
-    getGuildPreview(guildID: string) : Promise<GuildPreview>;
+    getGuildPreview(guildID: string): Promise<GuildPreview>;
     getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
