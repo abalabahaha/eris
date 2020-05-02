@@ -356,11 +356,11 @@ declare namespace Eris {
       HOUSE_BALANCE: 256;
       EARLY_SUPPORTER: 512;
       TEAM_USER: 1024;
-      SYSTEM: 4096
+      SYSTEM: 4096;
       BUG_HUNTER_LEVEL_2: 16384;
       VERIFIED_BOT: 65536;
       VERIFIED_BOT_DEVELOPER: 131072;
-    }
+    };
   }
 
   export const Constants: Constants;
@@ -865,7 +865,7 @@ declare namespace Eris {
     (event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: OldRole) => void): T;
     (event: "guildUpdate", listener: (guild: Guild, oldGuild: OldGuild) => void): T;
     (event: "hello", listener: (trace: string[], id: number) => void): T;
-    (event: "inviteCreate" | "inviteDelete", listener: (guild: Guild, invite: Invite) => void): T;
+    (event: "inviteCreate" | "inviteDelete", listener: (guild: Guild, invite: GuildInvite) => void): T;
     (event: "messageCreate", listener: (message: Message) => void): T;
     (event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): T;
     (event: "messageReactionRemoveEmoji", listener: (message: PossiblyUncachedMessage, emoji: PartialEmoji) => void): T;
@@ -1112,7 +1112,7 @@ declare namespace Eris {
     ): Promise<number>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
     getGuildEmbed(guildID: string): Promise<GuildEmbed>;
-    getGuildPreview(guildID: string) : Promise<GuildPreview>;
+    getGuildPreview(guildID: string): Promise<GuildPreview>;
     getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
@@ -1501,7 +1501,7 @@ declare namespace Eris {
 
   export class CategoryChannel extends GuildChannel {
     type: 4;
-    channels: Collection<GuildChannel>;
+    channels: Collection<Exclude<AnyGuildChannel, CategoryChannel>>;
     edit(
       options: {
         name?: string;
@@ -1516,7 +1516,7 @@ declare namespace Eris {
     ): Promise<this>;
   }
 
-  export class StoreChannel extends GuildChannel implements Invitable {
+  export class StoreChannel extends GuildChannel {
     type: 6;
     edit(
       options: {
@@ -1530,8 +1530,6 @@ declare namespace Eris {
       },
       reason?: string
     ): Promise<this>;
-    getInvites(): Promise<Invite[]>;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
   }
 
   export class TextChannel extends GuildChannel implements GuildTextable, Invitable {
@@ -1581,16 +1579,6 @@ declare namespace Eris {
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
-  }
-
-  export class CategoryChannel extends GuildChannel {
-    type: 4;
-    channels: Collection<TextChannel | VoiceChannel | NewsChannel | StoreChannel>;
-  }
-
-  // Intentionally left mostly empty as it has no other unique properties from GuildChannel
-  export class StoreChannel extends GuildChannel {
-    type: 6;
   }
 
   // News channel rate limit is always 0
