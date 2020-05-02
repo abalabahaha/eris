@@ -356,11 +356,11 @@ declare namespace Eris {
       HOUSE_BALANCE: 256;
       EARLY_SUPPORTER: 512;
       TEAM_USER: 1024;
-      SYSTEM: 4096
+      SYSTEM: 4096;
       BUG_HUNTER_LEVEL_2: 16384;
       VERIFIED_BOT: 65536;
       VERIFIED_BOT_DEVELOPER: 131072;
-    }
+    };
   }
 
   export const Constants: Constants;
@@ -1112,7 +1112,7 @@ declare namespace Eris {
     ): Promise<number>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
     getGuildEmbed(guildID: string): Promise<GuildEmbed>;
-    getGuildPreview(guildID: string) : Promise<GuildPreview>;
+    getGuildPreview(guildID: string): Promise<GuildPreview>;
     getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
