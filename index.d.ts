@@ -1380,6 +1380,7 @@ declare namespace Eris {
     rulesChannelID: string;
     constructor(data: BaseData, client: Client);
     fetchAllMembers(timeout?: number): Promise<number>;
+    requestMembers(query?: string | string[], limit?: number, timeout?: number): Promise<Member[]>;
     dynamicIconURL(format?: string, size?: number): string;
     dynamicBannerURL(format?: string, size?: number): string;
     dynamicSplashURL(format?: string, size?: number): string;
