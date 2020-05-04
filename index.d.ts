@@ -1177,7 +1177,7 @@ declare namespace Eris {
     addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
     deleteSelfPremiumSubscription(): Promise<void>;
     getRESTChannel(channelID: string): Promise<AnyChannel>;
-    getRESTGuild(guildID: string, withCount?: boolean): Promise<Guild>;
+    getRESTGuild(guildID: string, withCounts?: boolean): Promise<Guild>;
     getRESTGuilds(limit?: number, before?: string, after?: string): Promise<Guild[]>;
     getRESTGuildChannels(guildID: string): Promise<AnyGuildChannel[]>;
     getRESTGuildEmojis(guildID: string): Promise<Emoji[]>;
