@@ -366,6 +366,7 @@ declare namespace Eris {
   export const Constants: Constants;
 
   interface WebhookPayload {
+    auth?: boolean;
     content?: string;
     file?: { file: Buffer; name: string } | { file: Buffer; name: string }[];
     embeds?: EmbedOptions[];
