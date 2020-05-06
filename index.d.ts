@@ -1378,6 +1378,8 @@ declare namespace Eris {
     explicitContentFilter: number;
     publicUpdatesChannelID: string;
     rulesChannelID: string;
+    widgetEnabled?: boolean | null;
+    widgetChannelID?: string | null;
     approximateMemberCount?: number;
     approximatePresenceCount?: number;
     constructor(data: BaseData, client: Client);
