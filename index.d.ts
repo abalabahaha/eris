@@ -1378,6 +1378,8 @@ declare namespace Eris {
     explicitContentFilter: number;
     publicUpdatesChannelID: string;
     rulesChannelID: string;
+    widgetEnabled?: boolean | null;
+    widgetChannelID?: string | null;
     constructor(data: BaseData, client: Client);
     fetchAllMembers(timeout?: number): Promise<number>;
     dynamicIconURL(format?: string, size?: number): string;
