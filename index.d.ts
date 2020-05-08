@@ -1709,7 +1709,7 @@ declare namespace Eris {
   }
 
   interface PruneMemberOptions extends GetPruneOptions {
-    reason?: string
+    reason?: string;
   }
 
   type Status = "online" | "idle" | "dnd" | "offline";
