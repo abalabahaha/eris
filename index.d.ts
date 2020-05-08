@@ -1066,7 +1066,7 @@ declare namespace Eris {
     editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
     deleteRole(guildID: string, roleID: string, reason?: string): Promise<void>;
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
-    pruneMembers(guildID: string, options: PruneMemberOptions): Promise<number>;
+    pruneMembers(guildID: string, options?: PruneMemberOptions): Promise<number>;
     getVoiceRegions(guildID: string): Promise<VoiceRegion[]>;
     getInvite(inviteID: string, withCounts?: boolean): Promise<RESTInvite>;
     acceptInvite(inviteID: string): Promise<RESTInvite>;
