@@ -1396,7 +1396,7 @@ declare namespace Eris {
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     deleteEmoji(emojiID: string, reason?: string): Promise<void>;
     createRole(options: RoleOptions | Role, reason?: string): Promise<Role>;
-    getPruneCount(options: GetPruneOptions): Promise<number>;
+    getPruneCount(options?: GetPruneOptions): Promise<number>;
     pruneMembers(options: PruneMemberOptions): Promise<number>;
     getRESTChannels(): Promise<AnyGuildChannel[]>;
     getRESTEmojis(): Promise<Emoji[]>;
