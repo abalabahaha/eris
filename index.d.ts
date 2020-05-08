@@ -1704,7 +1704,7 @@ declare namespace Eris {
   }
 
   interface GetPruneOptions {
-    days?: number,
+    days?: number;
     includeRoles?: string[]
   }
 
