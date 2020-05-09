@@ -107,7 +107,7 @@ declare namespace Eris {
   interface Presence {
     activities?: Activity[];
     clientStatus?: ClientStatus;
-    status: Status;
+    status?: Status;
     game?: Activity;
   }
 
@@ -1736,7 +1736,7 @@ declare namespace Eris {
     avatarURL: string;
     staticAvatarURL: string;
     game?: Activity;
-    status: Status;
+    status?: Status;
     clientStatus?: ClientStatus;
     activities?: Activity[];
     constructor(data: BaseData, guild: Guild);
