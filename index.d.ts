@@ -1065,8 +1065,8 @@ declare namespace Eris {
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
     editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
     deleteRole(guildID: string, roleID: string, reason?: string): Promise<void>;
-    getPruneCount(guildID: string, days: number): Promise<number>;
-    pruneMembers(guildID: string, days: number, reason?: string): Promise<number>;
+    getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
+    pruneMembers(guildID: string, options?: PruneMemberOptions): Promise<number>;
     getVoiceRegions(guildID: string): Promise<VoiceRegion[]>;
     getInvite(inviteID: string, withCounts?: boolean): Promise<RESTInvite>;
     acceptInvite(inviteID: string): Promise<RESTInvite>;
@@ -1401,8 +1401,8 @@ declare namespace Eris {
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     deleteEmoji(emojiID: string, reason?: string): Promise<void>;
     createRole(options: RoleOptions | Role, reason?: string): Promise<Role>;
-    getPruneCount(days: number): Promise<number>;
-    pruneMembers(days: number, reason?: string): Promise<number>;
+    getPruneCount(options?: GetPruneOptions): Promise<number>;
+    pruneMembers(options?: PruneMemberOptions): Promise<number>;
     getRESTChannels(): Promise<AnyGuildChannel[]>;
     getRESTEmojis(): Promise<Emoji[]>;
     getRESTEmoji(emojiID: string): Promise<Emoji>;
@@ -1707,6 +1707,15 @@ declare namespace Eris {
       icon?: string;
       type: 3;
     };
+  }
+
+  interface GetPruneOptions {
+    days?: number;
+    includeRoles?: string[];
+  }
+
+  interface PruneMemberOptions extends GetPruneOptions {
+    reason?: string;
   }
 
   type Status = "online" | "idle" | "dnd" | "offline";
