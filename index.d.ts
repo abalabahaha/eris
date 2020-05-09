@@ -1200,6 +1200,7 @@ declare namespace Eris {
     getRESTGuildMember(guildID: string, memberID: string): Promise<Member>;
     getRESTGuildRoles(guildID: string): Promise<Role[]>;
     getRESTUser(userID: string): Promise<User>;
+    searchGuildMembers(guildID: string, query: string, limit?: number): Promise<Member[]>;
     searchChannelMessages(channelID: string, query: SearchOptions): Promise<SearchResults>;
     searchGuildMessages(guildID: string, query: SearchOptions): Promise<SearchResults>;
     on: ClientEvents<this>;
@@ -1433,6 +1434,7 @@ declare namespace Eris {
     getBan(userID: string): Promise<{ reason?: string; user: User }>;
     editNickname(nick: string): Promise<void>;
     getWebhooks(): Promise<Webhook[]>;
+    searchMembers(query: string, limit?: number): Promise<Member[]>;
   }
 
   export class GuildAuditLogEntry extends Base {
