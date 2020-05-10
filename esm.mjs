@@ -32,6 +32,7 @@ export const {
   Shard,
   SharedStream,
   TextChannel,
+  UnavailableGuild,
   User,
   VERSION,
   VoiceChannel,
