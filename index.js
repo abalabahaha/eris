@@ -33,6 +33,7 @@ Eris.Role = require("./lib/structures/Role");
 Eris.Shard = require("./lib/gateway/Shard");
 Eris.SharedStream = require("./lib/voice/SharedStream");
 Eris.TextChannel = require("./lib/structures/TextChannel");
+Eris.UnavailableGuild = require("./lib/structures/UnavailableGuild");
 Eris.User = require("./lib/structures/User");
 Eris.VERSION = require("./package.json").version;
 Eris.VoiceChannel = require("./lib/structures/VoiceChannel");
