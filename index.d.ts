@@ -1750,7 +1750,7 @@ declare namespace Eris {
     status?: Status;
     clientStatus?: ClientStatus;
     activities?: Activity[];
-    hoistedRole?: String;
+    hoistedRole?: string;
     constructor(data: BaseData, guild: Guild);
     edit(options: MemberOptions, reason?: string): Promise<void>;
     addRole(roleID: string, reason?: string): Promise<void>;
