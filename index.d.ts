@@ -366,6 +366,7 @@ declare namespace Eris {
   export const Constants: Constants;
 
   interface WebhookPayload {
+    auth?: boolean;
     content?: string;
     file?: { file: Buffer; name: string } | { file: Buffer; name: string }[];
     embeds?: EmbedOptions[];
@@ -1049,7 +1050,7 @@ declare namespace Eris {
     ): Promise<Webhook>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
-    executeSlackWebhook(webhookID: string, token: string, options?: { wait?: boolean }): Promise<void>;
+    executeSlackWebhook(webhookID: string, token: string, options?: { wait?: boolean; auth?: boolean }): Promise<void>;
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
     getGuildWebhooks(guildID: string): Promise<Webhook[]>;
     getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number): Promise<GuildAuditLog>;
