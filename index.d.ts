@@ -1600,7 +1600,7 @@ declare namespace Eris {
     rateLimitPerUser: 0;
     messages: Collection<Message<NewsChannel>>;
     crosspostMessage(messageID: string): Promise<Message<NewsChannel>>;
-    followChannel(targetChannelID: string): Promise<ChannelFollow>;
+    follow(targetChannelID: string): Promise<ChannelFollow>;
     getMessage(messageID: string): Promise<Message<NewsChannel>>;
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<NewsChannel>[]>;
     getPins(): Promise<Message<NewsChannel>[]>;
