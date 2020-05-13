@@ -916,6 +916,11 @@ declare namespace Eris {
     (event: "resume", listener: () => void): T;
   }
 
+  interface ChannelFollow {
+    channel_id: string;
+    webhook_id: string;
+  }
+
   export class Client extends EventEmitter {
     token?: string;
     gatewayURL?: string;
@@ -1112,6 +1117,7 @@ declare namespace Eris {
       reason?: string
     ): Promise<number>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
+    followChannel(channelID: string, targetChannelID: string): Promise<ChannelFollow>;
     getGuildEmbed(guildID: string): Promise<GuildEmbed>;
     getGuildPreview(guildID: string): Promise<GuildPreview>;
     getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
@@ -1594,6 +1600,7 @@ declare namespace Eris {
     rateLimitPerUser: 0;
     messages: Collection<Message<NewsChannel>>;
     crosspostMessage(messageID: string): Promise<Message<NewsChannel>>;
+    followChannel(targetChannelID: string): Promise<ChannelFollow>;
     getMessage(messageID: string): Promise<Message<NewsChannel>>;
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<NewsChannel>[]>;
     getPins(): Promise<Message<NewsChannel>[]>;
