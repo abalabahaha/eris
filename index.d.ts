@@ -2,6 +2,7 @@ import { EventEmitter } from "events";
 import { Readable as ReadableStream } from "stream";
 import { Agent as HTTPSAgent } from "https";
 import { IncomingMessage } from "http";
+import { ErrorEvent } from "ws";
 
 declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
 
@@ -903,11 +904,12 @@ declare namespace Eris {
   }
 
   interface ClientEvents<T> extends EventListeners<T> {
+    (event: "error", listener: (error: Error | ErrorEvent, id: number) => void): T;
+    (event: "shardDisconnect", listener: (err: Error, id: number) => void): T;
     (
-      event: "shardDisconnect" | "error" | "shardPreReady" | "connect",
-      listener: (err: Error, id: number) => void
+      event: "shardReady" | "shardResume" | "shardPreReady" | "connect",
+      listener: (id: number) => void
     ): T;
-    (event: "shardReady" | "shardResume", listener: (id: number) => void): T;
   }
 
   interface ShardEvents<T> extends EventListeners<T> {
