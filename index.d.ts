@@ -1350,7 +1350,8 @@ declare namespace Eris {
 
   interface FetchMembersOptions {
     presences?: boolean;
-    query?: string | string[];
+    query?: string;
+    userIDs?: string[];
     limit?: number;
     timeout?: number;
   }
