@@ -1386,6 +1386,7 @@ declare namespace Eris {
     explicitContentFilter: number;
     publicUpdatesChannelID: string;
     rulesChannelID: string;
+    maxVideoChannelUsers?: number;
     widgetEnabled?: boolean | null;
     widgetChannelID?: string | null;
     approximateMemberCount?: number;
