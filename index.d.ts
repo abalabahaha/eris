@@ -1777,7 +1777,7 @@ declare namespace Eris {
     connecting: boolean;
     ready: boolean;
     discordServerTrace?: string[];
-    state: "disconnected" | "connecting" | "handshaking" | "ready" | "resuming";
+    status: "disconnected" | "connecting" | "handshaking" | "ready" | "resuming";
     lastHeartbeatReceived: number;
     lastHeartbeatSent: number;
     latency: number;
