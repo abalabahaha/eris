@@ -759,52 +759,77 @@ declare namespace Eris {
     defaultCommandOptions?: CommandOptions;
   }
   interface Hooks {
+    /** A function that is executed before any permission or cooldown checks is made. The function is passed the command message and arguments as parameters. */
     preCommand?: (msg: Message, args: string[]) => void;
+    /** A function that is executed after all checks have cleared, but before the command is executed. The function is passed the command message, arguments, and if command checks were passed as parameters. */
     postCheck?: (msg: Message, args: string[], checksPassed: boolean) => void;
+    /** A function that is executed after the command is executed, regardless of the final failed state of the command. The function is passed the command message, arguments, and if execution succeeded as parameters. */
     postExecution?: (msg: Message, args: string[], executionSuccess: boolean) => void;
+    /** A function that is executed after a response has been posted, and the command has finished processing. The function is passed the command message, arguments, and the response message (if applicable) as parameters. */
     postCommand?: (msg: Message, args: string[], sent?: Message) => void;
   }
   type GenericCheckFunction<T> = (msg: Message) => T;
+  type ReactionButtonsFilterFunction = (msg: Message, emoji: Emoji, userID: string) => boolean;
   interface CommandOptions {
+    /** An array of command aliases */
     aliases?: string[];
-    caseInsensitive?: boolean;
-    deleteCommand?: boolean;
+    /** If arguments are required or not */
     argsRequired?: boolean;
-    guildOnly?: boolean;
-    dmOnly?: boolean;
-    description?: string;
-    fullDescription?: string;
-    usage?: string;
-    hooks?: Hooks;
-    requirements?: {
-      userIDs?: string[] | GenericCheckFunction<string[]>;
-      roleIDs?: string[] | GenericCheckFunction<string[]>;
-      roleNames?: string[] | GenericCheckFunction<string[]>;
-      permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>;
-      custom?: GenericCheckFunction<void>;
-    };
+    /** Whether the command label (and aliases) is case insensitive or not */
+    caseInsensitive?: boolean;
+    /** The cooldown between command usage in milliseconds */
     cooldown?: number;
-    cooldownExclusions?: {
-      userIDs?: string[];
-      guildIDs?: string[];
-      channelIDs?: string[];
-    };
-    restartCooldown?: boolean;
+    /** A set of factors that limit where cooldowns are active */
+    cooldownExclusions?: CommandCooldownExclusions;
+    /** A string or a function that returns a string to show when the command is on cooldown.  The function is passed the Message object as a parameter. */
+    cooldownMessage?: string | GenericCheckFunction<string> | false;
+    /** Number of times to return a message when the command is used during it's cooldown.  Once the cooldown expires this is reset.  Set this to 0 to always return a message. */
     cooldownReturns?: number;
-    cooldownMessage?: string | GenericCheckFunction<string>;
-    invalidUsageMessage?: string | GenericCheckFunction<string>;
-    permissionMessage?: string | GenericCheckFunction<string>;
-    errorMessage?: string | GenericCheckFunction<string>;
-    reactionButtons?: { emoji: string; type: string; response: CommandGenerator }[];
-    reactionButtonTimeout?: number;
+    /** Default subcommand options. This object takes the same options as a normal Command */
     defaultSubcommandOptions?: CommandOptions;
+    /** Whether to delete the user command message or not */
+    deleteCommand?: boolean;
+    /** A short description of the command to show in the default help command */
+    description?: string;
+    /** Whether to prevent the command from being used in guilds or not */
+    dmOnly?: boolean;
+    /** A string or a function that returns a string to show if the execution of the command handler somehow fails.  The function is passed the Message object as a parameter. */
+    errorMessage?: string | GenericCheckFunction<string>;
+    /** A detailed description of the command to show in the default help command */
+    fullDescription?: string;
+    /** Whether to prevent the command from being used in Direct Messages or not */
+    guildOnly?: boolean;
+    /** Whether or not the command should be hidden from the default help command list. */
     hidden?: boolean;
+    /** A set of functions to be executed at different times throughout the command's processing */
+    hooks?: Hooks;
+    /** A string or a function that returns a string to show when a command was improperly used.  The function is passed the Message object as a parameter. */
+    invalidUsageMessage?: string | GenericCheckFunction<string> | false;
+    /** A string or a function that returns a string to show when the user doesn't have permissions to use the command.  The function is passed the Message object as a parameter. */
+    permissionMessage?: string | GenericCheckFunction<string> | false;
+    /** An array of objects specifying reaction buttons. */
+    reactionButtons?: CommandReactionButtonsOptions[] | null;
+    /** Time (in milliseconds) to wait before invalidating the command's reaction buttons */
+    reactionButtonTimeout?: number;
+    /** A set of factors that limit who can call the command */
+    requirements?: CommandRequirements;
+    /** Whether or not to restart a command's cooldown every time it's used. */
+    restartCooldown?: boolean;
+    /** Details on how to call the command to show in the default help command */
+    usage?: string;
   }
+  type GeneratorFunctionReturn = Promise<MessageContent> | Promise<void> | MessageContent | void;
   type CommandGeneratorFunction = (
     msg: Message,
     args: string[]
-  ) => Promise<MessageContent> | Promise<void> | MessageContent | void;
+  ) => GeneratorFunctionReturn;
   type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
+  type ReactionButtonsGeneratorFunction = (
+    msg: Message,
+    args: string[],
+    userID: string
+  ) => GeneratorFunctionReturn;
+  type ReactionButtonsGenerator = ReactionButtonsGeneratorFunction | MessageContent | MessageContent[] | ReactionButtonsGeneratorFunction[];
 
   export class ShardManager extends Collection<Shard> {
     constructor(client: Client);
@@ -1977,55 +2002,128 @@ declare namespace Eris {
     sendWS(op: number, _data: object, priority: boolean): void;
   }
 
-  export class Command {
-    subcommands: { [s: string]: Command };
-    subcommandAliases: { [alias: string]: Command };
-    label: string;
-    parentCommand?: Command;
-    description: string;
-    fullDescription: string;
-    usage: string;
+  interface CommandRequirements {
+    /** An array or a function that returns an array of user IDs representing users that can call the command.  The function is passed the Message object as a parameter. */
+    userIDs?: string[] | GenericCheckFunction<string[]>;
+    /**
+     * An object or a function that returns an object containing permission keys the user must match to use the command.  The function is passed the Message object as a parameter.
+     * i.e.:
+     * ```
+     * {
+     *   "administrator": false,
+     *   "manageMessages": true
+     * }
+     * ```
+     * In the above example, the user must not have administrator permissions, but must have manageMessages to use the command
+     */
+    permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>;
+    /** An array or a function that returns an array of role IDs that would allow a user to use the command.  The function is passed the Message object as a parameter. */
+    roleIDs?: string[] | GenericCheckFunction<string[]>;
+    /** An array or a function that returns an array of role names that would allow a user to use the command.  The function is passed the Message object as a parameter. */
+    roleNames?: string[] | GenericCheckFunction<string[]>;
+    /** A function that accepts a message and returns true if the command should be run */
+    custom?: GenericCheckFunction<void>;
+  }
+
+  interface CommandCooldownExclusions {
+    /** An array of user IDs representing users that are not affected by cooldowns. */
+    userIDs?: string[];
+    /** An array of guild IDs representing guilds that are not affected by cooldowns. */
+    guildIDs?: string[];
+    /** An array of channel IDs representing channels that are not affected by cooldowns. */
+    channelIDs?: string[];
+  }
+
+  interface CommandReactionButtonsOptions {
+    /** The button emoji. Custom emojis should be in format `emojiName:emojiID`. */
+    emoji: string;
+    /** The type of the reaction button, either "edit" or "cancel". */
+    type: "edit" | "cancel";
+    /** The content to edit the message to when the reaction button is pressed. This accepts the same arguments as the `generator` parameter of this function, but with an extra userID parameter for generator functions (`function(msg, args, userID)`) describing the user that made the reaction. */
+    response: string | ReactionButtonsGeneratorFunction;
+    /** A function (`function(msg, emoji, userID)`) that filters message reactions. If the function returns false, the reaction is not treated as a valid reaction button response. */
+    filter: ReactionButtonsFilterFunction;
+  }
+
+  interface CommandReactionButtons extends CommandReactionButtonsOptions {
+    responses: ((() => string) | ReactionButtonsGeneratorFunction)[];
+    execute: (
+      msg: Message, args: string[], userID: string
+    ) => string | GeneratorFunctionReturn;
+  }
+
+  /**
+   * Represents a command framework command
+   */
+  export class Command implements CommandOptions, SimpleJSON {
     aliases: string[];
-    caseInsensitive: boolean;
-    hooks: Hooks;
-    requirements: {
-      userIDs?: string[] | GenericCheckFunction<string[]>;
-      roleIDs?: string[] | GenericCheckFunction<string[]>;
-      roleNames?: string[] | GenericCheckFunction<string[]>;
-      permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>;
-      custom?: GenericCheckFunction<void>;
-    };
-    deleteCommand: boolean;
     argsRequired: boolean;
-    guildOnly: boolean;
-    dmOnly: boolean;
+    caseInsensitive: boolean;
     cooldown: number;
-    cooldownExclusions: {
-      userIDs?: string[];
-      guildIDs?: string[];
-      channelIDs?: string[];
-    };
-    restartCooldown: boolean;
+    cooldownExclusions: CommandCooldownExclusions;
+    cooldownMessage: string | false | GenericCheckFunction<string>;
     cooldownReturns: number;
-    cooldownMessage: string | boolean | GenericCheckFunction<string>;
-    invalidUsageMessage: string | boolean | GenericCheckFunction<string>;
-    permissionMessage: string | boolean | GenericCheckFunction<string>;
-    errorMessage: string | GenericCheckFunction<string>;
-    reactionButtons: null | {
-      emoji: string;
-      type: string;
-      response: CommandGenerator;
-      execute?: () => string;
-      responses?: (() => string)[];
-    }[];
-    reactionButtonTimeout: number;
     defaultSubcommandOptions: CommandOptions;
+    deleteCommand: boolean;
+    description: string;
+    dmOnly: boolean;
+    errorMessage: string | GenericCheckFunction<string>;
+    fullDescription: string;
+    /** The full command label */
+    fullLabel: string;
+    guildOnly: boolean;
     hidden: boolean;
+    hooks: Hooks;
+    invalidUsageMessage: string | false | GenericCheckFunction<string>;
+    /** The command label */
+    label: string;
+    /** If this command is also a subcommand, this will refer to its parent Command */
+    parentCommand?: Command;
+    permissionMessage: string | false | GenericCheckFunction<string>;
+    /** An array of objects specifying reaction buttons, or null if no reaction buttons. */
+    reactionButtons: null | CommandReactionButtons[];
+    reactionButtonTimeout: number;
+    requirements: CommandRequirements;
+    restartCooldown: boolean;
+    /** Object mapping subcommand labels to Command objects */
+    subcommands: { [s: string]: Command };
+    /** Object mapping subcommand aliases to Command objects */
+    subcommandAliases: { [alias: string]: Command };
+    usage: string;
+    /**
+     * Register a command
+     * @arg label The command label
+     * @arg generate A response string, array of functions or strings, or function that generates a string or array of strings when called.
+     * If a function is passed, the function will be passed a Message object and an array of command arguments. The Message object will have an additional property `prefix`, which is the prefix used in the command.
+     * `generator(msg, args)`
+     * @arg options Command options
+     */
     constructor(label: string, generate: CommandGenerator, options?: CommandOptions);
+    permissionCheck(msg: Message): Promise<boolean>;
+    cooldownExclusionCheck(msg: Message): boolean;
+    cooldownCheck(msg: Message): boolean;
+    process(args: string[], msg: Message): Promise<void|GeneratorFunctionReturn>;
+    executeCommand(msg: Message, args: string[]): Promise<GeneratorFunctionReturn>;
+    /**
+     * Register a subcommand alias
+     * @arg alias The alias
+     * @arg label The original subcommand label
+     */
     registerSubcommandAlias(alias: string, label: string): void;
+    /**
+     * Register a subcommand
+     * @arg label The subcommand label
+     * @arg generator A response string, array of functions or strings, or function that generates a string or array of strings when called.
+     * @arg options Command options
+     */
     registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
+    /**
+     * Unregister a subcommand
+     * @arg label The subcommand label
+     */
     unregisterSubcommand(label: string): void;
     toString(): string;
+    toJSON(props?: string[]): JSONCache;
   }
 
   export class CommandClient extends Client {
