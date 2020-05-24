@@ -792,9 +792,9 @@ declare namespace Eris {
     cooldown?: number;
     /** A set of factors that limit where cooldowns are active */
     cooldownExclusions?: CommandCooldownExclusions;
-    /** A string or a function that returns a string to show when the command is on cooldown.  The function is passed the Message object as a parameter. */
+    /** A string or a function that returns a string to show when the command is on cooldown. */
     cooldownMessage?: string | GenericCheckFunction<string> | false;
-    /** Number of times to return a message when the command is used during it's cooldown.  Once the cooldown expires this is reset.  Set this to 0 to always return a message. */
+    /** Number of times to return a message when the command is used during it's cooldown.  Once the cooldown expires this is reset.  0 will always return a message. */
     cooldownReturns?: number;
     /** Default subcommand options. This object takes the same options as a normal Command */
     defaultSubcommandOptions?: CommandOptions;
@@ -804,7 +804,7 @@ declare namespace Eris {
     description?: string;
     /** Whether to prevent the command from being used in guilds or not */
     dmOnly?: boolean;
-    /** A string or a function that returns a string to show if the execution of the command handler somehow fails.  The function is passed the Message object as a parameter. */
+    /** A string or a function that returns a string to show if the execution of the command handler somehow fails. */
     errorMessage?: string | GenericCheckFunction<string>;
     /** A detailed description of the command to show in the default help command */
     fullDescription?: string;
@@ -814,9 +814,9 @@ declare namespace Eris {
     hidden?: boolean;
     /** A set of functions to be executed at different times throughout the command's processing */
     hooks?: Hooks;
-    /** A string or a function that returns a string to show when a command was improperly used.  The function is passed the Message object as a parameter. */
+    /** A string or a function that returns a string to show when a command was improperly used. */
     invalidUsageMessage?: string | GenericCheckFunction<string> | false;
-    /** A string or a function that returns a string to show when the user doesn't have permissions to use the command.  The function is passed the Message object as a parameter. */
+    /** A string or a function that returns a string to show when the user doesn't have permissions to use the command. */
     permissionMessage?: string | GenericCheckFunction<string> | false;
     /** An array of objects specifying reaction buttons. */
     reactionButtons?: CommandReactionButtonsOptions[] | null;
@@ -2125,17 +2125,7 @@ declare namespace Eris {
   interface CommandRequirements {
     /** An array or a function that returns an array of user IDs representing users that can call the command.  The function is passed the Message object as a parameter. */
     userIDs?: string[] | GenericCheckFunction<string[]>;
-    /**
-     * An object or a function that returns an object containing permission keys the user must match to use the command.  The function is passed the Message object as a parameter.
-     * i.e.:
-     * ```
-     * {
-     *   "administrator": false,
-     *   "manageMessages": true
-     * }
-     * ```
-     * In the above example, the user must not have administrator permissions, but must have manageMessages to use the command
-     */
+    /** An object or a function that returns an object containing permission keys the user must match to use the command. */
     permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>;
     /** An array or a function that returns an array of role IDs that would allow a user to use the command.  The function is passed the Message object as a parameter. */
     roleIDs?: string[] | GenericCheckFunction<string[]>;
