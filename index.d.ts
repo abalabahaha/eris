@@ -2,6 +2,7 @@ import { EventEmitter } from "events";
 import { Readable as ReadableStream } from "stream";
 import { Agent as HTTPSAgent } from "https";
 import { IncomingMessage } from "http";
+import WebSocket = require("ws");
 
 declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
 
@@ -115,8 +116,11 @@ declare namespace Eris {
   type ActivityType = BotActivityType & 4;
 
   interface ActivityPartial<T extends BotActivityType> {
+    /** The name of the activity */
     name: string;
+    /** The type of activity */
     type: T;
+    /** URL of the activity */
     url?: string;
   }
   interface Activity extends ActivityPartial<ActivityType> {
@@ -1988,23 +1992,53 @@ declare namespace Eris {
     toJSON(arg?: any, cache?: (string | any)[]): JSONCache;
   }
 
-  export class Shard extends EventEmitter {
+  /**
+   * Represents a shard
+   * @extends EventEmitter
+   */
+  export class Shard extends EventEmitter implements SimpleJSON {
+    /** The ID of the shard */
     id: number;
-    connecting: boolean;
-    ready: boolean;
-    discordServerTrace?: string[];
-    status: string;
-    lastHeartbeatReceived: number;
-    lastHeartbeatSent: number;
-    latency: number;
     client: Client;
+    /** Whether the shard is connecting */
+    connecting: boolean;
+    /** Debug trace of Discord servers */
+    discordServerTrace?: string[];
+    /** Last time Discord acknowledged a heartbeat, null if shard has not sent heartbeat yet */
+    lastHeartbeatReceived: number | null;
+    /** Last time shard sent a heartbeat, null if shard has not sent heartbeat yet */
+    lastHeartbeatSent: number | null;
+    /** The current latency between the shard and Discord, in milliseconds */
+    latency: number;
     presence: Presence;
+    /** Whether the shard is ready */
+    ready: boolean;
+    /** The status of the shard */
+    status: "disconnected" | "connecting" | "handshaking" | "ready";
     constructor(id: number, client: Client);
+    /** Tells the shard to connect */
     connect(): void;
-    disconnect(options?: { reconnect: boolean }): void;
+    /**
+     * Disconnects the shard
+     * @arg options Shard disconnect options
+     */
+    disconnect(options?: {
+      /** False means destry everything, true means you want to reconnect in the future, "auto" will autoreconnect */
+      reconnect: "auto" | boolean;
+    }): void;
+    /**
+     * Update the bot's AFK status. Setting this to true will enable push notifications for userbots.
+     * @param afk Whether the bot user is AFK or not
+     */
     editAFK(afk: boolean): void;
-    editStatus(status?: Status, game?: ActivityPartial<BotActivityType>): void;
+    /**
+     * Updates the bot's status on all guilds the shard is in
+     * @arg status Sets the bot's status, or set's the bot's active game
+     * @arg game Sets the bot's active game, null to clear
+     */
+    editStatus(status?: Status | ActivityPartial<BotActivityType>, game?: ActivityPartial<BotActivityType>): void;
     on: ShardEvents<this>;
+    resume(): void;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
     sendWS(op: number, _data: object, priority: boolean): void;
