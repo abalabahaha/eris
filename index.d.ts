@@ -749,13 +749,21 @@ declare namespace Eris {
     reconnectDelay?: ReconnectDelayFunction;
   }
   interface CommandClientOptions {
+    /** Whether to register the default help command or not */
     defaultHelpCommand?: boolean;
+    /** The description to show in the default help command */
     description?: string;
+    /** Whether to ignore bot accounts or not */
     ignoreBots?: boolean;
+    /** Whether to ignore the bot's own account or not */
     ignoreSelf?: boolean;
+    /** The bot name to show in the default help command */
     name?: string;
+    /** The owner to show in the default help command */
     owner?: string;
+    /** The bot prefix. Can be either an array of prefixes or a single prefix. "@mention" will be automatically replaced with the bot's actual mention */
     prefix?: string | string[];
+    /** Default command options. This object takes the same options as a normal Command */
     defaultCommandOptions?: CommandOptions;
   }
   interface Hooks {
@@ -2126,14 +2134,63 @@ declare namespace Eris {
     toJSON(props?: string[]): JSONCache;
   }
 
-  export class CommandClient extends Client {
+  interface ActiveMessages {
+    args: string[];
+    command: Command;
+    timeout: NodeJS.Timeout;
+  }
+
+  export class CommandClient extends Client implements SimpleJSON {
+    activeMessages: { [s: string]: ActiveMessages };
+    /** Object mapping command labels to Command objects */
     commands: { [s: string]: Command };
+    /** Object mapping command label aliases to command labels */
+    commandAliases: { [s: string]: string };
+    /** Command options */
+    commandOptions: CommandClientOptions;
+    /** Object mapping guild IDs to guild specific prefix or arrays of guild-specific prefixes */
+    guildPrefixes: { [s: string]: string | string[] };
+    preReady?: true;
+    /**
+     * Create a CommandClient
+     * @arg token Bot token
+     * @arg options Eris options (same as Client)
+     * @arg commandOPtions Command Options
+     */
     constructor(token: string, options?: ClientOptions, commandOptions?: CommandClientOptions);
+    checkPrefix(msg: Message): string;
+    /**
+     * Checks the command client for a command based on the provided message
+     * @arg msg The message object from the message create event
+     */
     onMessageCreate(msg: Message): void;
-    registerGuildPrefix(guildID: string, prefix: string[] | string): void;
-    registerCommandAlias(alias: string, label: string): void;
+    onMessageReactionEvent(msg: Message, emoji: Emoji, userID: string): Promise<void>
+    /**
+     * Register a command
+     * @arg label The command label
+     * @arg generator A response string, array of functions or strings, or function that generates a string or array of strings when called.
+     * @arg options Command options
+     */
     registerCommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
+    /**
+     * Register an alias for a command
+     * @arg alias The alias
+     * @arg label The original command label
+     */
+    registerCommandAlias(alias: string, label: string): void;
+    resolveCommand(label: string): Command;
+    /**
+     * Register a prefix override for a specific guild
+     * @arg guildID The ID of the guild to override prefixes for
+     * @arg prefix The bot prefix. "@mention" will be automatically replaced with the bot's actual mention
+     */
+    registerGuildPrefix(guildID: string, prefix: string[] | string): void;
+    /**
+     * Unregister a command
+     * @param label The command label
+     */
     unregisterCommand(label: string): void;
+    unwatchMessage(id: string, channelID: string): void;
     toString(): string;
   }
 }
