@@ -843,12 +843,16 @@ declare namespace Eris {
   ) => GeneratorFunctionReturn;
   type ReactionButtonsGenerator = ReactionButtonsGeneratorFunction | MessageContent | MessageContent[] | ReactionButtonsGeneratorFunction[];
 
-  export class ShardManager extends Collection<Shard> {
+  export class ShardManager extends Collection<Shard> implements SimpleJSON {
+    connectQueue: Shard[];
+    connectTimeout: NodeJS.Timeout | null;
+    lastConnect: number;
     constructor(client: Client);
     connect(shard: Shard): void;
     spawn(id: number): void;
+    tryConnect(): void;
     toString(): string;
-    toJSON(props?: string[]): string;
+    toJSON(props?: string[]): JSONCache;
   }
 
   interface CreateChannelOptions {
