@@ -2047,6 +2047,81 @@ declare namespace Eris {
     sendWS(op: number, _data: object, priority: boolean): void;
   }
 
+  interface LatencyRef {
+    /** Interval between consuming tokens */
+    latency: number;
+    offset: number;
+    raw: number[];
+    timeOffset: number;
+    timeOffsets: number[];
+    lastTimeOffsetCheck: number;
+  }
+
+  /**
+   * Ratelimit requests and release in sequence
+   */
+  class SequentialBucket {
+    /** How many tokens the bucket can consume in the current interval */
+    limit: number;
+    /** Whether the queue is being processed */
+    processing: boolean;
+    /** How many tokens the bucket has left in the current interval */
+    remaining: number;
+    /** Timestamp of next reset */
+    reset: number;
+    latencyRef: LatencyRef;
+    /**
+     * Construct a SequentialBucket
+     * @arg limit THe max number of tokens the bucket can consume per interval
+     * @arg latencyRef An object
+     */
+    constructor(limit: number, latencyRef?: LatencyRef);
+    /**
+     * Queue something in the SequentialBucket
+     * @param func A function to call when a token can be consumed. The function will be passed a callback argument, which must be called to allow the bucket to continue to work
+     */
+    queue(func: Function, short?: boolean): void;
+    check(override?: boolean): void;
+  }
+
+  type RequestMethod = "GET" | "PATCH" | "DELETE" | "POST" | "PUT";
+  interface File {
+    /** A buffer containing file data */
+    file: Buffer;
+    /** What to name the file */
+    name: string;
+  }
+
+  /**
+   * Handles API requests
+   */
+  class RequestHandler implements SimpleJSON {
+    agent: unknown; // HTTP Agent - Do we parse our preferred agent here?
+    baseURL: string;
+    globalBlock: boolean;
+    latencyRef: LatencyRef;
+    ratelimits: SequentialBucket;
+    readyQueue: (() => void)[];
+    requestTimeout: number;
+    userAgent: string;
+    constructor(client: Client, forceQueueing?: boolean);
+    globalUnblok(): void;
+    /**
+     * Make an API request
+     * @param method Uppercase HTTP method
+     * @param url URL of the endpoint
+     * @param auth Whether to add the Authorization header and token or not
+     * @param body Request payload
+     * @param file File object
+     * @param _route The ratelimiting route for the request
+     * @param short Whether or not the request should be prioritized in its ratelimiting queue
+     */
+    request(method: RequestMethod, url: string, auth: boolean, body?: { [s: string]: any }, file?: File, _route?: string, short?: boolean): Promise<object>; // I'm not going to provide overloads for each endpoint
+    routefy(url: string, method: RequestMethod): string;
+    toString(): "[RequestHandler]";
+    toJSON(props?: string[]): JSONCache;
+  }
+
   interface CommandRequirements {
     /** An array or a function that returns an array of user IDs representing users that can call the command.  The function is passed the Message object as a parameter. */
     userIDs?: string[] | GenericCheckFunction<string[]>;
