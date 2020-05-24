@@ -2,7 +2,6 @@ import { EventEmitter } from "events";
 import { Readable as ReadableStream } from "stream";
 import { Agent as HTTPSAgent } from "https";
 import { IncomingMessage } from "http";
-import WebSocket = require("ws");
 
 declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
 
