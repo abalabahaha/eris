@@ -1400,11 +1400,16 @@ declare namespace Eris {
   }
 
   export class Channel extends Base {
+    /** The ID of the channel */
     id: string;
-    mention: string;
-    type: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+    /** The client that initialized the channel */
     client: Client;
+    /** Timestamp of the channel's creation */
     createdAt: number;
+    /** A string that mentions the channel */
+    mention: string;
+    /** The type of the channel */
+    type: 0 | 1 | 2 | 3 | 4 | 5 | 6;
     constructor(data: BaseData);
     static from(data: object, client: Client): AnyChannel;
   }
