@@ -1360,16 +1360,42 @@ declare namespace Eris {
     remove(obj: T | { id: string }): T;
   }
 
+  interface CallData extends BaseData { // Check if everything else needs to extend BaseData
+    /** The ID of the call */
+    id: string;
+    /** The IDs of the call participants */
+    participants: string[];
+    /** The IDs of people that still have not responded to the call request */
+    ringing: string[];
+    /** The region of the call server */
+    region: string;
+    /** The timestamp of the call end */
+    ended_timestamp: number;
+    /** Whether the call is unavailable or not */
+    unavailable: boolean;
+    /** The voice states of the call participants */
+    voice_states: VoiceState[]; // This should be in raw JSON
+  }
+
+  /** Represents a call */
   export class Call extends Base {
     id: string;
+    /** Timestamp of the call's creation */
     createdAt: number;
+    /** The call channel */
     channel: GroupChannel;
-    voiceStates: Collection<VoiceState>;
-    participants: string[];
+    /** The timestamp of the call end */
     endedTimestamp?: number;
-    ringing?: string[];
+    /** The IDs of the call participants */
+    participants: string[];
+    /** The region of the call server */
     region?: string;
+    /** The IDs of people that still have not responded to the call request */
+    ringing?: string[];
+    /** Whether the call is unavailable or not */
     unavailable: boolean;
+    /** The voice states of the call participants */
+    voiceStates: Collection<VoiceState>;
     constructor(data: BaseData, channel: GroupChannel);
   }
 
