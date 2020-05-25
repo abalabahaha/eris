@@ -1414,10 +1414,16 @@ declare namespace Eris {
     static from(data: object, client: Client): AnyChannel;
   }
 
+  /** Represents an extended user */
   export class ExtendedUser extends User {
+    /** The email of the user */
     email: string;
-    verified: boolean;
+    /** Whether the user has enabled two-factor authentication */
     mfaEnabled: boolean;
+    /** The type of Nitro subscription on the user's account */
+    premiumType: number;
+    /** Whether the account email has been verified */
+    verified: boolean;
   }
 
   interface FetchMembersOptions {
