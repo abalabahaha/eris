@@ -1330,6 +1330,7 @@ declare namespace Eris {
     createdAt: number;
     constructor(id: string);
     inspect(): this;
+    toString(): string;
     toJSON(props?: string[]): JSONCache;
   }
 
