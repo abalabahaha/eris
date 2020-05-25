@@ -1943,17 +1943,48 @@ declare namespace Eris {
     unsendMessage(messageID: string): Promise<void>;
   }
 
+  type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
+
+  /** Represents a group channel. */
   export class GroupChannel extends PrivateChannel {
     type: 3;
-    recipients: Collection<User>;
-    name: string;
+    /** The hash of the group channel icon */
     icon?: string;
+    /** The URL of the group channel icon */
     iconURL?: string;
+    /** The name of the group channel */
+    name: string;
+    /** The ID of the user that is the group owner */
     ownerID: string;
-    edit(options: { name?: string; icon?: string; ownerID?: string }): Promise<GroupChannel>;
+    /** The recipients in this private channel */
+    recipients: Collection<User>;
+    /**
+     * Edit the channel's properties
+     * @param options The properties to edit
+     */
+    edit(options: {
+      /** The name of the channel */
+      name?: string;
+      /** The icon of the channel as a base64 data URI (group channels only). Note: base64 strings alone are not base64 data URI strings */
+      icon?: string;
+      /** The ID of the channel owner (group channels only) */
+      ownerID?: string }): Promise<GroupChannel>;
+      /**
+       * Add a user to the group
+       * @arg userID: The ID of the user
+       */
     addRecipient(userID: string): Promise<void>;
+    /**
+     * Remove a user from the group
+     * @param userID The ID of the target user
+     */
     removeRecipient(userID: string): Promise<void>;
-    dynamicIconURL(format?: string, size?: number): string;
+    /**
+     * Get the group's icon with the given format and size
+     * @arg format The filetype of the icon
+     * @arg size The size of the icon (any power of two between 16 and 4096)
+     */
+    dynamicIconURL(format?: ImageFormat, size?: number): string;
   }
 
   export class Relationship implements Presence {
