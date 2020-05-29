@@ -36,8 +36,8 @@ declare namespace Eris {
   }
 
   interface Invitable {
-    getInvites(): Promise<ChannelInvite[]>;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<ChannelInvite>;
+    getInvites(): Promise<Invite[]>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
   }
 
   interface Textable {
@@ -866,7 +866,7 @@ declare namespace Eris {
     (event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: OldRole) => void): T;
     (event: "guildUpdate", listener: (guild: Guild, oldGuild: OldGuild) => void): T;
     (event: "hello", listener: (trace: string[], id: number) => void): T;
-    (event: "inviteCreate" | "inviteDelete", listener: (guild: Guild, invite: GuildInvite) => void): T;
+    (event: "inviteCreate" | "inviteDelete", listener: (guild: Guild, invite: GuildInviteWithMetadata) => void): T;
     (event: "messageCreate", listener: (message: Message) => void): T;
     (event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): T;
     (event: "messageReactionRemoveEmoji", listener: (message: PossiblyUncachedMessage, emoji: PartialEmoji) => void): T;
@@ -1034,12 +1034,12 @@ declare namespace Eris {
       reason?: string
     ): Promise<void>;
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
-    getChannelInvites(channelID: string): Promise<ChannelInvite[]>;
+    getChannelInvites(channelID: string): Promise<GuildInviteWithMetadata[]>;
     createChannelInvite(
       channelID: string,
       options?: { maxAge?: number; maxUses?: number; temporary?: boolean; unique?: boolean },
       reason?: string
-    ): Promise<ChannelInvite>;
+    ): Promise<GuildInviteWithoutMetadata>;
     getChannelWebhooks(channelID: string): Promise<Webhook[]>;
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
     createChannelWebhook(
@@ -1074,8 +1074,8 @@ declare namespace Eris {
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
     pruneMembers(guildID: string, options?: PruneMemberOptions): Promise<number>;
     getVoiceRegions(guildID: string): Promise<VoiceRegion[]>;
-    getInvite(inviteID: string, withCounts?: boolean): Promise<RESTInvite>;
-    acceptInvite(inviteID: string): Promise<RESTInvite>;
+    getInvite(inviteID: string, withCounts?: boolean): Promise<PrivateInvite | GuildInviteWithoutMetadata>;
+    acceptInvite(inviteID: string): Promise<PrivateInvite | GuildInviteWithoutMetadata>;
     deleteInvite(inviteID: string, reason?: string): Promise<void>;
     getSelf(): Promise<ExtendedUser>;
     editSelf(options: { username?: string; avatar?: string }): Promise<ExtendedUser>;
@@ -1124,7 +1124,7 @@ declare namespace Eris {
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
-    getGuildInvites(guildID: string): Promise<ChannelInvite[]>;
+    getGuildInvites(guildID: string): Promise<GuildInviteWithMetadata[]>;
     getGuildVanity(guildID: string): Promise<{ code?: string; uses?: number }>;
     banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
@@ -1427,7 +1427,7 @@ declare namespace Eris {
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
     syncIntegration(integrationID: string): Promise<void>;
     deleteIntegration(integrationID: string): Promise<void>;
-    getInvites(): Promise<ChannelInvite[]>;
+    getInvites(): Promise<GuildInviteWithMetadata[]>;
     getVanity(): Promise<{ code?: string; uses?: number }>;
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<void>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
@@ -1473,8 +1473,8 @@ declare namespace Eris {
     permissionOverwrites: Collection<PermissionOverwrite>;
     nsfw: boolean;
     constructor(data: BaseData, guild: Guild);
-    getInvites(): Promise<ChannelInvite[]>;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<ChannelInvite>;
+    getInvites(): Promise<GuildInviteWithMetadata[]>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<GuildInviteWithoutMetadata>;
     permissionsOf(memberID: string): Permission;
     edit(
       options: {
@@ -1554,8 +1554,8 @@ declare namespace Eris {
     messages: Collection<Message<TextChannel>>;
     lastPinTimestamp?: number;
     constructor(data: BaseData, guild: Guild, messageLimit: number);
-    getInvites(): Promise<ChannelInvite[]>;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<ChannelInvite>;
+    getInvites(): Promise<GuildInviteWithMetadata[]>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<GuildInviteWithoutMetadata>;
     getWebhooks(): Promise<Webhook[]>;
     createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
     sendTyping(): Promise<void>;
@@ -1615,8 +1615,8 @@ declare namespace Eris {
     bitrate?: number;
     userLimit?: number;
     voiceMembers: Collection<Member>;
-    getInvites(): Promise<ChannelInvite[]>;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<ChannelInvite>;
+    getInvites(): Promise<GuildInviteWithMetadata[]>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<GuildInviteWithoutMetadata>;
     join(options: VoiceResourceOptions): Promise<VoiceConnection>;
     leave(): void;
   }
@@ -1659,64 +1659,65 @@ declare namespace Eris {
     dynamicSplashURL(format?: string, size?: number): string;
   }
 
-  type RESTInvite = RESTChannelInvite | RESTPrivateInvite;
-  type AnyInvite = RESTInvite | ChannelInvite;
-  interface BaseInvite {
+  interface PartialGuild {
+    id: string;
+    name: string;
+    splash?: string;
+    banner?: string;
+    description?: string;
+    icon?: string;
+    features: string[];
+    verificationLevel?: 0 | 1 | 2 | 3 | 4;
+    vanityUrlCode?: string;
+  }
+
+  class Invite extends Base {
     code: string;
     channel: {
       id: string;
       name?: string;
       type: 0 | 2 | 3 | 4 | 5 | 6;
     };
+    guild?: PartialGuild;
     inviter?: User;
+    uses: number | null;
+    maxUses: number | null;
+    maxAge: number | null;
+    temporary: boolean | null;
+    createdAt: number;
+    constructor(data: BaseData, client: Client);
     delete(reason?: string): Promise<void>;
     toJSON(props?: string[]): JSONCache;
   }
 
-  // when fetched from /channels/:id/invites
-  interface GuildInvite extends BaseInvite {
+  interface InviteWithGuild {
+    guild: Guild;
     channel: {
-      id: string;
-      name: string;
       type: 0 | 2 | 4 | 5 | 6;
     };
-    guild: {
-      id: string;
-      name: string;
-      splash?: string;
-      banner?: string;
-      description?: string;
-      icon?: string;
-      features: string[];
-      verificationLevel?: 0 | 1 | 2 | 3 | 4;
-      vanityUrlCode?: string;
-    };
   }
-
-  // when fetched from /channels/:id/invites
-  interface ChannelInvite extends GuildInvite {
-    uses?: number;
-    maxUses?: number;
-    maxAge?: number;
-    temporary?: boolean;
-    createdAt?: number;
-  }
-
-  // when fetched from /invites/:code (guild invite)
-  interface RESTChannelInvite extends GuildInvite {
-    presenceCount?: number;
-    memberCount?: number;
-  }
-
-  // when fetched from /invites/:code (dm group invite)
-  interface RESTPrivateInvite extends BaseInvite {
+  interface InviteWithoutGuild {
+    guild: undefined;
     channel: {
-      id: string;
-      name?: string;
-      icon?: string;
       type: 3;
     };
   }
+  interface InviteWithMetadata {
+    uses: number;
+    maxUses: number;
+    maxAge: number;
+    temporary: boolean;
+  }
+  interface InviteWithoutMetadata {
+    uses: null;
+    maxUses: null;
+    maxAge: null;
+    temporary: null;
+  }
+
+  type PrivateInvite = Invite & InviteWithoutGuild & InviteWithoutMetadata;
+  type GuildInviteWithoutMetadata = Invite & InviteWithGuild & InviteWithoutMetadata;
+  type GuildInviteWithMetadata = Invite & InviteWithGuild & InviteWithMetadata;
 
   interface GetPruneOptions {
     days?: number;
