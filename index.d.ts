@@ -1074,8 +1074,8 @@ declare namespace Eris {
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
     pruneMembers(guildID: string, options?: PruneMemberOptions): Promise<number>;
     getVoiceRegions(guildID: string): Promise<VoiceRegion[]>;
-    getInvite(inviteID: string, withCounts?: boolean): Promise<PrivateInvite | GuildInviteWithoutMetadata>;
-    acceptInvite(inviteID: string): Promise<PrivateInvite | GuildInviteWithoutMetadata>;
+    getInvite(inviteID: string, withCounts?: boolean): Promise<AnyInviteWithoutMetadata>;
+    acceptInvite(inviteID: string): Promise<AnyInviteWithoutMetadata>;
     deleteInvite(inviteID: string, reason?: string): Promise<void>;
     getSelf(): Promise<ExtendedUser>;
     editSelf(options: { username?: string; avatar?: string }): Promise<ExtendedUser>;
@@ -1715,6 +1715,7 @@ declare namespace Eris {
     temporary: null;
   }
 
+  type AnyInviteWithoutMetadata = Invite & InviteWithoutMetadata;
   type PrivateInvite = Invite & InviteWithoutGuild & InviteWithoutMetadata;
   type GuildInviteWithoutMetadata = Invite & InviteWithGuild & InviteWithoutMetadata;
   type GuildInviteWithMetadata = Invite & InviteWithGuild & InviteWithMetadata;
