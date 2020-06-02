@@ -1782,6 +1782,7 @@ declare namespace Eris {
     cleanContent?: string;
     roleMentions: string[];
     channelMentions: string[];
+    link: string;
     editedTimestamp?: number;
     tts: boolean;
     mentionEveryone: boolean;
