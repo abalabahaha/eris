@@ -1348,6 +1348,14 @@ declare namespace Eris {
     mfaEnabled: boolean;
   }
 
+  interface FetchMembersOptions {
+    presences?: boolean;
+    query?: string;
+    userIDs?: string[];
+    limit?: number;
+    timeout?: number;
+  }
+
   export class Guild extends Base {
     id: string;
     createdAt: number;
@@ -1393,6 +1401,7 @@ declare namespace Eris {
     approximatePresenceCount?: number;
     constructor(data: BaseData, client: Client);
     fetchAllMembers(timeout?: number): Promise<number>;
+    fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
     dynamicIconURL(format?: string, size?: number): string;
     dynamicBannerURL(format?: string, size?: number): string;
     dynamicSplashURL(format?: string, size?: number): string;
