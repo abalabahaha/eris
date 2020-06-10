@@ -1759,7 +1759,7 @@ declare namespace Eris {
     status?: Status;
     clientStatus?: ClientStatus;
     activities?: Activity[];
-    constructor(data: BaseData, guild: Guild);
+    constructor(data: BaseData, guild: Guild, client: Client);
     edit(options: MemberOptions, reason?: string): Promise<void>;
     addRole(roleID: string, reason?: string): Promise<void>;
     removeRole(roleID: string, reason?: string): Promise<void>;
