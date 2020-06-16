@@ -1487,7 +1487,7 @@ declare namespace Eris {
     getInvites(): Promise<ChannelInvite[]>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<ChannelInvite>;
     permissionsOf(memberID: string): Permission;
-    permissionsCalculator(memberID: string, roles?: Array<string>): Permission;
+    permissionsCalculator(memberID: string, roleIDs?: Array<string>): Permission;
     edit(
       options: {
         name?: string;
