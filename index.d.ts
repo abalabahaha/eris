@@ -1451,6 +1451,8 @@ declare namespace Eris {
     getBan(userID: string): Promise<{ reason?: string; user: User }>;
     editNickname(nick: string): Promise<void>;
     getWebhooks(): Promise<Webhook[]>;
+    permissionsOf(memberID: string): Permission;
+    permissionsCalculator(memberID: string, roleIDs?: Array<string>): Permission;
     searchMembers(query: string, limit?: number): Promise<Member[]>;
   }
 
@@ -1485,6 +1487,7 @@ declare namespace Eris {
     getInvites(): Promise<ChannelInvite[]>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<ChannelInvite>;
     permissionsOf(memberID: string): Permission;
+    permissionsCalculator(memberID: string, roles?: Array<string>): Permission;
     edit(
       options: {
         name?: string;
