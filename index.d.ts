@@ -1348,6 +1348,14 @@ declare namespace Eris {
     mfaEnabled: boolean;
   }
 
+  interface FetchMembersOptions {
+    presences?: boolean;
+    query?: string;
+    userIDs?: string[];
+    limit?: number;
+    timeout?: number;
+  }
+
   export class Guild extends Base {
     id: string;
     createdAt: number;
@@ -1393,6 +1401,7 @@ declare namespace Eris {
     approximatePresenceCount?: number;
     constructor(data: BaseData, client: Client);
     fetchAllMembers(timeout?: number): Promise<number>;
+    fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
     dynamicIconURL(format?: string, size?: number): string;
     dynamicBannerURL(format?: string, size?: number): string;
     dynamicSplashURL(format?: string, size?: number): string;
@@ -1759,7 +1768,7 @@ declare namespace Eris {
     status?: Status;
     clientStatus?: ClientStatus;
     activities?: Activity[];
-    constructor(data: BaseData, guild: Guild);
+    constructor(data: BaseData, guild: Guild, client: Client);
     edit(options: MemberOptions, reason?: string): Promise<void>;
     addRole(roleID: string, reason?: string): Promise<void>;
     removeRole(roleID: string, reason?: string): Promise<void>;
@@ -1951,7 +1960,7 @@ declare namespace Eris {
     connecting: boolean;
     ready: boolean;
     discordServerTrace?: string[];
-    status: string;
+    status: "disconnected" | "connecting" | "handshaking" | "ready" | "resuming";
     lastHeartbeatReceived: number;
     lastHeartbeatSent: number;
     latency: number;
