@@ -1666,6 +1666,7 @@ declare namespace Eris {
     emojis: Emoji[];
     dynamicIconURL(format?: string, size?: number): string;
     dynamicSplashURL(format?: string, size?: number): string;
+    dynamicDiscoverySplashURL(format?: string, size?: number): string;
   }
 
   type RESTInvite = RESTChannelInvite | RESTPrivateInvite;
