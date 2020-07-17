@@ -1785,7 +1785,7 @@ declare namespace Eris {
     timestamp: number;
     type: number;
     author: User;
-    member?: Member;
+    member: Member | null;
     mentions: User[];
     content: string;
     cleanContent?: string;
@@ -2030,6 +2030,8 @@ declare namespace Eris {
 
   export class CommandClient extends Client {
     commands: { [s: string]: Command };
+    commandAliases: { [s: string]: string };
+    guildPrefixes: { [s: string]: string };
     constructor(token: string, options?: ClientOptions, commandOptions?: CommandClientOptions);
     onMessageCreate(msg: Message): void;
     registerGuildPrefix(guildID: string, prefix: string[] | string): void;
