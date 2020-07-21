@@ -1782,6 +1782,7 @@ declare namespace Eris {
     createdAt: number;
     channel: T;
     guildID?: string;
+    guild: Guild;
     timestamp: number;
     type: number;
     author: User;
