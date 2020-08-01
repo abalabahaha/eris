@@ -112,9 +112,9 @@ declare namespace Eris {
   }
 
   type BotActivityType = 0 | 1 | 2 | 3
-  type ActivityType = BotActivityType & 4;
+  type ActivityType = BotActivityType | 4;
 
-  interface ActivityPartial<T extends BotActivityType> {
+  interface ActivityPartial<T extends ActivityType = BotActivityType> {
     name: string;
     type: T;
     url?: string;
