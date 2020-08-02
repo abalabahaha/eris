@@ -17,11 +17,12 @@ declare namespace Eris {
   type TextableChannel = Textable & GuildTextableChannel | PrivateChannel;
 
   type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
-  type CommandGeneratorFunction = (
-    msg: Message,
-    args: string[]
-  ) => Promise<MessageContent> | Promise<void> | MessageContent | void;
+  type CommandGeneratorFunction = (msg: Message, args: string[]) => GeneratorFunctionReturn;
+  type GeneratorFunctionReturn = Promise<MessageContent> | Promise<void> | MessageContent | void;
   type GenericCheckFunction<T> = (msg: Message) => T;
+  type ReactionButtonsFilterFunction = (msg: Message, emoji: Emoji, userID: string) => boolean;
+  type ReactionButtonsGeneratorFunction = (msg: Message, args: string[], userID: string) => GeneratorFunctionReturn;
+  type ReactionButtonsGenerator = ReactionButtonsGeneratorFunction | MessageContent | MessageContent[] | ReactionButtonsGeneratorFunction[];
 
   type Emoji = {
     roles: string[];
@@ -37,6 +38,7 @@ declare namespace Eris {
 
   type IntentStrings = keyof Constants["Intents"];
   type ReconnectDelayFunction = (lastDelay: number, attempts: number) => number;
+  type RequestMethod = "GET" | "PATCH" | "DELETE" | "POST" | "PUT";
 
   type AnyInvite = RESTInvite | ChannelInvite;
   type RESTInvite = RESTChannelInvite | RESTPrivateInvite;
@@ -48,6 +50,7 @@ declare namespace Eris {
     embed?: EmbedOptions;
     flags?: number;
   }
+  type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
   type PossiblyUncachedMessage = Message | { id: string; channel: TextableChannel | { id: string } };
 
@@ -166,40 +169,52 @@ declare namespace Eris {
     defaultCommandOptions?: CommandOptions;
   }
 
+  interface CommandCooldownExclusions {
+    userIDs?: string[];
+    guildIDs?: string[];
+    channelIDs?: string[];
+  }
   interface CommandOptions {
     aliases?: string[];
-    caseInsensitive?: boolean;
-    deleteCommand?: boolean;
     argsRequired?: boolean;
-    guildOnly?: boolean;
-    dmOnly?: boolean;
-    description?: string;
-    fullDescription?: string;
-    usage?: string;
-    hooks?: Hooks;
-    requirements?: {
-      userIDs?: string[] | GenericCheckFunction<string[]>;
-      roleIDs?: string[] | GenericCheckFunction<string[]>;
-      roleNames?: string[] | GenericCheckFunction<string[]>;
-      permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>;
-      custom?: GenericCheckFunction<void>;
-    };
+    caseInsensitive?: boolean;
     cooldown?: number;
-    cooldownExclusions?: {
-      userIDs?: string[];
-      guildIDs?: string[];
-      channelIDs?: string[];
-    };
-    restartCooldown?: boolean;
+    cooldownExclusions?: CommandCooldownExclusions;
+    cooldownMessage?: string | GenericCheckFunction<string> | false;
     cooldownReturns?: number;
-    cooldownMessage?: string | GenericCheckFunction<string>;
-    invalidUsageMessage?: string | GenericCheckFunction<string>;
-    permissionMessage?: string | GenericCheckFunction<string>;
-    errorMessage?: string | GenericCheckFunction<string>;
-    reactionButtons?: { emoji: string; type: string; response: CommandGenerator }[];
-    reactionButtonTimeout?: number;
     defaultSubcommandOptions?: CommandOptions;
+    deleteCommand?: boolean;
+    description?: string;
+    dmOnly?: boolean;
+    errorMessage?: string | GenericCheckFunction<string>;
+    fullDescription?: string;
+    guildOnly?: boolean;
     hidden?: boolean;
+    hooks?: Hooks;
+    invalidUsageMessage?: string | GenericCheckFunction<string> | false;
+    permissionMessage?: string | GenericCheckFunction<string> | false;
+    reactionButtons?: CommandReactionButtonsOptions[] | null;
+    reactionButtonTimeout?: number;
+    requirements?: CommandRequirements;
+    restartCooldown?: boolean;
+    usage?: string;
+  }
+  interface CommandReactionButtons extends CommandReactionButtonsOptions {
+    responses: ((() => string) | ReactionButtonsGeneratorFunction)[];
+    execute: (msg: Message, args: string[], userID: string) => string | GeneratorFunctionReturn;
+  }
+  interface CommandReactionButtonsOptions {
+    emoji: string;
+    type: "edit" | "cancel";
+    response: string | ReactionButtonsGeneratorFunction;
+    filter: ReactionButtonsFilterFunction;
+  }
+  interface CommandRequirements {
+    userIDs?: string[] | GenericCheckFunction<string[]>;
+    permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>;
+    roleIDs?: string[] | GenericCheckFunction<string[]>;
+    roleNames?: string[] | GenericCheckFunction<string[]>;
+    custom?: GenericCheckFunction<void>;
   }
   interface Hooks {
     preCommand?: (msg: Message, args: string[]) => void;
@@ -423,6 +438,14 @@ declare namespace Eris {
     (event: "resume", listener: () => void): T;
   }
 
+  interface LatencyRef {
+    lastTimeOffsetCheck: number;
+    latency: number;
+    offset: number;
+    raw: number[];
+    timeOffset: number;
+    timeOffsets: number[];
+  }
   interface RawPacket {
     op: number;
     t?: string;
@@ -576,6 +599,11 @@ declare namespace Eris {
     channelID?: string | null;
   }
 
+  interface ActiveMessages {
+    args: string[];
+    command: Command;
+    timeout: NodeJS.Timeout;
+  }
   interface AllowedMentions {
     everyone?: boolean;
     roles?: boolean | string[];
@@ -989,6 +1017,7 @@ declare namespace Eris {
     constructor(id: string);
     inspect(): this;
     toJSON(props?: string[]): JSONCache;
+    toString(): string;
   }
 
   export class Bucket {
@@ -1005,12 +1034,12 @@ declare namespace Eris {
     id: string;
     createdAt: number;
     channel: GroupChannel;
-    voiceStates: Collection<VoiceState>;
     participants: string[];
     endedTimestamp?: number;
-    ringing?: string[];
     region?: string;
+    ringing?: string[];
     unavailable: boolean;
+    voiceStates: Collection<VoiceState>;
     constructor(data: BaseData, channel: GroupChannel);
   }
 
@@ -1033,10 +1062,10 @@ declare namespace Eris {
 
   export class Channel extends Base {
     id: string;
-    mention: string;
-    type: 0 | 1 | 2 | 3 | 4 | 5 | 6;
     client: Client;
     createdAt: number;
+    mention: string;
+    type: 0 | 1 | 2 | 3 | 4 | 5 | 6;
     constructor(data: BaseData);
     static from(data: object, client: Client): AnyChannel;
   }
@@ -1351,85 +1380,86 @@ declare namespace Eris {
     remove(obj: T | { id: string }): T;
   }
 
-  export class Command {
-    subcommands: { [s: string]: Command };
-    subcommandAliases: { [alias: string]: Command };
+  export class Command implements CommandOptions, SimpleJSON {
+    aliases: string[];
+    argsRequired: boolean;
+    caseInsensitive: boolean;
+    cooldown: number;
+    cooldownExclusions: CommandCooldownExclusions
+    cooldownMessage: string | false | GenericCheckFunction<string>;
+    cooldownReturns: number;
+    defaultSubcommandOptions: CommandOptions;
+    deleteCommand: boolean;
+    description: string;
+    dmOnly: boolean;
+    errorMessage: string | GenericCheckFunction<string>;
+    fullDescription: string;
+    fullLabel: string;
+    guildOnly: boolean;
+    hidden: boolean;
+    hooks: Hooks;
+    invalidUsageMessage: string | false | GenericCheckFunction<string>;
     label: string;
     parentCommand?: Command;
-    description: string;
-    fullDescription: string;
-    usage: string;
-    aliases: string[];
-    caseInsensitive: boolean;
-    hooks: Hooks;
-    requirements: {
-      userIDs?: string[] | GenericCheckFunction<string[]>;
-      roleIDs?: string[] | GenericCheckFunction<string[]>;
-      roleNames?: string[] | GenericCheckFunction<string[]>;
-      permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>;
-      custom?: GenericCheckFunction<void>;
-    };
-    deleteCommand: boolean;
-    argsRequired: boolean;
-    guildOnly: boolean;
-    dmOnly: boolean;
-    cooldown: number;
-    cooldownExclusions: {
-      userIDs?: string[];
-      guildIDs?: string[];
-      channelIDs?: string[];
-    };
-    restartCooldown: boolean;
-    cooldownReturns: number;
-    cooldownMessage: string | boolean | GenericCheckFunction<string>;
-    invalidUsageMessage: string | boolean | GenericCheckFunction<string>;
-    permissionMessage: string | boolean | GenericCheckFunction<string>;
-    errorMessage: string | GenericCheckFunction<string>;
-    reactionButtons: null | {
-      emoji: string;
-      type: string;
-      response: CommandGenerator;
-      execute?: () => string;
-      responses?: (() => string)[];
-    }[];
+    permissionMessage: string | false | GenericCheckFunction<string>;
+    reactionButtons: null | CommandReactionButtons[];
     reactionButtonTimeout: number;
-    defaultSubcommandOptions: CommandOptions;
-    hidden: boolean;
+    requirements: CommandRequirements;
+    restartCooldown: boolean;
+    subcommands: { [s: string]: Command };
+    subcommandAliases: { [alias: string]: Command };
+    usage: string;
     constructor(label: string, generate: CommandGenerator, options?: CommandOptions);
+    permissionCheck(msg: Message): Promise<boolean>;
+    cooldownExclusionCheck(msg: Message): boolean;
+    cooldownCheck(msg: Message): boolean;
+    process(args: string[], msg: Message): Promise<void|GeneratorFunctionReturn>;
+    executeCommand(msg: Message, args: string[]): Promise<GeneratorFunctionReturn>;
     registerSubcommandAlias(alias: string, label: string): void;
     registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
     unregisterSubcommand(label: string): void;
+    toJSON(props?: string[]): JSONCache;
     toString(): string;
   }
 
   export class CommandClient extends Client {
+    activeMessages: { [s: string]: ActiveMessages };
     commands: { [s: string]: Command };
+    commandAliases: { [s: string]: string };
+    commandOptions: CommandClientOptions;
+    guildPrefixes: { [s: string]: string | string[] };
+    preReady?: true;
     constructor(token: string, options?: ClientOptions, commandOptions?: CommandClientOptions);
+    checkPrefix(msg: Message): string;
     onMessageCreate(msg: Message): void;
-    registerGuildPrefix(guildID: string, prefix: string[] | string): void;
-    registerCommandAlias(alias: string, label: string): void;
+    onMessageReactionEvent(msg: Message, emoji: Emoji, userID: string): Promise<void>
     registerCommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
+    registerCommandAlias(alias: string, label: string): void;
+    resolveCommand(label: string): Command;
+    registerGuildPrefix(guildID: string, prefix: string[] | string): void;
     unregisterCommand(label: string): void;
+    unwatchMessage(id: string, channelID: string): void;
     toString(): string;
   }
 
   export class ExtendedUser extends User {
     email: string;
-    verified: boolean;
     mfaEnabled: boolean;
+    premiumType: 0 | 1 | 2;
+    verified: boolean;
   }
 
   export class GroupChannel extends PrivateChannel {
     type: 3;
-    recipients: Collection<User>;
-    name: string;
     icon?: string;
     iconURL?: string;
+    name: string;
     ownerID: string;
-    edit(options: { name?: string; icon?: string; ownerID?: string }): Promise<GroupChannel>;
+    recipients: Collection<User>;
     addRecipient(userID: string): Promise<void>;
-    removeRecipient(userID: string): Promise<void>;
     dynamicIconURL(format?: string, size?: number): string;
+    edit(options: { name?: string; icon?: string; ownerID?: string }): Promise<GroupChannel>;
+    removeRecipient(userID: string): Promise<void>;
   }
 
   export class Guild extends Base {
@@ -1763,6 +1793,23 @@ declare namespace Eris {
     constructor(data: BaseData, client: Client);
   }
 
+  class RequestHandler implements SimpleJSON {
+    agent: unknown; // HTTP Agent - Do we parse our preferred agent here?
+    baseURL: string;
+    globalBlock: boolean;
+    latencyRef: LatencyRef;
+    ratelimits: SequentialBucket;
+    readyQueue: (() => void)[];
+    requestTimeout: number;
+    userAgent: string;
+    constructor(client: Client, forceQueueing?: boolean);
+    globalUnblok(): void;
+    request(method: RequestMethod, url: string, auth: boolean, body?: { [s: string]: any }, file?: MessageFile, _route?: string, short?: boolean): Promise<object>;
+    routefy(url: string, method: RequestMethod): string;
+    toString(): "[RequestHandler]";
+    toJSON(props?: string[]): JSONCache;
+  }
+
   export class Role extends Base {
     id: string;
     createdAt: number;
@@ -1782,34 +1829,50 @@ declare namespace Eris {
     delete(reason?: string): Promise<void>;
   }
 
+  class SequentialBucket {
+    limit: number;
+    processing: boolean;
+    remaining: number;
+    reset: number;
+    latencyRef: LatencyRef;
+    constructor(limit: number, latencyRef?: LatencyRef);
+    queue(func: Function, short?: boolean): void;
+    check(override?: boolean): void;
+  }
+
   export class Shard extends EventEmitter {
     id: number;
+    client: Client;
     connecting: boolean;
-    ready: boolean;
     discordServerTrace?: string[];
-    status: "disconnected" | "connecting" | "handshaking" | "ready" | "resuming";
     lastHeartbeatReceived: number;
     lastHeartbeatSent: number;
     latency: number;
-    client: Client;
     presence: Presence;
+    ready: boolean;
+    status: "disconnected" | "connecting" | "handshaking" | "ready" | "resuming";
     constructor(id: number, client: Client);
     connect(): void;
     disconnect(options?: { reconnect: boolean }): void;
     editAFK(afk: boolean): void;
     editStatus(status?: Status, game?: ActivityPartial<BotActivityType>): void;
     on: ShardEvents<this>;
+    resume(): void;
+    sendWS(op: number, _data: object, priority: boolean): void;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
-    sendWS(op: number, _data: object, priority: boolean): void;
   }
 
   export class ShardManager extends Collection<Shard> {
+    connectQueue: Shard[];
+    connectTimeout: NodeJS.Timeout | null;
+    lastConnect: number;
     constructor(client: Client);
     connect(shard: Shard): void;
     spawn(id: number): void;
+    tryConnect(): void;
     toString(): string;
-    toJSON(props?: string[]): string;
+    toJSON(props?: string[]): JSONCache;
   }
 
   export class SharedStream extends EventEmitter {
