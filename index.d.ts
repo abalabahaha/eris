@@ -538,6 +538,16 @@ declare namespace Eris {
     vip: boolean;
   }
 
+  interface CreateInviteOptions {
+    maxAge?: number;
+    maxUses?: number;
+    temporary?: boolean;
+    unique?: boolean;
+  }
+  interface Invitable {
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite & InviteWithoutMetadata<null>>;
+    getInvites(): Promise<(Invite & InviteWithMetadata)[]>;
+  }
   interface InviteWithMetadata<T extends Exclude<AnyGuildChannel, CategoryChannel | StoreChannel> = Exclude<AnyGuildChannel, CategoryChannel | StoreChannel>> {
     channel: T;
     createdAt: number;
@@ -557,16 +567,6 @@ declare namespace Eris {
     presenceCount: T;
     temporary: null;
     uses: null;
-  }
-  interface CreateInviteOptions {
-    maxAge?: number;
-    maxUses?: number;
-    temporary?: boolean;
-    unique?: boolean;
-  }
-  interface Invitable {
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite & InviteWithoutMetadata<null>>;
-    getInvites(): Promise<(Invite & InviteWithMetadata)[]>;
   }
 
   interface FetchMembersOptions {
