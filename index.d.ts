@@ -1809,7 +1809,7 @@ declare namespace Eris {
     addReaction(reaction: string, userID?: string): Promise<void>;
     removeReaction(reaction: string, userID?: string): Promise<void>;
     removeReactions(): Promise<void>;
-    removeMessageReactionEmoji(reaction: string): Promise<void>;
+    removeReactionEmoji(reaction: string): Promise<void>;
     delete(reason?: string): Promise<void>;
     crosspost(): Promise<Message<T>>;
   }
