@@ -14,7 +14,8 @@ declare namespace Eris {
   type AnyChannel = AnyGuildChannel | PrivateChannel;
   type AnyGuildChannel = GuildTextableChannel | VoiceChannel | CategoryChannel | StoreChannel;
   type ChannelTypes = Constants["ChannelTypes"][keyof Constants["ChannelTypes"]]
-  type GuildTextableChannel = TextChannel | NewsChannel
+  type GuildTextableChannel = TextChannel | NewsChannel;
+  type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel>;
   type TextableChannel = (GuildTextable & GuildTextableChannel) | (Textable & PrivateChannel);
 
   type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
@@ -26,12 +27,12 @@ declare namespace Eris {
   type ReactionButtonsGenerator = ReactionButtonsGeneratorFunction | MessageContent | MessageContent[] | ReactionButtonsGeneratorFunction[];
 
   type Emoji = {
-    roles: string[];
-    id: string;
-    require_colons: boolean;
     animated: boolean;
+    id: string;
     managed: boolean;
-    user: { name: string; discriminator: string; id: string; avatar: string };
+    require_colons: boolean;
+    roles: string[];
+    user: { avatar: string; discriminator: string; id: string; name: string };
   } & EmojiBase;
   type EmojiOptions = {
     roles?: string[];
@@ -42,19 +43,19 @@ declare namespace Eris {
   type RequestMethod = "GET" | "PATCH" | "DELETE" | "POST" | "PUT";
 
   type AdvancedMessageContent = {
-    content?: string;
-    tts?: boolean;
     allowedMentions?: AllowedMentions;
+    content?: string;
     embed?: EmbedOptions;
     flags?: number;
+    tts?: boolean;
   }
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
-  type PossiblyUncachedMessage = Message | { id: string; channel: TextableChannel | { id: string } };
+  type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string }; id: string; };
 
   type ActivityType = BotActivityType | 4;
   type BotActivityType = 0 | 1 | 2 | 3
-  type FriendSuggestionReasons = { type: number; platform_type: string; name: string }[];
+  type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
   type Status = "online" | "idle" | "dnd" | "offline";
 
 
@@ -105,8 +106,8 @@ declare namespace Eris {
     sendTyping(): Promise<void>;
   }
   interface PartialChannel {
-    id?: number;
     bitrate?: number;
+    id?: number;
     name?: string;
     nsfw?: boolean;
     parent_id?: number;
@@ -559,14 +560,23 @@ declare namespace Eris {
     temporary: boolean;
     uses: number;
   }
-  interface InviteWithoutMetadata<T extends boolean | null> {
+  interface InviteWithoutMetadata<T extends boolean | null, C extends InviteChannel = InviteChannel> {
+    channel: C
     createdAt: null;
+    guild: C extends Exclude<InviteChannel, InvitePartialChannel> ? Guild : Guild | undefined;
     maxAge: null;
     maxUses: null;
     memberCount: T;
     presenceCount: T;
     temporary: null;
     uses: null;
+  }
+  interface InvitePartialChannel {
+    icon?: string | null;
+    id: string;
+    name: string | null;
+    recipients?: { username: string }[];
+    type: Exclude<ChannelTypes, 1>;
   }
 
   interface FetchMembersOptions {
@@ -1662,13 +1672,7 @@ declare namespace Eris {
   }
 
   export class Invite extends Base {
-    channel: {
-      icon?: string | null;
-      id: string;
-      name: string | null;
-      recipients?: { username: string }[];
-      type: Exclude<ChannelTypes, 1>;
-    } | Exclude<AnyGuildChannel, CategoryChannel>;
+    channel: InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel>;
     code: string;
     // @ts-expect-error
     createdAt: number | null;
@@ -1759,6 +1763,7 @@ declare namespace Eris {
     messages: Collection<Message<NewsChannel>>;
     rateLimitPerUser: 0;
     type: 5;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite & InviteWithoutMetadata<null, NewsChannel>>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<NewsChannel>>;
     crosspostMessage(messageID: string): Promise<Message<NewsChannel>>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<NewsChannel>>;
@@ -1951,7 +1956,7 @@ declare namespace Eris {
     type: 0 | 5;
     constructor(data: BaseData, guild: Guild, messageLimit: number);
     addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite & InviteWithoutMetadata<null>>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite & InviteWithoutMetadata<null, TextChannel>>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<TextChannel>>;
     createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
@@ -2018,7 +2023,7 @@ declare namespace Eris {
     userLimit?: number;
     voiceMembers: Collection<Member>;
     getInvites(): Promise<(Invite & InviteWithMetadata<VoiceChannel>)[]>;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite & InviteWithoutMetadata<null>>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite & InviteWithoutMetadata<null, VoiceChannel>>;
     join(options: VoiceResourceOptions): Promise<VoiceConnection>;
     leave(): void;
   }
