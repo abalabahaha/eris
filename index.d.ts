@@ -51,7 +51,7 @@ declare namespace Eris {
   }
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
-  type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string }; id: string; };
+  type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string }; id: string };
 
   type ActivityType = BotActivityType | 4;
   type BotActivityType = 0 | 1 | 2 | 3
@@ -561,7 +561,7 @@ declare namespace Eris {
     uses: number;
   }
   interface InviteWithoutMetadata<T extends boolean | null, C extends InviteChannel = InviteChannel> {
-    channel: C
+    channel: C;
     createdAt: null;
     guild: C extends Exclude<InviteChannel, InvitePartialChannel> ? Guild : Guild | undefined;
     maxAge: null;
@@ -1087,6 +1087,7 @@ declare namespace Eris {
     privateChannelMap: { [s: string]: string };
     privateChannels: Collection<PrivateChannel>;
     relationships: Collection<Relationship>;
+    requestHandler: RequestHandler;
     shards: ShardManager;
     startTime: number;
     token?: string;
@@ -1830,7 +1831,7 @@ declare namespace Eris {
     constructor(data: BaseData, client: Client);
   }
 
-  class RequestHandler implements SimpleJSON {
+  export class RequestHandler implements SimpleJSON {
     agent: HTTPSAgent;
     baseURL: string;
     globalBlock: boolean;
