@@ -26,21 +26,11 @@ declare namespace Eris {
   type ReactionButtonsGeneratorFunction = (msg: Message, args: string[], userID: string) => GeneratorFunctionReturn;
   type ReactionButtonsGenerator = ReactionButtonsGeneratorFunction | MessageContent | MessageContent[] | ReactionButtonsGeneratorFunction[];
 
-  type Emoji = {
-    animated: boolean;
-    id: string;
-    managed: boolean;
-    require_colons: boolean;
-    roles: string[];
-    user: { avatar: string; discriminator: string; id: string; name: string };
-  } & EmojiBase;
-  type EmojiOptions = {
-    roles?: string[];
-  } & EmojiBase;
-
   type IntentStrings = keyof Constants["Intents"];
   type ReconnectDelayFunction = (lastDelay: number, attempts: number) => number;
   type RequestMethod = "GET" | "PATCH" | "DELETE" | "POST" | "PUT";
+
+  type PossiblyUncachedGuild = Guild | { id: string };
 
   type AdvancedMessageContent = {
     allowedMentions?: AllowedMentions;
@@ -139,6 +129,10 @@ declare namespace Eris {
     sendTyping(): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
+  }
+  interface WebhookData {
+    channelID: string;
+    guildID: string;
   }
 
   interface ClientOptions {
@@ -292,13 +286,25 @@ declare namespace Eris {
     width?: number;
   }
 
+  interface Emoji extends EmojiBase {
+    animated: boolean;
+    id: string;
+    managed: boolean;
+    require_colons: boolean;
+    roles: string[];
+    user: { avatar: string; discriminator: string; id: string; name: string };
+  }
   interface EmojiBase {
     icon?: string;
     name: string;
   }
+  interface EmojiOptions extends EmojiBase {
+    roles?: string[];
+  }
   interface PartialEmoji {
-    id?: string;
+    id: string | null;
     name: string;
+    animated?: boolean;
   }
 
   interface MemberPartial {
@@ -353,6 +359,11 @@ declare namespace Eris {
     roleMentions: string[];
     tts: boolean;
   }
+  interface OldGroupChannel {
+    name: string;
+    ownerID: string;
+    icon: string;
+  }
   interface OldRole {
     color: number;
     hoist: boolean;
@@ -382,21 +393,24 @@ declare namespace Eris {
       event: "channelRecipientAdd" | "channelRecipientRemove",
       listener: (channel: GroupChannel, user: User) => void
     ): T;
-    (event: "channelUpdate", listener: (channel: AnyGuildChannel, oldChannel: OldGuildChannel) => void): T;
+    (event: "channelUpdate", listener: (channel: AnyChannel, oldChannel: OldGuildChannel | OldGroupChannel) => void): T;
+    (event: "connect" | "shardPreReady", listener: (id: number) => void): T;
     (event: "friendSuggestionCreate", listener: (user: User, reasons: FriendSuggestionReasons) => void): T;
     (event: "friendSuggestionDelete", listener: (user: User) => void): T;
-    (event: "guildAvailable" | "guildBanAdd" | "guildBanRemove", listener: (guild: Guild, user: User) => void): T;
-    (event: "guildDelete" | "guildUnavailable" | "guildCreate", listener: (guild: Guild) => void): T;
+    (event: "guildBanAdd" | "guildBanRemove", listener: (guild: Guild, user: User) => void): T;
+    (event: "guildAvailable" | "guildCreate", listener: (guild: Guild) => void): T;
+    (event: "guildDelete", listener: (guild: PossiblyUncachedGuild) => void): T;
     (event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): T;
     (event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): T;
     (event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): T;
     (event: "guildMemberRemove", listener: (guild: Guild, member: Member | MemberPartial) => void): T;
     (
       event: "guildMemberUpdate",
-      listener: (guild: Guild, member: Member, oldMember: { roles: string[]; nick?: string }) => void
+      listener: (guild: Guild, member: Member, oldMember: { roles: string[]; nick?: string } | null) => void
     ): T;
     (event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): T;
     (event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: OldRole) => void): T;
+    (event: "guildUnavailable" | "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): T;
     (event: "guildUpdate", listener: (guild: Guild, oldGuild: OldGuild) => void): T;
     (event: "hello", listener: (trace: string[], id: number) => void): T;
     (event: "inviteCreate" | "inviteDelete", listener: (guild: Guild, invite: Invite & InviteWithMetadata) => void): T;
@@ -406,11 +420,11 @@ declare namespace Eris {
     (event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): T;
     (
       event: "messageReactionAdd" | "messageReactionRemove",
-      listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void
+      listener: (message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string) => void
     ): T;
-    (event: "messageUpdate", listener: (message: Message, oldMessage?: OldMessage) => void
+    (event: "messageUpdate", listener: (message: Message, oldMessage: OldMessage | null) => void
     ): T;
-    (event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence?: Presence) => void): T;
+    (event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence: Presence | null) => void): T;
     (event: "rawREST", listener: (request: RawRESTRequest) => void): T;
     (event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): T;
     (event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): T;
@@ -419,10 +433,9 @@ declare namespace Eris {
       listener: (relationship: Relationship, oldRelationship: { type: number }) => void
     ): T;
     (event: "typingStart", listener: (channel: TextableChannel, user: User) => void): T;
-    (event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): T;
     (
       event: "userUpdate",
-      listener: (user: User, oldUser: { username: string; discriminator: string; avatar?: string }) => void
+      listener: (user: User, oldUser: { username: string; discriminator: string; avatar?: string } | null) => void
     ): T;
     (event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): T;
     (event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): T;
@@ -432,17 +445,17 @@ declare namespace Eris {
     ): T;
     (event: "voiceStateUpdate", listener: (member: Member, oldState: OldVoiceState) => void): T;
     (event: "warn" | "debug", listener: (message: string, id: number) => void): T;
+    (event: "webhooksUpdate", listener: (data: WebhookData) => void): T;
     (event: string, listener: (...args: any[]) => void): T;
   }
   interface ClientEvents<T> extends EventListeners<T> {
+    (event: "shardReady" | "shardResume", listener: (id: number) => void): T;
     (
-      event: "shardDisconnect" | "error" | "shardPreReady" | "connect",
+      event: "shardDisconnect" | "error",
       listener: (err: Error, id: number) => void
     ): T;
-    (event: "shardReady" | "shardResume", listener: (id: number) => void): T;
   }
   interface ShardEvents<T> extends EventListeners<T> {
-    (event: "shardPreReady" | "connect", listener: (id: number) => void): T;
     (event: "disconnect", listener: (err: Error) => void): T;
     (event: "resume", listener: () => void): T;
   }
