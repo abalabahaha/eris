@@ -1759,6 +1759,7 @@ declare namespace Eris {
     roles: string[];
     user: User;
     permission: Permission;
+    permissions: Permission;
     defaultAvatar: string;
     createdAt: number;
     bot: boolean;
