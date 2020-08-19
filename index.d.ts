@@ -872,7 +872,11 @@ declare namespace Eris {
     (event: "messageReactionRemoveEmoji", listener: (message: PossiblyUncachedMessage, emoji: PartialEmoji) => void): T;
     (event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): T;
     (
-      event: "messageReactionAdd" | "messageReactionRemove",
+      event: "messageReactionAdd",
+      listener: (message: PossiblyUncachedMessage, emoji: Emoji, reactor: Member | { id: string }) => void
+    ): T;
+    (
+      event: "messageReactionAdd",
       listener: (message: PossiblyUncachedMessage, emoji: Emoji, userID: string) => void
     ): T;
     (event: "messageUpdate", listener: (message: Message, oldMessage?: OldMessage) => void
