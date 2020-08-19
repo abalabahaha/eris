@@ -24,7 +24,7 @@ declare namespace Eris {
   // TODO there's also toJSON(): JSONCache, though, SimpleJSON should suffice
 
   type GuildTextableChannel = TextChannel | NewsChannel
-  type TextableChannel = Textable & GuildTextableChannel | PrivateChannel;
+  type TextableChannel = (GuildTextable & GuildTextableChannel) | (Textable & PrivateChannel)
   type AnyChannel = AnyGuildChannel | PrivateChannel;
   type AnyGuildChannel = GuildTextableChannel | VoiceChannel | CategoryChannel | StoreChannel;
 
@@ -108,7 +108,7 @@ declare namespace Eris {
     activities?: Activity[];
     clientStatus?: ClientStatus;
     status?: Status;
-    game?: Activity;
+    game: Activity | null;
   }
 
   type BotActivityType = 0 | 1 | 2 | 3
@@ -335,6 +335,8 @@ declare namespace Eris {
 
       GUILD_DISCOVERY_DISQUALIFIED: 14;
       GUILD_DISCOVERY_REQUALIFIED: 15;
+      GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING: 16;
+      GUILD_DISCOVERY_GRACE_PERIOD_FINAL_WARNING: 17;
     };
     ChannelTypes: {
       GUILD_TEXT: 0;
@@ -713,7 +715,7 @@ declare namespace Eris {
     frameSize?: number;
     sampleRate?: number;
   }
-  type PossiblyUncachedMessage = Message | { id: string; channel: TextableChannel | { id: string } };
+  type PossiblyUncachedMessage = Message | { id: string; channel: TextableChannel | { id: string; guild: { id: string } }; guildID: string };
   interface RawPacket {
     op: number;
     t?: string;
@@ -749,6 +751,7 @@ declare namespace Eris {
     reconnectDelay?: ReconnectDelayFunction;
   }
   interface CommandClientOptions {
+    argsSplitter?: (str: string) => string[];
     defaultHelpCommand?: boolean;
     description?: string;
     ignoreBots?: boolean;
@@ -889,7 +892,7 @@ declare namespace Eris {
       event: "relationshipUpdate",
       listener: (relationship: Relationship, oldRelationship: { type: number }) => void
     ): T;
-    (event: "typingStart", listener: (channel: TextableChannel, user: User) => void): T;
+    (event: "typingStart", listener: (channel: TextableChannel | { id: string }, user: User | { id: string }) => void): T;
     (event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): T;
     (
       event: "userUpdate",
@@ -903,7 +906,7 @@ declare namespace Eris {
     ): T;
     (event: "voiceStateUpdate", listener: (member: Member, oldState: OldVoiceState) => void): T;
     (event: "warn" | "debug", listener: (message: string, id: number) => void): T;
-    (event: string, listener: Function): T;
+    (event: string, listener: (...args: any[]) => void): T;
   }
 
   interface ClientEvents<T> extends EventListeners<T> {
@@ -1329,9 +1332,9 @@ declare namespace Eris {
     channel: GroupChannel;
     voiceStates: Collection<VoiceState>;
     participants: string[];
-    endedTimestamp?: number;
-    ringing?: string[];
-    region?: string;
+    endedTimestamp: number | null;
+    ringing: string[];
+    region: string | null;
     unavailable: boolean;
     constructor(data: BaseData, channel: GroupChannel);
   }
@@ -1352,29 +1355,37 @@ declare namespace Eris {
     mfaEnabled: boolean;
   }
 
+  interface FetchMembersOptions {
+    presences?: boolean;
+    query?: string;
+    userIDs?: string[];
+    limit?: number;
+    timeout?: number;
+  }
+
   export class Guild extends Base {
     id: string;
     createdAt: number;
     name: string;
     verificationLevel: number;
     region: string;
-    icon?: string;
-    afkChannelID?: string;
-    systemChannelID?: string;
+    icon: string | null;
+    afkChannelID: string | null;
+    systemChannelID: string | null;
     afkTimeout: number;
     defaultNotifications: number;
     mfaLevel: number;
     joinedAt: number;
     ownerID: string;
-    splash?: string;
+    splash: string | null;
     splashURL: string | null;
-    banner?: string;
+    banner: string | null;
     bannerURL: string | null;
     premiumTier: number;
     premiumSubscriptionCount?: number;
-    vanityURL?: string;
+    vanityURL: string | null;
     preferredLocale: string;
-    description?: string;
+    description: string | null;
     maxMembers: number;
     unavailable: boolean;
     large: boolean;
@@ -1386,10 +1397,10 @@ declare namespace Eris {
     shard: Shard;
     features: string[];
     emojis: Emoji[];
-    iconURL?: string;
+    iconURL: string | null;
     explicitContentFilter: number;
     publicUpdatesChannelID: string;
-    rulesChannelID: string;
+    rulesChannelID: string | null;
     maxVideoChannelUsers?: number;
     widgetEnabled?: boolean | null;
     widgetChannelID?: string | null;
@@ -1397,6 +1408,7 @@ declare namespace Eris {
     approximatePresenceCount?: number;
     constructor(data: BaseData, client: Client);
     fetchAllMembers(timeout?: number): Promise<number>;
+    fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
     dynamicIconURL(format?: string, size?: number): string;
     dynamicBannerURL(format?: string, size?: number): string;
     dynamicSplashURL(format?: string, size?: number): string;
@@ -1446,6 +1458,7 @@ declare namespace Eris {
     getBan(userID: string): Promise<{ reason?: string; user: User }>;
     editNickname(nick: string): Promise<void>;
     getWebhooks(): Promise<Webhook[]>;
+    permissionsOf(memberID: string | Member): Permission;
     searchMembers(query: string, limit?: number): Promise<Member[]>;
   }
 
@@ -1453,12 +1466,12 @@ declare namespace Eris {
     id: string;
     guild: Guild;
     actionType: number;
-    reason?: string;
+    reason: string | null;
     user: User;
     targetID: string;
     target?: Guild | AnyGuildChannel | Member | Role | any;
-    before?: any;
-    after?: any;
+    before: { [key: string]: any } | null;
+    after: { [key: string]: any } | null;
     count?: number;
     channel?: AnyGuildChannel;
     deleteMemberDays?: number;
@@ -1471,7 +1484,7 @@ declare namespace Eris {
   export class GuildChannel extends Channel {
     type: 0 | 2 | 4 | 5 | 6;
     guild: Guild;
-    parentID?: string;
+    parentID: string | null;
     name: string;
     position: number;
     permissionOverwrites: Collection<PermissionOverwrite>;
@@ -1479,7 +1492,7 @@ declare namespace Eris {
     constructor(data: BaseData, guild: Guild);
     getInvites(): Promise<ChannelInvite[]>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<ChannelInvite>;
-    permissionsOf(memberID: string): Permission;
+    permissionsOf(memberID: string | Member): Permission;
     edit(
       options: {
         name?: string;
@@ -1505,9 +1518,9 @@ declare namespace Eris {
   }
 
   export interface GuildTextable extends Textable {
-    topic?: string;
+    topic: string | null;
     rateLimitPerUser: number;
-    lastPinTimestamp?: number;
+    lastPinTimestamp: number | null;
     getWebhooks(): Promise<Webhook[]>;
     createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
     sendTyping(): Promise<void>;
@@ -1553,10 +1566,10 @@ declare namespace Eris {
   export class TextChannel extends GuildChannel implements GuildTextable, Invitable {
     type: 0 | 5;
     rateLimitPerUser: number;
-    topic?: string;
+    topic: string | null;
     lastMessageID: string;
     messages: Collection<Message<TextChannel>>;
-    lastPinTimestamp?: number;
+    lastPinTimestamp: number | null;
     constructor(data: BaseData, guild: Guild, messageLimit: number);
     getInvites(): Promise<ChannelInvite[]>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<ChannelInvite>;
@@ -1661,6 +1674,7 @@ declare namespace Eris {
     emojis: Emoji[];
     dynamicIconURL(format?: string, size?: number): string;
     dynamicSplashURL(format?: string, size?: number): string;
+    dynamicDiscoverySplashURL(format?: string, size?: number): string;
   }
 
   type RESTInvite = RESTChannelInvite | RESTPrivateInvite;
@@ -1746,24 +1760,25 @@ declare namespace Eris {
     joinedAt: number;
     premiumSince: number;
     voiceState: VoiceState;
-    nick?: string;
+    nick: string | null;
     roles: string[];
     user: User;
     permission: Permission;
+    permissions: Permission;
     defaultAvatar: string;
     createdAt: number;
     bot: boolean;
     username: string;
     discriminator: string;
-    avatar?: string;
+    avatar: string | null;
     defaultAvatarURL: string;
     avatarURL: string;
     staticAvatarURL: string;
-    game?: Activity;
+    game: Activity | null;
     status?: Status;
     clientStatus?: ClientStatus;
     activities?: Activity[];
-    constructor(data: BaseData, guild: Guild);
+    constructor(data: BaseData, guild?: Guild, client?: Client);
     edit(options: MemberOptions, reason?: string): Promise<void>;
     addRole(roleID: string, reason?: string): Promise<void>;
     removeRole(roleID: string, reason?: string): Promise<void>;
@@ -1780,12 +1795,13 @@ declare namespace Eris {
     timestamp: number;
     type: number;
     author: User;
-    member?: Member;
+    member: Member | null;
     mentions: User[];
     content: string;
-    cleanContent?: string;
+    cleanContent: string;
     roleMentions: string[];
     channelMentions: string[];
+    jumpLink: string;
     editedTimestamp?: number;
     tts: boolean;
     mentionEveryone: boolean;
@@ -1804,7 +1820,7 @@ declare namespace Eris {
     addReaction(reaction: string, userID?: string): Promise<void>;
     removeReaction(reaction: string, userID?: string): Promise<void>;
     removeReactions(): Promise<void>;
-    removeMessageReactionEmoji(reaction: string): Promise<void>;
+    removeReactionEmoji(reaction: string): Promise<void>;
     delete(reason?: string): Promise<void>;
     crosspost(): Promise<Message<T>>;
   }
@@ -1865,7 +1881,7 @@ declare namespace Eris {
     recipients: Collection<User>;
     name: string;
     icon?: string;
-    iconURL?: string;
+    iconURL: string | null;
     ownerID: string;
     edit(options: { name?: string; icon?: string; ownerID?: string }): Promise<GroupChannel>;
     addRecipient(userID: string): Promise<void>;
@@ -1877,7 +1893,7 @@ declare namespace Eris {
     id: string;
     user: User;
     type: number;
-    game?: Activity;
+    game: Activity | null;
     status: Status;
     clientStatus?: ClientStatus;
     activities?: Activity[];
@@ -1919,7 +1935,7 @@ declare namespace Eris {
     bot: boolean;
     username: string;
     discriminator: string;
-    avatar?: string;
+    avatar: string | null;
     defaultAvatarURL: string;
     avatarURL: string;
     staticAvatarURL: string;
@@ -1955,7 +1971,7 @@ declare namespace Eris {
     connecting: boolean;
     ready: boolean;
     discordServerTrace?: string[];
-    status: string;
+    status: "disconnected" | "connecting" | "handshaking" | "ready" | "resuming";
     lastHeartbeatReceived: number;
     lastHeartbeatSent: number;
     latency: number;
