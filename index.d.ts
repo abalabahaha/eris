@@ -886,7 +886,7 @@ declare namespace Eris {
       event: "relationshipUpdate",
       listener: (relationship: Relationship, oldRelationship: { type: number }) => void
     ): T;
-    (event: "typingStart", listener: (channel: TextableChannel, user: User) => void): T;
+    (event: "typingStart", listener: (channel: TextableChannel | { id: string }, user: User | { id: string }) => void): T;
     (event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): T;
     (
       event: "userUpdate",
@@ -1452,6 +1452,7 @@ declare namespace Eris {
     getBan(userID: string): Promise<{ reason?: string; user: User }>;
     editNickname(nick: string): Promise<void>;
     getWebhooks(): Promise<Webhook[]>;
+    permissionsOf(memberID: string | Member): Permission;
     searchMembers(query: string, limit?: number): Promise<Member[]>;
   }
 
@@ -1485,7 +1486,7 @@ declare namespace Eris {
     constructor(data: BaseData, guild: Guild);
     getInvites(): Promise<ChannelInvite[]>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<ChannelInvite>;
-    permissionsOf(memberID: string): Permission;
+    permissionsOf(memberID: string | Member): Permission;
     edit(
       options: {
         name?: string;
@@ -1769,7 +1770,7 @@ declare namespace Eris {
     status?: Status;
     clientStatus?: ClientStatus;
     activities?: Activity[];
-    constructor(data: BaseData, guild: Guild, client: Client);
+    constructor(data: BaseData, guild?: Guild, client?: Client);
     edit(options: MemberOptions, reason?: string): Promise<void>;
     addRole(roleID: string, reason?: string): Promise<void>;
     removeRole(roleID: string, reason?: string): Promise<void>;
