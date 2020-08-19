@@ -749,6 +749,7 @@ declare namespace Eris {
     reconnectDelay?: ReconnectDelayFunction;
   }
   interface CommandClientOptions {
+    argsSplitter?: (str: string) => string[];
     defaultHelpCommand?: boolean;
     description?: string;
     ignoreBots?: boolean;
