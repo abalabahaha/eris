@@ -1188,16 +1188,14 @@ declare namespace Eris {
       };
       payment_gateway?: string;
     }>;
-    getSelfPayments(): Promise<
-      {
-        status: number;
-        amount_refunded: number;
-        description: string;
-        created_at: string; // date
-        currency: string;
-        amount: number;
-      }[]
-    >;
+    getSelfPayments(): Promise<{
+      status: number;
+      amount_refunded: number;
+      description: string;
+      created_at: string; // date
+      currency: string;
+      amount: number;
+    }[]>;
     addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
     deleteSelfPremiumSubscription(): Promise<void>;
     getRESTChannel(channelID: string): Promise<AnyChannel>;

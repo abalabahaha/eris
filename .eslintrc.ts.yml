@@ -3,6 +3,11 @@ extends:
   - "plugin:@typescript-eslint/eslint-recommended"
   - "plugin:@typescript-eslint/recommended"
 rules:
+  "@typescript-eslint/indent":
+    - 2
+    - 2
+    - SwitchCase: 1
+      ignoreComments: false
   "@typescript-eslint/member-delimiter-style": 2
   "@typescript-eslint/no-explicit-any": 0
   "@typescript-eslint/no-use-before-define":
@@ -11,11 +16,7 @@ rules:
   "@typescript-eslint/semi":
     - 2
     - always
-  indent:
-    - 2
-    - 2
-    - SwitchCase: 1
-      ignoreComments: false
+  indent: 0
   keyword-spacing:
     - 2
     - after: true
