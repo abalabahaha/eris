@@ -885,7 +885,7 @@ declare namespace Eris {
       event: "relationshipUpdate",
       listener: (relationship: Relationship, oldRelationship: { type: number }) => void
     ): T;
-    (event: "typingStart", listener: (channel: TextableChannel, user: User) => void): T;
+    (event: "typingStart", listener: (channel: TextableChannel | { id: string }, user: User | { id: string }) => void): T;
     (event: "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): T;
     (
       event: "userUpdate",
