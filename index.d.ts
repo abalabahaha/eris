@@ -23,8 +23,8 @@ declare namespace Eris {
 
   // TODO there's also toJSON(): JSONCache, though, SimpleJSON should suffice
 
-  type GuildTextableChannel = TextChannel | NewsChannel
-  type TextableChannel = (GuildTextable & GuildTextableChannel) | (Textable & PrivateChannel)
+  type GuildTextableChannel = TextChannel | NewsChannel;
+  type TextableChannel = (GuildTextable & GuildTextableChannel) | (Textable & PrivateChannel);
   type AnyChannel = AnyGuildChannel | PrivateChannel;
   type AnyGuildChannel = GuildTextableChannel | VoiceChannel | CategoryChannel | StoreChannel;
 
@@ -111,7 +111,7 @@ declare namespace Eris {
     game: Activity | null;
   }
 
-  type BotActivityType = 0 | 1 | 2 | 3
+  type BotActivityType = 0 | 1 | 2 | 3;
   type ActivityType = BotActivityType & 4;
 
   interface ActivityPartial<T extends BotActivityType> {
@@ -561,7 +561,7 @@ declare namespace Eris {
     allowedMentions?: AllowedMentions;
     embed?: EmbedOptions;
     flags?: number;
-  }
+  };
 
   interface MessageFile {
     file: Buffer | string;

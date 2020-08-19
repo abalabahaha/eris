@@ -8,6 +8,9 @@ rules:
   "@typescript-eslint/no-use-before-define":
     - 2
     - classes: false
+  "@typescript-eslint/semi":
+    - 2
+    - always
   indent:
     - 2
     - 2
@@ -19,3 +22,4 @@ rules:
   object-curly-spacing:
     - 2
     - always
+  semi: 0
