@@ -3,19 +3,24 @@ extends:
   - "plugin:@typescript-eslint/eslint-recommended"
   - "plugin:@typescript-eslint/recommended"
 rules:
+  "@typescript-eslint/indent":
+    - 2
+    - 2
+    - SwitchCase: 1
+      ignoreComments: false
   "@typescript-eslint/member-delimiter-style": 2
   "@typescript-eslint/no-explicit-any": 0
   "@typescript-eslint/no-use-before-define":
     - 2
     - classes: false
-  indent:
+  "@typescript-eslint/semi":
     - 2
-    - 2
-    - SwitchCase: 1
-      ignoreComments: false
+    - always
+  indent: 0
   keyword-spacing:
     - 2
     - after: true
   object-curly-spacing:
     - 2
     - always
+  semi: 0
