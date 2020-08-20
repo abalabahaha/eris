@@ -1826,7 +1826,7 @@ declare namespace Eris {
   export class PermissionOverwrite extends Permission {
     createdAt: number;
     id: string;
-    type: string;
+    type: "role" | "member";
     constructor(data: { allow: number; deny: number });
   }
 
