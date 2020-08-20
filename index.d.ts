@@ -301,7 +301,8 @@ declare namespace Eris {
     icon?: string;
     name: string;
   }
-  interface EmojiOptions extends EmojiBase {
+  interface EmojiOptions extends Exclude<EmojiBase, "icon"> {
+    image: string;
     roles?: string[];
   }
   interface PartialEmoji {
