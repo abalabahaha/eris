@@ -634,9 +634,25 @@ declare namespace Eris {
     size: number;
     url: string;
   }
+  interface MessageActivity {
+    party_id?: string;
+    type: Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
+  }
+  interface MessageApplication {
+    cover_image?: string;
+    description: string;
+    icon: string | null;
+    id: string;
+    name: string;
+  }
   interface MessageFile {
     file: Buffer | string;
     name: string;
+  }
+  interface MessageReference {
+    channelID: string;
+    guildID: string;
+    messageID: string;
   }
 
   interface Activity extends ActivityPartial<ActivityType> {
@@ -856,6 +872,12 @@ declare namespace Eris {
       directMessages: 4096;
       directMessageReactions: 8192;
       directMessageTyping: 16384;
+    };
+    MessageActivityTypes: {
+      JOIN: 1;
+      SPECTATE: 2;
+      LISTEN: 3;
+      JOIN_REQUEST: 5;
     };
     MessageFlags: {
       CROSSPOSTED: 0;
@@ -1736,6 +1758,8 @@ declare namespace Eris {
   }
 
   export class Message<T extends Textable = TextableChannel> extends Base {
+    activity?: MessageActivity;
+    application: MessageApplication;
     attachments: Attachment[];
     author: User;
     channel: T;
@@ -1746,11 +1770,13 @@ declare namespace Eris {
     createdAt: number;
     editedTimestamp?: number;
     embeds: Embed[];
+    flags: number;
     guildID?: string;
     id: string;
     member: Member | null;
     mentionEveryone: boolean;
     mentions: User[];
+    messageReference: MessageReference;
     pinned: boolean;
     prefix?: string;
     reactions: { [s: string]: any; count: number; me: boolean };
