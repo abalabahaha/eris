@@ -154,10 +154,13 @@ declare namespace Eris {
     largeThreshold?: number;
     lastShardID?: number;
     latencyThreshold?: number;
+    maxReconnectAttempts?: number;
+    maxResumeAttempts?: number;
     maxShards?: number | "auto";
     messageLimit?: number;
     opusOnly?: boolean;
-    reconnectAttempts?: number;
+    rateLimiterOffset?: number;
+    requestTimeout?: number;
     reconnectDelay?: ReconnectDelayFunction;
     restMode?: boolean;
     seedVoiceConnections?: boolean;
@@ -365,6 +368,7 @@ declare namespace Eris {
     embeds: Embed[];
     mentionedBy?: any;
     mentions: string[];
+    pinned: boolean;
     roleMentions: string[];
     tts: boolean;
   }
@@ -516,6 +520,7 @@ declare namespace Eris {
     icon?: string;
     region?: string;
     roles?: PartialRole[];
+    systemChannelID: string;
     verificationLevel?: number;
   }
   interface GetPruneOptions {
@@ -1306,6 +1311,7 @@ declare namespace Eris {
     ): Promise<Emoji>;
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<void>;
+    editGuildWidget(guildID: string, options: Widget): Promise<Widget>
     editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
@@ -1348,6 +1354,7 @@ declare namespace Eris {
     getGuildPreview(guildID: string): Promise<GuildPreview>;
     getGuildVanity(guildID: string): Promise<{ code?: string; uses?: number }>;
     getGuildWebhooks(guildID: string): Promise<Webhook[]>;
+    getGuildWidget(guildID: string): Promise<Widget>;
     getInvite(inviteID: string, withCounts?: false): Promise<Invite & InviteWithoutMetadata<null>>;
     getInvite(inviteID: string, withCounts: true): Promise<Invite & InviteWithoutMetadata<boolean>>;
     getMessage(channelID: string, messageID: string): Promise<Message>;
@@ -1683,7 +1690,6 @@ declare namespace Eris {
     position: number;
     type: Exclude<ChannelTypes, 1 | 3>;
     constructor(data: BaseData, guild: Guild);
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite & InviteWithoutMetadata<null>>;
     delete(reason?: string): Promise<void>;
     deletePermission(overwriteID: string, reason?: string): Promise<void>;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
@@ -1825,8 +1831,8 @@ declare namespace Eris {
     edit(content: MessageContent): Promise<Message<T>>;
     getReaction(reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
     pin(): Promise<void>;
-    removeReactionEmoji(reaction: string): Promise<void>;
     removeReaction(reaction: string, userID?: string): Promise<void>;
+    removeReactionEmoji(reaction: string): Promise<void>;
     removeReactions(): Promise<void>;
     unpin(): Promise<void>;
   }
@@ -2095,9 +2101,9 @@ declare namespace Eris {
     type: 2;
     userLimit?: number;
     voiceMembers: Collection<Member>;
-    getInvites(): Promise<(Invite & InviteWithMetadata<VoiceChannel>)[]>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite & InviteWithoutMetadata<null, VoiceChannel>>;
-    join(options: VoiceResourceOptions): Promise<VoiceConnection>;
+    getInvites(): Promise<(Invite & InviteWithMetadata<VoiceChannel>)[]>;
+    join(options: { opusOnly?: boolean; shared?: boolean }): Promise<VoiceConnection>;
     leave(): void;
   }
 
