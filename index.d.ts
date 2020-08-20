@@ -554,6 +554,7 @@ declare namespace Eris {
     expireGracePeriod: string;
   }
   interface PruneMemberOptions extends GetPruneOptions {
+    computePruneCount?: boolean;
     reason?: string;
   }
   interface VoiceRegion {
@@ -1724,8 +1725,6 @@ declare namespace Eris {
     approximatePresenceCount: number;
     description: string | null;
     discoverySplash: string | null;
-    dynamicIconURL(format?: ImageFormat, size?: number): string;
-    dynamicSplashURL(format?: ImageFormat, size?: number): string;
     emojis: Emoji[];
     features: string[];
     icon: string | null;
@@ -1735,6 +1734,8 @@ declare namespace Eris {
     splash: string | null;
     splashURL: string | null;
     constructor(data: BaseData, client: Client);
+    dynamicIconURL(format?: ImageFormat, size?: number): string;
+    dynamicSplashURL(format?: ImageFormat, size?: number): string;
   }
 
   export class Invite extends Base {
@@ -1808,7 +1809,7 @@ declare namespace Eris {
     member: Member | null;
     mentionEveryone: boolean;
     mentions: User[];
-    messageReference: MessageReference;
+    messageReference: MessageReference | null;
     pinned: boolean;
     prefix?: string;
     reactions: { [s: string]: any; count: number; me: boolean };
