@@ -1791,7 +1791,7 @@ declare namespace Eris {
 
   export class Message<T extends Textable = TextableChannel> extends Base {
     activity?: MessageActivity;
-    application: MessageApplication;
+    application?: MessageApplication;
     attachments: Attachment[];
     author: User;
     channel: T;
