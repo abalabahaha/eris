@@ -43,6 +43,8 @@ declare namespace Eris {
   type MessageContent = string | AdvancedMessageContent;
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild: { id: string } }; guildID: string; id: string };
 
+  type PermissionType = "role" | "member";
+
   type ActivityType = BotActivityType | 4;
   type BotActivityType = 0 | 1 | 2 | 3;
   type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
@@ -707,7 +709,7 @@ declare namespace Eris {
     allow: number;
     deny: number;
     id: string;
-    type: "role" | "member";
+    type: PermissionType;
   }
   interface PartialRole {
     color?: number;
@@ -1687,7 +1689,7 @@ declare namespace Eris {
       overwriteID: string,
       allow: number,
       deny: number,
-      type: "role" | "member",
+      type: PermissionType,
       reason?: string
     ): Promise<PermissionOverwrite>;
     editPosition(position: number): Promise<void>;
@@ -1721,8 +1723,8 @@ declare namespace Eris {
     approximatePresenceCount: number;
     description: string | null;
     discoverySplash: string | null;
-    dynamicIconURL(format?: string, size?: number): string;
-    dynamicSplashURL(format?: string, size?: number): string;
+    dynamicIconURL(format?: ImageFormat, size?: number): string;
+    dynamicSplashURL(format?: ImageFormat, size?: number): string;
     emojis: Emoji[];
     features: string[];
     icon: string | null;
@@ -1855,7 +1857,7 @@ declare namespace Eris {
   export class PermissionOverwrite extends Permission {
     createdAt: number;
     id: string;
-    type: "role" | "member";
+    type: PermissionType;
     constructor(data: { allow: number; deny: number });
   }
 
@@ -2079,7 +2081,7 @@ declare namespace Eris {
     constructor(data: BaseData, client: Client);
     addRelationship(block?: boolean): Promise<void>;
     deleteNote(): Promise<void>;
-    dynamicAvatarURL(format?: string, size?: number): string;
+    dynamicAvatarURL(format?: ImageFormat, size?: number): string;
     editNote(note: string): Promise<void>;
     getProfile(): Promise<UserProfile>;
     getDMChannel(): Promise<PrivateChannel>;
