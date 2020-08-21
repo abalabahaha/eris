@@ -1132,7 +1132,7 @@ declare namespace Eris {
     terminate(): void;
   }
 
-  class BrowserWebSocketError extends Error {
+  export class BrowserWebSocketError extends Error {
     event: Event;
     constructor(message: string, event: Event);
   }
@@ -2077,7 +2077,7 @@ declare namespace Eris {
     playing: boolean;
     samplingRate: number;
     speaking: boolean;
-    voiceConnections: Collection<VoiceConnection>
+    voiceConnections: Collection<VoiceConnection>;
     volume: number;
     add(connection: VoiceConnection): void;
     play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
