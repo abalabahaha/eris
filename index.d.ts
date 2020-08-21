@@ -1,7 +1,10 @@
+// Needed for BrowserWebSocket
+/// <reference lib="dom" />
+
 import { EventEmitter } from "events";
 import { Readable as ReadableStream } from "stream";
 import { Agent as HTTPSAgent } from "https";
-import { IncomingMessage } from "http";
+import { IncomingMessage, ClientRequest } from "http";
 
 declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
 
@@ -486,6 +489,10 @@ declare namespace Eris {
     (event: "userDisconnect", listener: (userID: string) => void): T;
   }
 
+  interface HTTPResponse {
+    message: string;
+    code: number;
+  }
   interface LatencyRef {
     lastTimeOffsetCheck: number;
     latency: number;
@@ -1115,6 +1122,11 @@ declare namespace Eris {
     terminate(): void;
   }
 
+  class BrowserWebSocketError extends Error {
+    event: Event;
+    constructor(message: string, event: Event);
+  }
+
   export class Call extends Base {
     channel: GroupChannel;
     createdAt: number;
@@ -1533,6 +1545,26 @@ declare namespace Eris {
     unregisterCommand(label: string): void;
     unwatchMessage(id: string, channelID: string): void;
     toString(): string;
+  }
+
+  export class DiscordHTTPError extends Error {
+    code: number;
+    name: "DiscordHTTPError";
+    req: ClientRequest;
+    res: IncomingMessage;
+    response: HTTPResponse;
+    constructor(req: ClientRequest, res: IncomingMessage, response: HTTPResponse, stack: string);
+    flattenErrors(errors: HTTPResponse, keyPrefix?: string): string[];
+  }
+
+  export class DiscordRESTError extends Error {
+    code: number;
+    name: string;
+    req: ClientRequest;
+    res: IncomingMessage;
+    response: HTTPResponse;
+    constructor(req: ClientRequest, res: IncomingMessage, response: HTTPResponse, stack: string);
+    flattenErrors(errors: HTTPResponse, keyPrefix?: string): string[];
   }
 
   export class ExtendedUser extends User {
@@ -2160,26 +2192,3 @@ declare namespace Eris {
 }
 
 export = Eris;
-
-// (╯°□°）╯︵ ┻━┻
-/** A file-like object of immutable, raw data. Blobs represent data that isn't necessarily in a JavaScript-native format. The File interface is based on Blob, inheriting blob functionality and expanding it to support files on the user's system. */
-interface Blob {
-  readonly size: number;
-  readonly type: string;
-  arrayBuffer(): Promise<ArrayBuffer>;
-  slice(start?: number, end?: number, contentType?: string): Blob;
-  stream(): ReadableStream;
-  text(): Promise<string>;
-}
-
-declare let Blob: {
-  prototype: Blob;
-  new(blobParts?: BlobPart[], options?: BlobPropertyBag): Blob;
-};
-type BlobPart = BufferSource | Blob | string;
-type BufferSource = ArrayBufferView | ArrayBuffer;
-interface BlobPropertyBag {
-  endings?: EndingType;
-  type?: string;
-}
-type EndingType = "native" | "transparent";
