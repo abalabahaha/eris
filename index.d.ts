@@ -759,8 +759,8 @@ declare namespace Eris {
     frameSize?: number;
     inlineVolume?: boolean;
     inputArgs?: string[];
-    voiceDataTimeout?: number;
     sampleRate?: number;
+    voiceDataTimeout?: number;
   }
   interface VoiceStreamCurrent {
     options: VoiceResourceOptions;
@@ -1488,9 +1488,9 @@ declare namespace Eris {
     filter(func: (i: T) => boolean): T[];
     find(func: (i: T) => boolean): T | undefined;
     map<R>(func: (i: T) => R): R[];
-    random(): T;
+    random(): T | undefined;
     reduce<U>(func: (accumulator: U, val: T) => U, initialValue?: U): U;
-    remove(obj: T | { id: string }): T;
+    remove(obj: T | { id: string }): T | null;
     some(func: (i: T) => boolean): boolean;
     update(obj: T, extra?: any, replace?: boolean): T;
   }
