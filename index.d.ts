@@ -2,9 +2,10 @@
 /// <reference lib="dom" />
 
 import { EventEmitter } from "events";
-import { Readable as ReadableStream } from "stream";
+import { Readable as ReadableStream, Stream } from "stream";
 import { Agent as HTTPSAgent } from "https";
 import { IncomingMessage, ClientRequest } from "http";
+import OpusScript = require("opusscript"); // Thanks TypeScript
 
 declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
 
@@ -52,6 +53,8 @@ declare namespace Eris {
   type BotActivityType = 0 | 1 | 2 | 3;
   type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
   type Status = "online" | "idle" | "dnd" | "offline";
+
+  type ConverterCommand = "./ffmpeg" | "./avconv" | "ffmpeg" | "avconv";
 
 
   interface JSONCache {
@@ -742,6 +745,13 @@ declare namespace Eris {
     permissions?: number;
   }
 
+  interface VoiceConnectData {
+    channel_id: string;
+    endpoint: string;
+    session_id: string;
+    token: string;
+    user_id: string;
+  }
   interface VoiceResourceOptions {
     encoderArgs?: string[];
     format?: string;
@@ -1178,7 +1188,7 @@ declare namespace Eris {
     userGuildSettings: { [s: string]: GuildSettings };
     users: Collection<User>;
     userSettings: UserSettings;
-    voiceConnections: Collection<VoiceConnection>;
+    voiceConnections: VoiceConnectionManager;
     constructor(token: string, options?: ClientOptions);
     acceptInvite(inviteID: string): Promise<Invite & InviteWithoutMetadata<null>>;
     addGroupRecipient(groupID: string, userID: string): Promise<void>;
@@ -1886,7 +1896,7 @@ declare namespace Eris {
     purge(limit: number, filter?: (message: Message<NewsChannel>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
   }
 
-  export class Permission {
+  export class Permission extends Base {
     allow: number;
     deny: number;
     json: { [s: string]: boolean };
@@ -1898,6 +1908,24 @@ declare namespace Eris {
     id: string;
     type: PermissionType;
     constructor(data: Overwrite);
+  }
+
+  export class Piper extends EventEmitter {
+    converterCommand: ConverterCommand;
+    dataPacketCount: number;
+    encoding: boolean;
+    libopus: boolean;
+    opus: OpusScript | null;
+    opusFactory: () => OpusScript;
+    volumeLevel: number;
+    constructor(converterCommand: string, opusFactory: OpusScript);
+    addDataPacket(packet: any): void;
+    encode(source: string | Stream, options: VoiceResourceOptions): boolean;
+    getDataPacket(): Buffer;
+    setVolume(volume: number): void;
+    stop(e: Error, source: NodeJS.WritableStream): void; // Is this correct? There are too many options this could be
+    reset(): void;
+    resetPackets(): void;
   }
 
   export class PrivateChannel extends Channel implements Textable {
@@ -1929,7 +1957,7 @@ declare namespace Eris {
     unsendMessage(messageID: string): Promise<void>;
   }
 
-  export class Relationship implements Presence {
+  export class Relationship extends Base implements Presence {
     activities?: Activity[];
     clientStatus?: ClientStatus;
     game: Activity | null;
@@ -2040,14 +2068,21 @@ declare namespace Eris {
   }
 
   export class SharedStream extends EventEmitter {
+    bitrate: number;
+    channels: number;
     current?: VoiceStreamCurrent;
     ended: boolean;
+    frameDuration: number;
+    piper: Piper;
     playing: boolean;
+    samplingRate: number;
     speaking: boolean;
+    voiceConnections: Collection<VoiceConnection>
     volume: number;
     add(connection: VoiceConnection): void;
-    play(resource: ReadableStream | string, options: VoiceResourceOptions): void;
+    play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
     remove(connection: VoiceConnection): void;
+    setSpeaking(value: boolean): void;
     setVolume(volume: number): void;
     stopPlaying(): void;
   }
@@ -2148,10 +2183,16 @@ declare namespace Eris {
     ready: boolean;
     volume: number;
     constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean });
+    connect(data: VoiceConnectData): NodeJS.Timeout | void;
+    disconnect(error?: Error, reconnecting?: boolean): void;
+    heartbeat(): void;
     pause(): void;
     play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
-    receive(type: string): VoiceDataStream;
+    receive(type: "opus" | "pcm"): VoiceDataStream;
+    registerReceiveEventHandler(): void;
     resume(): void;
+    sendWS(op: number, data: any): void;
+    setSpeaking(value: boolean): void;
     setVolume(volume: number): void;
     stopPlaying(): void;
     switchChannel(channelID: string): void;
@@ -2160,7 +2201,7 @@ declare namespace Eris {
     toJSON(props?: string[]): JSONCache;
   }
 
-  export class VoiceConnectionManager<T extends VoiceConnection> extends Collection<T> implements SimpleJSON {
+  export class VoiceConnectionManager<T extends VoiceConnection = VoiceConnection> extends Collection<T> implements SimpleJSON {
     constructor(vcObject: new () => T);
     join(guildID: string, channelID: string, options: VoiceResourceOptions): Promise<VoiceConnection>;
     leave(guildID: string): void;
