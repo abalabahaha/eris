@@ -1105,8 +1105,8 @@ declare namespace Eris {
     id: string;
     constructor(id: string);
     inspect(): this;
-    toJSON(props?: string[]): JSONCache;
     toString(): string;
+    toJSON(props?: string[]): JSONCache;
   }
 
   export class Bucket {
@@ -1533,8 +1533,8 @@ declare namespace Eris {
     registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
     registerSubcommandAlias(alias: string, label: string): void;
     unregisterSubcommand(label: string): void;
-    toJSON(props?: string[]): JSONCache;
     toString(): string;
+    toJSON(props?: string[]): JSONCache;
   }
 
   export class CommandClient extends Client {

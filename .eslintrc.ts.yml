@@ -24,3 +24,28 @@ rules:
     - 2
     - always
   semi: 0
+  sort-class-members/sort-class-members:
+    - 2
+    - order:
+      - "[alphabetical-static-properties]"
+      - "[properties]"
+      - constructor
+      - "[alphabetical-static-methods]"
+      - "[alphabetical-methods]"
+      - 'on'
+      - "[everything-else]"
+      - toString
+      - toJSON
+      groups:
+        alphabetical-static-properties:
+        - type: property
+          static: true
+          sort: alphabetical
+          name: /^(?:(?:[A-Z]+)?[a-z0-9])(?:[a-zA-Z0-9]?)+$/
+        alphabetical-static-methods:
+        - type: method
+          static: true
+          sort: alphabetical
+        events:
+        - type: property
+          name: /on/
