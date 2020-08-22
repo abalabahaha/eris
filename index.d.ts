@@ -762,6 +762,10 @@ declare namespace Eris {
     sampleRate?: number;
     voiceDataTimeout?: number;
   }
+  interface VoiceServerUpdateData extends Omit<VoiceConnectData, "channel_id"> {
+    guild_id: string;
+    shard: Shard;
+  }
   interface VoiceStreamCurrent {
     options: VoiceResourceOptions;
     pausedTime?: number;
@@ -799,7 +803,7 @@ declare namespace Eris {
   // TODO: Does this have more stuff?
   interface BaseData {
     id: string;
-    [key: string]: {};
+    [key: string]: unknown;
   }
   interface OAuthApplicationInfo {
     bot_public: boolean;
@@ -1116,7 +1120,8 @@ declare namespace Eris {
     tokenLimit: number;
     tokens: number;
     constructor(tokenLimit: number, interval: number, options: { latencyRef: { latency: number }; reservedTokens: number });
-    queue(func: Function, priority?: boolean): void;
+    check(): void;
+    queue(func: () => void, priority?: boolean): void;
   }
 
   export class BrowserWebSocket extends EventEmitter {
@@ -1163,7 +1168,7 @@ declare namespace Eris {
     mention: string;
     type: ChannelTypes;
     constructor(data: BaseData);
-    static from(data: object, client: Client): AnyChannel;
+    static from(data: BaseData, client: Client): AnyChannel;
   }
 
   export class Client extends EventEmitter {
@@ -1490,7 +1495,7 @@ declare namespace Eris {
     baseObject: new (...args: any[]) => T;
     limit?: number;
     constructor(baseObject: new (...args: any[]) => T, limit?: number);
-    add(obj: T, extra?: any, replace?: boolean): T;
+    add(obj: T, extra?: unknown, replace?: boolean): T;
     every(func: (i: T) => boolean): boolean;
     filter(func: (i: T) => boolean): T[];
     find(func: (i: T) => boolean): T | undefined;
@@ -1499,7 +1504,7 @@ declare namespace Eris {
     reduce<U>(func: (accumulator: U, val: T) => U, initialValue?: U): U;
     remove(obj: T | { id: string }): T | null;
     some(func: (i: T) => boolean): boolean;
-    update(obj: T, extra?: any, replace?: boolean): T;
+    update(obj: T, extra?: unknown, replace?: boolean): T;
   }
 
   export class Command implements CommandOptions, SimpleJSON {
@@ -1803,7 +1808,7 @@ declare namespace Eris {
   export class Invite extends Base {
     channel: InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel>;
     code: string;
-    // @ts-expect-error
+    // @ts-expect-error: Property is only not null when invite metadata is supplied
     createdAt: number | null;
     guild?: Guild;
     inviter?: User;
@@ -1935,14 +1940,13 @@ declare namespace Eris {
     opusFactory: () => OpusScript;
     volumeLevel: number;
     constructor(converterCommand: string, opusFactory: OpusScript);
-    addDataPacket(packet: any): void;
+    addDataPacket(packet: unknown): void;
     encode(source: string | Stream, options: VoiceResourceOptions): boolean;
     getDataPacket(): Buffer;
-    // Is this correct? There are too many options this could be
     reset(): void;
     resetPackets(): void;
     setVolume(volume: number): void;
-    stop(e: Error, source: NodeJS.WritableStream): void;
+    stop(e: Error, source: NodeJS.WritableStream): void; // Is this correct? There are too many options this could be
   }
 
   export class PrivateChannel extends Channel implements Textable {
@@ -1996,7 +2000,7 @@ declare namespace Eris {
     userAgent: string;
     constructor(client: Client, forceQueueing?: boolean);
     globalUnblock(): void;
-    request(method: RequestMethod, url: string, auth?: boolean, body?: { [s: string]: any }, file?: MessageFile, _route?: string, short?: boolean): Promise<object>;
+    request(method: RequestMethod, url: string, auth?: boolean, body?: { [s: string]: any }, file?: MessageFile, _route?: string, short?: boolean): Promise<Record<string, unknown>>;
     routefy(url: string, method: RequestMethod): string;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
@@ -2029,7 +2033,7 @@ declare namespace Eris {
     reset: number;
     constructor(limit: number, latencyRef?: LatencyRef);
     check(override?: boolean): void;
-    queue(func: Function, short?: boolean): void;
+    queue(func: (cb: () => void) => void, short?: boolean): void;
   }
 
   export class Shard extends EventEmitter implements SimpleJSON {
@@ -2051,7 +2055,7 @@ declare namespace Eris {
     editAFK(afk: boolean): void;
     editStatus(status?: Status, game?: ActivityPartial<BotActivityType>): void;
     editStatus(game?: ActivityPartial<BotActivityType>): void;
-    // @ts-expect-error
+    // @ts-expect-error: Method override
     emit(event: string, ...args: any[]): void;
     getGuildMembers(guildID: string, timeout: number): void;
     hardReset(): void;
@@ -2065,7 +2069,7 @@ declare namespace Eris {
     restartGuildCreateTimeout(): void;
     resume(): void;
     sendStatusUpdate(): void;
-    sendWS(op: number, _data: object, priority?: boolean): void;
+    sendWS(op: number, _data: Record<string, unknown>, priority?: boolean): void;
     syncGuild(guildID: string): void;
     wsEvent(packet: Required<RawPacket>): void;
     on: ShardEvents<this>;
@@ -2209,7 +2213,7 @@ declare namespace Eris {
     receive(type: "opus" | "pcm"): VoiceDataStream;
     registerReceiveEventHandler(): void;
     resume(): void;
-    sendWS(op: number, data: any): void;
+    sendWS(op: number, data: Record<string, unknown>): void;
     setSpeaking(value: boolean): void;
     setVolume(volume: number): void;
     stopPlaying(): void;
@@ -2224,7 +2228,7 @@ declare namespace Eris {
     join(guildID: string, channelID: string, options: VoiceResourceOptions): Promise<VoiceConnection>;
     leave(guildID: string): void;
     switch(guildID: string, channelID: string): void;
-    voiceServerUpdate(data: any): void; // I'll figure this out one day
+    voiceServerUpdate(data: VoiceServerUpdateData): void;
     toJSON(props?: string[]): JSONCache;
   }
 
