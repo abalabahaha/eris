@@ -27,8 +27,9 @@ rules:
   sort-class-members/sort-class-members:
     - 2
     - order:
+      - "[screaming-snake-case-static-properties]"
       - "[alphabetical-static-properties]"
-      - "[properties]"
+      - "[alphabetical-properties]"
       - constructor
       - "[alphabetical-static-methods]"
       - "[alphabetical-methods]"
@@ -37,15 +38,23 @@ rules:
       - toString
       - toJSON
       groups:
+        screaming-snake-case-static-properties:
+        - name: "/^[A-Z_0-9]+$/"
+        - type: property
+          sort: none
+          static: true
         alphabetical-static-properties:
         - type: property
-          static: true
           sort: alphabetical
-          name: /^(?:(?:[A-Z]+)?[a-z0-9])(?:[a-zA-Z0-9]?)+$/
+          static: true
         alphabetical-static-methods:
         - type: method
-          static: true
           sort: alphabetical
-        events:
+          static: true
+        alphabetical-methods:
+        - type: method
+          sort: alphabetical
+        alphabetical-properties:
         - type: property
-          name: /on/
+          sort: alphabetical
+          static: false
