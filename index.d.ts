@@ -864,6 +864,7 @@ declare namespace Eris {
       INTEGRATION_CREATE: 80;
       INTEGRATION_UPDATE: 81;
       INTEGRATION_DELETE: 82;
+      [key: string] : number;
     };
     ChannelTypes: {
       GUILD_TEXT: 0;
@@ -873,6 +874,7 @@ declare namespace Eris {
       GUILD_CATEGORY: 4;
       GUILD_NEWS: 5;
       GUILD_STORE: 6;
+      [key: string] : number;
     };
     GATEWAY_VERSION: 6;
     GatewayOPCodes: {
@@ -890,11 +892,13 @@ declare namespace Eris {
       HEARTBEAT_ACK: 11;
       SYNC_GUILD: 12;
       SYNC_CALL: 13;
+      [key: string] : number;
     };
     ImageFormats: ["jpg", "jpeg", "png", "webp", "gif"];
     ImageSizeBoundaries: {
       MAXIMUM: 4096;
       MINIMUM: 16;
+      [key: string] : number;
     };
     Intents: {
       guilds: 1;
@@ -912,12 +916,14 @@ declare namespace Eris {
       directMessages: 4096;
       directMessageReactions: 8192;
       directMessageTyping: 16384;
+      [key: string] : number;
     };
     MessageActivityTypes: {
       JOIN: 1;
       SPECTATE: 2;
       LISTEN: 3;
       JOIN_REQUEST: 5;
+      [key: string] : number;
     };
     MessageFlags: {
       CROSSPOSTED: 0;
@@ -925,6 +931,7 @@ declare namespace Eris {
       SUPPRESS_EMBEDS: 4;
       SOURCE_MESSAGE_DELETED: 8;
       URGENT: 16;
+      [key: string] : number;
     };
     MessageTypes: {
       DEFAULT: 0;
@@ -945,6 +952,7 @@ declare namespace Eris {
       GUILD_DISCOVERY_REQUALIFIED: 15;
       GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING: 16;
       GUILD_DISCOVERY_GRACE_PERIOD_FINAL_WARNING: 17;
+      [key: string] : number;
     };
     Permissions: {
       createInstantInvite: 1;
@@ -982,6 +990,7 @@ declare namespace Eris {
       allGuild: 2080899263;
       allText: 805829714;
       allVoice: 871367441;
+      [key: string] : number;
     };
     REST_VERSION: 7;
     SystemJoinMessages: [
@@ -1014,6 +1023,7 @@ declare namespace Eris {
       BUG_HUNTER_LEVEL_2: 16384;
       VERIFIED_BOT: 65536;
       VERIFIED_BOT_DEVELOPER: 131072;
+      [key: string] : number;
     };
     VoiceOPCodes: {
       IDENTIFY: 0;
@@ -1027,6 +1037,7 @@ declare namespace Eris {
       HELLO: 8;
       RESUMED: 9;
       DISCONNECT: 13;
+      [key: string] : number;
     };
   }
 
