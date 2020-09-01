@@ -911,10 +911,10 @@ declare namespace Eris {
 
   interface ClientEvents<T> extends EventListeners<T> {
     (
-      event: "shardDisconnect" | "error" | "shardPreReady" | "connect",
+      event: "shardDisconnect" | "error" | "shardPreReady",
       listener: (err: Error, id: number) => void
     ): T;
-    (event: "shardReady" | "shardResume", listener: (id: number) => void): T;
+    (event: "shardReady" | "shardResume" | "connect", listener: (id: number) => void): T;
   }
 
   interface ShardEvents<T> extends EventListeners<T> {
