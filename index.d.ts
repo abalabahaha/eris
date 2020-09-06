@@ -1469,7 +1469,7 @@ declare namespace Eris {
     >;
     getSelfSettings(): Promise<UserSettings>;
     getUserProfile(userID: string): Promise<UserProfile>;
-    getVoiceRegions(guildID: string): Promise<VoiceRegion[]>;
+    getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
     joinVoiceChannel(channelID: string, options?: { opusOnly?: boolean; shared?: boolean }): Promise<VoiceConnection>;
     kickGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
