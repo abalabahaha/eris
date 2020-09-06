@@ -28,6 +28,8 @@ declare namespace Eris {
   type AnyChannel = AnyGuildChannel | PrivateChannel;
   type AnyGuildChannel = GuildTextableChannel | VoiceChannel | CategoryChannel | StoreChannel;
 
+  type PermissionType = "role" | "member";
+
   interface CreateInviteOptions {
     maxAge?: number;
     maxUses?: number;
@@ -1814,7 +1816,7 @@ declare namespace Eris {
     crosspost(): Promise<Message<T>>;
   }
 
-  export class Permission {
+  export class Permission extends Base {
     allow: number;
     deny: number;
     json: { [s: string]: boolean };
@@ -1824,16 +1826,15 @@ declare namespace Eris {
 
   interface Overwrite {
     id: string;
-    type: "role" | "member";
+    type: PermissionType;
     allow: number;
     deny: number;
   }
 
   export class PermissionOverwrite extends Permission {
     id: string;
-    createdAt: number;
-    type: string;
-    constructor(data: { allow: number; deny: number });
+    type: PermissionType;
+    constructor(data: Overwrite);
   }
 
   export class PrivateChannel extends Channel implements Textable {
