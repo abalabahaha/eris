@@ -58,10 +58,10 @@ declare namespace Eris {
 
 
   interface JSONCache {
-    [s: string]: any;
+    [s: string]: unknown;
   }
   interface NestedJSON {
-    toJSON(arg?: any, cache?: (string | any)[]): JSONCache;
+    toJSON(arg?: unknown, cache?: (string | unknown)[]): JSONCache;
   }
   interface SimpleJSON {
     toJSON(props?: string[]): JSONCache;
@@ -75,7 +75,8 @@ declare namespace Eris {
     maxAge?: number;
     maxUses?: number;
     temporary?: boolean;
-    unique?: boolean; }
+    unique?: boolean;
+  }
   interface CreateChannelOptions {
     bitrate?: number;
     nsfw?: boolean;
@@ -174,7 +175,7 @@ declare namespace Eris {
     reconnectDelay?: ReconnectDelayFunction;
     restMode?: boolean;
     seedVoiceConnections?: boolean;
-    ws?: any;
+    ws?: unknown;
   }
   interface CommandClientOptions {
     argsSplitter?: (str: string) => string[];
@@ -376,7 +377,7 @@ declare namespace Eris {
     content: string;
     editedTimestamp?: number;
     embeds: Embed[];
-    mentionedBy?: any;
+    mentionedBy?: unknown;
     mentions: string[];
     pinned: boolean;
     roleMentions: string[];
@@ -509,7 +510,7 @@ declare namespace Eris {
     timeOffsets: number[];
   }
   interface RawPacket {
-    d?: any;
+    d?: unknown;
     op: number;
     s?: number;
     t?: string;
@@ -645,7 +646,7 @@ declare namespace Eris {
   }
   interface RequestGuildMembersReturn {
     members: Member[];
-    res: (value?: any) => void;
+    res: (value?: unknown) => void;
     received: number;
     timeout: NodeJS.Timeout;
   }
@@ -1048,7 +1049,7 @@ declare namespace Eris {
   interface Connection {
     friend_sync: boolean;
     id: string;
-    integrations: any[]; // TODO ????
+    integrations: unknown[]; // TODO ????
     name: string;
     revoked: boolean;
     type: string;
@@ -1745,14 +1746,14 @@ declare namespace Eris {
 
   export class GuildAuditLogEntry extends Base {
     actionType: number;
-    after: { [key: string]: any } | null;
-    before: { [key: string]: any } | null;
+    after: { [key: string]: unknown } | null;
+    before: { [key: string]: unknown } | null;
     channel?: AnyGuildChannel;
     count?: number;
     deleteMemberDays?: number;
     guild: Guild;
     id: string;
-    member?: Member | any;
+    member?: Member | unknown;
     membersRemoved?: number;
     reason: string | null;
     role?: Role | { id: string; name: string };
@@ -1901,7 +1902,7 @@ declare namespace Eris {
     messageReference: MessageReference | null;
     pinned: boolean;
     prefix?: string;
-    reactions: { [s: string]: any; count: number; me: boolean };
+    reactions: { [s: string]: unknown; count: number; me: boolean };
     roleMentions: string[];
     timestamp: number;
     tts: boolean;
@@ -2028,7 +2029,7 @@ declare namespace Eris {
     userAgent: string;
     constructor(client: Client, forceQueueing?: boolean);
     globalUnblock(): void;
-    request(method: RequestMethod, url: string, auth?: boolean, body?: { [s: string]: any }, file?: MessageFile, _route?: string, short?: boolean): Promise<Record<string, unknown>>;
+    request(method: RequestMethod, url: string, auth?: boolean, body?: { [s: string]: unknown }, file?: MessageFile, _route?: string, short?: boolean): Promise<Record<string, unknown>>;
     routefy(url: string, method: RequestMethod): string;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
