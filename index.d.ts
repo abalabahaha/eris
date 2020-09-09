@@ -1,6 +1,3 @@
-// Needed for BrowserWebSocket
-/// <reference lib="dom" />
-
 import { EventEmitter } from "events";
 import { Readable as ReadableStream, Stream } from "stream";
 import { Agent as HTTPSAgent } from "https";
@@ -1149,12 +1146,15 @@ declare namespace Eris {
     constructor(url: string);
     close(code?: number, reason?: string): void;
     removeEventListener(event: string | symbol, listener: (...args: any[]) => void): this;
+    // @ts-ignore: DOM
     send(data: string | ArrayBufferLike | Blob | ArrayBufferView): void;
     terminate(): void;
   }
 
   export class BrowserWebSocketError extends Error {
+    // @ts-ignore: DOM
     event: Event;
+    // @ts-ignore: DOM
     constructor(message: string, event: Event);
   }
 
