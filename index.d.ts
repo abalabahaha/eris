@@ -7,11 +7,11 @@ import OpusScript = require("opusscript"); // Thanks TypeScript
 declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
 
 declare namespace Eris {
-  // TODO good hacktoberfest PR: implement ShardManager, RequestHandler and other stuff
-
   export const Constants: Constants;
   export const VERSION: string;
 
+  // TYPES
+  // Channel
   type AnyChannel = AnyGuildChannel | PrivateChannel;
   type AnyGuildChannel = GuildTextableChannel | VoiceChannel | CategoryChannel | StoreChannel;
   type ChannelTypes = Constants["ChannelTypes"][keyof Constants["ChannelTypes"]];
@@ -19,6 +19,7 @@ declare namespace Eris {
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel>;
   type TextableChannel = (GuildTextable & GuildTextableChannel) | (Textable & PrivateChannel);
 
+  // Command
   type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
   type CommandGeneratorFunction = (msg: Message, args: string[]) => GeneratorFunctionReturn;
   type GeneratorFunctionReturn = Promise<MessageContent> | Promise<void> | MessageContent | void;
@@ -27,12 +28,15 @@ declare namespace Eris {
   type ReactionButtonsGeneratorFunction = (msg: Message, args: string[], userID: string) => GeneratorFunctionReturn;
   type ReactionButtonsGenerator = ReactionButtonsGeneratorFunction | MessageContent | MessageContent[] | ReactionButtonsGeneratorFunction[];
 
+  // Gateway/REST
   type IntentStrings = keyof Constants["Intents"];
   type ReconnectDelayFunction = (lastDelay: number, attempts: number) => number;
   type RequestMethod = "GET" | "PATCH" | "DELETE" | "POST" | "PUT";
 
+  // Guild
   type PossiblyUncachedGuild = Guild | { id: string };
 
+  // Message
   type AdvancedMessageContent = {
     allowedMentions?: AllowedMentions;
     content?: string;
@@ -44,16 +48,21 @@ declare namespace Eris {
   type MessageContent = string | AdvancedMessageContent;
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild: { id: string } }; guildID: string; id: string };
 
+  // Permission
   type PermissionType = "role" | "member";
 
+  // Presence/Relationship
   type ActivityType = BotActivityType | 4;
   type BotActivityType = 0 | 1 | 2 | 3;
   type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
   type Status = "online" | "idle" | "dnd" | "offline";
 
+  // Voice
   type ConverterCommand = "./ffmpeg" | "./avconv" | "ffmpeg" | "avconv";
 
 
+  // INTERFACES
+  // Internals
   interface JSONCache {
     [s: string]: unknown;
   }
@@ -64,6 +73,7 @@ declare namespace Eris {
     toJSON(props?: string[]): JSONCache;
   }
 
+  // Channel
   interface ChannelFollow {
     channel_id: string;
     webhook_id: string;
@@ -145,6 +155,7 @@ declare namespace Eris {
     guildID: string;
   }
 
+  // Client
   interface ClientOptions {
     agent?: HTTPSAgent;
     allowedMentions?: AllowedMentions;
@@ -186,6 +197,7 @@ declare namespace Eris {
     prefix?: string | string[];
   }
 
+  // Command
   interface CommandCooldownExclusions {
     channelIDs?: string[];
     guildIDs?: string[];
@@ -240,6 +252,7 @@ declare namespace Eris {
     preCommand?: (msg: Message, args: string[]) => void;
   }
 
+  // Embed
   // Omit<T, K> used to override
   interface Embed extends Omit<EmbedOptions, "footer" | "image" | "thumbnail" | "author"> {
     author?: EmbedAuthor;
@@ -300,6 +313,7 @@ declare namespace Eris {
     width?: number;
   }
 
+  // Emoji
   interface Emoji extends EmojiBase {
     animated: boolean;
     id: string;
@@ -322,10 +336,7 @@ declare namespace Eris {
     animated?: boolean;
   }
 
-  interface MemberPartial {
-    id: string;
-    user: User;
-  }
+  // Events
   interface OldCall {
     endedTimestamp?: number;
     participants: string[];
@@ -494,6 +505,7 @@ declare namespace Eris {
     (event: "userDisconnect", listener: (userID: string) => void): T;
   }
 
+  // Gateway/REST
   interface HTTPResponse {
     message: string;
     code: number;
@@ -523,6 +535,7 @@ declare namespace Eris {
     url: string;
   }
 
+  // Guild
   interface CreateGuildOptions {
     afkChannelID?: string;
     afkTimeout?: number;
@@ -583,6 +596,7 @@ declare namespace Eris {
     vip: boolean;
   }
 
+  // Invite
   interface CreateInviteOptions {
     maxAge?: number;
     maxUses?: number;
@@ -623,6 +637,7 @@ declare namespace Eris {
     type: Exclude<ChannelTypes, 1>;
   }
 
+  // Member
   interface FetchMembersOptions {
     limit?: number;
     presences?: boolean;
@@ -637,6 +652,10 @@ declare namespace Eris {
     nick?: string;
     roles?: string[];
   }
+  interface MemberPartial {
+    id: string;
+    user: User;
+  }
   interface RequestGuildMembersOptions extends Omit<FetchMembersOptions, "userIDs"> {
     user_ids?: string[];
     nonce: string;
@@ -648,6 +667,7 @@ declare namespace Eris {
     timeout: NodeJS.Timer;
   }
 
+  // Message
   interface ActiveMessages {
     args: string[];
     command: Command;
@@ -686,6 +706,7 @@ declare namespace Eris {
     messageID: string;
   }
 
+  // Presence
   interface Activity extends ActivityPartial<ActivityType> {
     application_id?: string;
     assets?: {
@@ -724,6 +745,7 @@ declare namespace Eris {
     status?: Status;
   }
 
+  // Role
   interface Overwrite {
     allow: number;
     deny: number;
@@ -747,6 +769,7 @@ declare namespace Eris {
     permissions?: number;
   }
 
+  // Voice
   interface VoiceConnectData {
     channel_id: string;
     endpoint: string;
@@ -776,6 +799,7 @@ declare namespace Eris {
     startTime: number;
   }
 
+  // Webhook
   interface Webhook {
     avatar?: string;
     channel_id: string;
@@ -1043,6 +1067,7 @@ declare namespace Eris {
     };
   }
 
+  // Selfbot
   interface Connection {
     friend_sync: boolean;
     id: string;
