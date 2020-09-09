@@ -645,13 +645,13 @@ declare namespace Eris {
     members: Member[];
     res: (value?: unknown) => void;
     received: number;
-    timeout: NodeJS.Timeout;
+    timeout: NodeJS.Timer;
   }
 
   interface ActiveMessages {
     args: string[];
     command: Command;
-    timeout: NodeJS.Timeout;
+    timeout: NodeJS.Timer;
   }
   interface AllowedMentions {
     everyone?: boolean;
@@ -2107,7 +2107,7 @@ declare namespace Eris {
 
   export class ShardManager extends Collection<Shard> implements SimpleJSON {
     connectQueue: Shard[];
-    connectTimeout: NodeJS.Timeout | null;
+    connectTimeout: NodeJS.Timer | null;
     lastConnect: number;
     constructor(client: Client);
     connect(shard: Shard): void;
@@ -2238,7 +2238,7 @@ declare namespace Eris {
     ready: boolean;
     volume: number;
     constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean });
-    connect(data: VoiceConnectData): NodeJS.Timeout | void;
+    connect(data: VoiceConnectData): NodeJS.Timer | void;
     disconnect(error?: Error, reconnecting?: boolean): void;
     heartbeat(): void;
     pause(): void;
