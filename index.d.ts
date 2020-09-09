@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { Readable as ReadableStream, Stream } from "stream";
+import { Duplex, Readable as ReadableStream, Stream } from "stream";
 import { Agent as HTTPSAgent } from "https";
 import { IncomingMessage, ClientRequest } from "http";
 import OpusScript = require("opusscript"); // Thanks TypeScript
@@ -1971,7 +1971,7 @@ declare namespace Eris {
     reset(): void;
     resetPackets(): void;
     setVolume(volume: number): void;
-    stop(e: Error, source: NodeJS.WritableStream): void; // Is this correct? There are too many options this could be
+    stop(e: Error, source: Duplex): void;
   }
 
   export class PrivateChannel extends Channel implements Textable {
