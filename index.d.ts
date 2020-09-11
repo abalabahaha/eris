@@ -814,6 +814,11 @@ declare namespace Eris {
       username: string;
     };
   }
+  interface WebhookOptions {
+    avatar?: string;
+    channelID?: string;
+    name?: string;
+  }
   interface WebhookPayload {
     allowedMentions?: AllowedMentions;
     auth?: boolean;
@@ -1403,7 +1408,7 @@ declare namespace Eris {
     editUserNote(userID: string, note: string): Promise<void>;
     editWebhook(
       webhookID: string,
-      options: { name?: string; avatar?: string },
+      options: WebhookOptions,
       token?: string,
       reason?: string
     ): Promise<Webhook>;
