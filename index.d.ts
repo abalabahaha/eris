@@ -2030,6 +2030,8 @@ declare namespace Eris {
 
   export class CommandClient extends Client {
     commands: { [s: string]: Command };
+    commandAliases: { [s: string]: string };
+    guildPrefixes: { [s: string]: string | string[] };
     constructor(token: string, options?: ClientOptions, commandOptions?: CommandClientOptions);
     onMessageCreate(msg: Message): void;
     registerGuildPrefix(guildID: string, prefix: string[] | string): void;
