@@ -547,6 +547,31 @@ declare namespace Eris {
     systemChannelID: string;
     verificationLevel?: number;
   }
+  interface DiscoveryCategory {
+    id: number;
+    name: {
+      default: string;
+      localizations?: { [lang: string]: string };
+    };
+    is_primary: boolean;
+  }
+  interface DiscoveryMetadata {
+    guild_id: string;
+    primary_category_id: number;
+    keywords: string[] | null;
+    emoji_discoverability_enabled: boolean;
+    category_ids: number[];
+  }
+  interface DiscoveryOptions {
+    primaryCategoryID?: string;
+    keywords?: string[];
+    emojiDiscoverabilityEnabled?: boolean;
+    reason?: string;
+  }
+  interface DiscoverySubcategoryResponse {
+    guild_id: string;
+    category_id: number;
+  }
   interface GetPruneOptions {
     days?: number;
     includeRoles?: string[];
@@ -1256,6 +1281,7 @@ declare namespace Eris {
     constructor(token: string, options?: ClientOptions);
     acceptInvite(inviteID: string): Promise<Invite & InviteWithoutMetadata<null>>;
     addGroupRecipient(groupID: string, userID: string): Promise<void>;
+    addGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(channelID: string, messageID: string, reaction: string, userID: string): Promise<void>;
@@ -1369,6 +1395,7 @@ declare namespace Eris {
     deleteChannel(channelID: string, reason?: string): Promise<void>;
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
     deleteGuild(guildID: string): Promise<void>;
+    deleteGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<void>;
     deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
     deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     deleteInvite(inviteID: string, reason?: string): Promise<void>;
@@ -1397,6 +1424,7 @@ declare namespace Eris {
     ): Promise<void>;
     editChannelPosition(channelID: string, position: number): Promise<void>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
+    editGuildDiscovery(guildID: string, options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editGuildEmoji(
       guildID: string,
       emojiID: string,
@@ -1438,11 +1466,13 @@ declare namespace Eris {
     getChannel(channelID: string): AnyChannel;
     getChannelInvites(channelID: string): Promise<(Invite & InviteWithMetadata)[]>;
     getChannelWebhooks(channelID: string): Promise<Webhook[]>;
+    getDiscoveryCategories(): Promise<DiscoveryCategory[]>;
     getDMChannel(userID: string): Promise<PrivateChannel>;
     getGateway(): Promise<{ url: string }>;
     getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number): Promise<GuildAuditLog>;
     getGuildBan(guildID: string, userID: string): Promise<{ reason?: string; user: User }>;
     getGuildBans(guildID: string): Promise<{ reason?: string; user: User }[]>;
+    getGuildDiscovery(guildID: string): Promise<DiscoveryMetadata>;
     /** @deprecated */
     getGuildEmbed(guildID: string): Promise<Widget>;
     getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
@@ -1549,6 +1579,7 @@ declare namespace Eris {
     syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     unpinMessage(channelID: string, messageID: string): Promise<void>;
+    validateDiscoverySearchTerm(term: string): Promise<{ valid: boolean }>;
     on: ClientEvents<this>;
     toString(): string;
   }
@@ -1671,17 +1702,49 @@ declare namespace Eris {
     removeRecipient(userID: string): Promise<void>;
   }
 
+  interface DiscoveryMetadata {
+    guild_id: string;
+    primary_category_id: number;
+    keywords: string[] | null;
+    emoji_discoverability_enabled: boolean;
+    category_ids: number[];
+  }
+
+  interface DiscoveryOptions {
+    primaryCategoryID?: string;
+    keywords?: string[];
+    emojiDiscoverabilityEnabled?: boolean;
+    reason?: string;
+  }
+
+  interface DiscoveryCategory {
+    id: number;
+    name: {
+      default: string;
+      localizations?: { [lang: string]: string };
+    };
+    is_primary: boolean;
+  }
+
+  interface DiscoverySubcategoryResponse {
+    guild_id: string;
+    category_id: number;
+  }
+
   export class Guild extends Base {
     afkChannelID: string | null;
     afkTimeout: number;
+    applicationID: string | null;
     approximateMemberCount?: number;
     approximatePresenceCount?: number;
+    autoRemoved?: boolean;
     banner: string | null;
     bannerURL: string | null;
     channels: Collection<AnyGuildChannel>;
     createdAt: number;
     defaultNotifications: number;
     description: string | null;
+    emojiCount?: number;
     emojis: Emoji[];
     explicitContentFilter: number;
     features: string[];
@@ -1701,6 +1764,8 @@ declare namespace Eris {
     preferredLocale: string;
     premiumSubscriptionCount?: number;
     premiumTier: number;
+    primaryCategory?: DiscoveryCategory;
+    primaryCategoryID?: number;
     publicUpdatesChannelID: string;
     region: string;
     roles: Collection<Role>;
@@ -1716,6 +1781,7 @@ declare namespace Eris {
     widgetChannelID?: string | null;
     widgetEnabled?: boolean | null;
     constructor(data: BaseData, client: Client);
+    addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     banMember(userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     createChannel(name: string): Promise<TextChannel>;
@@ -1740,6 +1806,7 @@ declare namespace Eris {
     createEmoji(options: { image: string; name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     createRole(options: RoleOptions | Role, reason?: string): Promise<Role>;
     delete(): Promise<void>;
+    deleteDiscoverySubcategory(categoryID: string, reason?: string): Promise<void>;
     deleteEmoji(emojiID: string, reason?: string): Promise<void>;
     deleteIntegration(integrationID: string): Promise<void>;
     deleteRole(roleID: string): Promise<void>;
@@ -1748,6 +1815,7 @@ declare namespace Eris {
     dynamicIconURL(format?: ImageFormat, size?: number): string;
     dynamicSplashURL(format?: ImageFormat, size?: number): string;
     edit(options: GuildOptions, reason?: string): Promise<Guild>;
+    editDiscovery(options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<void>;
@@ -1759,6 +1827,7 @@ declare namespace Eris {
     getAuditLogs(limit?: number, before?: string, actionType?: number): Promise<GuildAuditLog>;
     getBan(userID: string): Promise<{ reason?: string; user: User }>;
     getBans(): Promise<{ reason?: string; user: User }[]>;
+    getDiscovery(): Promise<DiscoveryMetadata>; 
     /** @deprecated */
     getEmbed(): Promise<Widget>;
     getIntegrations(): Promise<GuildIntegration>;
