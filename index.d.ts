@@ -1987,7 +1987,7 @@ declare namespace Eris {
     allow: number;
     deny: number;
     json: { [s: string]: boolean };
-    constructor(allow: number, deny: number);
+    constructor(allow: number | string, deny: number | string);
     has(permission: string): boolean;
   }
 
