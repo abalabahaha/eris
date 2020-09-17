@@ -837,6 +837,7 @@ declare namespace Eris {
     route: string;
     short: boolean;
     resp: IncomingMessage;
+    latency: number;
   }
 
   interface EventListeners<T> {
