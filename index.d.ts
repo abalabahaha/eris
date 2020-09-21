@@ -58,7 +58,7 @@ declare namespace Eris {
       before?: string,
       after?: string
     ): Promise<User[]>;
-    addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
+    addMessageReaction(messageID: string, reaction: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
@@ -1102,7 +1102,7 @@ declare namespace Eris {
       before?: string,
       after?: string
     ): Promise<User[]>;
-    addMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
+    addMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
     removeMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactions(channelID: string, messageID: string): Promise<void>;
     removeMessageReactionEmoji(channelID: string, messageID: string, reaction: string): Promise<void>;
@@ -1594,7 +1594,7 @@ declare namespace Eris {
       before?: string,
       after?: string
     ): Promise<User[]>;
-    addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
+    addMessageReaction(messageID: string, reaction: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
     removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
@@ -1806,7 +1806,7 @@ declare namespace Eris {
     pin(): Promise<void>;
     unpin(): Promise<void>;
     getReaction(reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
-    addReaction(reaction: string, userID?: string): Promise<void>;
+    addReaction(reaction: string): Promise<void>;
     removeReaction(reaction: string, userID?: string): Promise<void>;
     removeReactions(): Promise<void>;
     removeMessageReactionEmoji(reaction: string): Promise<void>;
@@ -1859,7 +1859,7 @@ declare namespace Eris {
       before?: string,
       after?: string
     ): Promise<User[]>;
-    addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
+    addMessageReaction(messageID: string, reaction: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
