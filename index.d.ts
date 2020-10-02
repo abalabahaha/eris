@@ -920,7 +920,7 @@ declare namespace Eris {
       GUILD_STORE: 6;
       [key: string]: number;
     };
-    GATEWAY_VERSION: 6;
+    GATEWAY_VERSION: 8;
     GatewayOPCodes: {
       EVENT: 0;
       HEARTBEAT: 1;
@@ -1036,7 +1036,7 @@ declare namespace Eris {
       allVoice: 871367441;
       [key: string]: number;
     };
-    REST_VERSION: 7;
+    REST_VERSION: 8;
     SystemJoinMessages: [
       "%user% joined the party.",
       "%user% is here.",
