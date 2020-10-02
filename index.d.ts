@@ -1367,7 +1367,7 @@ declare namespace Eris {
     deleteUserNote(userID: string): Promise<void>;
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
     disableSelfMFATOTP(code: string): Promise<{ token: string }>;
-    options: { reconnect: boolean }): void;
+    disconnect(options: { reconnect?: boolean | "auto" }): void;
     editAFK(afk: boolean): void;
     editChannel(
       channelID: string,
