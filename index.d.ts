@@ -1968,7 +1968,7 @@ declare namespace Eris {
     presence: Presence;
     constructor(id: number, client: Client);
     connect(): void;
-    disconnect(options?: { reconnect: boolean }): void;
+    disconnect(options?: { reconnect: boolean | "auto" }): void;
     editAFK(afk: boolean): void;
     editStatus(status?: Status, game?: ActivityPartial<BotActivityType>): void;
     on: ShardEvents<this>;
