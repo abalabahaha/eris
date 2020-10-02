@@ -1367,7 +1367,7 @@ declare namespace Eris {
     deleteUserNote(userID: string): Promise<void>;
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
     disableSelfMFATOTP(code: string): Promise<{ token: string }>;
-    disconnect(options: { reconnect: boolean }): void;
+    options: { reconnect: boolean }): void;
     editAFK(afk: boolean): void;
     editChannel(
       channelID: string,
@@ -2110,7 +2110,7 @@ declare namespace Eris {
     checkReady(): void;
     connect(): void;
     createGuild(_guild: Guild): Guild;
-    disconnect(options?: { reconnect: boolean }, error?: Error): void;
+    disconnect(options?: { reconnect?: boolean | "auto" }, error?: Error): void;
     editAFK(afk: boolean): void;
     editStatus(status?: Status, game?: ActivityPartial<BotActivityType>): void;
     editStatus(game?: ActivityPartial<BotActivityType>): void;
