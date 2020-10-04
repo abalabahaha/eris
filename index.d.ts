@@ -374,7 +374,7 @@ declare namespace Eris {
     parentID?: string;
     permissionOverwrites: Collection<PermissionOverwrite>;
     rateLimitPerUser?: number;
-    position: string;
+    position: number;
     topic?: string;
     type: Exclude<ChannelTypes, 1 | 3>;
     userLimit?: number;
