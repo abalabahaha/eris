@@ -320,7 +320,7 @@ declare namespace Eris {
     managed: boolean;
     require_colons: boolean;
     roles: string[];
-    user: { avatar: string; discriminator: string; id: string; name: string };
+    user: PartialUser;
   }
   interface EmojiBase {
     icon?: string;
@@ -471,7 +471,7 @@ declare namespace Eris {
     (event: "typingStart", listener: (channel: TextableChannel | { id: string }, user: User | { id: string }) => void): T;
     (
       event: "userUpdate",
-      listener: (user: User, oldUser: { username: string; discriminator: string; avatar?: string } | null) => void
+      listener: (user: User, oldUser: PartialUser | null) => void
     ): T;
     (event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): T;
     (event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): T;
@@ -637,7 +637,7 @@ declare namespace Eris {
     type: Exclude<ChannelTypes, 1>;
   }
 
-  // Member
+  // Member/User
   interface FetchMembersOptions {
     limit?: number;
     presences?: boolean;
@@ -655,6 +655,12 @@ declare namespace Eris {
   interface MemberPartial {
     id: string;
     user: User;
+  }
+  interface PartialUser {
+    avatar: string | null;
+    discriminator: string;
+    id: string;
+    username: string;
   }
   interface RequestGuildMembersOptions extends Omit<FetchMembersOptions, "userIDs"> {
     user_ids?: string[];
@@ -807,12 +813,7 @@ declare namespace Eris {
     id: string;
     name: string;
     token: string;
-    user: {
-      avatar?: string;
-      discriminator: string;
-      id: string;
-      username: string;
-    };
+    user: PartialUser;
   }
   interface WebhookOptions {
     avatar?: string;
@@ -849,6 +850,19 @@ declare namespace Eris {
       id: string;
       username: string;
     };
+    team: OAuthTeamInfo | null;
+  }
+  interface OAuthTeamInfo {
+    icon: string | null;
+    id: string;
+    members: OAuthTeamMember;
+    owner_user_id: string;
+  }
+  interface OAuthTeamMember {
+    membership_state: number;
+    permissions: string[];
+    team_id: string;
+    user: PartialUser;
   }
   interface Constants {
     AuditLogActions: {
@@ -895,7 +909,7 @@ declare namespace Eris {
       INTEGRATION_CREATE: 80;
       INTEGRATION_UPDATE: 81;
       INTEGRATION_DELETE: 82;
-      [key: string] : number;
+      [key: string]: number;
     };
     ChannelTypes: {
       GUILD_TEXT: 0;
@@ -905,7 +919,7 @@ declare namespace Eris {
       GUILD_CATEGORY: 4;
       GUILD_NEWS: 5;
       GUILD_STORE: 6;
-      [key: string] : number;
+      [key: string]: number;
     };
     GATEWAY_VERSION: 6;
     GatewayOPCodes: {
@@ -923,13 +937,13 @@ declare namespace Eris {
       HEARTBEAT_ACK: 11;
       SYNC_GUILD: 12;
       SYNC_CALL: 13;
-      [key: string] : number;
+      [key: string]: number;
     };
     ImageFormats: ["jpg", "jpeg", "png", "webp", "gif"];
     ImageSizeBoundaries: {
       MAXIMUM: 4096;
       MINIMUM: 16;
-      [key: string] : number;
+      [key: string]: number;
     };
     Intents: {
       guilds: 1;
@@ -947,14 +961,14 @@ declare namespace Eris {
       directMessages: 4096;
       directMessageReactions: 8192;
       directMessageTyping: 16384;
-      [key: string] : number;
+      [key: string]: number;
     };
     MessageActivityTypes: {
       JOIN: 1;
       SPECTATE: 2;
       LISTEN: 3;
       JOIN_REQUEST: 5;
-      [key: string] : number;
+      [key: string]: number;
     };
     MessageFlags: {
       CROSSPOSTED: 0;
@@ -962,7 +976,7 @@ declare namespace Eris {
       SUPPRESS_EMBEDS: 4;
       SOURCE_MESSAGE_DELETED: 8;
       URGENT: 16;
-      [key: string] : number;
+      [key: string]: number;
     };
     MessageTypes: {
       DEFAULT: 0;
@@ -983,7 +997,7 @@ declare namespace Eris {
       GUILD_DISCOVERY_REQUALIFIED: 15;
       GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING: 16;
       GUILD_DISCOVERY_GRACE_PERIOD_FINAL_WARNING: 17;
-      [key: string] : number;
+      [key: string]: number;
     };
     Permissions: {
       createInstantInvite: 1;
@@ -1021,7 +1035,7 @@ declare namespace Eris {
       allGuild: 2080899263;
       allText: 805829714;
       allVoice: 871367441;
-      [key: string] : number;
+      [key: string]: number;
     };
     REST_VERSION: 7;
     SystemJoinMessages: [
@@ -1054,7 +1068,7 @@ declare namespace Eris {
       BUG_HUNTER_LEVEL_2: 16384;
       VERIFIED_BOT: 65536;
       VERIFIED_BOT_DEVELOPER: 131072;
-      [key: string] : number;
+      [key: string]: number;
     };
     VoiceOPCodes: {
       IDENTIFY: 0;
@@ -1068,7 +1082,7 @@ declare namespace Eris {
       HELLO: 8;
       RESUMED: 9;
       DISCONNECT: 13;
-      [key: string] : number;
+      [key: string]: number;
     };
   }
 
@@ -1120,7 +1134,7 @@ declare namespace Eris {
     connected_accounts: { verified: boolean; type: string; id: string; name: string }[];
     mutual_guilds: { nick?: string; id: string }[];
     premium_since?: number;
-    user: { username: string; discriminator: string; flags: number; id: string; avatar?: string };
+    user: PartialUser & { flags: number };
   }
   interface UserSettings {
     afk_timeout: number;
@@ -1496,14 +1510,14 @@ declare namespace Eris {
       regenerate?: boolean
     ): Promise<{ backup_codes: { code: string; consumed: boolean }[] }>;
     getSelfPayments(): Promise<
-    {
-      amount: number;
-      amount_refunded: number;
-      created_at: string; // date
-      currency: string;
-      description: string;
-      status: number;
-    }[]
+      {
+        amount: number;
+        amount_refunded: number;
+        created_at: string; // date
+        currency: string;
+        description: string;
+        status: number;
+      }[]
     >;
     getSelfSettings(): Promise<UserSettings>;
     getUserProfile(userID: string): Promise<UserProfile>;
@@ -1592,7 +1606,7 @@ declare namespace Eris {
     cooldownExclusionCheck(msg: Message): boolean;
     executeCommand(msg: Message, args: string[]): Promise<GeneratorFunctionReturn>;
     permissionCheck(msg: Message): Promise<boolean>;
-    process(args: string[], msg: Message): Promise<void|GeneratorFunctionReturn>;
+    process(args: string[], msg: Message): Promise<void | GeneratorFunctionReturn>;
     registerSubcommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
     registerSubcommandAlias(alias: string, label: string): void;
     unregisterSubcommand(label: string): void;
