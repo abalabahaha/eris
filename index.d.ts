@@ -1508,16 +1508,14 @@ declare namespace Eris {
       password: string,
       regenerate?: boolean
     ): Promise<{ backup_codes: { code: string; consumed: boolean }[] }>;
-    getSelfPayments(): Promise<
-      {
-        amount: number;
-        amount_refunded: number;
-        created_at: string; // date
-        currency: string;
-        description: string;
-        status: number;
-      }[]
-    >;
+    getSelfPayments(): Promise<{
+      amount: number;
+      amount_refunded: number;
+      created_at: string; // date
+      currency: string;
+      description: string;
+      status: number;
+    }[]>;
     getSelfSettings(): Promise<UserSettings>;
     getUserProfile(userID: string): Promise<UserProfile>;
     getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
