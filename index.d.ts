@@ -143,7 +143,6 @@ declare namespace Eris {
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
     getPins(): Promise<Message[]>;
     pinMessage(messageID: string): Promise<void>;
-    /** @deprecated */
     removeMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string): Promise<void>;
     sendTyping(): Promise<void>;
