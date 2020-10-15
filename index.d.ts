@@ -1785,6 +1785,17 @@ declare namespace Eris {
     unban(reason?: string): Promise<void>;
   }
 
+  export interface Sticker {
+    id: string;
+    name: string;
+    description: string;
+    pack_id: string;
+    asset: string;
+    preview_asset?: string;
+    format_type: number;
+    tags: string;
+  }
+
   export class Message<T extends Textable = TextableChannel> extends Base {
     id: string;
     createdAt: number;
@@ -1810,6 +1821,7 @@ declare namespace Eris {
     prefix?: string;
     command?: Command;
     pinned: boolean;
+    stickers: Sticker[];
     constructor(data: BaseData, client: Client);
     edit(content: MessageContent): Promise<Message<T>>;
     pin(): Promise<void>;
