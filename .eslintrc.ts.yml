@@ -1,21 +1,65 @@
+---
 extends:
-  - "./.eslintrc.yml"
-  - "plugin:@typescript-eslint/eslint-recommended"
-  - "plugin:@typescript-eslint/recommended"
+- "./.eslintrc.yml"
+- plugin:@typescript-eslint/eslint-recommended
+- plugin:@typescript-eslint/recommended
 rules:
+  "@typescript-eslint/indent":
+  - 2
+  - 2
+  - SwitchCase: 1
+    ignoreComments: false
   "@typescript-eslint/member-delimiter-style": 2
   "@typescript-eslint/no-explicit-any": 0
   "@typescript-eslint/no-use-before-define":
-    - 2
-    - classes: false
-  indent:
-    - 2
-    - 2
-    - SwitchCase: 1
-      ignoreComments: false
+  - 2
+  - classes: false
+  "@typescript-eslint/semi":
+  - 2
+  - always
+  "@typescript-eslint/ban-ts-comment":
+  - 2
+  - ts-expect-error: allow-with-description
+    ts-ignore: allow-with-description
+  indent: 0
   keyword-spacing:
-    - 2
-    - after: true
+  - 2
+  - after: true
   object-curly-spacing:
-    - 2
-    - always
+  - 2
+  - always
+  semi: 0
+  sort-class-members/sort-class-members:
+  - 2
+  - order:
+    - "[screaming-snake-case-static-properties]"
+    - "[alphabetical-static-properties]"
+    - "[alphabetical-properties]"
+    - constructor
+    - "[alphabetical-static-methods]"
+    - "[alphabetical-methods]"
+    - 'on'
+    - "[everything-else]"
+    - toString
+    - toJSON
+    groups:
+      screaming-snake-case-static-properties:
+      - name: "/^[A-Z_0-9]+$/"
+      - type: property
+        sort: none
+        static: true
+      alphabetical-static-properties:
+      - type: property
+        sort: alphabetical
+        static: true
+      alphabetical-static-methods:
+      - type: method
+        sort: alphabetical
+        static: true
+      alphabetical-methods:
+      - type: method
+        sort: alphabetical
+      alphabetical-properties:
+      - type: property
+        sort: alphabetical
+        static: false
