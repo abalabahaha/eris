@@ -103,7 +103,7 @@ declare namespace Eris {
     lastPinTimestamp: number | null;
     rateLimitPerUser: number;
     topic: string | null;
-    createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
+    createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     getWebhooks(): Promise<Webhook[]>;
     purge(limit: number, filter?: (message: Message<GuildTextable>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
@@ -1357,7 +1357,7 @@ declare namespace Eris {
     ): Promise<Invite & InviteWithoutMetadata<null>>;
     createChannelWebhook(
       channelID: string,
-      options: { name: string; avatar: string },
+      options: { name: string; avatar?: string | null },
       reason?: string
     ): Promise<Webhook>;
     createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
@@ -2196,7 +2196,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite & InviteWithoutMetadata<null, TextChannel>>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<TextChannel>>;
-    createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
+    createWebhook(options: { name: string; avatar?: string | null}, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
