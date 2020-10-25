@@ -16,7 +16,7 @@ declare namespace Eris {
   type AnyGuildChannel = GuildTextableChannel | VoiceChannel | CategoryChannel | StoreChannel;
   type ChannelTypes = Constants["ChannelTypes"][keyof Constants["ChannelTypes"]];
   type GuildTextableChannel = TextChannel | NewsChannel;
-  type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel> | GroupChannel;
+  type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel>;
   type TextableChannel = (GuildTextable & GuildTextableChannel) | (Textable & PrivateChannel);
 
   // Command
@@ -1847,7 +1847,7 @@ declare namespace Eris {
 
   // If CT (count) is null, it is an invite with metadata, if boolean, it is an invite without metadata
   export class Invite<CT extends boolean | null, CH extends InviteChannel = InviteChannel> extends Base {
-    channel: CT extends null ? Exclude<InviteChannel, GroupChannel> : CH;
+    channel: CH;
     code: string;
     // @ts-ignore: Property is only not null when invite metadata is supplied
     createdAt: CT extends null ? number : null;
