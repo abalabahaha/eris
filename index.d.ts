@@ -444,7 +444,7 @@ declare namespace Eris {
     (event: "guildUnavailable" | "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): T;
     (event: "guildUpdate", listener: (guild: Guild, oldGuild: OldGuild) => void): T;
     (event: "hello", listener: (trace: string[], id: number) => void): T;
-    (event: "inviteCreate" | "inviteDelete", listener: (guild: Guild, invite: Invite<null>) => void): T;
+    (event: "inviteCreate" | "inviteDelete", listener: (guild: Guild, invite: Invite) => void): T;
     (event: "messageCreate", listener: (message: Message) => void): T;
     (event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): T;
     (event: "messageReactionRemoveEmoji", listener: (message: PossiblyUncachedMessage, emoji: PartialEmoji) => void): T;
@@ -603,8 +603,8 @@ declare namespace Eris {
     unique?: boolean;
   }
   interface Invitable {
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<null>>;
-    getInvites(): Promise<(Invite<null>)[]>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
+    getInvites(): Promise<(Invite)[]>;
   }
   interface InvitePartialChannel {
     icon?: string | null;
@@ -1232,7 +1232,7 @@ declare namespace Eris {
     userSettings: UserSettings;
     voiceConnections: VoiceConnectionManager;
     constructor(token: string, options?: ClientOptions);
-    acceptInvite(inviteID: string): Promise<Invite<false>>;
+    acceptInvite(inviteID: string): Promise<Invite<"withoutCount">>;
     addGroupRecipient(groupID: string, userID: string): Promise<void>;
     addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
     /** @deprecated */
@@ -1332,7 +1332,7 @@ declare namespace Eris {
       channelID: string,
       options?: CreateChannelInviteOptions,
       reason?: string
-    ): Promise<Invite<false>>;
+    ): Promise<Invite<"withoutCount">>;
     createChannelWebhook(
       channelID: string,
       options: { name: string; avatar: string },
@@ -1414,7 +1414,7 @@ declare namespace Eris {
     followChannel(channelID: string, webhookChannelID: string): Promise<ChannelFollow>;
     getBotGateway(): Promise<{ session_start_limit: { remaining: number; reset_after: number; total: number }; shards: number; url: string }>; // max_concurrency: number; in session_start_limit?
     getChannel(channelID: string): AnyChannel;
-    getChannelInvites(channelID: string): Promise<(Invite<null>)[]>;
+    getChannelInvites(channelID: string): Promise<(Invite)[]>;
     getChannelWebhooks(channelID: string): Promise<Webhook[]>;
     getDMChannel(userID: string): Promise<PrivateChannel>;
     getGateway(): Promise<{ url: string }>;
@@ -1424,13 +1424,13 @@ declare namespace Eris {
     /** @deprecated */
     getGuildEmbed(guildID: string): Promise<Widget>;
     getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
-    getGuildInvites(guildID: string): Promise<(Invite<null>)[]>;
+    getGuildInvites(guildID: string): Promise<(Invite)[]>;
     getGuildPreview(guildID: string): Promise<GuildPreview>;
     getGuildVanity(guildID: string): Promise<{ code?: string; uses?: number }>;
     getGuildWebhooks(guildID: string): Promise<Webhook[]>;
     getGuildWidget(guildID: string): Promise<Widget>;
-    getInvite(inviteID: string, withCounts?: false): Promise<Invite<false>>;
-    getInvite(inviteID: string, withCounts: true): Promise<Invite<true>>;
+    getInvite(inviteID: string, withCounts?: false): Promise<Invite<"withoutCount">>;
+    getInvite(inviteID: string, withCounts: true): Promise<Invite<"withCount">>;
     getMessage(channelID: string, messageID: string): Promise<Message>;
     getMessageReaction(
       channelID: string,
@@ -1740,7 +1740,7 @@ declare namespace Eris {
     /** @deprecated */
     getEmbed(): Promise<Widget>;
     getIntegrations(): Promise<GuildIntegration>;
-    getInvites(): Promise<(Invite<null>)[]>;
+    getInvites(): Promise<(Invite)[]>;
     getPruneCount(options?: GetPruneOptions): Promise<number>;
     getRESTChannels(): Promise<AnyGuildChannel[]>;
     getRESTEmoji(emojiID: string): Promise<Emoji>;
@@ -1776,7 +1776,7 @@ declare namespace Eris {
     membersRemoved?: number;
     reason: string | null;
     role?: Role | { id: string; name: string };
-    target?: Guild | AnyGuildChannel | Member | Role | Invite<null> | Emoji | Message | null;
+    target?: Guild | AnyGuildChannel | Member | Role | Invite | Emoji | Message | null;
     targetID: string;
     user: User;
     constructor(data: BaseData, guild: Guild);
@@ -1802,7 +1802,7 @@ declare namespace Eris {
       reason?: string
     ): Promise<PermissionOverwrite>;
     editPosition(position: number): Promise<void>;
-    getInvites(): Promise<(Invite<null>)[]>;
+    getInvites(): Promise<(Invite)[]>;
     permissionsOf(memberID: string | Member): Permission;
   }
 
@@ -1845,13 +1845,13 @@ declare namespace Eris {
     dynamicSplashURL(format?: ImageFormat, size?: number): string;
   }
 
-  // If CT (count) is null, it is an invite with metadata, if boolean, it is an invite without metadata
-  export class Invite<CT extends boolean | null, CH extends InviteChannel = InviteChannel> extends Base {
+  // If CT (count) is "withMetadata", it will not have count properties
+  export class Invite<CT extends "withMetadata" | "withCount" | "withoutCount" = "withMetadata", CH extends InviteChannel = InviteChannel> extends Base {
     channel: CH;
     code: string;
     // @ts-ignore: Property is only not null when invite metadata is supplied
-    createdAt: CT extends null ? number : null;
-    guild: CT extends null
+    createdAt: CT extends "withMetadata" ? number : null;
+    guild: CT extends "withMetadata"
       ? Guild // Invite with Metadata always has guild prop
       : CH extends Extract<InviteChannel, GroupChannel> // Invite without Metadata
         ? never // If the channel is GroupChannel, there is no guild
@@ -1859,12 +1859,12 @@ declare namespace Eris {
           ? Guild // If the invite channel is not partial
           : Guild | undefined; // If the invite channel is partial
     inviter?: User;
-    maxAge: CT extends null ? number : null;
-    maxUses: CT extends null ? number : null;
-    memberCount: CT extends null | false ? null : number;
-    presenceCount: CT extends null | false ? null : number;
-    temporary: CT extends null ? boolean : null;
-    uses: CT extends null ? number : null;
+    maxAge: CT extends "withMetadata" ? number : null;
+    maxUses: CT extends "withMetadata" ? number : null;
+    memberCount: CT extends "withMetadata" | "withoutCount" ? null : number;
+    presenceCount: CT extends "withMetadata" | "withoutCount" ? null : number;
+    temporary: CT extends "withMetadata" ? boolean : null;
+    uses: CT extends "withMetadata" ? number : null;
     constructor(data: BaseData, client: Client);
     delete(reason?: string): Promise<void>;
   }
@@ -1956,12 +1956,12 @@ declare namespace Eris {
     messages: Collection<Message<NewsChannel>>;
     rateLimitPerUser: 0;
     type: 5;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<null, NewsChannel>>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", NewsChannel>>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<NewsChannel>>;
     crosspostMessage(messageID: string): Promise<Message<NewsChannel>>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<NewsChannel>>;
     follow(webhookChannelID: string): Promise<ChannelFollow>;
-    getInvites(): Promise<(Invite<null, NewsChannel>)[]>;
+    getInvites(): Promise<(Invite<"withMetadata", NewsChannel>)[]>;
     getMessage(messageID: string): Promise<Message<NewsChannel>>;
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<NewsChannel>[]>;
     getPins(): Promise<Message<NewsChannel>[]>;
@@ -2179,14 +2179,14 @@ declare namespace Eris {
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<null, TextChannel>>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", TextChannel>>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<TextChannel>>;
     createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<TextChannel>>;
-    getInvites(): Promise<(Invite<null, TextChannel>)[]>;
+    getInvites(): Promise<(Invite<"withMetadata", TextChannel>)[]>;
     getMessage(messageID: string): Promise<Message<TextChannel>>;
     getMessageReaction(
       messageID: string,
@@ -2248,8 +2248,8 @@ declare namespace Eris {
     type: 2;
     userLimit?: number;
     voiceMembers: Collection<Member>;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<null, VoiceChannel>>;
-    getInvites(): Promise<(Invite<null, VoiceChannel>)[]>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", VoiceChannel>>;
+    getInvites(): Promise<(Invite<"withMetadata", VoiceChannel>)[]>;
     join(options: { opusOnly?: boolean; shared?: boolean }): Promise<VoiceConnection>;
     leave(): void;
   }
