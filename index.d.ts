@@ -1849,7 +1849,7 @@ declare namespace Eris {
   export class Invite<CT extends boolean | null, CH extends InviteChannel = InviteChannel> extends Base {
     channel: CT extends null ? Exclude<InviteChannel, GroupChannel> : CH;
     code: string;
-    // @ts-expect-error: Property is only not null when invite metadata is supplied
+    // @ts-ignore: Property is only not null when invite metadata is supplied
     createdAt: CT extends null ? number : null;
     guild: CT extends null
       ? Guild // Invite with Metadata always has guild prop
