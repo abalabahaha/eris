@@ -814,6 +814,7 @@ declare namespace Eris {
     token: string;
     user: PartialUser;
   }
+  interface MessageWebhookContent extends Pick<WebhookPayload, "content" | "embeds"> {}
   interface WebhookOptions {
     avatar?: string;
     channelID?: string;
@@ -1549,6 +1550,12 @@ declare namespace Eris {
     syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     unpinMessage(channelID: string, messageID: string): Promise<void>;
+    webhookDeleteMessage(webhookID: string, token: string, messageID: string): Promise<void>;
+    webhookEditMessage(
+      webhookID: string,
+      token: string,
+      options: MessageWebhookContent
+    ): Promise<Message<GuildTextableChannel>>;
     on: ClientEvents<this>;
     toString(): string;
   }
@@ -1964,6 +1971,8 @@ declare namespace Eris {
     removeReactionEmoji(reaction: string): Promise<void>;
     removeReactions(): Promise<void>;
     unpin(): Promise<void>;
+    webhookDelete(token: string): Promise<void>;
+    webhookEdit(token: string, options: MessageWebhookContent): Promise<Message<T>>;
   }
 
   // News channel rate limit is always 0
