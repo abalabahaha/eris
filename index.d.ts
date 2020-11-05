@@ -1945,6 +1945,7 @@ declare namespace Eris {
     prefix?: string;
     reactions: { [s: string]: unknown; count: number; me: boolean };
     roleMentions: string[];
+    stickers: Sticker[];
     timestamp: number;
     tts: boolean;
     type: number;
@@ -2176,6 +2177,17 @@ declare namespace Eris {
     setSpeaking(value: boolean): void;
     setVolume(volume: number): void;
     stopPlaying(): void;
+  }
+
+  export interface Sticker {
+    id: string;
+    name: string;
+    description: string;
+    pack_id: string;
+    asset: string;
+    preview_asset?: string;
+    format_type: number;
+    tags: string;
   }
 
   export class StoreChannel extends GuildChannel {
