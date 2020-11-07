@@ -1846,7 +1846,7 @@ declare namespace Eris {
   export class Invite<CT extends "withMetadata" | "withCount" | "withoutCount" = "withMetadata", CH extends InviteChannel = InviteChannel> extends Base {
     channel: CH;
     code: string;
-    // @ts-ignore: Property is only not null when invite metadata is supplied
+    // @ts-expect-error: Property is only not null when invite metadata is supplied
     createdAt: CT extends "withMetadata" ? number : null;
     guild: CT extends "withMetadata"
       ? Guild // Invite with Metadata always has guild prop
