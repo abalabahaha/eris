@@ -363,6 +363,7 @@ declare namespace Eris {
     region: string;
     rulesChannelID?: string;
     splash?: string;
+    systemChannelFlags: 0 | 1 | 2;
     systemChannelID?: string;
     verificationLevel: 0 | 1 | 2 | 3 | 4;
   }
@@ -574,6 +575,7 @@ declare namespace Eris {
     region?: string;
     rulesChannelID?: string;
     splash?: string;
+    systemChannelFlags: 0 | 1 | 2;
     systemChannelID?: string;
     verificationLevel?: number;
   }
@@ -1708,6 +1710,7 @@ declare namespace Eris {
     shard: Shard;
     splash: string | null;
     splashURL: string | null;
+    systemChannelFlags: 0 | 1 | 2;
     systemChannelID: string | null;
     unavailable: boolean;
     vanityURL: string | null;
