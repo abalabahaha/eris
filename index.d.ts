@@ -1004,7 +1004,7 @@ declare namespace Eris {
       GUILD_DISCOVERY_REQUALIFIED: 15;
       GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING: 16;
       GUILD_DISCOVERY_GRACE_PERIOD_FINAL_WARNING: 17;
-      INLINE_REPLY: 19;
+      REPLY: 19;
       [key: string]: number;
     };
     Permissions: {
