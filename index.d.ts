@@ -1796,9 +1796,10 @@ declare namespace Eris {
     id: string;
     member?: Member | unknown;
     membersRemoved?: number;
+    message?: Message<GuildTextableChannel>;
     reason: string | null;
     role?: Role | { id: string; name: string };
-    target?: Guild | AnyGuildChannel | Member | Role | Invite | Emoji | Message | null;
+    target?: Guild | AnyGuildChannel | Member | Role | Invite | Emoji | Message<GuildTextableChannel> | null;
     targetID: string;
     user: User;
     constructor(data: BaseData, guild: Guild);
