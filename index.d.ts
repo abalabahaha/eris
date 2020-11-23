@@ -1711,7 +1711,6 @@ declare namespace Eris {
     discoverySplash: string | null;
     discoverySplashURL: string | null;
     systemChannelID: string | null;
-    systemChannelFlags: number;
     unavailable: boolean;
     vanityURL: string | null;
     verificationLevel: number;
