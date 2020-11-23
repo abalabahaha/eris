@@ -1708,8 +1708,6 @@ declare namespace Eris {
     shard: Shard;
     splash: string | null;
     splashURL: string | null;
-    discoverySplash: string | null;
-    discoverySplashURL: string | null;
     systemChannelID: string | null;
     systemChannelFlags: number;
     unavailable: boolean;
@@ -1750,7 +1748,6 @@ declare namespace Eris {
     dynamicDiscoverySplashURL(format?: ImageFormat, size?: number): string;
     dynamicIconURL(format?: ImageFormat, size?: number): string;
     dynamicSplashURL(format?: ImageFormat, size?: number): string;
-    dynamicDiscoverySplashURL(format?: ImageFormat, size?: number): string;
     edit(options: GuildOptions, reason?: string): Promise<Guild>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
@@ -1858,7 +1855,6 @@ declare namespace Eris {
     approximatePresenceCount: number;
     description: string | null;
     discoverySplash: string | null;
-    discoverySplashURL: string | null;
     emojis: Emoji[];
     features: string[];
     icon: string | null;
@@ -1870,7 +1866,6 @@ declare namespace Eris {
     constructor(data: BaseData, client: Client);
     dynamicIconURL(format?: ImageFormat, size?: number): string;
     dynamicSplashURL(format?: ImageFormat, size?: number): string;
-    dynamicDiscoverySplashURL(format?: ImageFormat, size?: number): string;
   }
 
   export class Invite extends Base {
