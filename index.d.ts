@@ -349,22 +349,30 @@ declare namespace Eris {
     banner?: string;
     defaultNotifications: 0 | 1;
     description?: string;
+    discoverySplash: string | null;
     emojis: (Omit<Emoji, "user" | "icon"> & { available: boolean })[];
     explicitContentFilter: 0 | 1 | 2;
     features: string[];
     icon: string;
     large: boolean;
+    maxMembers: number;
     maxPresences?: number;
+    maxVideoChannelUsers?: number;
     mfaLevel: 0 | 1;
     name: string;
     ownerID: string;
     preferredLocale?: string;
+    premiumTier: number;
+    premiumSubscriptionCount?: number;
     publicUpdatesChannelID?: string;
     region: string;
     rulesChannelID?: string;
     splash?: string;
     systemChannelID?: string;
+    vanityURL: string | null;
     verificationLevel: 0 | 1 | 2 | 3 | 4;
+    widgetEnabled?: boolean | null;
+    widgetChannelID?: boolean | null;
   }
   interface OldGuildChannel {
     bitrate?: number;
