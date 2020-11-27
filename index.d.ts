@@ -42,7 +42,7 @@ declare namespace Eris {
     content?: string;
     embed?: EmbedOptions;
     flags?: number;
-    messageReference?: MessageReferenceReply;
+    messageReferenceID?: string;
     tts?: boolean;
   };
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
@@ -714,9 +714,6 @@ declare namespace Eris {
     channelID?: string;
     guildID?: string;
     messageID?: string;
-  }
-  interface MessageReferenceReply extends MessageReferenceBase {
-    messageID: string;
   }
 
   // Presence
