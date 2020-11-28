@@ -1986,9 +1986,9 @@ declare namespace Eris {
   export class Permission extends Base {
     allow: number;
     deny: number;
-    json: { [s: string]: boolean };
+    json: Record<keyof Constants['Permissions'], boolean>;
     constructor(allow: number, deny: number);
-    has(permission: string): boolean;
+    has(permission: keyof Constants['Permissions']): boolean;
   }
 
   export class PermissionOverwrite extends Permission {
