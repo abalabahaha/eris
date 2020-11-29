@@ -1859,7 +1859,7 @@ declare namespace Eris {
   export class Invite extends Base {
     channel: InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel>;
     code: string;
-    // @ts-expect-error: Property is only not null when invite metadata is supplied
+    // @ts-ignore: Property is only not null when invite metadata is supplied
     createdAt: number | null;
     guild?: Guild;
     inviter?: User;
@@ -2114,7 +2114,7 @@ declare namespace Eris {
     editAFK(afk: boolean): void;
     editStatus(status?: Status, game?: ActivityPartial<BotActivityType>): void;
     editStatus(game?: ActivityPartial<BotActivityType>): void;
-    // @ts-expect-error: Method override
+    // @ts-ignore: Method override
     emit(event: string, ...args: any[]): void;
     getGuildMembers(guildID: string, timeout: number): void;
     hardReset(): void;
