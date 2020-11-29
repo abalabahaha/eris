@@ -603,7 +603,7 @@ declare namespace Eris {
   }
   interface Invitable {
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
-    getInvites(): Promise<(Invite)[]>;
+    getInvites(): Promise<Invite[]>;
   }
   interface InvitePartialChannel {
     icon?: string | null;
@@ -1413,7 +1413,7 @@ declare namespace Eris {
     followChannel(channelID: string, webhookChannelID: string): Promise<ChannelFollow>;
     getBotGateway(): Promise<{ session_start_limit: { remaining: number; reset_after: number; total: number }; shards: number; url: string }>; // max_concurrency: number; in session_start_limit?
     getChannel(channelID: string): AnyChannel;
-    getChannelInvites(channelID: string): Promise<(Invite)[]>;
+    getChannelInvites(channelID: string): Promise<Invite[]>;
     getChannelWebhooks(channelID: string): Promise<Webhook[]>;
     getDMChannel(userID: string): Promise<PrivateChannel>;
     getGateway(): Promise<{ url: string }>;
@@ -1423,7 +1423,7 @@ declare namespace Eris {
     /** @deprecated */
     getGuildEmbed(guildID: string): Promise<Widget>;
     getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
-    getGuildInvites(guildID: string): Promise<(Invite)[]>;
+    getGuildInvites(guildID: string): Promise<Invite[]>;
     getGuildPreview(guildID: string): Promise<GuildPreview>;
     getGuildVanity(guildID: string): Promise<{ code?: string; uses?: number }>;
     getGuildWebhooks(guildID: string): Promise<Webhook[]>;
@@ -1737,7 +1737,7 @@ declare namespace Eris {
     /** @deprecated */
     getEmbed(): Promise<Widget>;
     getIntegrations(): Promise<GuildIntegration>;
-    getInvites(): Promise<(Invite)[]>;
+    getInvites(): Promise<Invite[]>;
     getPruneCount(options?: GetPruneOptions): Promise<number>;
     getRESTChannels(): Promise<AnyGuildChannel[]>;
     getRESTEmoji(emojiID: string): Promise<Emoji>;
@@ -1799,7 +1799,7 @@ declare namespace Eris {
       reason?: string
     ): Promise<PermissionOverwrite>;
     editPosition(position: number): Promise<void>;
-    getInvites(): Promise<(Invite)[]>;
+    getInvites(): Promise<Invite[]>;
     permissionsOf(memberID: string | Member): Permission;
   }
 
