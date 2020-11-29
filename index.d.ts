@@ -1556,7 +1556,7 @@ declare namespace Eris {
     syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     unpinMessage(channelID: string, messageID: string): Promise<void>;
-    webhookDeleteMessage(webhookID: string, token: string, messageID: string): Promise<void>;
+    deleteWebhookMessage(webhookID: string, token: string, messageID: string): Promise<void>;
     on: ClientEvents<this>;
     toString(): string;
   }
@@ -1973,7 +1973,7 @@ declare namespace Eris {
     removeReactionEmoji(reaction: string): Promise<void>;
     removeReactions(): Promise<void>;
     unpin(): Promise<void>;
-    webhookDelete(token: string): Promise<void>;
+    deleteWebhook(token: string): Promise<void>;
   }
 
   // News channel rate limit is always 0
