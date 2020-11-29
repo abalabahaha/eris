@@ -1453,7 +1453,7 @@ declare namespace Eris {
     getChannelWebhooks(channelID: string): Promise<Webhook[]>;
     getDMChannel(userID: string): Promise<PrivateChannel>;
     getGateway(): Promise<{ url: string }>;
-    getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number): Promise<GuildAuditLog>;
+    getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getGuildBan(guildID: string, userID: string): Promise<{ reason?: string; user: User }>;
     getGuildBans(guildID: string): Promise<{ reason?: string; user: User }[]>;
     /** @deprecated */
@@ -1779,7 +1779,7 @@ declare namespace Eris {
     editWidget(options: Widget): Promise<Widget>;
     fetchAllMembers(timeout?: number): Promise<number>;
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
-    getAuditLogs(limit?: number, before?: string, actionType?: number): Promise<GuildAuditLog>;
+    getAuditLogs(limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getBan(userID: string): Promise<{ reason?: string; user: User }>;
     getBans(): Promise<{ reason?: string; user: User }[]>;
     /** @deprecated */
