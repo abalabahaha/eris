@@ -104,7 +104,7 @@ declare namespace Eris {
     lastPinTimestamp: number | null;
     rateLimitPerUser: number;
     topic: string | null;
-    createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
+    createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     getWebhooks(): Promise<Webhook[]>;
     purge(limit: number, filter?: (message: Message<GuildTextable>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
@@ -364,6 +364,7 @@ declare namespace Eris {
     region: string;
     rulesChannelID?: string;
     splash?: string;
+    systemChannelFlags: 0 | 1 | 2;
     systemChannelID?: string;
     verificationLevel: 0 | 1 | 2 | 3 | 4;
   }
@@ -468,7 +469,7 @@ declare namespace Eris {
       event: "relationshipUpdate",
       listener: (relationship: Relationship, oldRelationship: { type: number }) => void
     ): T;
-    (event: "typingStart", listener: (channel: TextableChannel | { id: string }, user: User | { id: string }) => void): T;
+    (event: "typingStart", listener: (channel: TextableChannel | { id: string }, user: User | { id: string }, member: Member | null) => void): T;
     (
       event: "userUpdate",
       listener: (user: User, oldUser: PartialUser | null) => void
@@ -575,6 +576,7 @@ declare namespace Eris {
     region?: string;
     rulesChannelID?: string;
     splash?: string;
+    systemChannelFlags: 0 | 1 | 2;
     systemChannelID?: string;
     verificationLevel?: number;
   }
@@ -913,7 +915,6 @@ declare namespace Eris {
       INTEGRATION_CREATE: 80;
       INTEGRATION_UPDATE: 81;
       INTEGRATION_DELETE: 82;
-      [key: string]: number;
     };
     ChannelTypes: {
       GUILD_TEXT: 0;
@@ -923,7 +924,6 @@ declare namespace Eris {
       GUILD_CATEGORY: 4;
       GUILD_NEWS: 5;
       GUILD_STORE: 6;
-      [key: string]: number;
     };
     GATEWAY_VERSION: 6;
     GatewayOPCodes: {
@@ -941,13 +941,11 @@ declare namespace Eris {
       HEARTBEAT_ACK: 11;
       SYNC_GUILD: 12;
       SYNC_CALL: 13;
-      [key: string]: number;
     };
     ImageFormats: ["jpg", "jpeg", "png", "webp", "gif"];
     ImageSizeBoundaries: {
       MAXIMUM: 4096;
       MINIMUM: 16;
-      [key: string]: number;
     };
     Intents: {
       guilds: 1;
@@ -965,14 +963,12 @@ declare namespace Eris {
       directMessages: 4096;
       directMessageReactions: 8192;
       directMessageTyping: 16384;
-      [key: string]: number;
     };
     MessageActivityTypes: {
       JOIN: 1;
       SPECTATE: 2;
       LISTEN: 3;
       JOIN_REQUEST: 5;
-      [key: string]: number;
     };
     MessageFlags: {
       CROSSPOSTED: 0;
@@ -980,7 +976,6 @@ declare namespace Eris {
       SUPPRESS_EMBEDS: 4;
       SOURCE_MESSAGE_DELETED: 8;
       URGENT: 16;
-      [key: string]: number;
     };
     MessageTypes: {
       DEFAULT: 0;
@@ -1002,7 +997,6 @@ declare namespace Eris {
       GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING: 16;
       GUILD_DISCOVERY_GRACE_PERIOD_FINAL_WARNING: 17;
       REPLY: 19;
-      [key: string]: number;
     };
     Permissions: {
       createInstantInvite: 1;
@@ -1040,7 +1034,6 @@ declare namespace Eris {
       allGuild: 2080899263;
       allText: 805829714;
       allVoice: 871367441;
-      [key: string]: number;
     };
     REST_VERSION: 7;
     SystemJoinMessages: [
@@ -1073,7 +1066,6 @@ declare namespace Eris {
       BUG_HUNTER_LEVEL_2: 16384;
       VERIFIED_BOT: 65536;
       VERIFIED_BOT_DEVELOPER: 131072;
-      [key: string]: number;
     };
     VoiceOPCodes: {
       IDENTIFY: 0;
@@ -1087,7 +1079,6 @@ declare namespace Eris {
       HELLO: 8;
       RESUMED: 9;
       DISCONNECT: 13;
-      [key: string]: number;
     };
   }
 
@@ -1363,7 +1354,7 @@ declare namespace Eris {
     ): Promise<Invite & InviteWithoutMetadata<null>>;
     createChannelWebhook(
       channelID: string,
-      options: { name: string; avatar: string },
+      options: { name: string; avatar?: string | null },
       reason?: string
     ): Promise<Webhook>;
     createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
@@ -1714,6 +1705,7 @@ declare namespace Eris {
     shard: Shard;
     splash: string | null;
     splashURL: string | null;
+    systemChannelFlags: 0 | 1 | 2;
     systemChannelID: string | null;
     unavailable: boolean;
     vanityURL: string | null;
@@ -1876,7 +1868,7 @@ declare namespace Eris {
   export class Invite extends Base {
     channel: InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel>;
     code: string;
-    // @ts-expect-error: Property is only not null when invite metadata is supplied
+    // @ts-ignore: Property is only not null when invite metadata is supplied
     createdAt: number | null;
     guild?: Guild;
     inviter?: User;
@@ -1949,7 +1941,7 @@ declare namespace Eris {
     messageReference: MessageReference | null;
     pinned: boolean;
     prefix?: string;
-    reactions: { [s: string]: unknown; count: number; me: boolean };
+    reactions: { [s: string]: { count: number; me: boolean } };
     referencedMessage?: Message | null;
     roleMentions: string[];
     timestamp: number;
@@ -1994,7 +1986,7 @@ declare namespace Eris {
     allow: number;
     deny: number;
     json: { [s: string]: boolean };
-    constructor(allow: number, deny: number);
+    constructor(allow: number | string, deny: number | string);
     has(permission: string): boolean;
   }
 
@@ -2132,7 +2124,7 @@ declare namespace Eris {
     editAFK(afk: boolean): void;
     editStatus(status?: Status, game?: ActivityPartial<BotActivityType>): void;
     editStatus(game?: ActivityPartial<BotActivityType>): void;
-    // @ts-expect-error: Method override
+    // @ts-ignore: Method override
     emit(event: string, ...args: any[]): void;
     getGuildMembers(guildID: string, timeout: number): void;
     hardReset(): void;
@@ -2203,7 +2195,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite & InviteWithoutMetadata<null, TextChannel>>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<TextChannel>>;
-    createWebhook(options: { name: string; avatar: string }, reason?: string): Promise<Webhook>;
+    createWebhook(options: { name: string; avatar?: string | null}, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
