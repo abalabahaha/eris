@@ -350,23 +350,31 @@ declare namespace Eris {
     banner?: string;
     defaultNotifications: 0 | 1;
     description?: string;
+    discoverySplash: string | null;
     emojis: (Omit<Emoji, "user" | "icon"> & { available: boolean })[];
     explicitContentFilter: 0 | 1 | 2;
     features: string[];
     icon: string;
     large: boolean;
+    maxMembers: number;
     maxPresences?: number;
+    maxVideoChannelUsers?: number;
     mfaLevel: 0 | 1;
     name: string;
     ownerID: string;
     preferredLocale?: string;
+    premiumTier: number;
+    premiumSubscriptionCount?: number;
     publicUpdatesChannelID?: string;
     region: string;
     rulesChannelID?: string;
     splash?: string;
     systemChannelFlags: 0 | 1 | 2;
     systemChannelID?: string;
+    vanityURL: string | null;
     verificationLevel: 0 | 1 | 2 | 3 | 4;
+    widgetEnabled?: boolean | null;
+    widgetChannelID?: boolean | null;
   }
   interface OldGuildChannel {
     bitrate?: number;
@@ -1690,6 +1698,8 @@ declare namespace Eris {
     createdAt: number;
     defaultNotifications: number;
     description: string | null;
+    discoverySplash: string | null;
+    discoverySplashURL: string | null;
     emojis: Emoji[];
     explicitContentFilter: number;
     features: string[];
@@ -1758,6 +1768,7 @@ declare namespace Eris {
     dynamicDiscoverySplashURL(format?: ImageFormat, size?: number): string;
     dynamicIconURL(format?: ImageFormat, size?: number): string;
     dynamicSplashURL(format?: ImageFormat, size?: number): string;
+    dynamicDiscoverySplashURL(format?: ImageFormat, size?: number): string;
     edit(options: GuildOptions, reason?: string): Promise<Guild>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
@@ -1868,6 +1879,7 @@ declare namespace Eris {
     approximatePresenceCount: number;
     description: string | null;
     discoverySplash: string | null;
+    discoverySplashURL: string | null;
     emojis: Emoji[];
     features: string[];
     icon: string | null;
@@ -1879,6 +1891,7 @@ declare namespace Eris {
     constructor(data: BaseData, client: Client);
     dynamicIconURL(format?: ImageFormat, size?: number): string;
     dynamicSplashURL(format?: ImageFormat, size?: number): string;
+    dynamicDiscoverySplashURL(format?: ImageFormat, size?: number): string;
   }
 
   export class GuildTemplate {
