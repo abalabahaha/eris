@@ -1426,6 +1426,12 @@ declare namespace Eris {
       token?: string,
       reason?: string
     ): Promise<Webhook>;
+    editWebhookMessage(
+      webhookID: string,
+      token: string,
+      messageID: string,
+      options: MessageWebhookContent
+    ): Promise<Message<GuildTextableChannel>>;
     enableSelfMFATOTP(
       secret: string,
       code: string
@@ -1551,12 +1557,6 @@ declare namespace Eris {
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     unpinMessage(channelID: string, messageID: string): Promise<void>;
     webhookDeleteMessage(webhookID: string, token: string, messageID: string): Promise<void>;
-    webhookEditMessage(
-      webhookID: string,
-      token: string,
-      messageID: string,
-      options: MessageWebhookContent
-    ): Promise<Message<GuildTextableChannel>>;
     on: ClientEvents<this>;
     toString(): string;
   }
@@ -1964,6 +1964,7 @@ declare namespace Eris {
     crosspost(): T extends NewsChannel ? Promise<Message<NewsChannel>> : never;
     delete(reason?: string): Promise<void>;
     edit(content: MessageContent): Promise<Message<T>>;
+    editWebhook(token: string, options: MessageWebhookContent): Promise<Message<T>>;
     getReaction(reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
     pin(): Promise<void>;
     /** @deprecated */
@@ -1973,7 +1974,6 @@ declare namespace Eris {
     removeReactions(): Promise<void>;
     unpin(): Promise<void>;
     webhookDelete(token: string): Promise<void>;
-    webhookEdit(token: string, options: MessageWebhookContent): Promise<Message<T>>;
   }
 
   // News channel rate limit is always 0
