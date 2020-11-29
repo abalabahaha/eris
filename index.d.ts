@@ -1932,7 +1932,7 @@ declare namespace Eris {
     messageReference: MessageReference | null;
     pinned: boolean;
     prefix?: string;
-    reactions: { [s: string]: unknown; count: number; me: boolean };
+    reactions: { [s: string]: { count: number; me: boolean } };
     roleMentions: string[];
     timestamp: number;
     tts: boolean;
