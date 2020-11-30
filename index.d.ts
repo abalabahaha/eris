@@ -1696,35 +1696,6 @@ declare namespace Eris {
     removeRecipient(userID: string): Promise<void>;
   }
 
-  interface DiscoveryMetadata {
-    guild_id: string;
-    primary_category_id: number;
-    keywords: string[] | null;
-    emoji_discoverability_enabled: boolean;
-    category_ids: number[];
-  }
-
-  interface DiscoveryOptions {
-    primaryCategoryID?: string;
-    keywords?: string[];
-    emojiDiscoverabilityEnabled?: boolean;
-    reason?: string;
-  }
-
-  interface DiscoveryCategory {
-    id: number;
-    name: {
-      default: string;
-      localizations?: { [lang: string]: string };
-    };
-    is_primary: boolean;
-  }
-
-  interface DiscoverySubcategoryResponse {
-    guild_id: string;
-    category_id: number;
-  }
-
   export class Guild extends Base {
     afkChannelID: string | null;
     afkTimeout: number;
