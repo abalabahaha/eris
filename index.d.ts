@@ -352,7 +352,7 @@ declare namespace Eris {
     defaultNotifications: 0 | 1;
     description?: string;
     discoverySplash: string | null;
-    emojis: (Omit<Emoji, "user" | "icon"> & { available: boolean })[];
+    emojis: Omit<Emoji, "user" | "icon">[];
     explicitContentFilter: 0 | 1 | 2;
     features: string[];
     icon: string;
