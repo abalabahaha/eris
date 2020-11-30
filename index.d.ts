@@ -315,6 +315,7 @@ declare namespace Eris {
   // Emoji
   interface Emoji extends EmojiBase {
     animated: boolean;
+    available: boolean;
     id: string;
     managed: boolean;
     require_colons: boolean;
