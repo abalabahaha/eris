@@ -700,7 +700,7 @@ declare namespace Eris {
     everyone?: boolean;
     roles?: boolean | string[];
     users?: boolean | string[];
-    replied_user?: boolean;
+    repliedUser?: boolean;
   }
   interface Attachment {
     filename: string;
