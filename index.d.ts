@@ -1620,7 +1620,7 @@ declare namespace Eris {
     reactionButtonTimeout: number;
     requirements: CommandRequirements;
     restartCooldown: boolean;
-    subcommandAliases: { [alias: string]: Command };
+    subcommandAliases: { [alias: string]: string };
     subcommands: { [s: string]: Command };
     usage: string;
     constructor(label: string, generate: CommandGenerator, options?: CommandOptions);
