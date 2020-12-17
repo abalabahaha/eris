@@ -107,7 +107,7 @@ declare namespace Eris {
     createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     getWebhooks(): Promise<Webhook[]>;
-    purge(limit: number, filter?: (message: Message<GuildTextable>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
+    purge(limit: number, filter?: (message: Message<this>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
     removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
     sendTyping(): Promise<void>;
@@ -126,7 +126,7 @@ declare namespace Eris {
   }
   interface Textable {
     lastMessageID: string;
-    messages: Collection<Message>;
+    messages: Collection<Message<this>>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
@@ -2070,7 +2070,6 @@ declare namespace Eris {
 
   // News channel rate limit is always 0
   export class NewsChannel extends TextChannel {
-    messages: Collection<Message<NewsChannel>>;
     rateLimitPerUser: 0;
     type: 5;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", NewsChannel>>;
@@ -2082,7 +2081,6 @@ declare namespace Eris {
     getMessage(messageID: string): Promise<Message<NewsChannel>>;
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<NewsChannel>[]>;
     getPins(): Promise<Message<NewsChannel>[]>;
-    purge(limit: number, filter?: (message: Message<NewsChannel>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
   }
 
   export class Permission extends Base {
@@ -2119,7 +2117,7 @@ declare namespace Eris {
 
   export class PrivateChannel extends Channel implements Textable {
     lastMessageID: string;
-    messages: Collection<Message<PrivateChannel>>;
+    messages: Collection<Message<this>>;
     recipient: User;
     type: 1 | 3;
     /** @deprecated */
@@ -2288,7 +2286,7 @@ declare namespace Eris {
   export class TextChannel extends GuildChannel implements GuildTextable, Invitable {
     lastMessageID: string;
     lastPinTimestamp: number | null;
-    messages: Collection<Message<TextChannel>>;
+    messages: Collection<Message<this>>;
     rateLimitPerUser: number;
     topic: string | null;
     type: 0 | 5;
@@ -2316,7 +2314,7 @@ declare namespace Eris {
     getPins(): Promise<Message<TextChannel>[]>;
     getWebhooks(): Promise<Webhook[]>;
     pinMessage(messageID: string): Promise<void>;
-    purge(limit: number, filter?: (message: Message<TextChannel>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
+    purge(limit: number, filter?: (message: Message<this>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
     /** @deprecated */
     removeMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string): Promise<void>;
