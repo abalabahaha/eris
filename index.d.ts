@@ -732,6 +732,16 @@ declare namespace Eris {
     guildID?: string;
     messageID?: string;
   }
+  interface Sticker {
+    id: string;
+    pack_id: string;
+    name: string;
+    description: string;
+    tags?: string;
+    asset: string;
+    preview_asset: string;
+    format_type: Constants["StickerFormats"][keyof Constants["StickerFormats"]]
+  }
 
   // Presence
   interface Activity extends ActivityPartial<ActivityType> {
@@ -1051,6 +1061,11 @@ declare namespace Eris {
       allVoice: 871367441;
     };
     REST_VERSION: 7;
+    StickerFormats: {
+      PNG: 1,
+      APNG: 2,
+      LOTTIE: 3
+    }
     SystemJoinMessages: [
       "%user% joined the party.",
       "%user% is here.",
@@ -2049,6 +2064,7 @@ declare namespace Eris {
     reactions: { [s: string]: { count: number; me: boolean } };
     referencedMessage?: Message | null;
     roleMentions: string[];
+    stickers?: Sticker[];
     timestamp: number;
     tts: boolean;
     type: number;
