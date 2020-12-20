@@ -708,6 +708,8 @@ declare namespace Eris {
     proxy_url: string;
     size: number;
     url: string;
+    height?: number;
+    width?: number;
   }
   interface MessageActivity {
     party_id?: string;
