@@ -68,7 +68,7 @@ declare namespace Eris {
   type InteractionType = 1 | 2;
 
   // Permission
-  type PermissionType = "role" | "member";
+  type PermissionType = 0 | 1;
 
   // Presence/Relationship
   type ActivityType = BotActivityType | 4;
@@ -686,6 +686,27 @@ declare namespace Eris {
     users: User[];
     webhooks: Webhook[];
   }
+  interface WidgetChannel {
+    id: string;
+    name: string;
+    position: number;
+  }
+  interface WidgetMember {
+    id: string;
+    username: string;
+    discriminator: string;
+    avatar: null;
+    status: string;
+    avatar_url: string;
+  }
+  interface WidgetData {
+    id: string;
+    name: string;
+    instant_invite: string;
+    channels: WidgetChannel[];
+    members: WidgetMember[];
+    presence_count: number;
+  }
   interface GuildOptions {
     afkChannelID?: string;
     afkTimeout?: number;
@@ -920,7 +941,6 @@ declare namespace Eris {
   interface Presence {
     activities?: Activity[];
     clientStatus?: ClientStatus;
-    game: Activity | null;
     status?: Status;
   }
 
@@ -945,7 +965,7 @@ declare namespace Eris {
     hoist?: boolean;
     mentionable?: boolean;
     name?: string;
-    permissions?: bigint | number;
+    permissions?: bigint | number | Permission;
   }
   interface RoleTags {
     bot_id?: string;
@@ -1107,7 +1127,7 @@ declare namespace Eris {
       GUILD_STORE: 6;
       GUILD_STAGE: 13;
     };
-    GATEWAY_VERSION: 6;
+    GATEWAY_VERSION: 8;
     GatewayOPCodes: {
       EVENT: 0;
       HEARTBEAT: 1;
@@ -1230,7 +1250,7 @@ declare namespace Eris {
       allVoice: 4629464849n;
       all: 8589934591n;
     };
-    REST_VERSION: 7;
+    REST_VERSION: 8;
     StickerFormats: {
       PNG: 1;
       APNG: 2;
@@ -1614,7 +1634,7 @@ declare namespace Eris {
       overwriteID: string,
       allow: bigint | number,
       deny: bigint | number,
-      type: string,
+      type: PermissionType,
       reason?: string
     ): Promise<void>;
     editChannelPosition(channelID: string, position: number, options?: EditChannelPositionOptions): Promise<void>;
@@ -1690,7 +1710,8 @@ declare namespace Eris {
     getGuildVanity(guildID: string): Promise<GuildVanity>;
     getGuildWebhooks(guildID: string): Promise<Webhook[]>;
     getGuildWelcomeScreen(guildID: string): Promise<WelcomeScreen>;
-    getGuildWidget(guildID: string): Promise<Widget>;
+    getGuildWidget(guildID: string): Promise<WidgetData>;
+    getGuildWidgetSettings(guildID: string): Promise<Widget>;
     getInvite(inviteID: string, withCounts?: false): Promise<Invite<"withoutCount">>;
     getInvite(inviteID: string, withCounts: true): Promise<Invite<"withCount">>;
     getMessage(channelID: string, messageID: string): Promise<Message>;
@@ -2040,7 +2061,8 @@ declare namespace Eris {
     getVoiceRegions(): Promise<VoiceRegion[]>;
     getWebhooks(): Promise<Webhook[]>;
     getWelcomeScreen(): Promise<WelcomeScreen>;
-    getWidget(): Promise<Widget>;
+    getWidget(): Promise<WidgetData>;
+    getWidgetSettings(): Promise<Widget>;
     kickMember(userID: string, reason?: string): Promise<void>;
     leave(): Promise<void>;
     leaveVoiceChannel(): void;
