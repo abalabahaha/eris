@@ -1559,7 +1559,6 @@ declare namespace Eris {
     ): Promise<number>;
     removeGroupRecipient(groupID: string, userID: string): Promise<void>;
     removeGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
-    /** @deprecated */
     removeMessageReaction(channelID: string, messageID: string, reaction: string, userID: string): Promise<void>;
     removeMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
     removeMessageReactionEmoji(channelID: string, messageID: string, reaction: string): Promise<void>;
@@ -2319,7 +2318,6 @@ declare namespace Eris {
     getWebhooks(): Promise<Webhook[]>;
     pinMessage(messageID: string): Promise<void>;
     purge(limit: number, filter?: (message: Message<TextChannel>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
-    /** @deprecated */
     removeMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string): Promise<void>;
     removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
