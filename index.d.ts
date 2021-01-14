@@ -1243,16 +1243,21 @@ declare namespace Eris {
   }
 
   export class Client extends EventEmitter {
-    bot?: boolean;
+    bot: boolean;
     channelGuildMap: { [s: string]: string };
     gatewayURL?: string;
     groupChannels: Collection<GroupChannel>;
     guilds: Collection<Guild>;
     guildShardMap: { [s: string]: number };
+    lastConnect: number;
+    lastReconnectDelay: number;
     notes: { [s: string]: string };
     options: ClientOptions;
+    presence: Presence;
     privateChannelMap: { [s: string]: string };
     privateChannels: Collection<PrivateChannel>;
+    ready: boolean;
+    reconnectAttempts: number;
     relationships: Collection<Relationship>;
     requestHandler: RequestHandler;
     shards: ShardManager;
