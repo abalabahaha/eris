@@ -1934,10 +1934,10 @@ declare namespace Eris {
     editedTimestamp?: number;
     embeds: Embed[];
     flags: number;
-    guildID?: string;
+    guildID: T extends GuildChannel ? string : undefined;
     id: string;
     jumpLink: string;
-    member: Member | null;
+    member: T extends GuildChannel ? Member : Member | null;
     mentionEveryone: boolean;
     mentions: User[];
     messageReference: MessageReference | null;
