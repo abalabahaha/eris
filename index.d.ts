@@ -1937,7 +1937,7 @@ declare namespace Eris {
     guildID: T extends GuildChannel ? string : undefined;
     id: string;
     jumpLink: string;
-    member: T extends GuildChannel ? Member : Member | null;
+    member: T extends GuildChannel ? Member : null;
     mentionEveryone: boolean;
     mentions: User[];
     messageReference: MessageReference | null;
