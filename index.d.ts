@@ -1412,7 +1412,7 @@ declare namespace Eris {
       type: string,
       reason?: string
     ): Promise<void>;
-    editChannelPosition(channelID: string, position: number): Promise<void>;
+    editChannelPosition(channelID: string, position: number, options: { lockPermissions: string; parentID: string }): Promise<void>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
     editGuildDiscovery(guildID: string, options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editGuildEmoji(
@@ -1897,7 +1897,7 @@ declare namespace Eris {
       type: PermissionType,
       reason?: string
     ): Promise<PermissionOverwrite>;
-    editPosition(position: number): Promise<void>;
+    editPosition(position: number, options: { lockPermissions: string; parentID: string }): Promise<void>;
     getInvites(): Promise<Invite[]>;
     permissionsOf(memberID: string | Member): Permission;
   }
