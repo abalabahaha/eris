@@ -1725,6 +1725,16 @@ declare namespace Eris {
     category_id: number;
   }
 
+  interface WelcomeChannel {
+	channelID: string;
+	description: string;
+	emojiID: string;
+	emojiName: string;
+  }
+  interface WelcomeScreen {
+	description: string;
+	welcomeChannels: WelcomeChannel[];
+  }
   export class Guild extends Base {
     afkChannelID: string | null;
     afkTimeout: number;
@@ -1776,7 +1786,8 @@ declare namespace Eris {
     verificationLevel: number;
     voiceStates: Collection<VoiceState>;
     widgetChannelID?: string | null;
-    widgetEnabled?: boolean | null;
+	widgetEnabled?: boolean | null;
+	welcomeScreen?: WelcomeScreen;
     constructor(data: BaseData, client: Client);
     addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
