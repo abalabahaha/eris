@@ -2423,7 +2423,8 @@ declare namespace Eris {
     mute: boolean;
     selfDeaf: boolean;
     selfMute: boolean;
-    selfStream: boolean;
+	selfStream: boolean;
+	selfVideo: boolean;
     sessionID: string | null;
     suppress: boolean;
     constructor(data: BaseData);
