@@ -612,8 +612,8 @@ declare namespace Eris {
     systemChannelFlags: 0 | 1 | 2;
     systemChannelID?: string;
     verificationLevel?: number;
-    discoverySplash: string;
-    features: string[];
+    discoverySplash?: string;
+    features?: string[];
   }
   interface GuildTemplateOptions {
     name?: string;
