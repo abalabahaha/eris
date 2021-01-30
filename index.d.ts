@@ -1728,8 +1728,8 @@ declare namespace Eris {
   interface WelcomeChannel {
 	channelID: string;
 	description: string;
-	emojiID: string;
-	emojiName: string;
+	emojiID: string | null;
+	emojiName: string | null;
   }
   interface WelcomeScreen {
 	description: string;
