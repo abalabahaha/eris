@@ -2,6 +2,8 @@
 env:
   es6: true
   node: true
+plugins:
+  - "sort-class-members"
 extends: "eslint:recommended"
 globals:
   window: true
@@ -59,3 +61,26 @@ rules:
   semi:
     - 2
     - always
+  sort-class-members/sort-class-members:
+    - 2
+    - order:
+      - constructor
+      - update
+      - "[alphabetical-getters]"
+      - "[alphabetical-methods]"
+      - "[alphabetical-conventional-private-methods]"
+      - "[everything-else]"
+      - toString
+      - toJSON
+      groups:
+        alphabetical-getters:
+        - kind: get
+          sort: alphabetical
+        alphabetical-methods:
+        - type: method
+          sort: alphabetical
+        alphabetical-conventional-private-methods:
+        - name: "/_.+/"
+          type: method
+          sort: alphabetical
+
