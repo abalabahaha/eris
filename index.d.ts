@@ -419,8 +419,8 @@ declare namespace Eris {
     mute: boolean;
     selfDeaf: boolean;
     selfMute: boolean;
-	selfStream: boolean;
-	selfVideo: boolean;
+    selfStream: boolean;
+    selfVideo: boolean;
   }
   interface EventListeners<T> {
     (event: "ready" | "disconnect", listener: () => void): T;
