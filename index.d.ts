@@ -1788,7 +1788,7 @@ declare namespace Eris {
   export class Message<T extends Textable = TextableChannel> extends Base {
     id: string;
     createdAt: number;
-    channel: T;
+    channel: T | { id: string };
     guildID?: string;
     timestamp: number;
     type: number;
