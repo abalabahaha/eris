@@ -1786,8 +1786,8 @@ declare namespace Eris {
     verificationLevel: number;
     voiceStates: Collection<VoiceState>;
     widgetChannelID?: string | null;
-	widgetEnabled?: boolean | null;
-	welcomeScreen?: WelcomeScreen;
+    widgetEnabled?: boolean | null;
+    welcomeScreen?: WelcomeScreen;
     constructor(data: BaseData, client: Client);
     addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
