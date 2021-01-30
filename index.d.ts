@@ -23,7 +23,7 @@ declare namespace Eris {
   type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
   type CommandGeneratorFunction = (msg: Message, args: string[]) => GeneratorFunctionReturn;
   type GeneratorFunctionReturn = Promise<MessageContent> | Promise<void> | MessageContent | void;
-  type GenericCheckFunction<T> = (msg: Message) => T;
+  type GenericCheckFunction<T> = (msg: Message) => T | Promise<T>;
   type ReactionButtonsFilterFunction = (msg: Message, emoji: Emoji, userID: string) => boolean;
   type ReactionButtonsGeneratorFunction = (msg: Message, args: string[], userID: string) => GeneratorFunctionReturn;
   type ReactionButtonsGenerator = ReactionButtonsGeneratorFunction | MessageContent | MessageContent[] | ReactionButtonsGeneratorFunction[];
