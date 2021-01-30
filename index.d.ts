@@ -626,6 +626,16 @@ declare namespace Eris {
     computePruneCount?: boolean;
     reason?: string;
   }
+  interface WelcomeChannel {
+    channelID: string;
+    description: string;
+    emojiID: string | null;
+    emojiName: string | null;
+  }
+  interface WelcomeScreen {
+    description: string;
+    welcomeChannels: WelcomeChannel[];
+  }
   interface VoiceRegion {
     custom: boolean;
     deprecated: boolean;
@@ -1722,18 +1732,6 @@ declare namespace Eris {
   interface DiscoverySubcategoryResponse {
     guild_id: string;
     category_id: number;
-  }
-
-  interface WelcomeChannel {
-    channelID: string;
-    description: string;
-    emojiID: string | null;
-    emojiName: string | null;
-  }
-
-  interface WelcomeScreen {
-    description: string;
-    welcomeChannels: WelcomeChannel[];
   }
 
   export class Guild extends Base {
