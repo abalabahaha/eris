@@ -600,7 +600,9 @@ declare namespace Eris {
     banner?: string;
     defaultNotifications?: number;
     description?: string;
+    discoverySplash?: string;
     explicitContentFilter?: number;
+    features?: string[];
     icon?: string;
     name?: string;
     ownerID?: string;
@@ -609,11 +611,9 @@ declare namespace Eris {
     region?: string;
     rulesChannelID?: string;
     splash?: string;
-    systemChannelFlags: 0 | 1 | 2;
+    systemChannelFlags?: 0 | 1 | 2;
     systemChannelID?: string;
     verificationLevel?: number;
-    discoverySplash?: string;
-    features?: string[];
   }
   interface GuildTemplateOptions {
     name?: string;
