@@ -1171,7 +1171,6 @@ declare namespace Eris {
     theme: string;
   }
 
-
   class Base implements SimpleJSON {
     createdAt: number;
     id: string;
@@ -1240,6 +1239,11 @@ declare namespace Eris {
     type: ChannelTypes;
     constructor(data: BaseData);
     static from(data: BaseData, client: Client): AnyChannel;
+  }
+
+  export interface EditChannelPositionOptions {
+    lockPermissions?: string;
+    parentID?: string;
   }
 
   export class Client extends EventEmitter {
@@ -1412,7 +1416,7 @@ declare namespace Eris {
       type: string,
       reason?: string
     ): Promise<void>;
-    editChannelPosition(channelID: string, position: number, options: { lockPermissions: string; parentID: string }): Promise<void>;
+    editChannelPosition(channelID: string, position: number, options?: EditChannelPositionOptions): Promise<void>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
     editGuildDiscovery(guildID: string, options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editGuildEmoji(
@@ -1897,7 +1901,7 @@ declare namespace Eris {
       type: PermissionType,
       reason?: string
     ): Promise<PermissionOverwrite>;
-    editPosition(position: number, options: { lockPermissions: string; parentID: string }): Promise<void>;
+    editPosition(position: number, options?: EditChannelPositionOptions): Promise<void>;
     getInvites(): Promise<Invite[]>;
     permissionsOf(memberID: string | Member): Permission;
   }
