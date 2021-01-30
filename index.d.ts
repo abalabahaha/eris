@@ -683,28 +683,7 @@ declare namespace Eris {
     entries: GuildAuditLogEntry[];
     integrations: GuildIntegration[];
     users: User[];
-    webhooks: Webhook[];
-  }
-  interface WidgetChannel {
-    id: string;
-    name: string;
-    position: number;
-  }
-  interface WidgetMember {
-    id: string;
-    username: string;
-    discriminator: string;
-    avatar: null;
-    status: string;
-    avatar_url: string;
-  }
-  interface WidgetData {
-    id: string;
-    name: string;
-    instant_invite: string;
-    channels: WidgetChannel[];
-    members: WidgetMember[];
-    presence_count: number;
+    webhooks: Webhook[]
   }
   interface GuildOptions {
     afkChannelID?: string;
@@ -776,6 +755,27 @@ declare namespace Eris {
   interface Widget {
     channel_id?: string;
     enabled: boolean;
+  }
+  interface WidgetChannel {
+    id: string;
+    name: string;
+    position: number;
+  }
+  interface WidgetData {
+    channels: WidgetChannel[];
+    id: string;
+    instant_invite: string;
+    members: WidgetMember[];
+    name: string;
+    presence_count: number;
+  }
+  interface WidgetMember {
+    avatar: null;
+    avatar_url: string;
+    discriminator: string;
+    id: string;
+    status: string;
+    username: string;
   }
 
   // Invite
