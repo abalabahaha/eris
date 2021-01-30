@@ -1171,7 +1171,6 @@ declare namespace Eris {
     theme: string;
   }
 
-
   class Base implements SimpleJSON {
     createdAt: number;
     id: string;
@@ -1726,15 +1725,17 @@ declare namespace Eris {
   }
 
   interface WelcomeChannel {
-	channelID: string;
-	description: string;
-	emojiID: string | null;
-	emojiName: string | null;
+    channelID: string;
+    description: string;
+    emojiID: string | null;
+    emojiName: string | null;
   }
+
   interface WelcomeScreen {
-	description: string;
-	welcomeChannels: WelcomeChannel[];
+    description: string;
+    welcomeChannels: WelcomeChannel[];
   }
+
   export class Guild extends Base {
     afkChannelID: string | null;
     afkTimeout: number;
@@ -1785,9 +1786,10 @@ declare namespace Eris {
     vanityURL: string | null;
     verificationLevel: number;
     voiceStates: Collection<VoiceState>;
+    welcomeScreen?: WelcomeScreen;
     widgetChannelID?: string | null;
     widgetEnabled?: boolean | null;
-    welcomeScreen?: WelcomeScreen;
+
     constructor(data: BaseData, client: Client);
     addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
