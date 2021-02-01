@@ -57,11 +57,11 @@
     "tweetnacl": "^1.0.1"
   },
   "browser": {
+    "@discordjs/opus": false,
     "child_process": false,
     "dgram": false,
     "dns": false,
     "fs": false,
-    "node-opus": false,
     "tls": false,
     "tweetnacl": false,
     "ws": false
