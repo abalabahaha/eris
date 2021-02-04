@@ -1796,6 +1796,7 @@ declare namespace Eris {
     id: string;
     member?: Member | unknown;
     membersRemoved?: number;
+    messageID?: string;
     reason: string | null;
     role?: Role | { id: string; name: string };
     target?: Guild | AnyGuildChannel | Member | Role | Invite | Emoji | Message | null;
