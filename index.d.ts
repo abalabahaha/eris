@@ -504,14 +504,17 @@ declare namespace Eris {
     (event: "disconnect", listener: (err: Error) => void): T;
     (event: "resume", listener: () => void): T;
   }
+  interface StreamEvents<T> extends EventListeners<T> {
+    (event: "end" | "start", listener: () => void): T;
+    (event: "error", listener: (err: Error) => void): T;
+  }
   interface VoiceEvents<T> {
+    (event: "connect" | "end" | "ready" | "start", listener: () => void): T;
     (event: "debug" | "warn", listener: (message: string) => void): T;
-    (event: "error" | "disconnect", listener: (err: Error) => void): T;
+    (event: "disconnect" | "error", listener: (err?: Error) => void): T;
     (event: "pong", listener: (latency: number) => void): T;
-    (event: "speakingStart", listener: (userID: string) => void): T;
-    (event: "speakingStop", listener: (userID: string) => void): T;
-    (event: "end", listener: () => void): T;
-    (event: "userDisconnect", listener: (userID: string) => void): T;
+    (event: "speakingStart" | "speakingStop" | "userDisconnect", listener: (userID: string) => void): T;
+    (event: "unknown", listener: (packet: unknown) => void): T;
   }
 
   // Gateway/REST
@@ -2254,6 +2257,7 @@ declare namespace Eris {
     setSpeaking(value: boolean): void;
     setVolume(volume: number): void;
     stopPlaying(): void;
+    on: StreamEvents<this>;
   }
 
   export class StoreChannel extends GuildChannel {
