@@ -588,7 +588,9 @@ declare namespace Eris {
   }
   interface GuildAuditLog {
     entries: GuildAuditLogEntry[];
+    integrations: GuildIntegration[];
     users: User[];
+    webhooks: Webhook;
   }
   interface Widget {
     channel_id?: string;
