@@ -50,7 +50,7 @@
     "@typescript-eslint/parser": "^3.9.1",
     "eslint": "^6.8.0",
     "eslint-plugin-sort-class-members": "^1.8.0",
-    "typescript": "^4.0.2"
+    "typescript": "^4.2.2"
   },
   "optionalDependencies": {
     "opusscript": "^0.0.7",
