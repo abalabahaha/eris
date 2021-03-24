@@ -321,7 +321,7 @@ declare namespace Eris {
     managed: boolean;
     require_colons: boolean;
     roles: string[];
-    user: PartialUser;
+    user?: PartialUser;
   }
   interface EmojiBase {
     icon?: string;
@@ -2031,10 +2031,10 @@ declare namespace Eris {
     editedTimestamp?: number;
     embeds: Embed[];
     flags: number;
-    guildID?: string;
+    guildID: T extends GuildTextable ? string : undefined;
     id: string;
     jumpLink: string;
-    member: Member | null;
+    member: T extends GuildTextable ? Member : null;
     mentionEveryone: boolean;
     mentions: User[];
     messageReference: MessageReference | null;
