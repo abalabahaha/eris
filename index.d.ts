@@ -127,9 +127,9 @@ declare namespace Eris {
   interface Textable {
     lastMessageID: string;
     messages: Collection<Message<this>>;
+    addMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
-    addMessageReaction(messageID: string, reaction: string): Promise<void>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     editMessage(messageID: string, content: MessageContent): Promise<Message>;
@@ -1283,98 +1283,98 @@ declare namespace Eris {
     addGroupRecipient(groupID: string, userID: string): Promise<void>;
     addGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
+    addMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(channelID: string, messageID: string, reaction: string, userID: string): Promise<void>;
-    addMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
     addRelationship(userID: string, block?: boolean): Promise<void>;
     addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
     banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     closeVoiceConnection(guildID: string): void;
     connect(): Promise<void>;
     createChannel(guildID: string, name: string): Promise<TextChannel>;
-    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type: 0,
-      reason?: string,
-      options?: CreateChannelOptions | string
+      options?: CreateChannelOptions
     ): Promise<TextChannel>;
-    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type: 2,
-      reason?: string,
-      options?: CreateChannelOptions | string
+      options?: CreateChannelOptions
     ): Promise<VoiceChannel>;
-    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type: 4,
-      reason?: string,
-      options?: CreateChannelOptions | string
+      options?: CreateChannelOptions
     ): Promise<CategoryChannel>;
-    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type: 5,
-      reason?: string,
-      options?: CreateChannelOptions | string
+      options?: CreateChannelOptions
     ): Promise<NewsChannel>;
-    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type: 6,
-      reason?: string,
-      options?: CreateChannelOptions | string
+      options?: CreateChannelOptions
     ): Promise<StoreChannel>;
-    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type?: number,
-      reason?: string,
-      options?: CreateChannelOptions | string
+      options?: CreateChannelOptions
     ): Promise<unknown>;
+    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type: 0,
-      options?: CreateChannelOptions
+      reason?: string,
+      options?: CreateChannelOptions | string
     ): Promise<TextChannel>;
+    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type: 2,
-      options?: CreateChannelOptions
+      reason?: string,
+      options?: CreateChannelOptions | string
     ): Promise<VoiceChannel>;
+    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type: 4,
-      options?: CreateChannelOptions
+      reason?: string,
+      options?: CreateChannelOptions | string
     ): Promise<CategoryChannel>;
+    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type: 5,
-      options?: CreateChannelOptions
+      reason?: string,
+      options?: CreateChannelOptions | string
     ): Promise<NewsChannel>;
+    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type: 6,
-      options?: CreateChannelOptions
+      reason?: string,
+      options?: CreateChannelOptions | string
     ): Promise<StoreChannel>;
+    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type?: number,
-      options?: CreateChannelOptions
+      reason?: string,
+      options?: CreateChannelOptions | string
     ): Promise<unknown>;
     createChannelInvite(
       channelID: string,
@@ -1579,9 +1579,9 @@ declare namespace Eris {
     ): Promise<number>;
     removeGroupRecipient(groupID: string, userID: string): Promise<void>;
     removeGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
+    removeMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     removeMessageReaction(channelID: string, messageID: string, reaction: string, userID: string): Promise<void>;
-    removeMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
     removeMessageReactionEmoji(channelID: string, messageID: string, reaction: string): Promise<void>;
     removeMessageReactions(channelID: string, messageID: string): Promise<void>;
     removeRelationship(userID: string): Promise<void>;
@@ -1773,6 +1773,12 @@ declare namespace Eris {
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     banMember(userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     createChannel(name: string): Promise<TextChannel>;
+    createChannel(name: string, type: 0, options?: CreateChannelOptions): Promise<TextChannel>;
+    createChannel(name: string, type: 2, options?: CreateChannelOptions): Promise<VoiceChannel>;
+    createChannel(name: string, type: 4, options?: CreateChannelOptions): Promise<CategoryChannel>;
+    createChannel(name: string, type: 5, options?: CreateChannelOptions | string): Promise<NewsChannel>;
+    createChannel(name: string, type: 6, options?: CreateChannelOptions | string): Promise<StoreChannel>;
+    createChannel(name: string, type?: number, options?: CreateChannelOptions): Promise<unknown>;
     /** @deprecated */
     createChannel(name: string, type: 0, reason?: string, options?: CreateChannelOptions | string): Promise<TextChannel>;
     /** @deprecated */
@@ -1785,12 +1791,6 @@ declare namespace Eris {
     createChannel(name: string, type: 6, reason?: string, options?: CreateChannelOptions | string): Promise<StoreChannel>;
     /** @deprecated */
     createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
-    createChannel(name: string, type: 0, options?: CreateChannelOptions): Promise<TextChannel>;
-    createChannel(name: string, type: 2, options?: CreateChannelOptions): Promise<VoiceChannel>;
-    createChannel(name: string, type: 4, options?: CreateChannelOptions): Promise<CategoryChannel>;
-    createChannel(name: string, type: 5, options?: CreateChannelOptions | string): Promise<NewsChannel>;
-    createChannel(name: string, type: 6, options?: CreateChannelOptions | string): Promise<StoreChannel>;
-    createChannel(name: string, type?: number, options?: CreateChannelOptions): Promise<unknown>;
     createEmoji(options: { image: string; name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     createRole(options: RoleOptions | Role, reason?: string): Promise<Role>;
     createTemplate(name: string, description?: string | null): Promise<GuildTemplate>;
@@ -2045,18 +2045,18 @@ declare namespace Eris {
     type: number;
     webhookID?: string;
     constructor(data: BaseData, client: Client);
+    addReaction(reaction: string): Promise<void>;
     /** @deprecated */
     addReaction(reaction: string, userID: string): Promise<void>;
-    addReaction(reaction: string): Promise<void>;
     crosspost(): T extends NewsChannel ? Promise<Message<NewsChannel>> : never;
     delete(reason?: string): Promise<void>;
     edit(content: MessageContent): Promise<Message<T>>;
     editWebhook(token: string, options: MessageWebhookContent): Promise<Message<T>>;
     getReaction(reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
     pin(): Promise<void>;
+    removeReaction(reaction: string): Promise<void>;
     /** @deprecated */
     removeReaction(reaction: string, userID: string): Promise<void>;
-    removeReaction(reaction: string): Promise<void>;
     removeReactionEmoji(reaction: string): Promise<void>;
     removeReactions(): Promise<void>;
     unpin(): Promise<void>;
@@ -2115,9 +2115,9 @@ declare namespace Eris {
     messages: Collection<Message<this>>;
     recipient: User;
     type: 1 | 3;
+    addMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
-    addMessageReaction(messageID: string, reaction: string): Promise<void>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<PrivateChannel>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<PrivateChannel>>;
@@ -2133,9 +2133,9 @@ declare namespace Eris {
     getPins(): Promise<Message<PrivateChannel>[]>;
     leave(): Promise<void>;
     pinMessage(messageID: string): Promise<void>;
+    removeMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     removeMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
-    removeMessageReaction(messageID: string, reaction: string): Promise<void>;
     ring(recipient: string[]): void;
     sendTyping(): Promise<void>;
     syncCall(): void;
@@ -2287,9 +2287,9 @@ declare namespace Eris {
     topic: string | null;
     type: 0 | 5;
     constructor(data: BaseData, guild: Guild, messageLimit: number);
+    addMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
-    addMessageReaction(messageID: string, reaction: string): Promise<void>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", TextChannel>>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<TextChannel>>;
     createWebhook(options: { name: string; avatar?: string | null}, reason?: string): Promise<Webhook>;
@@ -2311,9 +2311,9 @@ declare namespace Eris {
     getWebhooks(): Promise<Webhook[]>;
     pinMessage(messageID: string): Promise<void>;
     purge(limit: number, filter?: (message: Message<this>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
+    removeMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     removeMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
-    removeMessageReaction(messageID: string, reaction: string): Promise<void>;
     removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
     sendTyping(): Promise<void>;
