@@ -423,6 +423,7 @@ declare namespace Eris {
     selfDeaf: boolean;
     selfMute: boolean;
     selfStream: boolean;
+    selfVideo: boolean;
   }
   interface EventListeners<T> {
     (event: "ready" | "disconnect", listener: () => void): T;
@@ -2443,6 +2444,7 @@ declare namespace Eris {
     selfDeaf: boolean;
     selfMute: boolean;
     selfStream: boolean;
+    selfVideo: boolean;
     sessionID: string | null;
     suppress: boolean;
     constructor(data: BaseData);
