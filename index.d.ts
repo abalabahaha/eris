@@ -61,6 +61,8 @@ declare namespace Eris {
   // Voice
   type ConverterCommand = "./ffmpeg" | "./avconv" | "ffmpeg" | "avconv";
 
+  // Webhook
+  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds">;
 
   // INTERFACES
   // Internals
@@ -854,7 +856,6 @@ declare namespace Eris {
     token: string;
     user: PartialUser;
   }
-  interface MessageWebhookContent extends Pick<WebhookPayload, "content" | "embeds"> {}
   interface WebhookOptions {
     avatar?: string;
     channelID?: string;
@@ -2060,7 +2061,7 @@ declare namespace Eris {
     timestamp: number;
     tts: boolean;
     type: number;
-    webhookID?: string;
+    webhookID: T extends GuildTextable ? string | undefined : undefined;
     constructor(data: BaseData, client: Client);
     addReaction(reaction: string): Promise<void>;
     /** @deprecated */
