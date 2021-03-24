@@ -1666,7 +1666,7 @@ declare namespace Eris {
     constructor(token: string, options?: ClientOptions, commandOptions?: CommandClientOptions);
     checkPrefix(msg: Message): string;
     onMessageCreate(msg: Message): Promise<void>;
-    onMessageReactionEvent(msg: Message, emoji: Emoji, userID: string): Promise<void>
+    onMessageReactionEvent(msg: Message, emoji: Emoji, reactor: Member | { id: string } | string): Promise<void>
     registerCommand(label: string, generator: CommandGenerator, options?: CommandOptions): Command;
     registerCommandAlias(alias: string, label: string): void;
     registerGuildPrefix(guildID: string, prefix: string[] | string): void;
