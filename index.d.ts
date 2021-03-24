@@ -2048,7 +2048,7 @@ declare namespace Eris {
     addReaction(reaction: string): Promise<void>;
     /** @deprecated */
     addReaction(reaction: string, userID: string): Promise<void>;
-    crosspost(): T extends NewsChannel ? Promise<Message<NewsChannel>> : never;
+    crosspost(): Promise<T extends NewsChannel ? Message<NewsChannel> : never>;
     delete(reason?: string): Promise<void>;
     edit(content: MessageContent): Promise<Message<T>>;
     editWebhook(token: string, options: MessageWebhookContent): Promise<Message<T>>;
