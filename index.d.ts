@@ -2068,6 +2068,7 @@ declare namespace Eris {
     addReaction(reaction: string, userID: string): Promise<void>;
     crosspost(): Promise<T extends NewsChannel ? Message<NewsChannel> : never>;
     delete(reason?: string): Promise<void>;
+    deleteWebhook(token: string): Promise<void>;
     edit(content: MessageContent): Promise<Message<T>>;
     editWebhook(token: string, options: MessageWebhookContent): Promise<Message<T>>;
     getReaction(reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
@@ -2076,7 +2077,7 @@ declare namespace Eris {
     removeReactionEmoji(reaction: string): Promise<void>;
     removeReactions(): Promise<void>;
     unpin(): Promise<void>;
-    deleteWebhook(token: string): Promise<void>;
+
   }
 
   // News channel rate limit is always 0
@@ -2097,9 +2098,9 @@ declare namespace Eris {
   export class Permission extends Base {
     allow: number;
     deny: number;
-    json: Record<keyof Constants['Permissions'], boolean>;
+    json: Record<keyof Constants["Permissions"], boolean>;
     constructor(allow: number | string, deny: number | string);
-    has(permission: keyof Constants['Permissions']): boolean;
+    has(permission: keyof Constants["Permissions"]): boolean;
   }
 
   export class PermissionOverwrite extends Permission {
