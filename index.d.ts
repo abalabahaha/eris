@@ -2313,9 +2313,7 @@ declare namespace Eris {
     getWebhooks(): Promise<Webhook[]>;
     pinMessage(messageID: string): Promise<void>;
     purge(limit: number, filter?: (message: Message<this>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
-    removeMessageReaction(messageID: string, reaction: string): Promise<void>;
-    /** @deprecated */
-    removeMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
+    removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
     sendTyping(): Promise<void>;
