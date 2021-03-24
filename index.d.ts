@@ -1021,7 +1021,7 @@ declare namespace Eris {
       GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING: 16;
       GUILD_DISCOVERY_GRACE_PERIOD_FINAL_WARNING: 17;
       REPLY: 19;
-      APPLICATION_COMMAND:20;
+      APPLICATION_COMMAND: 20;
     };
     Permissions: {
       createInstantInvite: 1;
