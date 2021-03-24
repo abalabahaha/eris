@@ -448,7 +448,7 @@ declare namespace Eris {
     (event: "guildMemberRemove", listener: (guild: Guild, member: Member | MemberPartial) => void): T;
     (
       event: "guildMemberUpdate",
-      listener: (guild: Guild, member: Member, oldMember: { nick?: string; premiumSince: number; roles: string[] } | null) => void
+      listener: (guild: Guild, member: Member, oldMember: { nick?: string; premiumSince: number; roles: string[]; pending?: boolean } | null) => void
     ): T;
     (event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): T;
     (event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: OldRole) => void): T;
@@ -1996,6 +1996,7 @@ declare namespace Eris {
     joinedAt: number;
     mention: string;
     nick: string | null;
+    pending?: boolean;
     /** @deprecated */
     permission: Permission;
     permissions: Permission;
