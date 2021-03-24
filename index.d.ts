@@ -2046,7 +2046,7 @@ declare namespace Eris {
     timestamp: number;
     tts: boolean;
     type: number;
-    webhookID?: string;
+    webhookID: T extends GuildTextable ? string | undefined : undefined;
     constructor(data: BaseData, client: Client);
     addReaction(reaction: string): Promise<void>;
     /** @deprecated */
