@@ -634,6 +634,16 @@ declare namespace Eris {
     computePruneCount?: boolean;
     reason?: string;
   }
+  interface WelcomeChannel {
+    channelID: string;
+    description: string;
+    emojiID: string | null;
+    emojiName: string | null;
+  }
+  interface WelcomeScreen {
+    description: string;
+    welcomeChannels: WelcomeChannel[];
+  }
   interface VoiceRegion {
     custom: boolean;
     deprecated: boolean;
@@ -1196,7 +1206,6 @@ declare namespace Eris {
     status: string;
     theme: string;
   }
-
 
   class Base implements SimpleJSON {
     createdAt: number;
@@ -1783,8 +1792,10 @@ declare namespace Eris {
     vanityURL: string | null;
     verificationLevel: number;
     voiceStates: Collection<VoiceState>;
+    welcomeScreen?: WelcomeScreen;
     widgetChannelID?: string | null;
     widgetEnabled?: boolean | null;
+
     constructor(data: BaseData, client: Client);
     addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
