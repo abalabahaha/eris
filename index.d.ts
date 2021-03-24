@@ -1250,6 +1250,7 @@ declare namespace Eris {
   }
 
   export class Client extends EventEmitter {
+    application?: { id: string; flags: number };
     bot: boolean;
     channelGuildMap: { [s: string]: string };
     gatewayURL?: string;
