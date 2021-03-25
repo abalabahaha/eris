@@ -1278,6 +1278,11 @@ declare namespace Eris {
     static from(data: BaseData, client: Client): AnyChannel;
   }
 
+  export interface EditChannelPositionOptions {
+    lockPermissions?: string;
+    parentID?: string;
+  }
+
   export class Client extends EventEmitter {
     application?: { id: string; flags: number };
     bot: boolean;
@@ -1455,7 +1460,7 @@ declare namespace Eris {
       type: string,
       reason?: string
     ): Promise<void>;
-    editChannelPosition(channelID: string, position: number): Promise<void>;
+    editChannelPosition(channelID: string, position: number, options?: EditChannelPositionOptions): Promise<void>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
     editGuildDiscovery(guildID: string, options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editGuildEmoji(
@@ -1917,7 +1922,7 @@ declare namespace Eris {
       type: PermissionType,
       reason?: string
     ): Promise<PermissionOverwrite>;
-    editPosition(position: number): Promise<void>;
+    editPosition(position: number, options?: EditChannelPositionOptions): Promise<void>;
     getInvites(): Promise<Invite[]>;
     permissionsOf(memberID: string | Member): Permission;
   }
