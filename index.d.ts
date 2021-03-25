@@ -2387,6 +2387,7 @@ declare namespace Eris {
     discriminator: string;
     id: string;
     mention: string;
+    premiumType?: 0 | 1 | 2;
     publicFlags?: number;
     staticAvatarURL: string;
     system: boolean;
