@@ -589,6 +589,9 @@ declare namespace Eris {
     guild_id: string;
     category_id: number;
   }
+  interface GetGuildIntegrationsOptions {
+    includeApplications?: boolean;
+  }
   interface GetPruneOptions {
     days?: number;
     includeRoles?: string[];
@@ -598,6 +601,14 @@ declare namespace Eris {
     integrations: GuildIntegration[];
     users: User[];
     webhooks: Webhook[];
+  }
+  interface IntegrationApplication {
+    bot?: User;
+    description: string;
+    icon: string | null;
+    id: string;
+    name: string;
+    summary: string;
   }
   interface Widget {
     channel_id?: string;
@@ -1522,7 +1533,7 @@ declare namespace Eris {
     getGuildDiscovery(guildID: string): Promise<DiscoveryMetadata>;
     /** @deprecated */
     getGuildEmbed(guildID: string): Promise<Widget>;
-    getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
+    getGuildIntegrations(guildID: string, options?: GetGuildIntegrationsOptions): Promise<GuildIntegration[]>;
     getGuildInvites(guildID: string): Promise<Invite[]>;
     getGuildPreview(guildID: string): Promise<GuildPreview>;
     getGuildTemplate(code: string): Promise<GuildTemplate>;
@@ -1859,7 +1870,7 @@ declare namespace Eris {
     getDiscovery(): Promise<DiscoveryMetadata>;
     /** @deprecated */
     getEmbed(): Promise<Widget>;
-    getIntegrations(): Promise<GuildIntegration>;
+    getIntegrations(options?: GetGuildIntegrationsOptions): Promise<GuildIntegration>;
     getInvites(): Promise<Invite[]>;
     getPruneCount(options?: GetPruneOptions): Promise<number>;
     getRESTChannels(): Promise<AnyGuildChannel[]>;
@@ -1931,6 +1942,7 @@ declare namespace Eris {
 
   export class GuildIntegration extends Base {
     account: { id: string; name: string };
+    application?: IntegrationApplication;
     createdAt: number;
     enabled: boolean;
     enableEmoticons: boolean;
@@ -1938,12 +1950,13 @@ declare namespace Eris {
     expireGracePeriod: number;
     id: string;
     name: string;
+    revoked: boolean;
     roleID: string;
     subscriberCount: number;
     syncedAt: number;
     syncing: boolean;
     type: string;
-    user: User;
+    user?: User;
     constructor(data: BaseData, guild: Guild);
     delete(): Promise<void>;
     edit(options: { enableEmoticons: string; expireBehavior: string; expireGracePeriod: string }): Promise<void>;
