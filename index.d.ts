@@ -158,6 +158,7 @@ declare namespace Eris {
 
   // Client
   interface ClientOptions {
+    /** @deprecated */
     agent?: HTTPSAgent;
     allowedMentions?: AllowedMentions;
     autoreconnect?: boolean;
@@ -173,18 +174,31 @@ declare namespace Eris {
     intents?: number | IntentStrings[];
     largeThreshold?: number;
     lastShardID?: number;
+    /** @deprecated */
     latencyThreshold?: number;
     maxReconnectAttempts?: number;
     maxResumeAttempts?: number;
     maxShards?: number | "auto";
     messageLimit?: number;
     opusOnly?: boolean;
+    /** @deprecated */
     rateLimiterOffset?: number;
+    /** @deprecated */
     requestTimeout?: number;
     reconnectDelay?: ReconnectDelayFunction;
+    rest?: ClientRESTOptions;
     restMode?: boolean;
     seedVoiceConnections?: boolean;
     ws?: unknown;
+  }
+  interface ClientRESTOptions {
+    agent?: HTTPSAgent;
+    baseURL?: string;
+    disableLatencyCompensation?: boolean;
+    domain?: string;
+    latencyThreshold?: number;
+    rateLimiterOffset?: number;
+    requestTimeout?: number;
   }
   interface CommandClientOptions {
     argsSplitter?: (str: string) => string[];
