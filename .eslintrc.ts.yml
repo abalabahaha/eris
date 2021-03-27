@@ -40,6 +40,7 @@ rules:
     - "[alphabetical-methods]"
     - 'on'
     - "[everything-else]"
+    - "[custom-inspect-method]"
     - toString
     - toJSON
     groups:
@@ -63,3 +64,6 @@ rules:
       - type: property
         sort: alphabetical
         static: false
+      custom-inspect-method:
+      - name: "[util.inspect.custom]"
+        type: method

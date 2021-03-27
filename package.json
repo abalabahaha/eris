@@ -49,7 +49,7 @@
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
     "eslint": "^7.22.0",
-    "eslint-plugin-sort-class-members": "^1.8.0",
+    "eslint-plugin-sort-class-members": "^1.10.0",
     "typescript": "^4.2.2"
   },
   "optionalDependencies": {

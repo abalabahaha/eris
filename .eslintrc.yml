@@ -70,6 +70,7 @@ rules:
       - "[alphabetical-methods]"
       - "[alphabetical-conventional-private-methods]"
       - "[everything-else]"
+      - "[custom-inspect-method]"
       - toString
       - toJSON
       groups:
@@ -83,4 +84,7 @@ rules:
         - name: "/_.+/"
           type: method
           sort: alphabetical
+        custom-inspect-method:
+        - name: "[util.inspect.custom]"
+          type: method
 
