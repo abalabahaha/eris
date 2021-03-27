@@ -49,7 +49,7 @@ declare namespace Eris {
   };
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
-  type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild: { id: string } }; guildID: string; id: string };
+  type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: { id: string } }; guildID?: string; id: string };
 
   // Permission
   type PermissionType = "role" | "member";
