@@ -2349,6 +2349,7 @@ declare namespace Eris {
   }
 
   export class StageChannel extends VoiceChannel {
+    topic?: string;
     type: 13;
   }
 
