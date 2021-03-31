@@ -502,11 +502,11 @@ declare namespace Eris {
       event: "userUpdate",
       listener: (user: User, oldUser: PartialUser | null) => void
     ): T;
-    (event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): T;
-    (event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): T;
+    (event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel | StageChannel) => void): T;
+    (event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel | StageChannel) => void): T;
     (
       event: "voiceChannelSwitch",
-      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void
+      listener: (member: Member, newChannel: VoiceChannel | StageChannel, oldChannel: VoiceChannel | StageChannel) => void
     ): T;
     (event: "voiceStateUpdate", listener: (member: Member, oldState: OldVoiceState) => void): T;
     (event: "warn" | "debug", listener: (message: string, id: number) => void): T;
@@ -878,6 +878,11 @@ declare namespace Eris {
     guild_id: string;
     shard: Shard;
   }
+  interface VoiceStateOptions {
+    channelID: string;
+    requestToSpeakTimestamp?: Date | null;
+    suppress?: boolean;
+  }
   interface VoiceStreamCurrent {
     options: VoiceResourceOptions;
     pausedTime?: number;
@@ -999,6 +1004,7 @@ declare namespace Eris {
       GUILD_CATEGORY: 4;
       GUILD_NEWS: 5;
       GUILD_STORE: 6;
+      GUILD_STAGE: 13;
     };
     GATEWAY_VERSION: 6;
     GatewayOPCodes: {
@@ -1501,6 +1507,7 @@ declare namespace Eris {
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<void>;
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
+    editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
     editGuildWidget(guildID: string, options: Widget): Promise<Widget>
     editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
@@ -1877,6 +1884,7 @@ declare namespace Eris {
     editNickname(nick: string): Promise<void>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     editTemplate(code: string, options: GuildTemplateOptions): Promise<GuildTemplate>
+    editVoiceState(options: VoiceStateOptions, userID?: string): Promise<void>;
     editWidget(options: Widget): Promise<Widget>;
     fetchAllMembers(timeout?: number): Promise<number>;
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
@@ -2340,6 +2348,10 @@ declare namespace Eris {
     on: StreamEvents<this>;
   }
 
+  export class StageChannel extends VoiceChannel {
+    type: 13;
+  }
+
   export class StoreChannel extends GuildChannel {
     type: 6;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
@@ -2420,7 +2432,7 @@ declare namespace Eris {
 
   export class VoiceChannel extends GuildChannel implements Invitable {
     bitrate: number;
-    type: 2;
+    type: 2 | 13;
     userLimit: number;
     voiceMembers: Collection<Member>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", VoiceChannel>>;
@@ -2478,6 +2490,7 @@ declare namespace Eris {
     deaf: boolean;
     id: string;
     mute: boolean;
+    requestToSpeakTimestamp: number | null;
     selfDeaf: boolean;
     selfMute: boolean;
     selfStream: boolean;
