@@ -184,7 +184,7 @@ declare namespace Eris {
     messageLimit?: number;
     opusOnly?: boolean;
     /** @deprecated */
-    rateLimiterOffset?: number;
+    ratelimiterOffset?: number;
     /** @deprecated */
     requestTimeout?: number;
     reconnectDelay?: ReconnectDelayFunction;
@@ -199,7 +199,7 @@ declare namespace Eris {
     disableLatencyCompensation?: boolean;
     domain?: string;
     latencyThreshold?: number;
-    rateLimiterOffset?: number;
+    ratelimiterOffset?: number;
     requestTimeout?: number;
   }
   interface CommandClientOptions {
