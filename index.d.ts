@@ -2422,6 +2422,7 @@ declare namespace Eris {
     bitrate: number;
     type: 2;
     userLimit: number;
+    videoQualityMode: 1 | 2;
     voiceMembers: Collection<Member>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", VoiceChannel>>;
     getInvites(): Promise<(Invite<"withMetadata", VoiceChannel>)[]>;
