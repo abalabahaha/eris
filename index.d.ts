@@ -461,7 +461,7 @@ declare namespace Eris {
     (event: "guildBanAdd" | "guildBanRemove", listener: (guild: Guild, user: User) => void): T;
     (event: "guildAvailable" | "guildCreate", listener: (guild: Guild) => void): T;
     (event: "guildDelete", listener: (guild: PossiblyUncachedGuild) => void): T;
-    (event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): T;
+    (event: "guildEmojisUpdate", listener: (guild: PossiblyUncachedGuild, emojis: Emoji[], oldEmojis: Emoji[] | null) => void): T;
     (event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): T;
     (event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): T;
     (event: "guildMemberRemove", listener: (guild: Guild, member: Member | MemberPartial) => void): T;
