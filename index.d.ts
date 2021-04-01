@@ -878,6 +878,11 @@ declare namespace Eris {
     guild_id: string;
     shard: Shard;
   }
+  interface VoiceStateOptions {
+    channelID: string;
+    requestToSpeakTimestamp?: Date | null;
+    suppress?: boolean;
+  }
   interface VoiceStreamCurrent {
     options: VoiceResourceOptions;
     pausedTime?: number;
@@ -1501,6 +1506,7 @@ declare namespace Eris {
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<void>;
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
+    editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
     editGuildWidget(guildID: string, options: Widget): Promise<Widget>
     editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
@@ -1877,6 +1883,7 @@ declare namespace Eris {
     editNickname(nick: string): Promise<void>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     editTemplate(code: string, options: GuildTemplateOptions): Promise<GuildTemplate>
+    editVoiceState(options: VoiceStateOptions, userID?: string): Promise<void>;
     editWidget(options: Widget): Promise<Widget>;
     fetchAllMembers(timeout?: number): Promise<number>;
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
