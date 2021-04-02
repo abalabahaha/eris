@@ -103,6 +103,8 @@ declare namespace Eris {
     icon?: string;
     name?: string;
     ownerID?: string;
+    rtcRegion?: string | null;
+    videoQualityMode?: 1 | 2;
   }
   export interface GuildTextable extends Textable {
     lastPinTimestamp: number | null;
@@ -402,9 +404,11 @@ declare namespace Eris {
     permissionOverwrites: Collection<PermissionOverwrite>;
     rateLimitPerUser?: number;
     position: number;
+    rtcRegion?: string | null;
     topic?: string;
     type: Exclude<ChannelTypes, 1 | 3>;
     userLimit?: number;
+    videoQualityMode?: 1 | 2;
   }
   interface OldMessage {
     attachments: Attachment[];
@@ -461,7 +465,7 @@ declare namespace Eris {
     (event: "guildBanAdd" | "guildBanRemove", listener: (guild: Guild, user: User) => void): T;
     (event: "guildAvailable" | "guildCreate", listener: (guild: Guild) => void): T;
     (event: "guildDelete", listener: (guild: PossiblyUncachedGuild) => void): T;
-    (event: "guildEmojisUpdate", listener: (guild: Guild, emojis: Emoji[], oldEmojis: Emoji[]) => void): T;
+    (event: "guildEmojisUpdate", listener: (guild: PossiblyUncachedGuild, emojis: Emoji[], oldEmojis: Emoji[] | null) => void): T;
     (event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): T;
     (event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): T;
     (event: "guildMemberRemove", listener: (guild: Guild, member: Member | MemberPartial) => void): T;
@@ -1074,6 +1078,8 @@ declare namespace Eris {
       GUILD_DISCOVERY_GRACE_PERIOD_FINAL_WARNING: 17;
       REPLY: 19;
       APPLICATION_COMMAND: 20;
+
+      GUILD_INVITE_REMINDER: 22;
     };
     Permissions: {
       createInstantInvite: 1;
@@ -2426,8 +2432,10 @@ declare namespace Eris {
 
   export class VoiceChannel extends GuildChannel implements Invitable {
     bitrate: number;
+    rtcRegion: string | null;
     type: 2 | 13;
     userLimit: number;
+    videoQualityMode: 1 | 2;
     voiceMembers: Collection<Member>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", VoiceChannel>>;
     getInvites(): Promise<(Invite<"withMetadata", VoiceChannel>)[]>;
