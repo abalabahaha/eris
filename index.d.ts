@@ -13,7 +13,8 @@ declare namespace Eris {
   // TYPES
   // Channel
   type AnyChannel = AnyGuildChannel | PrivateChannel;
-  type AnyGuildChannel = GuildTextableChannel | VoiceChannel | CategoryChannel | StoreChannel;
+  type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel | StoreChannel;
+  type AnyVoiceChannel = VoiceChannel | StageChannel;
   type ChannelTypes = Constants["ChannelTypes"][keyof Constants["ChannelTypes"]];
   type GuildTextableChannel = TextChannel | NewsChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel>;
@@ -103,6 +104,8 @@ declare namespace Eris {
     icon?: string;
     name?: string;
     ownerID?: string;
+    rtcRegion?: string | null;
+    videoQualityMode?: 1 | 2;
   }
   export interface GuildTextable extends Textable {
     lastPinTimestamp: number | null;
@@ -402,9 +405,11 @@ declare namespace Eris {
     permissionOverwrites: Collection<PermissionOverwrite>;
     rateLimitPerUser?: number;
     position: number;
+    rtcRegion?: string | null;
     topic?: string;
     type: Exclude<ChannelTypes, 1 | 3>;
     userLimit?: number;
+    videoQualityMode?: 1 | 2;
   }
   interface OldMessage {
     attachments: Attachment[];
@@ -502,11 +507,11 @@ declare namespace Eris {
       event: "userUpdate",
       listener: (user: User, oldUser: PartialUser | null) => void
     ): T;
-    (event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): T;
-    (event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): T;
+    (event: "voiceChannelJoin", listener: (member: Member, newChannel: AnyVoiceChannel) => void): T;
+    (event: "voiceChannelLeave", listener: (member: Member, oldChannel: AnyVoiceChannel) => void): T;
     (
       event: "voiceChannelSwitch",
-      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void
+      listener: (member: Member, newChannel: AnyVoiceChannel, oldChannel: AnyVoiceChannel) => void
     ): T;
     (event: "voiceStateUpdate", listener: (member: Member, oldState: OldVoiceState) => void): T;
     (event: "warn" | "debug", listener: (message: string, id: number) => void): T;
@@ -1004,6 +1009,7 @@ declare namespace Eris {
       GUILD_CATEGORY: 4;
       GUILD_NEWS: 5;
       GUILD_STORE: 6;
+      GUILD_STAGE: 13;
     };
     GATEWAY_VERSION: 6;
     GatewayOPCodes: {
@@ -1078,6 +1084,8 @@ declare namespace Eris {
       GUILD_DISCOVERY_GRACE_PERIOD_FINAL_WARNING: 17;
       REPLY: 19;
       APPLICATION_COMMAND: 20;
+
+      GUILD_INVITE_REMINDER: 22;
     };
     Permissions: {
       createInstantInvite: 1;
@@ -2347,6 +2355,11 @@ declare namespace Eris {
     on: StreamEvents<this>;
   }
 
+  export class StageChannel extends VoiceChannel {
+    topic?: string;
+    type: 13;
+  }
+
   export class StoreChannel extends GuildChannel {
     type: 6;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
@@ -2427,8 +2440,10 @@ declare namespace Eris {
 
   export class VoiceChannel extends GuildChannel implements Invitable {
     bitrate: number;
-    type: 2;
+    rtcRegion: string | null;
+    type: 2 | 13;
     userLimit: number;
+    videoQualityMode: 1 | 2;
     voiceMembers: Collection<Member>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", VoiceChannel>>;
     getInvites(): Promise<(Invite<"withMetadata", VoiceChannel>)[]>;
@@ -2485,6 +2500,7 @@ declare namespace Eris {
     deaf: boolean;
     id: string;
     mute: boolean;
+    requestToSpeakTimestamp: number | null;
     selfDeaf: boolean;
     selfMute: boolean;
     selfStream: boolean;
