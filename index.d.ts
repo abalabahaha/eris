@@ -104,6 +104,7 @@ declare namespace Eris {
     name?: string;
     ownerID?: string;
     rtcRegion?: string | null;
+    videoQualityMode?: 1 | 2;
   }
   export interface GuildTextable extends Textable {
     lastPinTimestamp: number | null;
@@ -407,6 +408,7 @@ declare namespace Eris {
     topic?: string;
     type: Exclude<ChannelTypes, 1 | 3>;
     userLimit?: number;
+    videoQualityMode?: 1 | 2;
   }
   interface OldMessage {
     attachments: Attachment[];
@@ -2427,6 +2429,7 @@ declare namespace Eris {
     rtcRegion: string | null;
     type: 2;
     userLimit: number;
+    videoQualityMode: 1 | 2;
     voiceMembers: Collection<Member>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", VoiceChannel>>;
     getInvites(): Promise<(Invite<"withMetadata", VoiceChannel>)[]>;
