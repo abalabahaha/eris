@@ -13,7 +13,8 @@ declare namespace Eris {
   // TYPES
   // Channel
   type AnyChannel = AnyGuildChannel | PrivateChannel;
-  type AnyGuildChannel = GuildTextableChannel | VoiceChannel | CategoryChannel | StoreChannel;
+  type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel | StoreChannel;
+  type AnyVoiceChannel = VoiceChannel | StageChannel;
   type ChannelTypes = Constants["ChannelTypes"][keyof Constants["ChannelTypes"]];
   type GuildTextableChannel = TextChannel | NewsChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel>;
@@ -506,11 +507,11 @@ declare namespace Eris {
       event: "userUpdate",
       listener: (user: User, oldUser: PartialUser | null) => void
     ): T;
-    (event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel) => void): T;
-    (event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel) => void): T;
+    (event: "voiceChannelJoin", listener: (member: Member, newChannel: AnyVoiceChannel) => void): T;
+    (event: "voiceChannelLeave", listener: (member: Member, oldChannel: AnyVoiceChannel) => void): T;
     (
       event: "voiceChannelSwitch",
-      listener: (member: Member, newChannel: VoiceChannel, oldChannel: VoiceChannel) => void
+      listener: (member: Member, newChannel: AnyVoiceChannel, oldChannel: AnyVoiceChannel) => void
     ): T;
     (event: "voiceStateUpdate", listener: (member: Member, oldState: OldVoiceState) => void): T;
     (event: "warn" | "debug", listener: (message: string, id: number) => void): T;
@@ -1003,6 +1004,7 @@ declare namespace Eris {
       GUILD_CATEGORY: 4;
       GUILD_NEWS: 5;
       GUILD_STORE: 6;
+      GUILD_STAGE: 13;
     };
     GATEWAY_VERSION: 6;
     GatewayOPCodes: {
@@ -2346,6 +2348,11 @@ declare namespace Eris {
     on: StreamEvents<this>;
   }
 
+  export class StageChannel extends VoiceChannel {
+    topic?: string;
+    type: 13;
+  }
+
   export class StoreChannel extends GuildChannel {
     type: 6;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
@@ -2427,7 +2434,7 @@ declare namespace Eris {
   export class VoiceChannel extends GuildChannel implements Invitable {
     bitrate: number;
     rtcRegion: string | null;
-    type: 2;
+    type: 2 | 13;
     userLimit: number;
     videoQualityMode: 1 | 2;
     voiceMembers: Collection<Member>;
@@ -2486,6 +2493,7 @@ declare namespace Eris {
     deaf: boolean;
     id: string;
     mute: boolean;
+    requestToSpeakTimestamp: number | null;
     selfDeaf: boolean;
     selfMute: boolean;
     selfStream: boolean;
