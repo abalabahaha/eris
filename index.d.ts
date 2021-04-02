@@ -13,7 +13,8 @@ declare namespace Eris {
   // TYPES
   // Channel
   type AnyChannel = AnyGuildChannel | PrivateChannel;
-  type AnyGuildChannel = GuildTextableChannel | VoiceChannel | CategoryChannel | StoreChannel;
+  type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel | StoreChannel;
+  type AnyVoiceChannel = VoiceChannel | StageChannel;
   type ChannelTypes = Constants["ChannelTypes"][keyof Constants["ChannelTypes"]];
   type GuildTextableChannel = TextChannel | NewsChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel>;
@@ -506,11 +507,11 @@ declare namespace Eris {
       event: "userUpdate",
       listener: (user: User, oldUser: PartialUser | null) => void
     ): T;
-    (event: "voiceChannelJoin", listener: (member: Member, newChannel: VoiceChannel | StageChannel) => void): T;
-    (event: "voiceChannelLeave", listener: (member: Member, oldChannel: VoiceChannel | StageChannel) => void): T;
+    (event: "voiceChannelJoin", listener: (member: Member, newChannel: AnyVoiceChannel) => void): T;
+    (event: "voiceChannelLeave", listener: (member: Member, oldChannel: AnyVoiceChannel) => void): T;
     (
       event: "voiceChannelSwitch",
-      listener: (member: Member, newChannel: VoiceChannel | StageChannel, oldChannel: VoiceChannel | StageChannel) => void
+      listener: (member: Member, newChannel: AnyVoiceChannel, oldChannel: AnyVoiceChannel) => void
     ): T;
     (event: "voiceStateUpdate", listener: (member: Member, oldState: OldVoiceState) => void): T;
     (event: "warn" | "debug", listener: (message: string, id: number) => void): T;
