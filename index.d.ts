@@ -103,6 +103,7 @@ declare namespace Eris {
     icon?: string;
     name?: string;
     ownerID?: string;
+    rtcRegion?: string | null;
   }
   export interface GuildTextable extends Textable {
     lastPinTimestamp: number | null;
@@ -402,6 +403,7 @@ declare namespace Eris {
     permissionOverwrites: Collection<PermissionOverwrite>;
     rateLimitPerUser?: number;
     position: number;
+    rtcRegion?: string | null;
     topic?: string;
     type: Exclude<ChannelTypes, 1 | 3>;
     userLimit?: number;
@@ -2420,6 +2422,7 @@ declare namespace Eris {
 
   export class VoiceChannel extends GuildChannel implements Invitable {
     bitrate: number;
+    rtcRegion: string | null;
     type: 2;
     userLimit: number;
     voiceMembers: Collection<Member>;
