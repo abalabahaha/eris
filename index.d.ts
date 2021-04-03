@@ -1089,9 +1089,15 @@ declare namespace Eris {
       manageChannels: 16n;
       manageGuild: 32n;
       addReactions: 64n;
+      viewAuditLog: 128n;
+      /** @deprecated */
       viewAuditLogs: 128n;
       voicePrioritySpeaker: 256n;
+      voiceStream: 512n;
+      /** @deprecated */
       stream: 512n;
+      viewChannel: 1024n;
+      /** @deprecated */
       readMessages: 1024n;
       sendMessages: 2048n;
       sendTTSMessages: 4096n;
@@ -1100,6 +1106,8 @@ declare namespace Eris {
       attachFiles: 32768n;
       readMessageHistory: 65536n;
       mentionEveryone: 131072n;
+      useExternalEmojis: 262144n;
+      /** @deprecated */
       externalEmojis: 262144n;
       viewGuildInsights: 524288n;
       voiceConnect: 1048576n;
