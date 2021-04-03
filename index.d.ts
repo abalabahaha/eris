@@ -755,12 +755,13 @@ declare namespace Eris {
     repliedUser?: boolean;
   }
   interface Attachment {
+    content_type?: string;
     filename: string;
+    height?: number;
     id: string;
     proxy_url: string;
     size: number;
     url: string;
-    height?: number;
     width?: number;
   }
   interface MessageActivity {
