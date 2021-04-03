@@ -65,7 +65,7 @@ declare namespace Eris {
   type ConverterCommand = "./ffmpeg" | "./avconv" | "ffmpeg" | "avconv";
 
   // Webhook
-  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds">;
+  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions">;
 
   // INTERFACES
   // Internals
@@ -912,7 +912,7 @@ declare namespace Eris {
     avatarURL?: string;
     content?: string;
     embeds?: EmbedOptions[];
-    file?: { file: Buffer; name: string } | { file: Buffer; name: string }[];
+    file?: MessageFile | MessageFile[];
     tts?: boolean;
     username?: string;
     wait?: boolean;
