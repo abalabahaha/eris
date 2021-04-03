@@ -2162,8 +2162,8 @@ declare namespace Eris {
   }
 
   export class Permission extends Base {
-    allow: BigInt;
-    deny: BigInt;
+    allow: bigint;
+    deny: bigint;
     json: Record<keyof Constants["Permissions"], boolean>;
     constructor(allow: number | string, deny: number | string);
     has(permission: keyof Constants["Permissions"]): boolean;
