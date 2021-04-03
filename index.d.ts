@@ -858,7 +858,7 @@ declare namespace Eris {
     hoist?: boolean;
     mentionable?: boolean;
     name?: string;
-    permissions?: number;
+    permissions?: bigint;
   }
 
   // Voice
@@ -1501,8 +1501,8 @@ declare namespace Eris {
     editChannelPermission(
       channelID: string,
       overwriteID: string,
-      allow: number,
-      deny: number,
+      allow: bigint,
+      deny: bigint,
       type: string,
       reason?: string
     ): Promise<void>;
@@ -1963,8 +1963,8 @@ declare namespace Eris {
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
     editPermission(
       overwriteID: string,
-      allow: number,
-      deny: number,
+      allow: bigint,
+      deny: bigint,
       type: PermissionType,
       reason?: string
     ): Promise<PermissionOverwrite>;
