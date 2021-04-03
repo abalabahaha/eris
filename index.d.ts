@@ -188,15 +188,14 @@ declare namespace Eris {
     opusOnly?: boolean;
     /** @deprecated */
     ratelimiterOffset?: number;
-    /** @deprecated */
     requestTimeout?: number;
     reconnectDelay?: ReconnectDelayFunction;
-    rest?: ClientRESTOptions;
+    rest?: RequestHandlerOptions;
     restMode?: boolean;
     seedVoiceConnections?: boolean;
     ws?: unknown;
   }
-  interface ClientRESTOptions {
+  interface RequestHandlerOptions {
     agent?: HTTPSAgent;
     baseURL?: string;
     disableLatencyCompensation?: boolean;
@@ -1341,7 +1340,6 @@ declare namespace Eris {
     requestHandler: RequestHandler;
     shards: ShardManager;
     startTime: number;
-    token?: string;
     unavailableGuilds: Collection<UnavailableGuild>;
     uptime: number;
     user: ExtendedUser;
@@ -2229,14 +2227,14 @@ declare namespace Eris {
   }
 
   export class RequestHandler implements SimpleJSON {
-    agent: HTTPSAgent;
-    baseURL: string;
     globalBlock: boolean;
     latencyRef: LatencyRef;
+    options: RequestHandlerOptions;
     ratelimits: { [route: string]: SequentialBucket };
     readyQueue: (() => void)[];
-    requestTimeout: number;
     userAgent: string;
+    constructor(client: Client, options?: RequestHandlerOptions);
+    /** @deprecated */
     constructor(client: Client, forceQueueing?: boolean);
     globalUnblock(): void;
     request(method: RequestMethod, url: string, auth?: boolean, body?: { [s: string]: unknown }, file?: MessageFile, _route?: string, short?: boolean): Promise<Record<string, unknown>>;
