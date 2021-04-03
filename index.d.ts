@@ -1113,10 +1113,11 @@ declare namespace Eris {
       manageRoles: 268435456n;
       manageWebhooks: 536870912n;
       manageEmojis: 1073741824n;
+      useSlashCommands: 2147483648n;
       allGuild: 2080899262n;
-      allText: 805829713n;
+      allText: 2953313361n;
       allVoice: 334497553n;
-      all: 2147483647n;
+      all: 4294967295n;
     };
     REST_VERSION: 7;
     StickerFormats: {
