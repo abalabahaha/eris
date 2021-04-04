@@ -609,6 +609,10 @@ declare namespace Eris {
     guild_id: string;
     category_id: number;
   }
+  interface GuildVanity {
+    code: string | null;
+    uses: number;
+  }
   interface GetGuildIntegrationsOptions {
     includeApplications?: boolean;
   }
@@ -1518,6 +1522,7 @@ declare namespace Eris {
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<void>;
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
+    editGuildVanity(guildID: string, code: string): Promise<GuildVanity>;
     editGuildWidget(guildID: string, options: Widget): Promise<Widget>
     editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
@@ -1532,7 +1537,6 @@ declare namespace Eris {
     editSelfSettings(data: UserSettings): Promise<UserSettings>;
     editStatus(status?: Status, game?: ActivityPartial<BotActivityType>): void;
     editUserNote(userID: string, note: string): Promise<void>;
-    editVanity(guildID: string, code: string): Promise<{ code?: string; uses?: number }>;
     editWebhook(
       webhookID: string,
       options: WebhookOptions,
@@ -1572,7 +1576,7 @@ declare namespace Eris {
     getGuildPreview(guildID: string): Promise<GuildPreview>;
     getGuildTemplate(code: string): Promise<GuildTemplate>;
     getGuildTemplates(guildID: string): Promise<GuildTemplate[]>;
-    getGuildVanity(guildID: string): Promise<{ code?: string; uses?: number }>;
+    getGuildVanity(guildID: string): Promise<GuildVanity>;
     getGuildWebhooks(guildID: string): Promise<Webhook[]>;
     getGuildWidget(guildID: string): Promise<Widget>;
     getInvite(inviteID: string, withCounts?: false): Promise<Invite<"withoutCount">>;
@@ -1895,7 +1899,7 @@ declare namespace Eris {
     editNickname(nick: string): Promise<void>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     editTemplate(code: string, options: GuildTemplateOptions): Promise<GuildTemplate>
-    editVanity(code: string): Promise<{ code?: string; uses?: number }>;
+    editVanity(code: string): Promise<GuildVanity>;
     editWidget(options: Widget): Promise<Widget>;
     fetchAllMembers(timeout?: number): Promise<number>;
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
@@ -1915,7 +1919,7 @@ declare namespace Eris {
     getRESTMembers(limit?: number, after?: string): Promise<Member[]>;
     getRESTRoles(): Promise<Role[]>;
     getTemplates(): Promise<GuildTemplate[]>;
-    getVanity(): Promise<{ code?: string; uses?: number }>;
+    getVanity(): Promise<GuildVanity>;
     getVoiceRegions(): Promise<VoiceRegion[]>;
     getWebhooks(): Promise<Webhook[]>;
     getWidget(): Promise<Widget>;
