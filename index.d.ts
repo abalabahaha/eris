@@ -609,10 +609,6 @@ declare namespace Eris {
     guild_id: string;
     category_id: number;
   }
-  interface GuildVanity {
-    code: string | null;
-    uses: number;
-  }
   interface GetGuildIntegrationsOptions {
     includeApplications?: boolean;
   }
@@ -625,6 +621,10 @@ declare namespace Eris {
     integrations: GuildIntegration[];
     users: User[];
     webhooks: Webhook[];
+  }
+  interface GuildVanity {
+    code: string | null;
+    uses: number;
   }
   interface IntegrationApplication {
     bot?: User;
