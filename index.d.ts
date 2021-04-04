@@ -2132,7 +2132,7 @@ declare namespace Eris {
     referencedMessage?: Message | null;
     roleMentions: string[];
     stickers?: Sticker[];
-    interaction?: MessageInteraction;
+    interaction: MessageInteraction | null;
     timestamp: number;
     tts: boolean;
     type: number;
