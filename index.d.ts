@@ -803,7 +803,7 @@ declare namespace Eris {
     type: InteractionType;
     name: string;
     user: User;
-    member?: Member;
+    member: Member | null;
   }
 
   // Presence
