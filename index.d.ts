@@ -1532,6 +1532,7 @@ declare namespace Eris {
     editSelfSettings(data: UserSettings): Promise<UserSettings>;
     editStatus(status?: Status, game?: ActivityPartial<BotActivityType>): void;
     editUserNote(userID: string, note: string): Promise<void>;
+    editVanityURL(guildID:string, code: string): Promise<{ code?: string; uses?: number }>;
     editWebhook(
       webhookID: string,
       options: WebhookOptions,
@@ -1894,6 +1895,7 @@ declare namespace Eris {
     editNickname(nick: string): Promise<void>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     editTemplate(code: string, options: GuildTemplateOptions): Promise<GuildTemplate>
+    editVanityURL(code: string): Promise<{ code?: string; uses?: number }>;
     editWidget(options: Widget): Promise<Widget>;
     fetchAllMembers(timeout?: number): Promise<number>;
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
