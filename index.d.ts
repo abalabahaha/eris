@@ -941,7 +941,7 @@ declare namespace Eris {
   interface OAuthTeamInfo {
     icon: string | null;
     id: string;
-    members: OAuthTeamMember;
+    members: OAuthTeamMember[];
     owner_user_id: string;
   }
   interface OAuthTeamMember {
