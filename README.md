@@ -1,18 +1,18 @@
-Eris [![NPM version](https://img.shields.io/npm/v/eris.svg?style=flat-square)](https://npmjs.com/package/eris)
+Eris [![NPM version](https://img.shields.io/npm/v/eris.svg?style=flat-square&color=informational)](https://npmjs.com/package/eris)
 ====
 
-A NodeJS wrapper for interfacing with Discord.
+A Node.js wrapper for interfacing with Discord.
 
 Installing
 ----------
 
-You will need NodeJS 8+. If you need voice support you will also need Python 2.7 and a C++ compiler. Refer to [the Getting Started section of the docs](https://abal.moe/Eris/docs.html) for more details.
+You will need NodeJS 10.4+. If you need voice support you will also need Python 2.7 and a C++ compiler. Refer to [the Getting Started section of the docs](https://abal.moe/Eris/docs) for more details.
 
 ```
 npm install --no-optional eris
 ```
 
-If you need voice support, remove the `--no-optional`
+If you need voice support, remove the `--no-optional`.
 
 Ping Pong Example
 -----------------
@@ -20,8 +20,8 @@ Ping Pong Example
 ```js
 const Eris = require("eris");
 
-var bot = new Eris("BOT_TOKEN");
-// Replace BOT_TOKEN with your bot account's token
+var bot = new Eris("Bot TOKEN");
+// Replace TOKEN with your bot account's token
 
 bot.on("ready", () => { // When the bot is ready
     console.log("Ready!"); // Log "Ready!"
@@ -45,13 +45,10 @@ More examples can be found in [the examples folder](https://github.com/abalabaha
 Useful Links
 ------------
 
-[The website](https://abal.moe/Eris) includes more detailed information on getting started, as well as documentation for the different components.
-
-[The Discord API channel (#js_eris)](https://abal.moe/Eris/invite) is the best place to get support/contact me.
-
-[The GitHub repo](https://github.com/abalabahaha/eris) has the most updated code.
-
-[The NPM package](https://npmjs.com/package/eris)
+- [The website](https://abal.moe/Eris/) has more details and documentation.
+- [The Discord API channel (#js_eris)](https://abal.moe/Eris/invite) is the best place to get support/contact me.
+- [The GitHub repo](https://github.com/abalabahaha/eris) is where development primarily happens.
+- [The NPM package webpage](https://npmjs.com/package/eris) is, well, the webpage for the NPM package.
 
 License
 -------
