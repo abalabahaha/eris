@@ -839,8 +839,8 @@ declare namespace Eris {
 
   // Role
   interface Overwrite {
-    allow: number;
-    deny: number;
+    allow: bigint | number;
+    deny: bigint | number;
     id: string;
     type: PermissionType;
   }
