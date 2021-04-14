@@ -682,6 +682,9 @@ declare namespace Eris {
     description: string;
     welcomeChannels: WelcomeChannel[];
   }
+  interface WelcomeScreenOptions extends WelcomeScreen {
+    enabled: boolean;
+  }
   interface VoiceRegion {
     custom: boolean;
     deprecated: boolean;
@@ -1523,7 +1526,8 @@ declare namespace Eris {
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<void>;
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
     editGuildVanity(guildID: string, code: string): Promise<GuildVanity>;
-    editGuildWidget(guildID: string, options: Widget): Promise<Widget>
+    editGuildWelcomeScreen(guildID: string, options: WelcomeScreenOptions): Promise<WelcomeScreen>;
+    editGuildWidget(guildID: string, options: Widget): Promise<Widget>;
     editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
@@ -1578,6 +1582,7 @@ declare namespace Eris {
     getGuildTemplates(guildID: string): Promise<GuildTemplate[]>;
     getGuildVanity(guildID: string): Promise<GuildVanity>;
     getGuildWebhooks(guildID: string): Promise<Webhook[]>;
+    getGuildWelcomeScreen(guildID: string): Promise<WelcomeScreen>;
     getGuildWidget(guildID: string): Promise<Widget>;
     getInvite(inviteID: string, withCounts?: false): Promise<Invite<"withoutCount">>;
     getInvite(inviteID: string, withCounts: true): Promise<Invite<"withCount">>;
@@ -1900,6 +1905,7 @@ declare namespace Eris {
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     editTemplate(code: string, options: GuildTemplateOptions): Promise<GuildTemplate>
     editVanity(code: string): Promise<GuildVanity>;
+    editWelcomeScreen(options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editWidget(options: Widget): Promise<Widget>;
     fetchAllMembers(timeout?: number): Promise<number>;
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
@@ -1922,6 +1928,7 @@ declare namespace Eris {
     getVanity(): Promise<GuildVanity>;
     getVoiceRegions(): Promise<VoiceRegion[]>;
     getWebhooks(): Promise<Webhook[]>;
+    getWelcomeScreen(): Promise<WelcomeScreen>;
     getWidget(): Promise<Widget>;
     kickMember(userID: string, reason?: string): Promise<void>;
     leave(): Promise<void>;
