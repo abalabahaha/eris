@@ -51,6 +51,7 @@ declare namespace Eris {
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: { id: string } }; guildID?: string; id: string };
+  type InteractionType = 1 | 2;
 
   // Permission
   type PermissionType = "role" | "member";
@@ -800,6 +801,13 @@ declare namespace Eris {
     asset: string;
     preview_asset?: string;
     format_type: Constants["StickerFormats"][keyof Constants["StickerFormats"]];
+  }
+  interface MessageInteraction {
+    id: string;
+    type: InteractionType;
+    name: string;
+    user: User;
+    member: Member | null;
   }
 
   // Presence
@@ -2130,6 +2138,7 @@ declare namespace Eris {
     referencedMessage?: Message | null;
     roleMentions: string[];
     stickers?: Sticker[];
+    interaction: MessageInteraction | null;
     timestamp: number;
     tts: boolean;
     type: number;
