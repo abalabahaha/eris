@@ -6,9 +6,10 @@ plugins:
   - "sort-class-members"
 extends: "eslint:recommended"
 globals:
+  BigInt: true
   window: true
 parserOptions:
-  ecmaVersion: 2018
+  ecmaVersion: 2020
 rules:
   array-bracket-spacing:
     - 2

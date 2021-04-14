@@ -1,6 +1,6 @@
 {
   "name": "eris",
-  "version": "0.14.0",
+  "version": "0.15.1-dev",
   "description": "A NodeJS Discord library",
   "main": "./index.js",
   "exports": {
@@ -16,7 +16,7 @@
   },
   "typings": "./index.d.ts",
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.4.0"
   },
   "scripts": {
     "lint:js": "eslint -c .eslintrc.yml lib examples *.js",
