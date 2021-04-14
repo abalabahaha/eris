@@ -903,6 +903,11 @@ declare namespace Eris {
     guild_id: string;
     shard: Shard;
   }
+  interface VoiceStateOptions {
+    channelID: string;
+    requestToSpeakTimestamp?: Date | null;
+    suppress?: boolean;
+  }
   interface VoiceStreamCurrent {
     options: VoiceResourceOptions;
     pausedTime?: number;
@@ -1420,6 +1425,12 @@ declare namespace Eris {
     createChannel(
       guildID: string,
       name: string,
+      type: 13,
+      options?: CreateChannelOptions
+    ): Promise<StageChannel>;
+    createChannel(
+      guildID: string,
+      name: string,
       type?: number,
       options?: CreateChannelOptions
     ): Promise<unknown>;
@@ -1463,6 +1474,14 @@ declare namespace Eris {
       reason?: string,
       options?: CreateChannelOptions | string
     ): Promise<StoreChannel>;
+    /** @deprecated */
+    createChannel(
+      guildID: string,
+      name: string,
+      type: 13,
+      reason?: string,
+      options?: CreateChannelOptions | string
+    ): Promise<StageChannel>;
     /** @deprecated */
     createChannel(
       guildID: string,
@@ -1534,6 +1553,7 @@ declare namespace Eris {
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<void>;
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
     editGuildVanity(guildID: string, code: string): Promise<GuildVanity>;
+    editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
     editGuildWidget(guildID: string, options: Widget): Promise<Widget>
     editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
@@ -1875,6 +1895,7 @@ declare namespace Eris {
     createChannel(name: string, type: 4, options?: CreateChannelOptions): Promise<CategoryChannel>;
     createChannel(name: string, type: 5, options?: CreateChannelOptions | string): Promise<NewsChannel>;
     createChannel(name: string, type: 6, options?: CreateChannelOptions | string): Promise<StoreChannel>;
+    createChannel(name: string, type: 13, options?: CreateChannelOptions | string): Promise<StageChannel>;
     createChannel(name: string, type?: number, options?: CreateChannelOptions): Promise<unknown>;
     /** @deprecated */
     createChannel(name: string, type: 0, reason?: string, options?: CreateChannelOptions | string): Promise<TextChannel>;
@@ -1886,6 +1907,8 @@ declare namespace Eris {
     createChannel(name: string, type: 5, reason?: string, options?: CreateChannelOptions | string): Promise<NewsChannel>;
     /** @deprecated */
     createChannel(name: string, type: 6, reason?: string, options?: CreateChannelOptions | string): Promise<StoreChannel>;
+    /** @deprecated */
+    createChannel(name: string, type: 13, reason?: string, options?: CreateChannelOptions | string): Promise<StageChannel>;
     /** @deprecated */
     createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
     createEmoji(options: { image: string; name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
@@ -1908,8 +1931,9 @@ declare namespace Eris {
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<void>;
     editNickname(nick: string): Promise<void>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
-    editTemplate(code: string, options: GuildTemplateOptions): Promise<GuildTemplate>
+    editTemplate(code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
     editVanity(code: string): Promise<GuildVanity>;
+    editVoiceState(options: VoiceStateOptions, userID?: string): Promise<void>;
     editWidget(options: Widget): Promise<Widget>;
     fetchAllMembers(timeout?: number): Promise<number>;
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
