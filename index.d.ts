@@ -394,6 +394,7 @@ declare namespace Eris {
     maxVideoChannelUsers?: number;
     mfaLevel: 0 | 1;
     name: string;
+    nsfw: boolean;
     ownerID: string;
     preferredLocale?: string;
     premiumSubscriptionCount?: number;
@@ -1840,6 +1841,7 @@ declare namespace Eris {
     members: Collection<Member>;
     mfaLevel: number;
     name: string;
+    nsfw: boolean;
     ownerID: string;
     preferredLocale: string;
     premiumSubscriptionCount?: number;
