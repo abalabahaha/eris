@@ -807,7 +807,6 @@ declare namespace Eris {
     id: string;
     name: string;
     pack_id: string;
-    preview_asset?: string;
     tags?: string;
   }
   interface MessageInteraction {
