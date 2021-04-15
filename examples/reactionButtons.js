@@ -11,6 +11,10 @@ bot.on("ready", () => { // When the bot is ready
     console.log("Ready!"); // Log "Ready!"
 });
 
+bot.on("error", (err) => {
+    console.error(err); // or your preferred logger
+});
+
 bot.registerCommand("ping", "Pong!", { // Make a ping command
 // Responds with "Pong!" when someone says "!ping"
     description: "Pong!",

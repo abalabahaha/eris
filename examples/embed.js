@@ -7,6 +7,10 @@ bot.on("ready", () => { // When the bot is ready
     console.log("Ready!"); // Log "Ready!"
 });
 
+bot.on("error", (err) => {
+    console.error(err); // or your preferred logger
+});
+
 bot.on("messageCreate", (msg) => { // When a message is created
     if(msg.content === "!embed") { // If the message content is "!embed"
         bot.createMessage(msg.channel.id, {
