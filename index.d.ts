@@ -2205,7 +2205,7 @@ declare namespace Eris {
     allow: bigint;
     deny: bigint;
     json: Record<keyof Constants["Permissions"], boolean>;
-    constructor(allow: number | string, deny?: number | string);
+    constructor(allow: number | string | bigint, deny?: number | string | bigint);
     has(permission: keyof Constants["Permissions"]): boolean;
   }
 
