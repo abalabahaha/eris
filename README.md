@@ -20,7 +20,7 @@ Ping Pong Example
 ```js
 const Eris = require("eris");
 
-const bot = new Eris("Bot TOKEN");
+var bot = new Eris("Bot TOKEN");
 // Replace TOKEN with your bot account's token
 
 bot.on("ready", () => { // When the bot is ready
