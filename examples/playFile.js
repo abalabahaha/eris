@@ -9,6 +9,10 @@ bot.on("ready", () => { // When the bot is ready
     console.log("Ready!"); // Log "Ready!"
 });
 
+bot.on("error", (err) => {
+    console.error(err); // or your preferred logger
+});
+
 bot.on("messageCreate", (msg) => { // When a message is created
     if(msg.content.startsWith(playCommand)) { // If the message content starts with "!play "
         if(msg.content.length <= playCommand.length + 1) { // Check if a filename was specified
