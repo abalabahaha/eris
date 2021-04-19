@@ -48,6 +48,8 @@ declare namespace Eris {
     content?: string;
     embed?: EmbedOptions;
     flags?: number;
+    messageReference?: string | MessageReferenceReply;
+    /** @deprecated */
     messageReferenceID?: string;
     tts?: boolean;
   };
@@ -802,6 +804,10 @@ declare namespace Eris {
     channelID?: string;
     guildID?: string;
     messageID?: string;
+  }
+  interface MessageReferenceReply extends MessageReferenceBase {
+    messageID: string;
+    failIfNotExists?: boolean;
   }
   interface Sticker {
     asset: string;
