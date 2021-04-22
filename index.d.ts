@@ -45,12 +45,15 @@ declare namespace Eris {
   // Message
   type AdvancedMessageContent = {
     allowedMentions?: AllowedMentions;
+    component?: CollectionComponent[];
     content?: string;
     embed?: EmbedOptions;
     flags?: number;
     messageReferenceID?: string;
     tts?: boolean;
   };
+  type ButtonComponent = InteractionButtonComponent | URLButtonComponent;
+  type Component = CollectionComponent | ButtonComponent;
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
@@ -780,6 +783,18 @@ declare namespace Eris {
     url: string;
     width?: number;
   }
+  interface ButtonComponentBase {
+    label: string;
+    type: 2;
+  }
+  interface CollectionComponent {
+    type: 1;
+    components: Component[];
+  }
+  interface InteractionButtonComponent extends ButtonComponentBase {
+    custom_id: string;
+    style: 1 | 2 | 3 | 4;
+  }
   interface MessageActivity {
     party_id?: string;
     type: Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
@@ -818,6 +833,10 @@ declare namespace Eris {
     name: string;
     user: User;
     member: Member | null;
+  }
+  interface URLButtonComponent extends ButtonComponentBase {
+    style: 5;
+    url: string;
   }
 
   // Presence
@@ -2153,6 +2172,7 @@ declare namespace Eris {
     /** @deprecated */
     cleanContent: string;
     command?: Command;
+    components: CollectionComponent[];
     content: string;
     createdAt: number;
     editedTimestamp?: number;
