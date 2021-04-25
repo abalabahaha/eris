@@ -1938,9 +1938,10 @@ declare namespace Eris {
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     editTemplate(code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
     editVanity(code: string): Promise<GuildVanity>;
+    editVoiceState(options: VoiceStateOptions, userID?: string): Promise<void>;
     editWelcomeScreen(options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editWidget(options: Widget): Promise<Widget>;
-    editVoiceState(options: VoiceStateOptions, userID?: string): Promise<void>;
+
     fetchAllMembers(timeout?: number): Promise<number>;
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
     getAuditLogs(limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
@@ -2160,6 +2161,7 @@ declare namespace Eris {
     flags: number;
     guildID: T extends GuildTextable ? string : undefined;
     id: string;
+    interaction: MessageInteraction | null;
     jumpLink: string;
     member: T extends GuildTextable ? Member : null;
     mentionEveryone: boolean;
@@ -2171,7 +2173,7 @@ declare namespace Eris {
     referencedMessage?: Message | null;
     roleMentions: string[];
     stickers?: Sticker[];
-    interaction: MessageInteraction | null;
+
     timestamp: number;
     tts: boolean;
     type: number;
