@@ -882,6 +882,11 @@ declare namespace Eris {
     name?: string;
     permissions?: bigint | number;
   }
+  interface RoleTags {
+    bot_id?: string;
+    integration_id?: string;
+    premium_subscriber?: boolean;
+  }
 
   // Voice
   interface VoiceConnectData {
@@ -2316,6 +2321,7 @@ declare namespace Eris {
     name: string;
     permissions: Permission;
     position: number;
+    tags?: RoleTags;
     constructor(data: BaseData, guild: Guild);
     delete(reason?: string): Promise<void>;
     edit(options: RoleOptions, reason?: string): Promise<Role>;
