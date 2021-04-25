@@ -48,7 +48,7 @@ declare namespace Eris {
     content?: string;
     embed?: EmbedOptions;
     flags?: number;
-    messageReference?: string | MessageReferenceReply;
+    messageReference?: MessageReferenceReply;
     /** @deprecated */
     messageReferenceID?: string;
     tts?: boolean;
