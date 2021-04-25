@@ -153,6 +153,7 @@ declare namespace Eris {
       messageID: string,
       reaction: string,
       limit?: number,
+      /** @deprecated */
       before?: string,
       after?: string
     ): Promise<User[]>;
@@ -1627,6 +1628,7 @@ declare namespace Eris {
       messageID: string,
       reaction: string,
       limit?: number,
+      /** @deprecated */
       before?: string,
       after?: string
     ): Promise<User[]>;
@@ -2192,7 +2194,13 @@ declare namespace Eris {
     deleteWebhook(token: string): Promise<void>;
     edit(content: MessageContent): Promise<Message<T>>;
     editWebhook(token: string, options: MessageWebhookContent): Promise<Message<T>>;
-    getReaction(reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
+    getReaction(
+      reaction: string,
+      limit?: number,
+      /** @deprecated */
+      before?: string,
+      after?: string
+    ): Promise<User[]>;
     pin(): Promise<void>;
     removeReaction(reaction: string, userID?: string): Promise<void>;
     removeReactionEmoji(reaction: string): Promise<void>;
@@ -2263,6 +2271,7 @@ declare namespace Eris {
       messageID: string,
       reaction: string,
       limit?: number,
+      /** @deprecated */
       before?: string,
       after?: string
     ): Promise<User[]>;
@@ -2446,6 +2455,7 @@ declare namespace Eris {
       messageID: string,
       reaction: string,
       limit?: number,
+      /** @deprecated */
       before?: string,
       after?: string
     ): Promise<User[]>;
