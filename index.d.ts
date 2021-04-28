@@ -3,6 +3,7 @@ import { Duplex, Readable as ReadableStream, Stream } from "stream";
 import { Agent as HTTPSAgent } from "https";
 import { IncomingMessage, ClientRequest } from "http";
 import OpusScript = require("opusscript"); // Thanks TypeScript
+import { URL } from "url";
 
 declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
 
@@ -909,7 +910,8 @@ declare namespace Eris {
     frameSize?: number;
     inlineVolume?: boolean;
     inputArgs?: string[];
-    sampleRate?: number;
+    pcmSize?: number;
+    samplingRate?: number;
     voiceDataTimeout?: number;
   }
   interface VoiceServerUpdateData extends Omit<VoiceConnectData, "channel_id"> {
@@ -922,11 +924,14 @@ declare namespace Eris {
     suppress?: boolean;
   }
   interface VoiceStreamCurrent {
-    options: VoiceResourceOptions;
+    buffer: unknown | null; // TODO check
+    bufferingTicks: number;
+    options: VoiceResourceOptions; // TODO check
     pausedTime?: number;
     pausedTimestamp?: number;
     playTime: number;
     startTime: number;
+    timeout: unknown | null; // TODO check
   }
 
   // Webhook
@@ -2520,16 +2525,46 @@ declare namespace Eris {
   }
 
   export class VoiceConnection extends EventEmitter implements SimpleJSON {
-    channelID: string;
+    bitrate: number;
+    channelID: string | null;
+    channels: number;
     connecting: boolean;
     connectionTimeout: NodeJS.Timeout | null;
-    current?: VoiceStreamCurrent;
+    current?: VoiceStreamCurrent | null;
+    ended?: boolean;
+    endpoint: URL;
+    frameDuration: number;
+    frameSize: number;
+    heartbeatInterval: NodeJS.Timeout | null;
     id: string;
+    mode?: string;
+    modes?: string;
+    opus: { [s: string]: unknown }; // TODO
+    opusOnly: boolean;
     paused: boolean;
+    pcmSize: number;
+    piper: Piper;
     playing: boolean;
     ready: boolean;
+    receiveStreamOpus?: VoiceDataStream | null;
+    receiveStreamPCM?: VoiceDataStream | null;
     reconnecting: boolean;
+    samplingRate: number;
+    seret: Buffer;
+    sendBuffer: Buffer;
+    sendNonce: Buffer;
+    sequence: number;
+    shard: Shard | {};
+    shared: boolean;
+    speaking: boolean;
+    ssrc?: number;
+    ssrcUserMap: { [s: number]: string };
+    timestamp: number;
+    udpIP?: string;
+    udpPort?: number;
+    udpSocket: unknown | null; // TODO Dgram.Socket
     volume: number;
+    ws: BrowserWebSocket | unknown | null; // TODO No WS typings, might need npm i?
     constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean });
     connect(data: VoiceConnectData): NodeJS.Timer | void;
     disconnect(error?: Error, reconnecting?: boolean): void;
