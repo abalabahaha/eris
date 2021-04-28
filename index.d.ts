@@ -1566,7 +1566,7 @@ declare namespace Eris {
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<void>;
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
-    editGuildVanity(guildID: string, code: string): Promise<GuildVanity>;
+    editGuildVanity(guildID: string, code: string | null): Promise<GuildVanity>;
     editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
     editGuildWelcomeScreen(guildID: string, options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editGuildWidget(guildID: string, options: Widget): Promise<Widget>;
