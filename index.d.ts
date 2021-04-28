@@ -561,7 +561,6 @@ declare namespace Eris {
   interface LatencyRef {
     lastTimeOffsetCheck: number;
     latency: number;
-    offset: number;
     raw: number[];
     timeOffset: number;
     timeOffsets: number[];
@@ -1298,6 +1297,7 @@ declare namespace Eris {
     createdAt: number;
     id: string;
     constructor(id: string);
+    static getCreatedAt(id: string): number;
     inspect(): this;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
