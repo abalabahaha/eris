@@ -1902,7 +1902,6 @@ declare namespace Eris {
     welcomeScreen?: WelcomeScreen;
     widgetChannelID?: string | null;
     widgetEnabled?: boolean | null;
-
     constructor(data: BaseData, client: Client);
     addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
@@ -1954,7 +1953,6 @@ declare namespace Eris {
     editVoiceState(options: VoiceStateOptions, userID?: string): Promise<void>;
     editWelcomeScreen(options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editWidget(options: Widget): Promise<Widget>;
-
     fetchAllMembers(timeout?: number): Promise<number>;
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
     getAuditLogs(limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
@@ -2075,7 +2073,6 @@ declare namespace Eris {
     dynamicDiscoverySplashURL(format?: ImageFormat, size?: number): string;
     dynamicIconURL(format?: ImageFormat, size?: number): string;
     dynamicSplashURL(format?: ImageFormat, size?: number): string;
-
   }
 
   export class GuildTemplate {
@@ -2186,7 +2183,6 @@ declare namespace Eris {
     referencedMessage?: Message | null;
     roleMentions: string[];
     stickers?: Sticker[];
-
     timestamp: number;
     tts: boolean;
     type: number;
