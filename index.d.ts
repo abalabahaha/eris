@@ -798,6 +798,13 @@ declare namespace Eris {
     file: Buffer | string;
     name: string;
   }
+  interface MessageInteraction {
+    id: string;
+    member: Member | null;
+    name: string;
+    type: InteractionType;
+    user: User;
+  }
   interface MessageReference extends MessageReferenceBase {
     channelID: string;
   }
@@ -818,13 +825,6 @@ declare namespace Eris {
     name: string;
     pack_id: string;
     tags?: string;
-  }
-  interface MessageInteraction {
-    id: string;
-    type: InteractionType;
-    name: string;
-    user: User;
-    member: Member | null;
   }
 
   // Presence
