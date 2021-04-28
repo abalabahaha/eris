@@ -2550,11 +2550,11 @@ declare namespace Eris {
     receiveStreamPCM?: VoiceDataStream | null;
     reconnecting: boolean;
     samplingRate: number;
-    seret: Buffer;
     sendBuffer: Buffer;
     sendNonce: Buffer;
     sequence: number;
-    shard: Shard | {};
+    seret: Buffer;
+    shard: Shard | Record<string, never>;
     shared: boolean;
     speaking: boolean;
     ssrc?: number;
