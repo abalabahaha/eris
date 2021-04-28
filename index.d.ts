@@ -926,7 +926,7 @@ declare namespace Eris {
   interface VoiceStreamCurrent {
     buffer: unknown | null; // TODO check
     bufferingTicks: number;
-    options: VoiceResourceOptions; // TODO check
+    options: VoiceResourceOptions;
     pausedTime?: number;
     pausedTimestamp?: number;
     playTime: number;
