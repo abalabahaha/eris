@@ -2522,6 +2522,7 @@ declare namespace Eris {
   export class VoiceConnection extends EventEmitter implements SimpleJSON {
     channelID: string;
     connecting: boolean;
+    connectionTimeout: NodeJS.Timeout | null;
     current?: VoiceStreamCurrent;
     id: string;
     paused: boolean;
