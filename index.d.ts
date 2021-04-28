@@ -2528,6 +2528,7 @@ declare namespace Eris {
     paused: boolean;
     playing: boolean;
     ready: boolean;
+    reconnecting: boolean;
     volume: number;
     constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean });
     connect(data: VoiceConnectData): NodeJS.Timer | void;
