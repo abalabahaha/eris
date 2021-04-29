@@ -4,7 +4,7 @@ import { Agent as HTTPSAgent } from "https";
 import { IncomingMessage, ClientRequest } from "http";
 import OpusScript = require("opusscript"); // Thanks TypeScript
 import { URL } from "url";
-import { Socket } from "dgram";
+import { Socket as DgramSocket } from "dgram";
 import * as WebSocket from "ws";
 
 declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
@@ -2590,7 +2590,7 @@ declare namespace Eris {
     timestamp: number;
     udpIP?: string;
     udpPort?: number;
-    udpSocket: Socket | null;
+    udpSocket: DgramSocket | null;
     volume: number;
     ws: BrowserWebSocket | WebSocket | null;
     constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean });
