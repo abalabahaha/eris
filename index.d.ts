@@ -584,6 +584,12 @@ declare namespace Eris {
     short: boolean;
     url: string;
   }
+  interface RequestMembersPromise {
+    members: Member;
+    received: number;
+    res: (value: Member[]) => void;
+    timeout: NodeJS.Timeout;
+  }
 
   // Guild
   interface CreateGuildOptions {
@@ -2359,15 +2365,34 @@ declare namespace Eris {
 
   export class Shard extends EventEmitter implements SimpleJSON {
     client: Client;
+    connectAttempts: number;
     connecting: boolean;
+    connectTimeout: NodeJS.Timeout | null;
     discordServerTrace?: string[];
+    getAllUsersCount: { [guildID: string]: boolean };
+    getAllUsersLength: number;
+    getAllUsersQueue: string;
+    globalBucket: Bucket;
+    guildCreateTimeout: NodeJS.Timeout | null;
+    guildSyncQueue: string[];
+    guildSyncQueueLength: number;
+    heartbeatInterval: NodeJS.Timeout | null;
     id: number;
-    lastHeartbeatReceived: number;
-    lastHeartbeatSent: number;
+    lastHeartbeatAck: boolean;
+    lastHeartbeatReceived: number | null;
+    lastHeartbeatSent: number | null;
     latency: number;
+    preReady: boolean;
     presence: Presence;
+    presenceUpdateBucket: Bucket;
     ready: boolean;
+    reconnectInterval: number;
+    requestMembersPromise: { [s: string]: RequestMembersPromise };
+    seq: number;
+    sessionID: string | null;
     status: "disconnected" | "connecting" | "handshaking" | "ready" | "resuming";
+    unsyncedGuilds: number;
+    ws: WebSocket | BrowserWebSocket | null;
     constructor(id: number, client: Client);
     checkReady(): void;
     connect(): void;
