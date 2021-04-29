@@ -3,6 +3,9 @@ import { Duplex, Readable as ReadableStream, Stream } from "stream";
 import { Agent as HTTPSAgent } from "https";
 import { IncomingMessage, ClientRequest } from "http";
 import OpusScript = require("opusscript"); // Thanks TypeScript
+import { URL } from "url";
+import { Socket as DgramSocket } from "dgram";
+import * as WebSocket from "ws";
 
 declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
 
@@ -561,7 +564,6 @@ declare namespace Eris {
   interface LatencyRef {
     lastTimeOffsetCheck: number;
     latency: number;
-    offset: number;
     raw: number[];
     timeOffset: number;
     timeOffsets: number[];
@@ -581,6 +583,12 @@ declare namespace Eris {
     route: string;
     short: boolean;
     url: string;
+  }
+  interface RequestMembersPromise {
+    members: Member;
+    received: number;
+    res: (value: Member[]) => void;
+    timeout: NodeJS.Timeout;
   }
 
   // Guild
@@ -798,6 +806,13 @@ declare namespace Eris {
     file: Buffer | string;
     name: string;
   }
+  interface MessageInteraction {
+    id: string;
+    member: Member | null;
+    name: string;
+    type: InteractionType;
+    user: User;
+  }
   interface MessageReference extends MessageReferenceBase {
     channelID: string;
   }
@@ -818,13 +833,6 @@ declare namespace Eris {
     name: string;
     pack_id: string;
     tags?: string;
-  }
-  interface MessageInteraction {
-    id: string;
-    type: InteractionType;
-    name: string;
-    user: User;
-    member: Member | null;
   }
 
   // Presence
@@ -892,7 +900,7 @@ declare namespace Eris {
   interface RoleTags {
     bot_id?: string;
     integration_id?: string;
-    premium_subscriber?: boolean;
+    premium_subscriber?: true;
   }
 
   // Voice
@@ -910,7 +918,8 @@ declare namespace Eris {
     frameSize?: number;
     inlineVolume?: boolean;
     inputArgs?: string[];
-    sampleRate?: number;
+    pcmSize?: number;
+    samplingRate?: number;
     voiceDataTimeout?: number;
   }
   interface VoiceServerUpdateData extends Omit<VoiceConnectData, "channel_id"> {
@@ -923,11 +932,14 @@ declare namespace Eris {
     suppress?: boolean;
   }
   interface VoiceStreamCurrent {
+    buffer: Buffer | null;
+    bufferingTicks: number;
     options: VoiceResourceOptions;
     pausedTime?: number;
     pausedTimestamp?: number;
     playTime: number;
     startTime: number;
+    timeout: NodeJS.Timeout | null;
   }
 
   // Webhook
@@ -1298,6 +1310,7 @@ declare namespace Eris {
     createdAt: number;
     id: string;
     constructor(id: string);
+    static getCreatedAt(id: string): number;
     inspect(): this;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
@@ -1566,7 +1579,7 @@ declare namespace Eris {
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<void>;
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
-    editGuildVanity(guildID: string, code: string): Promise<GuildVanity>;
+    editGuildVanity(guildID: string, code: string | null): Promise<GuildVanity>;
     editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
     editGuildWelcomeScreen(guildID: string, options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editGuildWidget(guildID: string, options: Widget): Promise<Widget>;
@@ -1902,7 +1915,6 @@ declare namespace Eris {
     welcomeScreen?: WelcomeScreen;
     widgetChannelID?: string | null;
     widgetEnabled?: boolean | null;
-
     constructor(data: BaseData, client: Client);
     addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
@@ -1950,11 +1962,10 @@ declare namespace Eris {
     editNickname(nick: string): Promise<void>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     editTemplate(code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
-    editVanity(code: string): Promise<GuildVanity>;
+    editVanity(code: string | null): Promise<GuildVanity>;
     editVoiceState(options: VoiceStateOptions, userID?: string): Promise<void>;
     editWelcomeScreen(options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editWidget(options: Widget): Promise<Widget>;
-
     fetchAllMembers(timeout?: number): Promise<number>;
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
     getAuditLogs(limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
@@ -2075,7 +2086,6 @@ declare namespace Eris {
     dynamicDiscoverySplashURL(format?: ImageFormat, size?: number): string;
     dynamicIconURL(format?: ImageFormat, size?: number): string;
     dynamicSplashURL(format?: ImageFormat, size?: number): string;
-
   }
 
   export class GuildTemplate {
@@ -2186,7 +2196,6 @@ declare namespace Eris {
     referencedMessage?: Message | null;
     roleMentions: string[];
     stickers?: Sticker[];
-
     timestamp: number;
     tts: boolean;
     type: number;
@@ -2356,15 +2365,34 @@ declare namespace Eris {
 
   export class Shard extends EventEmitter implements SimpleJSON {
     client: Client;
+    connectAttempts: number;
     connecting: boolean;
+    connectTimeout: NodeJS.Timeout | null;
     discordServerTrace?: string[];
+    getAllUsersCount: { [guildID: string]: boolean };
+    getAllUsersLength: number;
+    getAllUsersQueue: string;
+    globalBucket: Bucket;
+    guildCreateTimeout: NodeJS.Timeout | null;
+    guildSyncQueue: string[];
+    guildSyncQueueLength: number;
+    heartbeatInterval: NodeJS.Timeout | null;
     id: number;
-    lastHeartbeatReceived: number;
-    lastHeartbeatSent: number;
+    lastHeartbeatAck: boolean;
+    lastHeartbeatReceived: number | null;
+    lastHeartbeatSent: number | null;
     latency: number;
+    preReady: boolean;
     presence: Presence;
+    presenceUpdateBucket: Bucket;
     ready: boolean;
+    reconnectInterval: number;
+    requestMembersPromise: { [s: string]: RequestMembersPromise };
+    seq: number;
+    sessionID: string | null;
     status: "disconnected" | "connecting" | "handshaking" | "ready" | "resuming";
+    unsyncedGuilds: number;
+    ws: WebSocket | BrowserWebSocket | null;
     constructor(id: number, client: Client);
     checkReady(): void;
     connect(): void;
@@ -2524,14 +2552,47 @@ declare namespace Eris {
   }
 
   export class VoiceConnection extends EventEmitter implements SimpleJSON {
-    channelID: string;
+    bitrate: number;
+    channelID: string | null;
+    channels: number;
     connecting: boolean;
-    current?: VoiceStreamCurrent;
+    connectionTimeout: NodeJS.Timeout | null;
+    current?: VoiceStreamCurrent | null;
+    ended?: boolean;
+    endpoint: URL;
+    frameDuration: number;
+    frameSize: number;
+    heartbeatInterval: NodeJS.Timeout | null;
     id: string;
+    mode?: string;
+    modes?: string;
+    /** Optional dependencies OpusScript (opusscript) or OpusEncoder (@discordjs/opus) */
+    opus: { [userID: string]: unknown };
+    opusOnly: boolean;
     paused: boolean;
+    pcmSize: number;
+    piper: Piper;
     playing: boolean;
     ready: boolean;
+    receiveStreamOpus?: VoiceDataStream | null;
+    receiveStreamPCM?: VoiceDataStream | null;
+    reconnecting: boolean;
+    samplingRate: number;
+    secret: Buffer;
+    sendBuffer: Buffer;
+    sendNonce: Buffer;
+    sequence: number;
+    shard: Shard | Record<string, never>;
+    shared: boolean;
+    speaking: boolean;
+    ssrc?: number;
+    ssrcUserMap: { [s: number]: string };
+    timestamp: number;
+    udpIP?: string;
+    udpPort?: number;
+    udpSocket: DgramSocket | null;
     volume: number;
+    ws: BrowserWebSocket | WebSocket | null;
     constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean });
     connect(data: VoiceConnectData): NodeJS.Timer | void;
     disconnect(error?: Error, reconnecting?: boolean): void;
