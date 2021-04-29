@@ -4,6 +4,8 @@ import { Agent as HTTPSAgent } from "https";
 import { IncomingMessage, ClientRequest } from "http";
 import OpusScript = require("opusscript"); // Thanks TypeScript
 import { URL } from "url";
+import { Socket } from "dgram";
+import * as WebSocket from "ws";
 
 declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
 
@@ -2539,7 +2541,7 @@ declare namespace Eris {
     id: string;
     mode?: string;
     modes?: string;
-    opus: { [s: string]: unknown }; // TODO
+    opus: { [userID: string]: unknown }; // TODO
     opusOnly: boolean;
     paused: boolean;
     pcmSize: number;
@@ -2562,9 +2564,9 @@ declare namespace Eris {
     timestamp: number;
     udpIP?: string;
     udpPort?: number;
-    udpSocket: unknown | null; // TODO Dgram.Socket
+    udpSocket: Socket | null;
     volume: number;
-    ws: BrowserWebSocket | unknown | null; // TODO No WS typings, might need npm i?
+    ws: BrowserWebSocket | WebSocket | null; // TODO No WS typings, might need npm i?
     constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean });
     connect(data: VoiceConnectData): NodeJS.Timer | void;
     disconnect(error?: Error, reconnecting?: boolean): void;
