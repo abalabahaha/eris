@@ -924,14 +924,14 @@ declare namespace Eris {
     suppress?: boolean;
   }
   interface VoiceStreamCurrent {
-    buffer: unknown | null; // TODO check
+    buffer: Buffer | null;
     bufferingTicks: number;
     options: VoiceResourceOptions;
     pausedTime?: number;
     pausedTimestamp?: number;
     playTime: number;
     startTime: number;
-    timeout: unknown | null; // TODO check
+    timeout: NodeJS.Timeout | null;
   }
 
   // Webhook
