@@ -892,7 +892,7 @@ declare namespace Eris {
   interface RoleTags {
     bot_id?: string;
     integration_id?: string;
-    premium_subscriber?: boolean;
+    premium_subscriber?: true;
   }
 
   // Voice
