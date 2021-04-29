@@ -2541,7 +2541,8 @@ declare namespace Eris {
     id: string;
     mode?: string;
     modes?: string;
-    opus: { [userID: string]: unknown }; // TODO
+    /** Optional dependencies OpusScript (opusscript) or OpusEncoder (@discordjs/opus) */
+    opus: { [userID: string]: unknown };
     opusOnly: boolean;
     paused: boolean;
     pcmSize: number;
@@ -2566,7 +2567,7 @@ declare namespace Eris {
     udpPort?: number;
     udpSocket: Socket | null;
     volume: number;
-    ws: BrowserWebSocket | WebSocket | null; // TODO No WS typings, might need npm i?
+    ws: BrowserWebSocket | WebSocket | null;
     constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean });
     connect(data: VoiceConnectData): NodeJS.Timer | void;
     disconnect(error?: Error, reconnecting?: boolean): void;
