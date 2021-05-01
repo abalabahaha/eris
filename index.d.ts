@@ -373,7 +373,7 @@ declare namespace Eris {
   interface PartialEmoji {
     id: string | null;
     name: string;
-    animated: boolean;
+    animated?: boolean;
   }
 
   // Events
