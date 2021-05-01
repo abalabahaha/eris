@@ -556,10 +556,7 @@ declare namespace Eris {
   }
   interface ClientEvents<T> extends EventListeners<T> {
     (event: "shardReady" | "shardResume", listener: (id: number) => void): T;
-    (
-      event: "shardDisconnect",
-      listener: (err: Error | undefined, id: number) => void // TODO Check JS (ShardManager)
-    ): T;
+    (event: "shardDisconnect", listener: (err: Error | undefined, id: number) => void): T;
   }
   interface ShardEvents<T> extends EventListeners<T> {
     (event: "resume", listener: () => void): T;
