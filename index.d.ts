@@ -200,6 +200,7 @@ declare namespace Eris {
     baseURL?: string;
     disableLatencyCompensation?: boolean;
     domain?: string;
+    https?: boolean;
     latencyThreshold?: number;
     ratelimiterOffset?: number;
     requestTimeout?: number;
