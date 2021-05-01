@@ -658,14 +658,14 @@ declare namespace Eris {
     category_id: number;
     guild_id: string;
   }
-  interface GetGuildIntegrationsOptions {
-    includeApplications?: boolean;
-  }
   interface GetGuildAuditLogOptions {
     actionType?: number;
     before?: string;
     limit?: number;
     userID?: string;
+  }
+  interface GetGuildIntegrationsOptions {
+    includeApplications?: boolean;
   }
   interface GetPruneOptions {
     days?: number;
