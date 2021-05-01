@@ -126,6 +126,12 @@ declare namespace Eris {
     lockPermissions?: string;
     parentID?: string;
   }
+  interface GetMessagesOptions {
+    after?: string;
+    around?: string;
+    before?: string;
+    limit?: number;
+  }
   interface GuildTextable extends Textable {
     lastPinTimestamp: number | null;
     rateLimitPerUser: number;
@@ -150,6 +156,13 @@ declare namespace Eris {
     type: number;
     user_limit?: number;
   }
+  interface PurgeChannelOptions {
+    after?: string;
+    before?: string;
+    filter?: (m: Message<GuildTextableChannel>) => boolean;
+    limit: number;
+    reason?: string;
+  }
   interface Textable {
     lastMessageID: string;
     messages: Collection<Message<this>>;
@@ -160,14 +173,11 @@ declare namespace Eris {
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     editMessage(messageID: string, content: MessageContent): Promise<Message>;
     getMessage(messageID: string): Promise<Message>;
-    getMessageReaction(
-      messageID: string,
-      reaction: string,
-      limit?: number,
-      /** @deprecated */
-      before?: string,
-      after?: string
-    ): Promise<User[]>;
+    getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
+    /** @deprecated */
+    getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
+    getMessages(options?: GetMessagesOptions): Promise<Message[]>;
+    /** @deprecated */
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
     getPins(): Promise<Message[]>;
     pinMessage(messageID: string): Promise<void>;
@@ -651,9 +661,24 @@ declare namespace Eris {
   interface GetGuildIntegrationsOptions {
     includeApplications?: boolean;
   }
+  interface GetGuildAuditLogOptions {
+    actionType?: number;
+    before?: string;
+    limit?: number;
+    userID?: string;
+  }
   interface GetPruneOptions {
     days?: number;
     includeRoles?: string[];
+  }
+  interface GetRESTGuildMembersOptions {
+    after?: string;
+    limit?: number;
+  }
+  interface GetRESTGuildsOptions {
+    after?: string;
+    before?: string;
+    limit?: number;
   }
   interface GuildAuditLog {
     entries: GuildAuditLogEntry[];
@@ -809,6 +834,12 @@ declare namespace Eris {
     size: number;
     url: string;
     width?: number;
+  }
+  interface GetMessageReactionOptions {
+    after?: string;
+    /** @deprecated */
+    before?: string;
+    limit?: number;
   }
   interface MessageActivity {
     party_id?: string;
@@ -1643,6 +1674,8 @@ declare namespace Eris {
     getDiscoveryCategories(): Promise<DiscoveryCategory[]>;
     getDMChannel(userID: string): Promise<PrivateChannel>;
     getGateway(): Promise<{ url: string }>;
+    getGuildAuditLog(guildID: string, options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
+    /** @deprecated */
     getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getGuildBan(guildID: string, userID: string): Promise<{ reason?: string; user: User }>;
     getGuildBans(guildID: string): Promise<{ reason?: string; user: User }[]>;
@@ -1661,22 +1694,12 @@ declare namespace Eris {
     getInvite(inviteID: string, withCounts?: false): Promise<Invite<"withoutCount">>;
     getInvite(inviteID: string, withCounts: true): Promise<Invite<"withCount">>;
     getMessage(channelID: string, messageID: string): Promise<Message>;
-    getMessageReaction(
-      channelID: string,
-      messageID: string,
-      reaction: string,
-      limit?: number,
-      /** @deprecated */
-      before?: string,
-      after?: string
-    ): Promise<User[]>;
-    getMessages(
-      channelID: string,
-      limit?: number,
-      before?: string,
-      after?: string,
-      around?: string
-    ): Promise<Message[]>;
+    getMessageReaction(channelID: string, messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
+    /** @deprecated */
+    getMessageReaction(channelID: string, messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
+    getMessages(channelID: string, options?: GetMessagesOptions): Promise<Message[]>;
+    /** @deprecated */
+    getMessages(channelID: string, limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
     getOAuthApplication(appID?: string): Promise<OAuthApplicationInfo>;
     getPins(channelID: string): Promise<Message[]>;
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
@@ -1686,8 +1709,12 @@ declare namespace Eris {
     getRESTGuildEmoji(guildID: string, emojiID: string): Promise<Emoji>;
     getRESTGuildEmojis(guildID: string): Promise<Emoji[]>;
     getRESTGuildMember(guildID: string, memberID: string): Promise<Member>;
+    getRESTGuildMembers(guildID: string, options?: GetRESTGuildMembersOptions): Promise<Member[]>;
+    /** @deprecated */
     getRESTGuildMembers(guildID: string, limit?: number, after?: string): Promise<Member[]>;
     getRESTGuildRoles(guildID: string): Promise<Role[]>;
+    getRESTGuilds(options?: GetRESTGuildsOptions): Promise<Guild[]>;
+    /** @deprecated */
     getRESTGuilds(limit?: number, before?: string, after?: string): Promise<Guild[]>;
     getRESTUser(userID: string): Promise<User>;
     getSelf(): Promise<ExtendedUser>;
@@ -1735,6 +1762,8 @@ declare namespace Eris {
     leaveVoiceChannel(channelID: string): void;
     pinMessage(channelID: string, messageID: string): Promise<void>;
     pruneMembers(guildID: string, options?: PruneMemberOptions): Promise<number>;
+    purgeChannel(channelID: string, options: PurgeChannelOptions): Promise<number>;
+    /** @deprecated */
     purgeChannel(
       channelID: string,
       limit?: number,
@@ -1987,6 +2016,8 @@ declare namespace Eris {
     editWidget(options: Widget): Promise<Widget>;
     fetchAllMembers(timeout?: number): Promise<number>;
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
+    getAuditLog(options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
+    /** @deprecated */
     getAuditLogs(limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getBan(userID: string): Promise<{ reason?: string; user: User }>;
     getBans(): Promise<{ reason?: string; user: User }[]>;
@@ -2000,6 +2031,8 @@ declare namespace Eris {
     getRESTEmoji(emojiID: string): Promise<Emoji>;
     getRESTEmojis(): Promise<Emoji[]>;
     getRESTMember(memberID: string): Promise<Member>;
+    getRESTMembers(options?: GetRESTGuildMembersOptions): Promise<Member[]>;
+    /** @deprecated */
     getRESTMembers(limit?: number, after?: string): Promise<Member[]>;
     getRESTRoles(): Promise<Role[]>;
     getTemplates(): Promise<GuildTemplate[]>;
@@ -2228,13 +2261,9 @@ declare namespace Eris {
     deleteWebhook(token: string): Promise<void>;
     edit(content: MessageContent): Promise<Message<T>>;
     editWebhook(token: string, options: MessageWebhookContent): Promise<Message<T>>;
-    getReaction(
-      reaction: string,
-      limit?: number,
-      /** @deprecated */
-      before?: string,
-      after?: string
-    ): Promise<User[]>;
+    getReaction(reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
+    /** @deprecated */
+    getReaction(reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
     pin(): Promise<void>;
     removeReaction(reaction: string, userID?: string): Promise<void>;
     removeReactionEmoji(reaction: string): Promise<void>;
@@ -2253,6 +2282,8 @@ declare namespace Eris {
     follow(webhookChannelID: string): Promise<ChannelFollow>;
     getInvites(): Promise<(Invite<"withMetadata", NewsChannel>)[]>;
     getMessage(messageID: string): Promise<Message<NewsChannel>>;
+    getMessages(options?: GetMessagesOptions): Promise<Message<NewsChannel>[]>;
+    /** @deprecated */
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<NewsChannel>[]>;
     getPins(): Promise<Message<NewsChannel>[]>;
   }
@@ -2301,14 +2332,11 @@ declare namespace Eris {
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<PrivateChannel>>;
     getMessage(messageID: string): Promise<Message<PrivateChannel>>;
-    getMessageReaction(
-      messageID: string,
-      reaction: string,
-      limit?: number,
-      /** @deprecated */
-      before?: string,
-      after?: string
-    ): Promise<User[]>;
+    getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
+    /** @deprecated */
+    getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
+    getMessages(options?: GetMessagesOptions): Promise<Message<PrivateChannel>[]>;
+    /** @deprecated */
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<PrivateChannel>[]>;
     getPins(): Promise<Message<PrivateChannel>[]>;
     leave(): Promise<void>;
@@ -2504,18 +2532,17 @@ declare namespace Eris {
     editMessage(messageID: string, content: MessageContent): Promise<Message<TextChannel>>;
     getInvites(): Promise<(Invite<"withMetadata", TextChannel>)[]>;
     getMessage(messageID: string): Promise<Message<TextChannel>>;
-    getMessageReaction(
-      messageID: string,
-      reaction: string,
-      limit?: number,
-      /** @deprecated */
-      before?: string,
-      after?: string
-    ): Promise<User[]>;
+    getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
+    /** @deprecated */
+    getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
+    getMessages(options?: GetMessagesOptions): Promise<Message<TextChannel>[]>;
+    /** @deprecated */
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<TextChannel>[]>;
     getPins(): Promise<Message<TextChannel>[]>;
     getWebhooks(): Promise<Webhook[]>;
     pinMessage(messageID: string): Promise<void>;
+    purge(options: PurgeChannelOptions): Promise<number>;
+    /** @deprecated */
     purge(limit: number, filter?: (message: Message<this>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
