@@ -272,7 +272,7 @@ declare namespace Eris {
     type: "edit" | "cancel";
   }
   interface CommandRequirements {
-    custom?: GenericCheckFunction<void>;
+    custom?: GenericCheckFunction<boolean>;
     permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>;
     roleIDs?: string[] | GenericCheckFunction<string[]>;
     roleNames?: string[] | GenericCheckFunction<string[]>;
@@ -858,8 +858,8 @@ declare namespace Eris {
     [key: string]: unknown;
   }
   interface ActivityPartial<T extends ActivityType = BotActivityType> {
-    name: string;
-    type: T;
+    name?: string;
+    type?: T;
     url?: string;
   }
   interface ClientStatus {
