@@ -2593,7 +2593,7 @@ declare namespace Eris {
     voiceMembers: Collection<Member>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", VoiceChannel>>;
     getInvites(): Promise<(Invite<"withMetadata", VoiceChannel>)[]>;
-    join(options: { opusOnly?: boolean; shared?: boolean, selfMute?: boolean, selfDeaf?: boolean }): Promise<VoiceConnection>;
+    join(options: { opusOnly?: boolean; shared?: boolean; selfMute?: boolean; selfDeaf?: boolean }): Promise<VoiceConnection>;
     leave(): void;
   }
 
