@@ -216,6 +216,7 @@ declare namespace Eris {
     maxShards?: number | "auto";
     messageLimit?: number;
     opusOnly?: boolean;
+    presence?: InitialPresence;
     /** @deprecated */
     ratelimiterOffset?: number;
     reconnectDelay?: ReconnectDelayFunction;
@@ -916,6 +917,12 @@ declare namespace Eris {
     desktop: Status;
     mobile: Status;
     web: Status;
+  }
+  interface InitialPresence {
+    activities?: Activity[];
+    afk?: boolean;
+    since?: number | null;
+    status?: Status;
   }
   interface Presence {
     activities?: Activity[];
@@ -2430,7 +2437,7 @@ declare namespace Eris {
     lastHeartbeatSent: number | null;
     latency: number;
     preReady: boolean;
-    presence: Presence;
+    presence: Presence | InitialPresence;
     presenceUpdateBucket: Bucket;
     ready: boolean;
     reconnectInterval: number;
