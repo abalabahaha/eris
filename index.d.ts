@@ -68,6 +68,7 @@ declare namespace Eris {
   type InteractionType = 1 | 2;
 
   // Permission
+  type Permissions = keyof Constants["Permissions"];
   type PermissionType = "role" | "member";
 
   // Presence/Relationship
@@ -1286,7 +1287,7 @@ declare namespace Eris {
   interface Connection {
     friend_sync: boolean;
     id: string;
-    integrations: unknown[]; // TODO ????
+    integrations: Partial<GuildIntegration>[];
     name: string;
     revoked: boolean;
     type: string;
@@ -1334,18 +1335,24 @@ declare namespace Eris {
   }
   interface UserSettings {
     afk_timeout: number;
-    convert_emojis: boolean;
+    animate_emoji: boolean;
+    convert_emoticons: boolean;
     default_guilds_restricted: boolean;
     detect_platform_accounts: boolean;
     developer_mode: boolean;
+    disable_games_tab: boolean;
     enable_tts_command: boolean;
-    explicit_content_filter: number;
+    explicit_content_filter: 0 | 1 | 2;
     friend_source_flags: {
-      all: boolean; // not sure about other keys, abal heeeelp
+      all: boolean;
+      mutual_friends: boolean;
+      mutual_guilds: boolean;
     };
+    gif_auto_play: boolean;
+    guild_folders: { id: string; guild_ids: string[]; name: string }[];
+    guild_positions: string[];
     inline_attachment_media: boolean;
     inline_embed_media: boolean;
-    guild_positions: string[];
     locale: string;
     message_display_compact: boolean;
     render_embeds: boolean;
@@ -1354,6 +1361,13 @@ declare namespace Eris {
     show_current_game: boolean;
     status: string;
     theme: string;
+    timezone_offset: number;
+    custom_status: {
+      emoji_id: string | null;
+      emoji_name: string;
+      expires_at: string | null;
+      text: string;
+    };
   }
 
   class Base implements SimpleJSON {
@@ -1668,7 +1682,7 @@ declare namespace Eris {
     executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
     followChannel(channelID: string, webhookChannelID: string): Promise<ChannelFollow>;
     getBotGateway(): Promise<{ session_start_limit: { max_concurrency: number; remaining: number; reset_after: number; total: number }; shards: number; url: string }>;
-    getChannel(channelID: string): AnyChannel;
+    getChannel<T extends Channel = AnyChannel>(channelID: string): T;
     getChannelInvites(channelID: string): Promise<Invite[]>;
     getChannelWebhooks(channelID: string): Promise<Webhook[]>;
     getDiscoveryCategories(): Promise<DiscoveryCategory[]>;
@@ -1703,7 +1717,7 @@ declare namespace Eris {
     getOAuthApplication(appID?: string): Promise<OAuthApplicationInfo>;
     getPins(channelID: string): Promise<Message[]>;
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
-    getRESTChannel(channelID: string): Promise<AnyChannel>;
+    getRESTChannel<T extends Channel = AnyChannel>(channelID: string): Promise<T>;
     getRESTGuild(guildID: string, withCounts?: boolean): Promise<Guild>;
     getRESTGuildChannels(guildID: string): Promise<AnyGuildChannel[]>;
     getRESTGuildEmoji(guildID: string, emojiID: string): Promise<Emoji>;
@@ -1996,7 +2010,7 @@ declare namespace Eris {
     deleteDiscoverySubcategory(categoryID: string, reason?: string): Promise<void>;
     deleteEmoji(emojiID: string, reason?: string): Promise<void>;
     deleteIntegration(integrationID: string): Promise<void>;
-    deleteRole(roleID: string): Promise<void>;
+    deleteRole(roleID: string, reason?: string): Promise<void>;
     deleteTemplate(code: string): Promise<GuildTemplate>;
     dynamicBannerURL(format?: ImageFormat, size?: number): string;
     dynamicDiscoverySplashURL(format?: ImageFormat, size?: number): string;
@@ -2008,7 +2022,7 @@ declare namespace Eris {
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<void>;
     editNickname(nick: string): Promise<void>;
-    editRole(roleID: string, options: RoleOptions): Promise<Role>;
+    editRole(roleID: string, options: RoleOptions, reason?: string): Promise<Role>;
     editTemplate(code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
     editVanity(code: string | null): Promise<GuildVanity>;
     editVoiceState(options: VoiceStateOptions, userID?: string): Promise<void>;
@@ -2291,9 +2305,9 @@ declare namespace Eris {
   export class Permission extends Base {
     allow: bigint;
     deny: bigint;
-    json: Record<keyof Constants["Permissions"], boolean>;
+    json: Record<Permissions, boolean>;
     constructor(allow: number | string | bigint, deny?: number | string | bigint);
-    has(permission: keyof Constants["Permissions"]): boolean;
+    has(permission: Permissions): boolean;
   }
 
   export class PermissionOverwrite extends Permission {
@@ -2385,7 +2399,7 @@ declare namespace Eris {
     guild: Guild;
     hoist: boolean;
     id: string;
-    json: Partial<Record<Exclude<keyof Constants["Permissions"], "all" | "allGuild" | "allText" | "allVoice">, boolean>>;
+    json: Partial<Record<Exclude<Permissions, "all" | "allGuild" | "allText" | "allVoice">, boolean>>;
     managed: boolean;
     mention: string;
     mentionable: boolean;
