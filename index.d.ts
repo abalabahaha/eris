@@ -46,6 +46,24 @@ declare namespace Eris {
   // Guild
   type DefaultNotifications = 0 | 1;
   type ExplicitContentFilter = 0 | 1 | 2;
+  type GuildFeatures =
+    | "ANIMATED_ICON"
+    | "BANNER"
+    | "COMMERCE"
+    | "COMMUNITY"
+    | "DISCOVERABLE"
+    | "ENABLED_DISCOVERABLE_BEFORE"
+    | "FEATUREABLE"
+    | "INVITE_SPLASH"
+    | "MEMBER_VERIFICATION_GATE_ENABLED"
+    | "MORE_EMOJI"
+    | "NEWS"
+    | "PARTNER"
+    | "PREVIEW_ENABLED"
+    | "VANITY_URL"
+    | "VERIFIED"
+    | "VIP_REGIONS"
+    | "WELCOME_SCREEN_ENABLED";
   type PossiblyUncachedGuild = Guild | Uncached;
   type PremiumTier = 0 | 1 | 2 | 3;
   type VerificationLevel = 0 | 1 | 2 | 3 | 4;
@@ -147,14 +165,14 @@ declare namespace Eris {
   }
   interface PartialChannel {
     bitrate?: number;
-    id?: number;
+    id?: string;
     name?: string;
     nsfw?: boolean;
-    parent_id?: number;
+    parent_id?: string;
     permission_overwrites?: Overwrite[];
     rate_limit_per_user?: number;
     topic?: string;
-    type: number;
+    type: ChannelTypes;
     user_limit?: number;
   }
   interface PurgeChannelOptions {
@@ -310,7 +328,7 @@ declare namespace Eris {
     image?: EmbedImage;
     provider?: EmbedProvider;
     thumbnail?: EmbedImage;
-    type: string;
+    type: "rich" | "image" | "video" | "gifv" | "article" | "link";
     video?: EmbedVideo;
   }
   interface EmbedAuthor extends EmbedAuthorOptions {
@@ -409,7 +427,7 @@ declare namespace Eris {
     discoverySplash: string | null;
     emojis: Omit<Emoji, "user" | "icon">[];
     explicitContentFilter: ExplicitContentFilter;
-    features: string[];
+    features: GuildFeatures[];
     icon: string | null;
     large: boolean;
     maxMembers?: number;
@@ -647,6 +665,8 @@ declare namespace Eris {
     emoji_discoverability_enabled: boolean;
     guild_id: string;
     keywords: string[] | null;
+    partner_actioned_timestamp: string | null;
+    partner_application_timestamp: string | null;
     primary_category_id: number;
   }
   interface DiscoveryOptions {
@@ -660,7 +680,7 @@ declare namespace Eris {
     guild_id: string;
   }
   interface GetGuildAuditLogOptions {
-    actionType?: number;
+    actionType?: Constants["AuditLogActions"][keyof Constants["AuditLogActions"]];
     before?: string;
     limit?: number;
     userID?: string;
@@ -695,7 +715,7 @@ declare namespace Eris {
     description?: string;
     discoverySplash?: string;
     explicitContentFilter?: ExplicitContentFilter;
-    features?: string[];
+    features?: GuildFeatures[];
     icon?: string;
     name?: string;
     ownerID?: string;
@@ -938,7 +958,7 @@ declare namespace Eris {
     id?: number;
     mentionable?: boolean;
     name?: string;
-    permissions?: number;
+    permissions?: bigint | number;
     position?: number;
   }
   interface RoleOptions {
@@ -1020,7 +1040,6 @@ declare namespace Eris {
     wait?: boolean;
   }
 
-  // TODO: Does this have more stuff?
   interface BaseData {
     id: string;
     [key: string]: unknown;
@@ -1292,7 +1311,7 @@ declare namespace Eris {
     revoked: boolean;
     type: string;
     verified: boolean;
-    visibility: number;
+    visibility: 0 | 1;
   }
   interface GuildSettings {
     channel_override: {
@@ -1628,7 +1647,7 @@ declare namespace Eris {
       overwriteID: string,
       allow: bigint | number,
       deny: bigint | number,
-      type: string,
+      type: PermissionType,
       reason?: string
     ): Promise<void>;
     editChannelPosition(channelID: string, position: number, options?: EditChannelPositionOptions): Promise<void>;
@@ -1649,7 +1668,7 @@ declare namespace Eris {
     editGuildWidget(guildID: string, options: Widget): Promise<Widget>;
     editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
-    editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
+    editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>;
     editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
     editSelf(options: { avatar?: string; username?: string }): Promise<ExtendedUser>;
     editSelfConnection(
@@ -1941,7 +1960,7 @@ declare namespace Eris {
     emojiCount?: number;
     emojis: Emoji[];
     explicitContentFilter: ExplicitContentFilter;
-    features: string[];
+    features: GuildFeatures[];
     icon: string | null;
     iconURL: string | null;
     id: string;
@@ -2068,7 +2087,7 @@ declare namespace Eris {
   }
 
   export class GuildAuditLogEntry extends Base {
-    actionType: number;
+    actionType: Constants["AuditLogActions"][keyof Constants["AuditLogActions"]];
     after: { [key: string]: unknown } | null;
     before: { [key: string]: unknown } | null;
     channel?: AnyGuildChannel;
@@ -2076,7 +2095,7 @@ declare namespace Eris {
     deleteMemberDays?: number;
     guild: Guild;
     id: string;
-    member?: Member | unknown;
+    member?: Member | Uncached;
     membersRemoved?: number;
     message?: Message<GuildTextableChannel>;
     reason: string | null;
@@ -2141,7 +2160,7 @@ declare namespace Eris {
     discoverySplash: string | null;
     discoverySplashURL: string | null;
     emojis: Emoji[];
-    features: string[];
+    features: GuildFeatures[];
     icon: string | null;
     iconURL: string | null;
     id: string;
@@ -2264,7 +2283,7 @@ declare namespace Eris {
     stickers?: Sticker[];
     timestamp: number;
     tts: boolean;
-    type: number;
+    type: Constants["MessageTypes"][keyof Constants["MessageTypes"]];
     webhookID: T extends GuildTextable ? string | undefined : undefined;
     constructor(data: BaseData, client: Client);
     addReaction(reaction: string): Promise<void>;
