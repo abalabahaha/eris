@@ -44,6 +44,7 @@ declare namespace Eris {
   type RequestMethod = "GET" | "PATCH" | "DELETE" | "POST" | "PUT";
 
   // Guild
+  type AuditLogActionTypes = Constants["AuditLogActions"][keyof Constants["AuditLogActions"]];
   type DefaultNotifications = 0 | 1;
   type ExplicitContentFilter = 0 | 1 | 2;
   type GuildFeatures =
@@ -82,7 +83,14 @@ declare namespace Eris {
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
   type MFALevel = 0 | 1;
-  type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
+  type PossiblyUncachedMessage<T extends PossiblyUncachedTextable = TextableChannel> = Message<T> | { 
+    channel: T | { 
+      id: string; 
+      guild: T extends GuildTextable ? Uncached : undefined;
+    }; 
+    guildID: T extends GuildTextable ? string : undefined; 
+    id: string;
+  };
   type InteractionType = 1 | 2;
 
   // Permission
@@ -328,7 +336,13 @@ declare namespace Eris {
     image?: EmbedImage;
     provider?: EmbedProvider;
     thumbnail?: EmbedImage;
-    type: "rich" | "image" | "video" | "gifv" | "article" | "link";
+    type: 
+      | "rich"
+      | "image"
+      | "video"
+      | "gifv"
+      | "article"
+      | "link";
     video?: EmbedVideo;
   }
   interface EmbedAuthor extends EmbedAuthorOptions {
@@ -680,7 +694,7 @@ declare namespace Eris {
     guild_id: string;
   }
   interface GetGuildAuditLogOptions {
-    actionType?: Constants["AuditLogActions"][keyof Constants["AuditLogActions"]];
+    actionType?: AuditLogActionTypes;
     before?: string;
     limit?: number;
     userID?: string;
@@ -2087,7 +2101,7 @@ declare namespace Eris {
   }
 
   export class GuildAuditLogEntry extends Base {
-    actionType: Constants["AuditLogActions"][keyof Constants["AuditLogActions"]];
+    actionType: AuditLogActionTypes;
     after: { [key: string]: unknown } | null;
     before: { [key: string]: unknown } | null;
     channel?: AnyGuildChannel;
