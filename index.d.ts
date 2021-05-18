@@ -764,6 +764,8 @@ declare namespace Eris {
     maxUses?: number;
     temporary?: boolean;
     unique?: boolean;
+    targetApplicationID?: string;
+    targetType?: string;
   }
   interface Invitable {
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
