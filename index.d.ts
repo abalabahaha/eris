@@ -763,7 +763,7 @@ declare namespace Eris {
     maxAge?: number;
     maxUses?: number;
     targetApplicationID?: string;
-    targetType?: string;
+    targetType?: 1 | 2;
     temporary?: boolean;
     unique?: boolean;
   }
