@@ -1788,6 +1788,7 @@ declare namespace Eris {
     unpinMessage(channelID: string, messageID: string): Promise<void>;
     validateDiscoverySearchTerm(term: string): Promise<{ valid: boolean }>;
     on: ClientEvents<this>;
+    off: ClientEvents<this>;
     toString(): string;
   }
 
