@@ -46,6 +46,7 @@ declare namespace Eris {
   // Guild
   type DefaultNotifications = 0 | 1;
   type ExplicitContentFilter = 0 | 1 | 2;
+  type NSFWLevel = 0 | 1 | 2 | 3;
   type PossiblyUncachedGuild = Guild | Uncached;
   type PremiumTier = 0 | 1 | 2 | 3;
   type VerificationLevel = 0 | 1 | 2 | 3 | 4;
@@ -415,7 +416,9 @@ declare namespace Eris {
     maxVideoChannelUsers?: number;
     mfaLevel: MFALevel;
     name: string;
+    /** @deprecated */
     nsfw: boolean;
+    nsfwLevel: NSFWLevel;
     ownerID: string;
     preferredLocale?: string;
     premiumSubscriptionCount?: number;
@@ -1124,6 +1127,12 @@ declare namespace Eris {
       SYNC_GUILD: 12;
       SYNC_CALL: 13;
     };
+    GuildNSFWLevel: {
+      DEFAULT: 0;
+      EXPLICIT: 1;
+      SAFE: 2;
+      AGE_RESTRICTED: 3;
+    }
     ImageFormats: ["jpg", "jpeg", "png", "webp", "gif"];
     ImageSizeBoundaries: {
       MAXIMUM: 4096;
@@ -1940,7 +1949,9 @@ declare namespace Eris {
     members: Collection<Member>;
     mfaLevel: MFALevel;
     name: string;
+    /** @deprecated */
     nsfw: boolean;
+    nsfwLevel: NSFWLevel;
     ownerID: string;
     preferredLocale: string;
     premiumSubscriptionCount?: number;
