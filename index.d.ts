@@ -1147,9 +1147,12 @@ declare namespace Eris {
       GUILD_CATEGORY: 4;
       GUILD_NEWS: 5;
       GUILD_STORE: 6;
+      GUILD_NEWS_THREAD: 10,
+      GUILD_PUBLIC_THREAD: 11,
+      GUILD_PRIVATE_THREAD: 12,
       GUILD_STAGE: 13;
     };
-    GATEWAY_VERSION: 8;
+    GATEWAY_VERSION: 9;
     GatewayOPCodes: {
       EVENT: 0;
       HEARTBEAT: 1;
@@ -1200,6 +1203,7 @@ declare namespace Eris {
       SUPPRESS_EMBEDS: 4;
       SOURCE_MESSAGE_DELETED: 8;
       URGENT: 16;
+      HAS_THREAD: 32;
     };
     MessageTypes: {
       DEFAULT: 0;
@@ -1220,9 +1224,10 @@ declare namespace Eris {
       GUILD_DISCOVERY_REQUALIFIED: 15;
       GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING: 16;
       GUILD_DISCOVERY_GRACE_PERIOD_FINAL_WARNING: 17;
+      THREAD_CREATED: 18;
       REPLY: 19;
       APPLICATION_COMMAND: 20;
-
+      THREAD_STARTER_MESSAGE: 21;
       GUILD_INVITE_REMINDER: 22;
     };
     Permissions: {
@@ -1267,12 +1272,15 @@ declare namespace Eris {
       manageEmojis: 1073741824n;
       useSlashCommands: 2147483648n;
       voiceRequestToSpeak: 4294967296n;
+      manageThreads: 17179869184n;
+      usePublicThreads: 34359738368n;
+      usePrivateThreads: 68719476736n;
       allGuild: 2080899262n;
-      allText: 2953313361n;
+      allText: 123212397649n;
       allVoice: 4629464849n;
-      all: 8589934591n;
+      all: 128849018879n;
     };
-    REST_VERSION: 8;
+    REST_VERSION: 9;
     StickerFormats: {
       PNG: 1;
       APNG: 2;
