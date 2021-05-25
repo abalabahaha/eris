@@ -20,9 +20,10 @@ declare namespace Eris {
   // Channel
   type AnyChannel = AnyGuildChannel | PrivateChannel;
   type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel | StoreChannel;
+  type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel;
   type AnyVoiceChannel = VoiceChannel | StageChannel;
   type ChannelTypes = Constants["ChannelTypes"][keyof Constants["ChannelTypes"]];
-  type GuildTextableChannel = TextChannel | NewsChannel;
+  type GuildTextableChannel = TextChannel | NewsChannel | AnyThreadChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel>;
   type PossiblyUncachedTextable = Textable | Uncached;
   type PossiblyUncachedTextableChannel = TextableChannel | Uncached;
@@ -994,6 +995,21 @@ declare namespace Eris {
     premium_subscriber?: true;
   }
 
+  // Thread
+  interface ArchivedThreads<T extends ThreadChannel = ThreadChannel> {
+    hasMore: boolean;
+    members: unknown[]; // TODO Thread member
+    threads: T[];
+  }
+  interface CreateThreadOptions {
+    autoArchiveDuration: number;
+    name: string;
+  }
+  interface GetArchivedThreadsOptions {
+    before?: Date;
+    limit?: number;
+  }
+
   // Voice
   interface UncachedMemberVoiceState {
     id: string;
@@ -1641,8 +1657,8 @@ declare namespace Eris {
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
     createMessage(channelID: string, content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
-    createPrivateThread(channelID: string, options: unknown): Promise<PrivateThreadChannel>; // TODO Create thread options
-    createPublicThread(channelID: string, options: unknown): Promise<PublicThreadChannel>; // TODO Create thread options
+    createPrivateThread(channelID: string, options: CreateThreadOptions): Promise<PrivateThreadChannel>;
+    createPublicThread(channelID: string, options: CreateThreadOptions): Promise<PublicThreadChannel>;
     createRole(guildID: string, options?: RoleOptions | Role, reason?: string): Promise<Role>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
     deleteChannel(channelID: string, reason?: string): Promise<void>;
@@ -1728,8 +1744,9 @@ declare namespace Eris {
     executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message<GuildTextableChannel>>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
     followChannel(channelID: string, webhookChannelID: string): Promise<ChannelFollow>;
-    getActiveThreads(channelID: string): Promise<(NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel)[]>; // TODO Type alias
-    getArchivedThreads(channelID: string, type: "public" | "private", options?: unknown): Promise<unknown>; // TODO Get archived thread options and return object
+    getActiveThreads(channelID: string): Promise<AnyThreadChannel[]>;
+    getArchivedThreads(channelID: string, type: "private", options?: GetArchivedThreadsOptions): Promise<ArchivedThreads<PrivateThreadChannel>>;
+    getArchivedThreads(channelID: string, type: "public", options?: GetArchivedThreadsOptions): Promise<ArchivedThreads<PublicThreadChannel>>;
     getBotGateway(): Promise<{ session_start_limit: { max_concurrency: number; remaining: number; reset_after: number; total: number }; shards: number; url: string }>;
     getChannel(channelID: string): AnyChannel;
     getChannelInvites(channelID: string): Promise<Invite[]>;
@@ -1758,7 +1775,7 @@ declare namespace Eris {
     getGuildWidgetSettings(guildID: string): Promise<Widget>;
     getInvite(inviteID: string, withCounts?: false): Promise<Invite<"withoutCount">>;
     getInvite(inviteID: string, withCounts: true): Promise<Invite<"withCount">>;
-    getJoinedPrivateArchivedThreads(channelID: string, options?: unknown): Promise<unknown>; // TODO Get archived thread options and return object
+    getJoinedPrivateArchivedThreads(channelID: string, options?: GetArchivedThreadsOptions): Promise<ArchivedThreads<PrivateThreadChannel>>;
     getMessage(channelID: string, messageID: string): Promise<Message>;
     getMessageReaction(channelID: string, messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
@@ -1769,7 +1786,7 @@ declare namespace Eris {
     getOAuthApplication(appID?: string): Promise<OAuthApplicationInfo>;
     getPins(channelID: string): Promise<Message[]>;
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
-    getRESTChannel(channelID: string): Promise<AnyChannel | NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel>; // TODO Type alias
+    getRESTChannel(channelID: string): Promise<AnyChannel>;
     getRESTGuild(guildID: string, withCounts?: boolean): Promise<Guild>;
     getRESTGuildChannels(guildID: string): Promise<AnyGuildChannel[]>;
     getRESTGuildEmoji(guildID: string, emojiID: string): Promise<Emoji>;
@@ -2330,7 +2347,7 @@ declare namespace Eris {
     addReaction(reaction: string): Promise<void>;
     /** @deprecated */
     addReaction(reaction: string, userID: string): Promise<void>;
-    createPublicThread(options: unknown): Promise<PublicThreadChannel>; // TODO Create thread options
+    createPublicThread(options: CreateThreadOptions): Promise<PublicThreadChannel>;
     crosspost(): Promise<T extends NewsChannel ? Message<NewsChannel> : never>;
     delete(reason?: string): Promise<void>;
     deleteWebhook(token: string): Promise<void>;
@@ -2605,17 +2622,18 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", TextChannel>>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<TextChannel>>;
-    createPrivateThread(options: unknown): Promise<PrivateThreadChannel>; // TODO Create thread options
-    createPublicThread(messageID: string, options: unknown): Promise<PublicThreadChannel>; // TODO Create thread options
+    createPrivateThread(options: CreateThreadOptions): Promise<PrivateThreadChannel>;
+    createPublicThread(messageID: string, options: CreateThreadOptions): Promise<PublicThreadChannel>;
     createWebhook(options: { name: string; avatar?: string | null}, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<TextChannel>>;
-    getActiveThreads(): Promise<(NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel)[]>; // Type alias
-    getArchivedThreads(type: "public" | "private", options: unknown): Promise<unknown>; // TODO Get archived thread options and return object
+    getActiveThreads(): Promise<AnyThreadChannel[]>;
+    getArchivedThreads(type: "private", options?: GetArchivedThreadsOptions): Promise<ArchivedThreads<PrivateThreadChannel>>;
+    getArchivedThreads(type: "public", options?: GetArchivedThreadsOptions): Promise<ArchivedThreads<PublicThreadChannel>>;
     getInvites(): Promise<(Invite<"withMetadata", TextChannel>)[]>;
-    getJoinedPrivateArchivedThreads(options: unknown): Promise<unknown>; // TODO Get archived thread options and return object
+    getJoinedPrivateArchivedThreads(options: GetArchivedThreadsOptions): Promise<ArchivedThreads<PrivateThreadChannel>>;
     getMessage(messageID: string): Promise<Message<TextChannel>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
