@@ -490,6 +490,11 @@ declare namespace Eris {
     permissions: Permission;
     position: number;
   }
+  interface OldThread {
+    name: string;
+    rateLimitPerUser: number;
+    threadMetadata: ThreadMetadata;
+  }
   interface OldVoiceState {
     deaf: boolean;
     mute: boolean;
@@ -556,6 +561,8 @@ declare namespace Eris {
       event: "relationshipUpdate",
       listener: (relationship: Relationship, oldRelationship: { type: number }) => void
     ): T;
+    (event: "threadCreate" | "threadDelete", listener: (channel: AnyThreadChannel) => void): T;
+    (event: "threadUpdate", listener: (channel: AnyThreadChannel, oldChannel: OldThread) => void): T;
     (event: "typingStart", listener: (channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member) => void): T;
     (event: "typingStart", listener: (channel: PrivateChannel | Uncached, user: User | Uncached, member: null) => void): T;
     (
