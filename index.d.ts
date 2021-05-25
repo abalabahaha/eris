@@ -998,7 +998,7 @@ declare namespace Eris {
   // Thread
   interface ArchivedThreads<T extends ThreadChannel = ThreadChannel> {
     hasMore: boolean;
-    members: unknown[]; // TODO Thread member
+    members: ThreadMember[];
     threads: T[];
   }
   interface CreateThreadOptions {
@@ -1842,7 +1842,7 @@ declare namespace Eris {
       status: number;
     }[]>;
     getSelfSettings(): Promise<UserSettings>;
-    getThreadMembers(channelID: string): Promise<unknown[]>; // TODO Thread member
+    getThreadMembers(channelID: string): Promise<ThreadMember[]>;
     getUserProfile(userID: string): Promise<UserProfile>;
     getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
@@ -2670,9 +2670,9 @@ declare namespace Eris {
     ownerID: string;
     rateLimitPerUser: number;
     threadMetadata: ThreadMetadata;
-    member?: unknown; // TODO Thread member
+    member?: ThreadMember;
     constructor(data: BaseData, client: Client, messageLimit?: number);
-    getMembers(): Promise<unknown[]>; // TODO Thread member
+    getMembers(): Promise<ThreadMember[]>;
     join(userID?: string): Promise<void>;
     leave(userID?: string): Promise<void>;
   }
