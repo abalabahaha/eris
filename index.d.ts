@@ -1009,6 +1009,13 @@ declare namespace Eris {
     before?: Date;
     limit?: number;
   }
+  interface ThreadMetadata {
+    archiveTimestamp: number;
+    archived: boolean;
+    archiverID?: string;
+    autoArchiveDuration: number;
+    locked?: boolean;
+  }
 
   // Voice
   interface UncachedMemberVoiceState {
@@ -2662,12 +2669,21 @@ declare namespace Eris {
     messages: Collection<Message>;
     ownerID: string;
     rateLimitPerUser: number;
-    threadMetadata: unknown; // TODO Thread metadata
+    threadMetadata: ThreadMetadata;
     member?: unknown; // TODO Thread member
     constructor(data: BaseData, client: Client, messageLimit?: number);
     getMembers(): Promise<unknown[]>; // TODO Thread member
     join(userID?: string): Promise<void>;
     leave(userID?: string): Promise<void>;
+  }
+
+  export class ThreadMember extends Base {
+    client: Client;
+    threadID: string;
+    joinTimestamp: number;
+    constructor(data: BaseData, client: Client);
+    update(data: BaseData): void;
+    leave(): Promise<void>;
   }
 
   export class UnavailableGuild extends Base {

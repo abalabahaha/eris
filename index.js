@@ -44,6 +44,7 @@ Eris.SharedStream = require("./lib/voice/SharedStream");
 Eris.StoreChannel = require("./lib/structures/StoreChannel");
 Eris.TextChannel = require("./lib/structures/TextChannel");
 Eris.ThreadChannel = require("./lib/structures/ThreadChannel");
+Eris.ThreadMember = require("./lib/structures/ThreadMember");
 Eris.UnavailableGuild = require("./lib/structures/UnavailableGuild");
 Eris.User = require("./lib/structures/User");
 Eris.VERSION = require("./package.json").version;

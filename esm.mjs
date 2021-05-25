@@ -43,6 +43,7 @@ export const {
   StoreChannel,
   TextChannel,
   ThreadChannel,
+  ThreadMember,
   UnavailableGuild,
   User,
   VERSION,
