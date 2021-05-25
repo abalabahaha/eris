@@ -2673,13 +2673,14 @@ declare namespace Eris {
 
   export class ThreadChannel extends GuildChannel {
     lastMessageID: string;
+    member?: ThreadMember;
     memberCount: number;
+    members: Collection<ThreadMember>;
     messageCount: number;
     messages: Collection<Message>;
     ownerID: string;
     rateLimitPerUser: number;
     threadMetadata: ThreadMetadata;
-    member?: ThreadMember;
     constructor(data: BaseData, client: Client, messageLimit?: number);
     getMembers(): Promise<ThreadMember[]>;
     join(userID?: string): Promise<void>;
