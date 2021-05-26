@@ -1825,6 +1825,7 @@ declare namespace Eris {
   }
 
   export class Guild extends Base {
+    me: Member;
     afkChannelID: string | null;
     afkTimeout: number;
     applicationID: string | null;
