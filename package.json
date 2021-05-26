@@ -1,5 +1,5 @@
 {
-  "name": "eris",
+  "name": "@lil_marcrock22/eris-light",
   "version": "0.15.1",
   "description": "A NodeJS Discord library",
   "main": "./index.js",
@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/abalabahaha/eris.git"
+    "url": "git+https://github.com/MARCROCK22/eris.git"
   },
   "keywords": [
     "api",
@@ -35,12 +35,11 @@
     "eris",
     "wrapper"
   ],
-  "author": "abalabahaha",
+  "author": "MARCROCK22",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/abalabahaha/eris/issues"
+    "url": "https://github.com/MARCROCK22/eris/issues"
   },
-  "homepage": "https://abal.moe/Eris/",
   "dependencies": {
     "ws": "^7.2.1"
   },
@@ -51,6 +50,7 @@
     "@typescript-eslint/parser": "^4.19.0",
     "eslint": "^7.22.0",
     "eslint-plugin-sort-class-members": "^1.10.0",
+    "kufa": "^1.4.3",
     "typescript": "^4.2.2"
   },
   "optionalDependencies": {

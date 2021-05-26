@@ -195,6 +195,8 @@ declare namespace Eris {
   interface ClientOptions {
     /** @deprecated */
     agent?: HTTPSAgent;
+    cacheUsers: boolean;
+    cacheMembers: boolean;
     allowedMentions?: AllowedMentions;
     autoreconnect?: boolean;
     compress?: boolean;
@@ -1332,29 +1334,6 @@ declare namespace Eris {
     premium_since?: number;
     user: PartialUser & { flags: number };
   }
-  interface UserSettings {
-    afk_timeout: number;
-    convert_emojis: boolean;
-    default_guilds_restricted: boolean;
-    detect_platform_accounts: boolean;
-    developer_mode: boolean;
-    enable_tts_command: boolean;
-    explicit_content_filter: number;
-    friend_source_flags: {
-      all: boolean; // not sure about other keys, abal heeeelp
-    };
-    inline_attachment_media: boolean;
-    inline_embed_media: boolean;
-    guild_positions: string[];
-    locale: string;
-    message_display_compact: boolean;
-    render_embeds: boolean;
-    render_reactions: boolean;
-    restricted_guilds: string[];
-    show_current_game: boolean;
-    status: string;
-    theme: string;
-  }
 
   class Base implements SimpleJSON {
     createdAt: number;
@@ -1432,39 +1411,30 @@ declare namespace Eris {
     bot: boolean;
     channelGuildMap: { [s: string]: string };
     gatewayURL?: string;
-    groupChannels: Collection<GroupChannel>;
     guilds: Collection<Guild>;
     guildShardMap: { [s: string]: number };
     lastConnect: number;
     lastReconnectDelay: number;
-    notes: { [s: string]: string };
     options: ClientOptions;
     presence: Presence;
     privateChannelMap: { [s: string]: string };
     privateChannels: Collection<PrivateChannel>;
     ready: boolean;
     reconnectAttempts: number;
-    relationships: Collection<Relationship>;
     requestHandler: RequestHandler;
     shards: ShardManager;
     startTime: number;
     unavailableGuilds: Collection<UnavailableGuild>;
     uptime: number;
     user: ExtendedUser;
-    userGuildSettings: { [s: string]: GuildSettings };
     users: Collection<User>;
-    userSettings: UserSettings;
     voiceConnections: VoiceConnectionManager;
-    constructor(token: string, options?: ClientOptions);
-    acceptInvite(inviteID: string): Promise<Invite<"withoutCount">>;
-    addGroupRecipient(groupID: string, userID: string): Promise<void>;
+    constructor(token: string | null, options?: ClientOptions);
     addGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
     addMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(channelID: string, messageID: string, reaction: string, userID: string): Promise<void>;
-    addRelationship(userID: string, block?: boolean): Promise<void>;
-    addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
     banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     closeVoiceConnection(guildID: string): void;
     connect(): Promise<void>;
@@ -1577,7 +1547,6 @@ declare namespace Eris {
       options: { name: string; avatar?: string | null },
       reason?: string
     ): Promise<Webhook>;
-    createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
@@ -1596,12 +1565,8 @@ declare namespace Eris {
     deleteMessage(channelID: string, messageID: string, reason?: string): Promise<void>;
     deleteMessages(channelID: string, messageIDs: string[], reason?: string): Promise<void>;
     deleteRole(guildID: string, roleID: string, reason?: string): Promise<void>;
-    deleteSelfConnection(platform: string, id: string): Promise<void>;
-    deleteSelfPremiumSubscription(): Promise<void>;
-    deleteUserNote(userID: string): Promise<void>;
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
     deleteWebhookMessage(webhookID: string, token: string, messageID: string): Promise<void>;
-    disableSelfMFATOTP(code: string): Promise<{ token: string }>;
     disconnect(options: { reconnect?: boolean | "auto" }): void;
     editAFK(afk: boolean): void;
     editChannel(
@@ -1638,14 +1603,7 @@ declare namespace Eris {
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
     editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
     editSelf(options: { avatar?: string; username?: string }): Promise<ExtendedUser>;
-    editSelfConnection(
-      platform: string,
-      id: string,
-      data: { friendSync: boolean; visibility: number }
-    ): Promise<Connection>;
-    editSelfSettings(data: UserSettings): Promise<UserSettings>;
     editStatus(status?: Status, game?: ActivityPartial<BotActivityType>): void;
-    editUserNote(userID: string, note: string): Promise<void>;
     editWebhook(
       webhookID: string,
       options: WebhookOptions,
@@ -1658,10 +1616,6 @@ declare namespace Eris {
       messageID: string,
       options: MessageWebhookContent
     ): Promise<Message<GuildTextableChannel>>;
-    enableSelfMFATOTP(
-      secret: string,
-      code: string
-    ): Promise<{ backup_codes: { code: string; consumed: boolean }[]; token: string }>;
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean }): Promise<void>;
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; wait: true }): Promise<Message<GuildTextableChannel>>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message<GuildTextableChannel>>;
@@ -1718,41 +1672,6 @@ declare namespace Eris {
     getRESTGuilds(limit?: number, before?: string, after?: string): Promise<Guild[]>;
     getRESTUser(userID: string): Promise<User>;
     getSelf(): Promise<ExtendedUser>;
-    getSelfBilling(): Promise<{
-      payment_gateway?: string;
-      payment_source?: {
-        brand: string;
-        expires_month: number;
-        expires_year: number;
-        invalid: boolean;
-        last_4: number;
-        type: string;
-      };
-      premium_subscription?: {
-        canceled_at?: string;
-        created_at: string;
-        current_period_end?: string;
-        current_period_start?: string;
-        ended_at?: string;
-        plan: string;
-        status: number;
-      };
-    }>;
-    getSelfConnections(): Promise<Connection[]>;
-    getSelfMFACodes(
-      password: string,
-      regenerate?: boolean
-    ): Promise<{ backup_codes: { code: string; consumed: boolean }[] }>;
-    getSelfPayments(): Promise<{
-      amount: number;
-      amount_refunded: number;
-      created_at: string; // date
-      currency: string;
-      description: string;
-      status: number;
-    }[]>;
-    getSelfSettings(): Promise<UserSettings>;
-    getUserProfile(userID: string): Promise<UserProfile>;
     getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
     getWebhookMessage(webhookID: string, token: string, messageID: string): Promise<Message<GuildTextableChannel>>;
@@ -1772,15 +1691,11 @@ declare namespace Eris {
       after?: string,
       reason?: string
     ): Promise<number>;
-    removeGroupRecipient(groupID: string, userID: string): Promise<void>;
     removeGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
     removeMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactionEmoji(channelID: string, messageID: string, reaction: string): Promise<void>;
     removeMessageReactions(channelID: string, messageID: string): Promise<void>;
-    removeRelationship(userID: string): Promise<void>;
-    searchChannelMessages(channelID: string, query: SearchOptions): Promise<SearchResults>;
     searchGuildMembers(guildID: string, query: string, limit?: number): Promise<Member[]>;
-    searchGuildMessages(guildID: string, query: SearchOptions): Promise<SearchResults>;
     sendChannelTyping(channelID: string): Promise<void>;
     syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     syncGuildTemplate(guildID: string, code: string): Promise<GuildTemplate>;
@@ -2168,10 +2083,10 @@ declare namespace Eris {
     guild: CT extends "withMetadata"
       ? Guild // Invite with Metadata always has guild prop
       : CH extends Extract<InviteChannel, GroupChannel> // Invite without Metadata
-        ? never // If the channel is GroupChannel, there is no guild
-        : CH extends Exclude<InviteChannel, InvitePartialChannel> // Invite without Metadata and not GroupChanel
-          ? Guild // If the invite channel is not partial
-          : Guild | undefined; // If the invite channel is partial
+      ? never // If the channel is GroupChannel, there is no guild
+      : CH extends Exclude<InviteChannel, InvitePartialChannel> // Invite without Metadata and not GroupChanel
+      ? Guild // If the invite channel is not partial
+      : Guild | undefined; // If the invite channel is partial
     inviter?: User;
     maxAge: CT extends "withMetadata" ? number : null;
     maxUses: CT extends "withMetadata" ? number : null;
@@ -2240,7 +2155,7 @@ declare namespace Eris {
     jumpLink: string;
     member: T extends GuildTextable ? Member : null;
     mentionEveryone: boolean;
-    mentions: User[];
+    mentions: Mention[];
     messageReference: MessageReference | null;
     pinned: boolean;
     prefix?: string;
@@ -2344,7 +2259,6 @@ declare namespace Eris {
     removeMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     removeMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
-    ring(recipient: string[]): void;
     sendTyping(): Promise<void>;
     syncCall(): void;
     unpinMessage(messageID: string): Promise<void>;
@@ -2525,7 +2439,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", TextChannel>>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<TextChannel>>;
-    createWebhook(options: { name: string; avatar?: string | null}, reason?: string): Promise<Webhook>;
+    createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
@@ -2560,7 +2474,12 @@ declare namespace Eris {
     constructor(data: BaseData, client: Client);
   }
 
+  class Mention extends User {
+    member: Member | null;
+  }
+
   export class User extends Base {
+    tag: string;
     avatar: string | null;
     avatarURL: string;
     bot: boolean;
@@ -2575,13 +2494,8 @@ declare namespace Eris {
     system: boolean;
     username: string;
     constructor(data: BaseData, client: Client);
-    addRelationship(block?: boolean): Promise<void>;
-    deleteNote(): Promise<void>;
     dynamicAvatarURL(format?: ImageFormat, size?: number): string;
-    editNote(note: string): Promise<void>;
     getDMChannel(): Promise<PrivateChannel>;
-    getProfile(): Promise<UserProfile>;
-    removeRelationship(): Promise<void>;
   }
 
   export class VoiceChannel extends GuildChannel implements Invitable {
