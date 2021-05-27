@@ -2136,6 +2136,7 @@ declare namespace Eris {
   }
 
   export class Message<T extends PossiblyUncachedTextable = TextableChannel> extends Base {
+    guild: Guild;
     activity?: MessageActivity;
     application?: MessageApplication;
     attachments: Attachment[];
