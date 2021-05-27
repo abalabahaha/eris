@@ -62,7 +62,7 @@ declare namespace Eris {
     messageReferenceID?: string;
     tts?: boolean;
   };
-  type Button = InteractionButtonComponent | URLButtonComponent;
+  type Button = InteractionButton | URLButton;
   type Component = ActionRow | Button;
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
@@ -817,6 +817,10 @@ declare namespace Eris {
   }
 
   // Message
+  interface ActionRow {
+    components: Button[];
+    type: 1;
+  }
   interface ActiveMessages {
     args: string[];
     command: Command;
@@ -838,15 +842,11 @@ declare namespace Eris {
     url: string;
     width?: number;
   }
-  interface ButtonComponentBase {
+  interface ButtonBase {
     disabled?: boolean;
     emoji?: PartialEmoji;
     label?: string;
     type: 2;
-  }
-  interface ActionRow {
-    type: 1;
-    components: Button[];
   }
   interface GetMessageReactionOptions {
     after?: string;
@@ -854,7 +854,7 @@ declare namespace Eris {
     before?: string;
     limit?: number;
   }
-  interface InteractionButtonComponent extends ButtonComponentBase {
+  interface InteractionButton extends ButtonBase {
     custom_id: string;
     style: 1 | 2 | 3 | 4;
   }
@@ -901,7 +901,7 @@ declare namespace Eris {
     pack_id: string;
     tags?: string;
   }
-  interface URLButtonComponent extends ButtonComponentBase {
+  interface URLButton extends ButtonBase {
     style: 5;
     url: string;
   }
