@@ -53,20 +53,9 @@ declare namespace Eris {
   type VerificationLevel = 0 | 1 | 2 | 3 | 4;
 
   // Message
-  type AdvancedMessageContent = {
-    allowedMentions?: AllowedMentions;
-    content?: string;
-    /** @deprecated */
-    embed?: EmbedOptions;
-    embeds?: EmbedOptions[];
-    flags?: number;
-    messageReference?: MessageReferenceReply;
-    /** @deprecated */
-    messageReferenceID?: string;
-    tts?: boolean;
-  };
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
+  type MessageContentEdit = string | AdvancedMessageContentEdit;
   type MFALevel = 0 | 1;
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
   type InteractionType = 1 | 2;
@@ -178,7 +167,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
-    editMessage(messageID: string, content: MessageContent): Promise<Message>;
+    editMessage(messageID: string, content: MessageContentEdit): Promise<Message>;
     getMessage(messageID: string): Promise<Message>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
@@ -861,6 +850,21 @@ declare namespace Eris {
     args: string[];
     command: Command;
     timeout: NodeJS.Timer;
+  }
+  interface AdvancedMessageContent {
+    allowedMentions?: AllowedMentions;
+    content?: string;
+    /** @deprecated */
+    embed?: EmbedOptions;
+    embeds?: EmbedOptions[];
+    flags?: number;
+    messageReference?: MessageReferenceReply;
+    /** @deprecated */
+    messageReferenceID?: string;
+    tts?: boolean;
+  }
+  interface AdvancedMessageContentEdit extends AdvancedMessageContent {
+    file?: MessageFile | MessageFile[];
   }
   interface AllowedMentions {
     everyone?: boolean;
@@ -1730,7 +1734,7 @@ declare namespace Eris {
     editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
     editGuildWelcomeScreen(guildID: string, options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editGuildWidget(guildID: string, options: Widget): Promise<Widget>;
-    editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
+    editMessage(channelID: string, messageID: string, content: MessageContentEdit): Promise<Message>;
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
     editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
@@ -2392,7 +2396,7 @@ declare namespace Eris {
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", NewsChannel>>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<NewsChannel>>;
     crosspostMessage(messageID: string): Promise<Message<NewsChannel>>;
-    editMessage(messageID: string, content: MessageContent): Promise<Message<NewsChannel>>;
+    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<NewsChannel>>;
     follow(webhookChannelID: string): Promise<ChannelFollow>;
     getInvites(): Promise<(Invite<"withMetadata", NewsChannel>)[]>;
     getMessage(messageID: string): Promise<Message<NewsChannel>>;
@@ -2446,7 +2450,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<PrivateChannel>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
-    editMessage(messageID: string, content: MessageContent): Promise<Message<PrivateChannel>>;
+    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<PrivateChannel>>;
     getMessage(messageID: string): Promise<Message<PrivateChannel>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
@@ -2650,7 +2654,7 @@ declare namespace Eris {
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
-    editMessage(messageID: string, content: MessageContent): Promise<Message<TextChannel>>;
+    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<TextChannel>>;
     getActiveThreads(): Promise<AnyThreadChannel[]>;
     getArchivedThreads(type: "private", options?: GetArchivedThreadsOptions): Promise<ArchivedThreads<PrivateThreadChannel>>;
     getArchivedThreads(type: "public", options?: GetArchivedThreadsOptions): Promise<ArchivedThreads<PublicThreadChannel>>;
