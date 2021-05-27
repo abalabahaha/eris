@@ -479,6 +479,9 @@ declare namespace Eris {
     permissions: Permission;
     position: number;
   }
+  interface OldStageInstance {
+    topic: string;
+  }
   interface OldThread {
     name: string;
     rateLimitPerUser: number;
@@ -553,6 +556,8 @@ declare namespace Eris {
       event: "relationshipUpdate",
       listener: (relationship: Relationship, oldRelationship: { type: number }) => void
     ): T;
+    (event: "stageInstanceCreate" | "stageInstanceDelete", listener: (stageInstance: StageInstance) => void): T;
+    (event: "stageInstanceUpdate", listener: (stageInstance: StageInstance, oldStageInstance: OldStageInstance | null) => void): T;
     (event: "threadCreate" | "threadDelete", listener: (channel: AnyThreadChannel) => void): T;
     (event: "threadListSync", listener: (guild: Guild, deletedThreads: (AnyThreadChannel | Uncached)[], activeThreads: AnyThreadChannel[], joinedThreadsMember: ThreadMember[]) => void): T;
     (event: "threadMembersUpdate", listener: (channel: AnyThreadChannel, removedMembers: (ThreadMember | Uncached)[], addedMembers: ThreadMember[]) => void): T;
@@ -2080,6 +2085,7 @@ declare namespace Eris {
     shard: Shard;
     splash: string | null;
     splashURL: string | null;
+    stageInstances: Collection<StageInstance>;
     systemChannelFlags: number;
     systemChannelID: string | null;
     threads: Collection<ThreadChannel>;
