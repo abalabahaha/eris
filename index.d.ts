@@ -14,9 +14,6 @@ declare namespace Eris {
   export const VERSION: string;
 
   // TYPES
-  // Cache
-  type Uncached = { id: string };
-
   // Channel
   type AnyChannel = AnyGuildChannel | PrivateChannel;
   type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel | StoreChannel;
@@ -70,16 +67,6 @@ declare namespace Eris {
   type VerificationLevel = 0 | 1 | 2 | 3 | 4;
 
   // Message
-  type AdvancedMessageContent = {
-    allowedMentions?: AllowedMentions;
-    content?: string;
-    embed?: EmbedOptions;
-    flags?: number;
-    messageReference?: MessageReferenceReply;
-    /** @deprecated */
-    messageReferenceID?: string;
-    tts?: boolean;
-  };
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
   type MFALevel = 0 | 1;
@@ -110,6 +97,11 @@ declare namespace Eris {
   type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions">;
 
   // INTERFACES
+  // Cache
+  interface Uncached { 
+    id: string 
+  }
+  
   // Internals
   interface JSONCache {
     [s: string]: unknown;
@@ -854,6 +846,16 @@ declare namespace Eris {
     command: Command;
     timeout: NodeJS.Timer;
   }
+  interface AdvancedMessageContent {
+    allowedMentions?: AllowedMentions;
+    content?: string;
+    embed?: EmbedOptions;
+    flags?: number;
+    messageReference?: MessageReferenceReply;
+    /** @deprecated */
+    messageReferenceID?: string;
+    tts?: boolean;
+  }
   interface AllowedMentions {
     everyone?: boolean;
     repliedUser?: boolean;
@@ -1470,7 +1472,7 @@ declare namespace Eris {
     id: string;
     mention: string;
     type: ChannelTypes;
-    constructor(data: BaseData);
+    constructor(data: BaseData, client: Client);
     static from(data: BaseData, client: Client): AnyChannel;
   }
 
@@ -2128,7 +2130,7 @@ declare namespace Eris {
     permissionOverwrites: Collection<PermissionOverwrite>;
     position: number;
     type: Exclude<ChannelTypes, 1 | 3>;
-    constructor(data: BaseData, guild: Guild);
+    constructor(data: BaseData, client: Client);
     delete(reason?: string): Promise<void>;
     deletePermission(overwriteID: string, reason?: string): Promise<void>;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
@@ -2566,7 +2568,7 @@ declare namespace Eris {
     rateLimitPerUser: number;
     topic: string | null;
     type: 0 | 5;
-    constructor(data: BaseData, guild: Guild, messageLimit: number);
+    constructor(data: BaseData, client: Client, messageLimit: number);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
