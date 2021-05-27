@@ -1082,13 +1082,18 @@ declare namespace Eris {
 
   // Webhook
   interface Webhook {
-    avatar?: string;
-    channel_id: string;
-    guild_id: string;
+    application_id: string | null;
+    avatar: string | null;
+    channel_id: string | null;
+    guild_id: string | null;
     id: string;
     name: string;
-    token: string;
-    user: PartialUser;
+    source_channel?: { id: string; name: string };
+    source_guild: { icon: string | null; id: string; name: string };
+    token?: string;
+    type: 1 | 2 | 3;
+    url?: string;
+    user?: PartialUser;
   }
   interface WebhookOptions {
     avatar?: string;
