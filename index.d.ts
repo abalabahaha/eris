@@ -53,7 +53,7 @@ declare namespace Eris {
   // Message
   type AdvancedMessageContent = {
     allowedMentions?: AllowedMentions;
-    component?: CollectionComponent[];
+    components?: ActionRow[];
     content?: string;
     embed?: EmbedOptions;
     flags?: number;
@@ -62,8 +62,8 @@ declare namespace Eris {
     messageReferenceID?: string;
     tts?: boolean;
   };
-  type ButtonComponent = InteractionButtonComponent | URLButtonComponent;
-  type Component = CollectionComponent | ButtonComponent;
+  type Button = InteractionButtonComponent | URLButtonComponent;
+  type Component = ActionRow | Button;
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
   type MFALevel = 0 | 1;
@@ -839,12 +839,14 @@ declare namespace Eris {
     width?: number;
   }
   interface ButtonComponentBase {
-    label: string;
+    disabled?: boolean;
+    emoji?: PartialEmoji;
+    label?: string;
     type: 2;
   }
-  interface CollectionComponent {
+  interface ActionRow {
     type: 1;
-    components: Component[];
+    components: Button[];
   }
   interface GetMessageReactionOptions {
     after?: string;
@@ -2248,7 +2250,7 @@ declare namespace Eris {
     /** @deprecated */
     cleanContent: string;
     command?: Command;
-    components: CollectionComponent[];
+    components?: ActionRow[];
     content: string;
     createdAt: number;
     editedTimestamp?: number;
