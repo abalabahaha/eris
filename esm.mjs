@@ -40,6 +40,8 @@ export const {
   SequentialBucket,
   Shard,
   SharedStream,
+  StageChannel,
+  StageInstance,
   StoreChannel,
   TextChannel,
   ThreadChannel,
