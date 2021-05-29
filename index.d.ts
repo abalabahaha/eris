@@ -929,6 +929,12 @@ declare namespace Eris {
     type: T;
     url?: string;
   }
+  interface ClientPresence {
+    activities: Activity[] | null;
+    afk: boolean;
+    since: number | null;
+    status: Status;
+  }
   interface ClientStatus {
     desktop: Status;
     mobile: Status;
@@ -1455,7 +1461,7 @@ declare namespace Eris {
     lastReconnectDelay: number;
     notes: { [s: string]: string };
     options: ClientOptions;
-    presence: Presence;
+    presence: ClientPresence;
     privateChannelMap: { [s: string]: string };
     privateChannels: Collection<PrivateChannel>;
     ready: boolean;
@@ -2447,7 +2453,7 @@ declare namespace Eris {
     lastHeartbeatSent: number | null;
     latency: number;
     preReady: boolean;
-    presence: Presence;
+    presence: ClientPresence;
     presenceUpdateBucket: Bucket;
     ready: boolean;
     reconnectInterval: number;
