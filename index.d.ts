@@ -663,9 +663,6 @@ declare namespace Eris {
     limit?: number;
     userID?: string;
   }
-  interface GetGuildIntegrationsOptions {
-    includeApplications?: boolean;
-  }
   interface GetPruneOptions {
     days?: number;
     includeRoles?: string[];
@@ -1702,7 +1699,7 @@ declare namespace Eris {
     getGuildDiscovery(guildID: string): Promise<DiscoveryMetadata>;
     /** @deprecated */
     getGuildEmbed(guildID: string): Promise<Widget>;
-    getGuildIntegrations(guildID: string, options?: GetGuildIntegrationsOptions): Promise<GuildIntegration[]>;
+    getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
     getGuildInvites(guildID: string): Promise<Invite[]>;
     getGuildPreview(guildID: string): Promise<GuildPreview>;
     getGuildTemplate(code: string): Promise<GuildTemplate>;
@@ -2045,7 +2042,7 @@ declare namespace Eris {
     getDiscovery(): Promise<DiscoveryMetadata>;
     /** @deprecated */
     getEmbed(): Promise<Widget>;
-    getIntegrations(options?: GetGuildIntegrationsOptions): Promise<GuildIntegration>;
+    getIntegrations(): Promise<GuildIntegration>;
     getInvites(): Promise<Invite[]>;
     getPruneCount(options?: GetPruneOptions): Promise<number>;
     getRESTChannels(): Promise<AnyGuildChannel[]>;
