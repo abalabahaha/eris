@@ -723,9 +723,9 @@ declare namespace Eris {
     summary: string;
   }
   interface IntegrationOptions {
-    enableEmoticons: string;
-    expireBehavior: string;
-    expireGracePeriod: string;
+    enableEmoticons?: string;
+    expireBehavior?: string;
+    expireGracePeriod?: string;
   }
   interface PruneMemberOptions extends GetPruneOptions {
     computePruneCount?: boolean;
@@ -2124,21 +2124,21 @@ declare namespace Eris {
     application?: IntegrationApplication;
     createdAt: number;
     enabled: boolean;
-    enableEmoticons: boolean;
-    expireBehavior: number;
-    expireGracePeriod: number;
+    enableEmoticons?: boolean;
+    expireBehavior?: number;
+    expireGracePeriod?: number;
     id: string;
     name: string;
-    revoked: boolean;
-    roleID: string;
-    subscriberCount: number;
-    syncedAt: number;
-    syncing: boolean;
+    revoked?: boolean;
+    roleID?: string;
+    subscriberCount?: number;
+    syncedAt?: number;
+    syncing?: boolean;
     type: string;
     user?: User;
     constructor(data: BaseData, guild: Guild);
     delete(): Promise<void>;
-    edit(options: { enableEmoticons: string; expireBehavior: string; expireGracePeriod: string }): Promise<void>;
+    edit(options: IntegrationOptions): Promise<void>;
     sync(): Promise<void>;
   }
 
