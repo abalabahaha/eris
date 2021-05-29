@@ -2218,6 +2218,7 @@ declare namespace Eris {
     defaultAvatar: string;
     defaultAvatarURL: string;
     discriminator: string;
+    game: Activity | null;
     guild: Guild;
     id: string;
     joinedAt: number;
@@ -2375,8 +2376,8 @@ declare namespace Eris {
     unsendMessage(messageID: string): Promise<void>;
   }
 
-  export class Relationship extends Base implements Presence {
-    activities?: Activity[];
+  export class Relationship extends Base implements Omit<Presence, "activities"> {
+    activities: Activity[] | null;
     clientStatus?: ClientStatus;
     id: string;
     status: Status;
