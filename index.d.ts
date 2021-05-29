@@ -1477,7 +1477,7 @@ declare namespace Eris {
     users: Collection<User>;
     userSettings: UserSettings;
     voiceConnections: VoiceConnectionManager;
-    constructor(token: string, options?: ClientOptions);
+    constructor(token: string, options: ClientOptions);
     acceptInvite(inviteID: string): Promise<Invite<"withoutCount">>;
     addGroupRecipient(groupID: string, userID: string): Promise<void>;
     addGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
@@ -1880,7 +1880,7 @@ declare namespace Eris {
     commands: { [s: string]: Command };
     guildPrefixes: { [s: string]: string | string[] };
     preReady?: true;
-    constructor(token: string, options?: ClientOptions, commandOptions?: CommandClientOptions);
+    constructor(token: string, options: ClientOptions, commandOptions?: CommandClientOptions);
     checkPrefix(msg: Message): string;
     onMessageCreate(msg: Message): Promise<void>;
     onMessageReactionEvent(msg: Message, emoji: Emoji, reactor: Member | Uncached | string): Promise<void>
