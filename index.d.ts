@@ -24,8 +24,6 @@ declare namespace Eris {
   type ChannelTypes = Constants["ChannelTypes"][keyof Constants["ChannelTypes"]];
   type GuildTextableChannel = TextChannel | NewsChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel>;
-  type PossiblyUncachedTextable = Textable | Uncached;
-  type PossiblyUncachedTextableChannel = TextableChannel | Uncached;
   type TextableChannel = (GuildTextable & GuildTextableChannel) | (Textable & PrivateChannel);
   type VideoQualityMode = 1 | 2;
 
@@ -53,6 +51,7 @@ declare namespace Eris {
   // Message
   type AdvancedMessageContent = {
     allowedMentions?: AllowedMentions;
+    components?: CollectionComponent[];
     content?: string;
     embed?: EmbedOptions;
     flags?: number;
@@ -61,6 +60,8 @@ declare namespace Eris {
     messageReferenceID?: string;
     tts?: boolean;
   };
+  type ButtonComponent = InteractionButtonComponent | URLButtonComponent;
+  type Component = CollectionComponent | ButtonComponent;
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
   type MFALevel = 0 | 1;
@@ -528,7 +529,7 @@ declare namespace Eris {
     (event: "guildUpdate", listener: (guild: Guild, oldGuild: OldGuild) => void): T;
     (event: "hello", listener: (trace: string[], id: number) => void): T;
     (event: "inviteCreate" | "inviteDelete", listener: (guild: Guild, invite: Invite) => void): T;
-    (event: "messageCreate", listener: (message: Message<PossiblyUncachedTextableChannel>) => void): T;
+    (event: "messageCreate", listener: (message: Message) => void): T;
     (event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): T;
     (event: "messageReactionRemoveEmoji", listener: (message: PossiblyUncachedMessage, emoji: PartialEmoji) => void): T;
     (event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): T;
@@ -540,7 +541,7 @@ declare namespace Eris {
       event: "messageReactionRemove",
       listener: (message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string) => void
     ): T;
-    (event: "messageUpdate", listener: (message: Message<PossiblyUncachedTextableChannel>, oldMessage: OldMessage | null) => void
+    (event: "messageUpdate", listener: (message: Message, oldMessage: OldMessage | null) => void
     ): T;
     (event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence: Presence | null) => void): T;
     (event: "rawREST", listener: (request: RawRESTRequest) => void): T;
@@ -837,6 +838,20 @@ declare namespace Eris {
     url: string;
     width?: number;
   }
+  //EXPERIMENTAL
+  interface ButtonComponentBase {
+    label: string;
+    type: 2;
+  }
+  interface CollectionComponent {
+    type: 1;
+    components: Component[];
+  }
+  interface InteractionButtonComponent extends ButtonComponentBase {
+    custom_id: string;
+    style: 1 | 2 | 3 | 4;
+  }
+  //EXPERIMENTAL
   interface GetMessageReactionOptions {
     after?: string;
     /** @deprecated */
@@ -864,6 +879,10 @@ declare namespace Eris {
     name: string;
     type: InteractionType;
     user: User;
+  }
+  interface URLButtonComponent extends ButtonComponentBase {
+    style: 5;
+    url: string;
   }
   interface MessageReference extends MessageReferenceBase {
     channelID: string;
@@ -2135,7 +2154,7 @@ declare namespace Eris {
     unban(reason?: string): Promise<void>;
   }
 
-  export class Message<T extends PossiblyUncachedTextable = TextableChannel> extends Base {
+  export class Message<T extends Textable = TextableChannel> extends Base {
     guild: Guild;
     activity?: MessageActivity;
     application?: MessageApplication;
@@ -2146,6 +2165,7 @@ declare namespace Eris {
     /** @deprecated */
     cleanContent: string;
     command?: Command;
+    components: CollectionComponent[];
     content: string;
     createdAt: number;
     editedTimestamp?: number;
