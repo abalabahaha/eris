@@ -1423,7 +1423,7 @@ declare namespace Eris {
     id: string;
     mention: string;
     type: ChannelTypes;
-    constructor(data: BaseData);
+    constructor(data: BaseData, client: Client);
     static from(data: BaseData, client: Client): AnyChannel;
   }
 
@@ -2081,7 +2081,7 @@ declare namespace Eris {
     permissionOverwrites: Collection<PermissionOverwrite>;
     position: number;
     type: Exclude<ChannelTypes, 1 | 3>;
-    constructor(data: BaseData, guild: Guild);
+    constructor(data: BaseData, client: Client);
     delete(reason?: string): Promise<void>;
     deletePermission(overwriteID: string, reason?: string): Promise<void>;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
@@ -2519,7 +2519,7 @@ declare namespace Eris {
     rateLimitPerUser: number;
     topic: string | null;
     type: 0 | 5;
-    constructor(data: BaseData, guild: Guild, messageLimit: number);
+    constructor(data: BaseData, client: Client, messageLimit: number);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
