@@ -205,7 +205,7 @@ declare namespace Eris {
     firstShardID?: number;
     getAllUsers?: boolean;
     guildCreateTimeout?: number;
-    intents?: number | IntentStrings[];
+    intents: number | IntentStrings[];
     largeThreshold?: number;
     lastShardID?: number;
     /** @deprecated */
