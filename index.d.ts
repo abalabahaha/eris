@@ -928,8 +928,8 @@ declare namespace Eris {
     [key: string]: unknown;
   }
   interface ActivityPartial<T extends ActivityType = BotActivityType> {
-    name?: string;
-    type?: T;
+    name: string;
+    type: T;
     url?: string;
   }
   interface ClientStatus {
@@ -1663,7 +1663,8 @@ declare namespace Eris {
       data: { friendSync: boolean; visibility: number }
     ): Promise<Connection>;
     editSelfSettings(data: UserSettings): Promise<UserSettings>;
-    editStatus(status?: Status, game?: ActivityPartial<BotActivityType>): void;
+    editStatus(status: Status, activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
+    editStatus(activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
     editUserNote(userID: string, note: string): Promise<void>;
     editWebhook(
       webhookID: string,
@@ -2214,7 +2215,6 @@ declare namespace Eris {
     defaultAvatar: string;
     defaultAvatarURL: string;
     discriminator: string;
-    game: Activity | null;
     guild: Guild;
     id: string;
     joinedAt: number;
@@ -2375,7 +2375,6 @@ declare namespace Eris {
   export class Relationship extends Base implements Presence {
     activities?: Activity[];
     clientStatus?: ClientStatus;
-    game: Activity | null;
     id: string;
     status: Status;
     type: number;
@@ -2467,8 +2466,8 @@ declare namespace Eris {
     createGuild(_guild: Guild): Guild;
     disconnect(options?: { reconnect?: boolean | "auto" }, error?: Error): void;
     editAFK(afk: boolean): void;
-    editStatus(status?: Status, game?: ActivityPartial<BotActivityType>): void;
-    editStatus(game?: ActivityPartial<BotActivityType>): void;
+    editStatus(status: Status, activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
+    editStatus(activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
     // @ts-ignore: Method override
     emit(event: string, ...args: any[]): void;
     getGuildMembers(guildID: string, timeout: number): void;
