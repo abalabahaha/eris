@@ -848,7 +848,7 @@ declare namespace Eris {
     components: Component[];
   }
   interface InteractionButtonComponent extends ButtonComponentBase {
-    custom_id: string;
+    custom_id?: string;
     style: 1 | 2 | 3 | 4 | 5;
     url?: string;
   }
