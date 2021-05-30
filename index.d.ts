@@ -60,7 +60,7 @@ declare namespace Eris {
     messageReferenceID?: string;
     tts?: boolean;
   };
-  type ButtonComponent = InteractionButtonComponent | URLButtonComponent;
+  type ButtonComponent = InteractionButtonComponent;
   type Component = CollectionComponent | ButtonComponent;
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
@@ -849,7 +849,8 @@ declare namespace Eris {
   }
   interface InteractionButtonComponent extends ButtonComponentBase {
     custom_id: string;
-    style: 1 | 2 | 3 | 4;
+    style: 1 | 2 | 3 | 4 | 5;
+    url?: string;
   }
   //EXPERIMENTAL
   interface GetMessageReactionOptions {
@@ -879,10 +880,6 @@ declare namespace Eris {
     name: string;
     type: InteractionType;
     user: User;
-  }
-  interface URLButtonComponent extends ButtonComponentBase {
-    style: 5;
-    url: string;
   }
   interface MessageReference extends MessageReferenceBase {
     channelID: string;
