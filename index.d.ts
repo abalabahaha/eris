@@ -490,25 +490,6 @@ declare namespace Eris {
     selfStream: boolean;
     selfVideo: boolean;
   }
-  //Interaction
-  interface Interaction {
-    applicationId: string;
-    channelId: string;
-    data?: {
-      componentType?: number;
-      id?: string;
-      custom_id?: string;
-      name?: string;
-      options?: { name?: string; value: string }
-    };
-    guildId?: string;
-    id: string;
-    member: Member;
-    message: Message;
-    token: string;
-    type: number;
-    version: number;
-  }
 
   interface EventListeners<T> {
     (event: "ready" | "disconnect", listener: () => void): T;
@@ -2178,6 +2159,34 @@ declare namespace Eris {
     edit(options: GuildTemplateOptions): Promise<GuildTemplate>;
     sync(): Promise<GuildTemplate>;
     toJSON(props?: string[]): JSONCache;
+  }
+
+  //Interaction
+  export class Interaction {
+    applicationId: string;
+    channelId: string;
+    data?: {
+      componentType?: number;
+      id?: string;
+      custom_id?: string;
+      name?: string;
+      options?: { name?: string; value: string }
+    };
+    guildId?: string;
+    id: string;
+    member: Member;
+    message: Message;
+    token: string;
+    type: number;
+    version: number;
+    acknowledge(): Promise<void>;
+    createFollowup(content: Record<string, unknown>): Promise<Message>;
+    createMessage(content: Record<string, unknown>): Promise<void>;
+    defer(): Promise<void>;
+    deferUpdate(): Promise<void>;
+    delete(messageId: string): Promise<void>;
+    edit(messageId: string, content: Record<string, unknown>): Promise<Message>;
+    editParent(content: Record<string, unknown>): Promise<void>;
   }
 
   // If CT (count) is "withMetadata", it will not have count properties
