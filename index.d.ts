@@ -196,6 +196,7 @@ declare namespace Eris {
   interface ClientOptions {
     /** @deprecated */
     agent?: HTTPSAgent;
+    cacheEmojis: boolean;
     cacheUsers: boolean;
     cacheMembers: boolean;
     allowedMentions?: AllowedMentions;
@@ -493,7 +494,23 @@ declare namespace Eris {
     selfStream: boolean;
     selfVideo: boolean;
   }
+
+  class ButtonInteraction {
+    token: string;
+    id: string;
+    message: Message;
+    member: Member;
+    customID: string;
+    defeered: boolean;
+    replied: boolean;
+    __client: Client;
+    reply(param: { content?: string; embeds: EmbedOptions; files?: MessageFile | MessageFile[] }, invisible?: boolean): Promise<true>;
+    think(invisible: boolean): Promise<true>;
+    defer(): Promise<true>;
+  }
+
   interface EventListeners<T> {
+    (event: 'clickButton', listener: (button: ButtonInteraction) => void): T;
     (event: "ready" | "disconnect", listener: () => void): T;
     (event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): T;
     (event: "callUpdate", listener: (call: Call, oldCall: OldCall) => void): T;

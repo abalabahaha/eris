@@ -12,7 +12,7 @@ bot.on("error", (err) => {
 });
 
 bot.on("messageCreate", (msg) => { // When a message is created
-    if(msg.content === "!embed") { // If the message content is "!embed"
+    if (msg.content === "!embed") { // If the message content is "!embed"
         bot.createMessage(msg.channel.id, {
             embed: {
                 title: "I'm an embed!", // Title of the embed

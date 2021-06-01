@@ -18,19 +18,19 @@ bot.on("error", (err) => {
 bot.registerCommandAlias("halp", "help"); // Alias !halp to !help
 
 bot.registerCommand("ping", "Pong!", { // Make a ping command
-// Responds with "Pong!" when someone says "!ping"
+    // Responds with "Pong!" when someone says "!ping"
     description: "Pong!",
     fullDescription: "This command could be used to check if the bot is up. Or entertainment when you're bored."
 });
 
 bot.registerCommand("pong", ["Pang!", "Peng!", "Ping!", "Pung!"], { // Make a pong command
-// Responds with a random version of "Ping!" when someone says "!pong"
+    // Responds with a random version of "Ping!" when someone says "!pong"
     description: "Ping!",
     fullDescription: "This command could also be used to check if the bot is up. Or entertainment when you're bored."
 });
 
 const echoCommand = bot.registerCommand("echo", (msg, args) => { // Make an echo command
-    if(args.length === 0) { // If the user just typed "!echo", say "Invalid input"
+    if (args.length === 0) { // If the user just typed "!echo", say "Invalid input"
         return "Invalid input";
     }
     const text = args.join(" "); // Make a string of the text after the command label
@@ -42,7 +42,7 @@ const echoCommand = bot.registerCommand("echo", (msg, args) => { // Make an echo
 });
 
 echoCommand.registerSubcommand("reverse", (msg, args) => { // Make a reverse subcommand under echo
-    if(args.length === 0) { // If the user just typed "!echo reverse", say "Invalid input"
+    if (args.length === 0) { // If the user just typed "!echo reverse", say "Invalid input"
         return "Invalid input";
     }
     let text = args.join(" "); // Make a string of the text after the command label
