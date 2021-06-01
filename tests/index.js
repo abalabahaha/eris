@@ -1,5 +1,5 @@
 //const ButtonInteracion = require('../lib/structures/Button');
-/*const eris = require('../index.js');
+const eris = require('../index.js');
 require('dotenv').config();
 const bot = new eris.Client(null, { cacheMembers: false, cacheUsers: false, cacheEmojis: false });//process.env.DISCORD_TOKEN=token
 bot.connect()
