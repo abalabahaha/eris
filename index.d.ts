@@ -504,7 +504,7 @@ declare namespace Eris {
     defeered: boolean;
     replied: boolean;
     __client: Client;
-    reply(param: { content?: string; embeds: EmbedOptions; files?: MessageFile | MessageFile[] }, invisible?: boolean): Promise<true>;
+    reply(param: { content?: string; embeds?: EmbedOptions; files?: MessageFile | MessageFile[] }, invisible?: boolean): Promise<true>;
     think(invisible: boolean): Promise<true>;
     defer(): Promise<true>;
   }
