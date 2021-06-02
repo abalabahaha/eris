@@ -853,7 +853,7 @@ declare namespace Eris {
     custom_id: string;
     max_values?: number;
     min_values?: number;
-    options: DropdownOptions;
+    options: DropdownOptions[];
     placeholder?: string;
     type: 3;
   }
