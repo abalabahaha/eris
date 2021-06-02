@@ -62,8 +62,9 @@ declare namespace Eris {
     messageReferenceID?: string;
     tts?: boolean;
   };
+  type ActionRowComponents = Button | Dropdown;
   type Button = InteractionButton | URLButton;
-  type Component = ActionRow | Button;
+  type Component = ActionRow | ActionRowComponents;
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
   type MFALevel = 0 | 1;
@@ -818,7 +819,7 @@ declare namespace Eris {
 
   // Message
   interface ActionRow {
-    components: Button[];
+    components: ActionRowComponents[];
     type: 1;
   }
   interface ActiveMessages {
@@ -847,6 +848,21 @@ declare namespace Eris {
     emoji?: Partial<PartialEmoji>;
     label?: string;
     type: 2;
+  }
+  interface Dropdown {
+    custom_id: string;
+    max_values?: number;
+    min_values?: number;
+    options: DropdownOptions;
+    placeholder?: string;
+    type: 3;
+  }
+  interface DropdownOptions {
+    default?: boolean;
+    description?: string;
+    emoji?: Partial<PartialEmoji>;
+    label: string;
+    value: number | string;
   }
   interface GetMessageReactionOptions {
     after?: string;
