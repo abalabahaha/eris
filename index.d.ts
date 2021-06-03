@@ -1912,6 +1912,7 @@ declare namespace Eris {
   export class Guild extends Base {
     afkChannelID: string | null;
     afkTimeout: number;
+    applicationCommandCount?: number;
     applicationID: string | null;
     approximateMemberCount?: number;
     approximatePresenceCount?: number;
