@@ -2192,13 +2192,13 @@ declare namespace Eris {
     type: number;
     version: number;
     acknowledge(): Promise<void>;
-    createFollowup(content: Record<string, unknown>): Promise<Message>;
-    createMessage(content: Record<string, unknown>): Promise<void>;
+    createFollowup(content: InteractionOptions): Promise<Message>;
+    createMessage(content: InteractionOptions): Promise<void>;
     defer(): Promise<void>;
     deferUpdate(): Promise<void>;
     delete(messageId: string): Promise<void>;
-    edit(messageId: string, content: Record<string, unknown>): Promise<Message>;
-    editParent(content: Record<string, unknown>): Promise<void>;
+    edit(messageId: string, content: InteractionOptions): Promise<Message>;
+    editParent(content: InteractionOptions): Promise<void>;
   }
 
   // If CT (count) is "withMetadata", it will not have count properties
