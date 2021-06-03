@@ -14,6 +14,17 @@ declare namespace Eris {
   export const VERSION: string;
 
   // TYPES
+
+  type InteractionOptions = {
+    allowedMentions?: AllowedMentions;
+    content?: string;
+    embed?: EmbedOptions;
+    flags?: number;
+    messageReference?: MessageReferenceReply;
+    tts?: boolean;
+    type: number;
+  };
+
   // Cache
   type Uncached = { id: string };
 
@@ -1584,6 +1595,7 @@ declare namespace Eris {
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
+    createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionOptions): Promise<void>;
     createMessage(channelID: string, content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
     createRole(guildID: string, options?: RoleOptions | Role, reason?: string): Promise<Role>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
