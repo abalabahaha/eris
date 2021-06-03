@@ -1096,6 +1096,9 @@ declare namespace Eris {
       INTEGRATION_CREATE: 80;
       INTEGRATION_UPDATE: 81;
       INTEGRATION_DELETE: 82;
+      STAGE_INSTANCE_CREATE: 83;
+      STAGE_INSTANCE_UPDATE: 84;
+      STAGE_INSTANCE_DELETE: 85;
     };
     ChannelTypes: {
       GUILD_TEXT: 0;
