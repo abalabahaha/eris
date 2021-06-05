@@ -419,7 +419,6 @@ declare namespace Eris {
     premiumSubscriptionCount?: number;
     premiumTier: PremiumTier;
     publicUpdatesChannelID: string | null;
-    region: string;
     rulesChannelID: string | null;
     splash: string | null;
     systemChannelFlags: number;
@@ -647,7 +646,6 @@ declare namespace Eris {
     defaultNotifications?: DefaultNotifications;
     explicitContentFilter?: ExplicitContentFilter;
     icon?: string;
-    region?: string;
     roles?: PartialRole[];
     systemChannelID: string;
     verificationLevel?: VerificationLevel;
@@ -716,7 +714,6 @@ declare namespace Eris {
     ownerID?: string;
     preferredLocale?: string;
     publicUpdatesChannelID?: string;
-    region?: string;
     rulesChannelID?: string;
     splash?: string;
     systemChannelFlags?: number;
@@ -2083,7 +2080,6 @@ declare namespace Eris {
     primaryCategory?: DiscoveryCategory;
     primaryCategoryID?: number;
     publicUpdatesChannelID: string;
-    region: string;
     roles: Collection<Role>;
     rulesChannelID: string | null;
     shard: Shard;
