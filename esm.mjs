@@ -1,6 +1,6 @@
 import Eris from "./index.js";
 
-export default function(token, options) {
+export default function (token, options) {
   return new Eris.Client(token, options);
 }
 

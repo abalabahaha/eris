@@ -28,7 +28,7 @@ rules:
     - always
   indent:
     - 2
-    - 4
+    - 2
     - SwitchCase: 1
       ignoreComments: false
   keyword-spacing:
@@ -36,21 +36,21 @@ rules:
     - after: true
       overrides:
         catch:
-          after: false
+          after: true
         for:
-          after: false
+          after: true
         if:
-          after: false
+          after: true
         switch:
-          after: false
+          after: true
         while:
-          after: false
+          after: true
   no-prototype-builtins: 0
   no-trailing-spaces: 2
   no-var: 2
   object-curly-spacing:
     - 2
-    - never
+    - always
   object-shorthand:
     - 2
     - consistent-as-needed

@@ -2168,10 +2168,10 @@ declare namespace Eris {
     guild: CT extends "withMetadata"
       ? Guild // Invite with Metadata always has guild prop
       : CH extends Extract<InviteChannel, GroupChannel> // Invite without Metadata
-        ? never // If the channel is GroupChannel, there is no guild
-        : CH extends Exclude<InviteChannel, InvitePartialChannel> // Invite without Metadata and not GroupChanel
-          ? Guild // If the invite channel is not partial
-          : Guild | undefined; // If the invite channel is partial
+      ? never // If the channel is GroupChannel, there is no guild
+      : CH extends Exclude<InviteChannel, InvitePartialChannel> // Invite without Metadata and not GroupChanel
+      ? Guild // If the invite channel is not partial
+      : Guild | undefined; // If the invite channel is partial
     inviter?: User;
     maxAge: CT extends "withMetadata" ? number : null;
     maxUses: CT extends "withMetadata" ? number : null;
@@ -2525,7 +2525,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", TextChannel>>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<TextChannel>>;
-    createWebhook(options: { name: string; avatar?: string | null}, reason?: string): Promise<Webhook>;
+    createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
