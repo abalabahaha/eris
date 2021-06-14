@@ -26,6 +26,15 @@ declare namespace Eris {
 
   type InteractionContent = Pick<InteractionOptions, "content" | "embeds" | "flags" | "allowedMentions" | "tts">;
 
+  interface InteractionWebhookContent {
+    allowedMentions?: AllowedMentions;
+    content?: string;
+    embeds?: EmbedOptions[];
+    file?: MessageFile | MessageFile[];
+    flags?: number;
+    tts?: boolean;
+  }
+
   // Cache
   type Uncached = { id: string };
 
@@ -2194,7 +2203,7 @@ declare namespace Eris {
     type: number;
     version: number;
     acknowledge(): Promise<void>;
-    createFollowup(content: MessageWebhookContent): Promise<Message<GuildTextableChannel>>;
+    createFollowup(content: InteractionWebhookContent): Promise<Message<GuildTextableChannel>>;
     createMessage(content: InteractionContent): Promise<void>;
     defer(): Promise<void>;
     deferUpdate(): Promise<void>;
