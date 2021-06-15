@@ -18,24 +18,24 @@ Ping Pong Example
 -----------------
 
 ```js
-const { Client } = require("eris");
-const client = new Client("Bot TOKEN");
+const { Client } = require('eris');
+const client = new Client('Bot TOKEN');
 // Replace TOKEN with your bot account's token
 
-client.on("ready", () => { // When the bot is ready
-  console.log("Ready!"); // Log "Ready!"
+client.on('ready', () => { // When the bot is ready
+  console.log('Ready!'); // Log "Ready!"
 });
 
-client.on("error", (err) => {
+client.on('error', (err) => {
   console.error(err); // or your preferred logger
 });
 
-client.on("messageCreate", (msg) => { // When a message is created
-  if (msg.content === "!ping") { // If the message content is "!ping"
-    msg.channel.createMessage("Pong!");
+client.on('messageCreate', (msg) => { // When a message is created
+  if (msg.content === '!ping') { // If the message content is "!ping"
+    msg.channel.createMessage('Pong!');
       // Send a message in the same channel with "Pong!"
-  } else if (msg.content === "!pong") { // Otherwise, if the message is "!pong"
-    msg.channel.createMessage("Ping!");
+  } else if (msg.content === '!pong') { // Otherwise, if the message is "!pong"
+    msg.channel.createMessage('Ping!');
     // Respond with "Ping!"
   }
 });

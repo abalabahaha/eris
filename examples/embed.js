@@ -1,22 +1,22 @@
-const Eris = require("eris");
+const Eris = require('eris');
 
 // Replace TOKEN with your bot account's token
-const bot = new Eris("Bot TOKEN");
+const bot = new Eris('Bot TOKEN');
 
-bot.on("ready", () => { // When the bot is ready
-  console.log("Ready!"); // Log "Ready!"
+bot.on('ready', () => { // When the bot is ready
+  console.log('Ready!'); // Log "Ready!"
 });
 
-bot.on("error", (err) => {
+bot.on('error', (err) => {
   console.error(err); // or your preferred logger
 });
 
-bot.on("messageCreate", (msg) => { // When a message is created
-  if (msg.content === "!embed") { // If the message content is "!embed"
+bot.on('messageCreate', (msg) => { // When a message is created
+  if (msg.content === '!embed') { // If the message content is "!embed"
     bot.createMessage(msg.channel.id, {
       embed: {
-        title: "I'm an embed!", // Title of the embed
-        description: "Here is some more info, with **awesome** formatting.\nPretty *neat*, huh?",
+        title: 'I\'m an embed!', // Title of the embed
+        description: 'Here is some more info, with **awesome** formatting.\nPretty *neat*, huh?',
         author: { // Author property
           name: msg.author.username,
           icon_url: msg.author.avatarURL
@@ -24,18 +24,18 @@ bot.on("messageCreate", (msg) => { // When a message is created
         color: 0x008000, // Color, either in hex (show), or a base-10 integer
         fields: [ // Array of field objects
           {
-            name: "Some extra info.", // Field title
-            value: "Some extra value.", // Field
+            name: 'Some extra info.', // Field title
+            value: 'Some extra value.', // Field
             inline: true // Whether you want multiple fields in same line
           },
           {
-            name: "Some more extra info.",
-            value: "Another extra value.",
+            name: 'Some more extra info.',
+            value: 'Another extra value.',
             inline: true
           }
         ],
         footer: { // Footer text
-          text: "Created with Eris."
+          text: 'Created with Eris.'
         }
       }
     });

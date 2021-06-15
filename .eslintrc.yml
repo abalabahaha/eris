@@ -57,7 +57,7 @@ rules:
   prefer-const: 2
   quotes:
     - 2
-    - double
+    - single
   require-atomic-updates: 1
   semi:
     - 2
