@@ -2203,12 +2203,12 @@ declare namespace Eris {
     type: number;
     version: number;
     acknowledge(): Promise<void>;
-    createFollowup(content: InteractionWebhookContent): Promise<Message<GuildTextableChannel>>;
-    createMessage(content: InteractionContent): Promise<void>;
-    defer(): Promise<void>;
+    createFollowup(content: string | InteractionWebhookContent): Promise<Message<GuildTextableChannel>>;
+    createMessage(content: string | InteractionContent): Promise<void>;
+    defer(flags: number): Promise<void>;
     deferUpdate(): Promise<void>;
     delete(messageId: string): Promise<void>;
-    edit(messageId: string, content: MessageWebhookContent): Promise<Message<GuildTextableChannel>>;
+    edit(messageId: string, content: string | MessageWebhookContent): Promise<Message<GuildTextableChannel>>;
     editParent(content: MessageWebhookContent): Promise<Message<GuildTextableChannel>>;
   }
 
