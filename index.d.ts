@@ -62,7 +62,7 @@ declare namespace Eris {
     messageReferenceID?: string;
     tts?: boolean;
   };
-  type ActionRowComponents = Button | Dropdown;
+  type ActionRowComponents = Button | SelectMenu;
   type Button = InteractionButton | URLButton;
   type Component = ActionRow | ActionRowComponents;
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
@@ -849,20 +849,20 @@ declare namespace Eris {
     label?: string;
     type: 2;
   }
-  interface Dropdown {
+  interface SelectMenu {
     custom_id: string;
     max_values?: number;
     min_values?: number;
-    options: DropdownOptions[];
+    options: SelectMenuOptions[];
     placeholder?: string;
     type: 3;
   }
-  interface DropdownOptions {
+  interface SelectMenuOptions {
     default?: boolean;
     description?: string;
     emoji?: Partial<PartialEmoji>;
     label: string;
-    value: number | string;
+    value: string;
   }
   interface GetMessageReactionOptions {
     after?: string;
