@@ -851,6 +851,7 @@ declare namespace Eris {
   }
   interface SelectMenu {
     custom_id: string;
+    disabled?: boolean;
     max_values?: number;
     min_values?: number;
     options: SelectMenuOptions[];
