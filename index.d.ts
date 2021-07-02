@@ -797,7 +797,7 @@ declare namespace Eris {
     user: User;
   }
   interface MemberRoles extends BaseData {
-    roles: string;
+    roles: string[];
   }
   interface PartialUser {
     avatar: string | null;
