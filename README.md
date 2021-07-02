@@ -50,7 +50,7 @@ Useful Links
 ------------
 
 - [The website](https://abal.moe/Eris/) has more details and documentation.
-- [The Discord API channel (#js_eris)](https://abal.moe/Eris/invite) is the best place to get support/contact me.
+- [The official Eris server](https://abal.moe/Eris/invite) is the best place to get support.
 - [The GitHub repo](https://github.com/abalabahaha/eris) is where development primarily happens.
 - [The NPM package webpage](https://npmjs.com/package/eris) is, well, the webpage for the NPM package.
 
