@@ -2063,7 +2063,7 @@ declare namespace Eris {
     deleteMemberDays?: number;
     guild: Guild;
     id: string;
-    member?: Member | unknown;
+    member?: Member | Uncached;
     membersRemoved?: number;
     message?: Message<GuildTextableChannel>;
     reason: string | null;
