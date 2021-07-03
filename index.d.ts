@@ -1270,7 +1270,7 @@ declare namespace Eris {
       EARLY_VERIFIED_BOT_DEVELOPER: 131072;
       /** @deprecated */
       VERIFIED_BOT_DEVELOPER: 131072;
-      CERTIFIED_MODERATOR: 262144;
+      DISCORD_CERTIFIED_MODERATOR: 262144;
     };
     VoiceOPCodes: {
       IDENTIFY: 0;
