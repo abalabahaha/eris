@@ -1266,6 +1266,7 @@ declare namespace Eris {
       BUG_HUNTER_LEVEL_2: 16384;
       VERIFIED_BOT: 65536;
       VERIFIED_BOT_DEVELOPER: 131072;
+      CERTIFIED_MODERATOR: 262144;
     };
     VoiceOPCodes: {
       IDENTIFY: 0;
