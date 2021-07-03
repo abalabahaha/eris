@@ -1254,7 +1254,7 @@ declare namespace Eris {
     UserFlags: {
       NONE: 0;
       DISCORD_EMPLOYEE: 1;
-      DISCORD_PARTNER: 2;
+      PARTNERED_SERVER_OWNER: 2;
       HYPESQUAD_EVENTS: 4;
       BUG_HUNTER_LEVEL_1: 8;
       HOUSE_BRAVERY: 64;
