@@ -1256,7 +1256,7 @@ declare namespace Eris {
       DISCORD_EMPLOYEE: 1;
       PARTNERED_SERVER_OWNER: 2;
       /** @deprecated */
-      DISCORD_PARTNER : 2;
+      DISCORD_PARTNER: 2;
       HYPESQUAD_EVENTS: 4;
       BUG_HUNTER_LEVEL_1: 8;
       HOUSE_BRAVERY: 64;
