@@ -876,13 +876,16 @@ declare namespace Eris {
     failIfNotExists?: boolean;
   }
   interface Sticker {
-    asset: string;
-    description: string;
+    available?: boolean;
+    description?: string;
     format_type: Constants["StickerFormats"][keyof Constants["StickerFormats"]];
+    guild_id?: string;
     id: string;
     name: string;
-    pack_id: string;
+    pack_id?: string;
+    sort_value?: number;
     tags?: string;
+    user?: PartialUser;
   }
 
   // Presence
