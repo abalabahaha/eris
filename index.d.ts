@@ -2261,7 +2261,7 @@ declare namespace Eris {
     referencedMessage?: Message | null;
     roleMentions: string[];
     /** @deprecated */
-    stickers?: StickerItems[];
+    stickers?: Sticker[];
     stickerItems?: StickerItems[];
     timestamp: number;
     tts: boolean;
