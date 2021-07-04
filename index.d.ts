@@ -875,13 +875,15 @@ declare namespace Eris {
     messageID: string;
     failIfNotExists?: boolean;
   }
-  interface Sticker {
-    available?: boolean;
-    description?: string;
-    format_type: Constants["StickerFormats"][keyof Constants["StickerFormats"]];
-    guild_id?: string;
+  interface StickerItems {
     id: string;
     name: string;
+    format_type: Constants["StickerFormats"][keyof Constants["StickerFormats"]];
+  }
+  interface Sticker extends StickerItems {
+    available?: boolean;
+    description: string;
+    guild_id?: string;
     pack_id?: string;
     sort_value?: number;
     tags?: string;
