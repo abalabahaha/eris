@@ -875,20 +875,21 @@ declare namespace Eris {
     messageID: string;
     failIfNotExists?: boolean;
   }
-  interface StickerItems {
-    id: string;
-    name: string;
-    format_type: Constants["StickerFormats"][keyof Constants["StickerFormats"]];
-  }
   interface Sticker extends StickerItems {
+    /** @deprecated */
     asset: "";
     available?: boolean;
     description: string;
     guild_id?: string;
     pack_id?: string;
     sort_value?: number;
-    tags?: string;
-    user?: PartialUser;
+    tags: string;
+    user?: User;
+  }
+  interface StickerItems {
+    id: string;
+    name: string;
+    format_type: Constants["StickerFormats"][keyof Constants["StickerFormats"]];
   }
 
   // Presence
@@ -2259,9 +2260,9 @@ declare namespace Eris {
     reactions: { [s: string]: { count: number; me: boolean } };
     referencedMessage?: Message | null;
     roleMentions: string[];
-    sticker_items?: Sticker[];
     /** @deprecated */
-    stickers?: Sticker[];
+    stickers?: StickerItems[];
+    stickerItems?: StickerItems[];
     timestamp: number;
     tts: boolean;
     type: number;
