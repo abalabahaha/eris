@@ -881,6 +881,7 @@ declare namespace Eris {
     format_type: Constants["StickerFormats"][keyof Constants["StickerFormats"]];
   }
   interface Sticker extends StickerItems {
+    asset: "";
     available?: boolean;
     description: string;
     guild_id?: string;
