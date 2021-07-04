@@ -798,6 +798,7 @@ declare namespace Eris {
   }
   interface PartialUser {
     avatar: string | null;
+    banner: string | null;
     discriminator: string;
     id: string;
     username: string;
@@ -2193,6 +2194,8 @@ declare namespace Eris {
     activities?: Activity[];
     avatar: string | null;
     avatarURL: string;
+    banner: string | null;
+    bannerURL: string | null;
     bot: boolean;
     clientStatus?: ClientStatus;
     createdAt: number;
@@ -2569,6 +2572,8 @@ declare namespace Eris {
   export class User extends Base {
     avatar: string | null;
     avatarURL: string;
+    banner: string | null;
+    bannerURL: string | null;
     bot: boolean;
     createdAt: number;
     defaultAvatar: string;
@@ -2584,6 +2589,7 @@ declare namespace Eris {
     addRelationship(block?: boolean): Promise<void>;
     deleteNote(): Promise<void>;
     dynamicAvatarURL(format?: ImageFormat, size?: number): string;
+    dynamicBannerURL(format?: ImageFormat, size?: number): string;
     editNote(note: string): Promise<void>;
     getDMChannel(): Promise<PrivateChannel>;
     getProfile(): Promise<UserProfile>;
