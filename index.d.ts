@@ -2258,6 +2258,8 @@ declare namespace Eris {
     reactions: { [s: string]: { count: number; me: boolean } };
     referencedMessage?: Message | null;
     roleMentions: string[];
+    sticker_items?: Sticker[];
+    /** @deprecated */
     stickers?: Sticker[];
     timestamp: number;
     tts: boolean;
