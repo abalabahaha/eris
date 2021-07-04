@@ -1254,6 +1254,8 @@ declare namespace Eris {
     UserFlags: {
       NONE: 0;
       DISCORD_EMPLOYEE: 1;
+      PARTNERED_SERVER_OWNER: 2;
+      /** @deprecated */
       DISCORD_PARTNER: 2;
       HYPESQUAD_EVENTS: 4;
       BUG_HUNTER_LEVEL_1: 8;
@@ -1265,7 +1267,10 @@ declare namespace Eris {
       SYSTEM: 4096;
       BUG_HUNTER_LEVEL_2: 16384;
       VERIFIED_BOT: 65536;
+      EARLY_VERIFIED_BOT_DEVELOPER: 131072;
+      /** @deprecated */
       VERIFIED_BOT_DEVELOPER: 131072;
+      DISCORD_CERTIFIED_MODERATOR: 262144;
     };
     VoiceOPCodes: {
       IDENTIFY: 0;
