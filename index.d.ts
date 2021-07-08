@@ -492,7 +492,7 @@ declare namespace Eris {
   }
   interface EventListeners {
     callCreate: [call: Call];
-    callDelte: [call: Call];
+    callDelete: [call: Call];
     callRing: [call: Call];
     callUpdate: [call: Call, oldCall: OldCall];
     channelCreate: [channel: AnyChannel];
