@@ -47,6 +47,7 @@ declare namespace Eris {
   type DefaultNotifications = 0 | 1;
   type ExplicitContentFilter = 0 | 1 | 2;
   type GuildFeatures = "ANIMATED_ICON" | "BANNER" | "COMMERCE" | "COMMUNITY" | "DISCOVERABLE" | "FEATURABLE" | "INVITE_SPLASH" | "MEMBER_VERIFICATION_GATE_ENABLED" | "NEWS" | "PARTNERED" | "PREVIEW_ENABLED" | "VANITY_URL" | "VERIFIED" | "VIP_REGIONS" | "WELCOME_SCREEN_ENABLED" | "TICKETED_EVENTS_ENABLED" | "MONETIZATION_ENABLED" | "MORE_STICKERS" | "THREE_DAY_THREAD_ARCHIVE" | "SEVEN_DAY_THREAD_ARCHIVE" | "PRIVATE_THREADS";
+  type NSFWLevel = 0 | 1 | 2 | 3;
   type PossiblyUncachedGuild = Guild | Uncached;
   type PremiumTier = 0 | 1 | 2 | 3;
   type VerificationLevel = 0 | 1 | 2 | 3 | 4;
@@ -416,7 +417,9 @@ declare namespace Eris {
     maxVideoChannelUsers?: number;
     mfaLevel: MFALevel;
     name: string;
+    /** @deprecated */
     nsfw: boolean;
+    nsfwLevel: NSFWLevel;
     ownerID: string;
     preferredLocale?: string;
     premiumSubscriptionCount?: number;
@@ -876,14 +879,21 @@ declare namespace Eris {
     messageID: string;
     failIfNotExists?: boolean;
   }
-  interface Sticker {
-    asset: string;
+  interface Sticker extends StickerItems {
+    /** @deprecated */
+    asset: "";
+    available?: boolean;
     description: string;
-    format_type: Constants["StickerFormats"][keyof Constants["StickerFormats"]];
+    guild_id?: string;
+    pack_id?: string;
+    sort_value?: number;
+    tags: string;
+    user?: User;
+  }
+  interface StickerItems {
     id: string;
     name: string;
-    pack_id: string;
-    tags?: string;
+    format_type: Constants["StickerFormats"][keyof Constants["StickerFormats"]];
   }
 
   // Presence
@@ -1255,6 +1265,8 @@ declare namespace Eris {
     UserFlags: {
       NONE: 0;
       DISCORD_EMPLOYEE: 1;
+      PARTNERED_SERVER_OWNER: 2;
+      /** @deprecated */
       DISCORD_PARTNER: 2;
       HYPESQUAD_EVENTS: 4;
       BUG_HUNTER_LEVEL_1: 8;
@@ -1266,7 +1278,10 @@ declare namespace Eris {
       SYSTEM: 4096;
       BUG_HUNTER_LEVEL_2: 16384;
       VERIFIED_BOT: 65536;
+      EARLY_VERIFIED_BOT_DEVELOPER: 131072;
+      /** @deprecated */
       VERIFIED_BOT_DEVELOPER: 131072;
+      DISCORD_CERTIFIED_MODERATOR: 262144;
     };
     VoiceOPCodes: {
       IDENTIFY: 0;
@@ -1424,7 +1439,7 @@ declare namespace Eris {
     id: string;
     mention: string;
     type: ChannelTypes;
-    constructor(data: BaseData);
+    constructor(data: BaseData, client: Client);
     static from(data: BaseData, client: Client): AnyChannel;
   }
 
@@ -1674,6 +1689,7 @@ declare namespace Eris {
     getChannelWebhooks(channelID: string): Promise<Webhook[]>;
     getDiscoveryCategories(): Promise<DiscoveryCategory[]>;
     getDMChannel(userID: string): Promise<PrivateChannel>;
+    getEmojiGuild(emojiID: string): Promise<Guild>;
     getGateway(): Promise<{ url: string }>;
     getGuildAuditLog(guildID: string, options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
     /** @deprecated */
@@ -1941,7 +1957,9 @@ declare namespace Eris {
     members: Collection<Member>;
     mfaLevel: MFALevel;
     name: string;
+    /** @deprecated */
     nsfw: boolean;
+    nsfwLevel: NSFWLevel;
     ownerID: string;
     preferredLocale: string;
     premiumSubscriptionCount?: number;
@@ -2063,7 +2081,7 @@ declare namespace Eris {
     deleteMemberDays?: number;
     guild: Guild;
     id: string;
-    member?: Member | unknown;
+    member?: Member | Uncached;
     membersRemoved?: number;
     message?: Message<GuildTextableChannel>;
     reason: string | null;
@@ -2082,7 +2100,7 @@ declare namespace Eris {
     permissionOverwrites: Collection<PermissionOverwrite>;
     position: number;
     type: Exclude<ChannelTypes, 1 | 3>;
-    constructor(data: BaseData, guild: Guild);
+    constructor(data: BaseData, client: Client);
     delete(reason?: string): Promise<void>;
     deletePermission(overwriteID: string, reason?: string): Promise<void>;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
@@ -2248,7 +2266,9 @@ declare namespace Eris {
     reactions: { [s: string]: { count: number; me: boolean } };
     referencedMessage?: Message | null;
     roleMentions: string[];
+    /** @deprecated */
     stickers?: Sticker[];
+    stickerItems?: StickerItems[];
     timestamp: number;
     tts: boolean;
     type: number;
@@ -2520,7 +2540,7 @@ declare namespace Eris {
     rateLimitPerUser: number;
     topic: string | null;
     type: 0 | 5;
-    constructor(data: BaseData, guild: Guild, messageLimit: number);
+    constructor(data: BaseData, client: Client, messageLimit: number);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
