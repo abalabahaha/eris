@@ -2446,7 +2446,7 @@ declare namespace Eris {
 
   export class NewsThreadChannel extends ThreadChannel {
     type: 10;
-    createMessage(content: AdvancedMessageContent, file?: MessageFile | MessageFile): Promise<Message<NewsThreadChannel>>;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile): Promise<Message<NewsThreadChannel>>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<NewsThreadChannel>>;
     getMessage(messageID: string): Promise<Message<NewsThreadChannel>>;
     getMessages(options?: GetMessagesOptions): Promise<Message<NewsThreadChannel>[]>;
@@ -2518,7 +2518,7 @@ declare namespace Eris {
   
   export class PrivateThreadChannel extends ThreadChannel {
     type: 12;
-    createMessage(content: AdvancedMessageContent, file?: MessageFile | MessageFile): Promise<Message<PrivateThreadChannel>>;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile): Promise<Message<PrivateThreadChannel>>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<PrivateThreadChannel>>;
     getMessage(messageID: string): Promise<Message<PrivateThreadChannel>>;
     getMessages(options?: GetMessagesOptions): Promise<Message<PrivateThreadChannel>[]>;
@@ -2527,7 +2527,7 @@ declare namespace Eris {
 
   export class PublicThreadChannel extends ThreadChannel {
     type: 10 | 11;
-    createMessage(content: AdvancedMessageContent, file?: MessageFile | MessageFile): Promise<Message<PublicThreadChannel>>;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile): Promise<Message<PublicThreadChannel>>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<PublicThreadChannel>>;
     getMessage(messageID: string): Promise<Message<PublicThreadChannel>>;
     getMessages(options?: GetMessagesOptions): Promise<Message<PublicThreadChannel>[]>;
@@ -2771,7 +2771,7 @@ declare namespace Eris {
     type: 10 | 11 | 12;
     constructor(data: BaseData, client: Client, messageLimit?: number);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
-    createMessage(content: AdvancedMessageContent, file?: MessageFile | MessageFile): Promise<Message<ThreadChannel>>;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile): Promise<Message<ThreadChannel>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
