@@ -20,8 +20,12 @@ Ping Pong Example
 ```js
 const Eris = require("eris");
 
-const bot = new Eris("Bot TOKEN");
 // Replace TOKEN with your bot account's token
+const bot = new Eris("Bot TOKEN", {
+    intents: [
+        "guildMessages"
+    ];
+});
 
 bot.on("ready", () => { // When the bot is ready
     console.log("Ready!"); // Log "Ready!"
