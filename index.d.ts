@@ -767,7 +767,7 @@ declare namespace Eris {
     presence_count: number;
   }
   interface WidgetMember {
-    avatar: null;
+    avatar: string | null;
     avatar_url: string;
     discriminator: string;
     id: string;
