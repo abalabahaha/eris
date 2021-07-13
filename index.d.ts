@@ -680,7 +680,7 @@ declare namespace Eris {
     entries: GuildAuditLogEntry[];
     integrations: GuildIntegration[];
     users: User[];
-    webhooks: Webhook[]
+    webhooks: Webhook[];
   }
   interface GuildOptions {
     afkChannelID?: string;
