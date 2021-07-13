@@ -55,7 +55,9 @@ declare namespace Eris {
   type AdvancedMessageContent = {
     allowedMentions?: AllowedMentions;
     content?: string;
+    /** @deprecated */
     embed?: EmbedOptions;
+    embeds?: EmbedOptions[];
     flags?: number;
     messageReference?: MessageReferenceReply;
     /** @deprecated */
