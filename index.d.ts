@@ -15,26 +15,6 @@ declare namespace Eris {
 
   // TYPES
 
-  type InteractionOptions = {
-    allowedMentions?: AllowedMentions;
-    content?: string;
-    embeds?: EmbedOptions;
-    flags?: number;
-    tts?: boolean;
-    type: number;
-  };
-
-  type InteractionContent = Pick<InteractionOptions, "content" | "embeds" | "flags" | "allowedMentions" | "tts">;
-
-  interface InteractionWebhookContent {
-    allowedMentions?: AllowedMentions;
-    content?: string;
-    embeds?: EmbedOptions[];
-    file?: MessageFile | MessageFile[];
-    flags?: number;
-    tts?: boolean;
-  }
-
   // Cache
   type Uncached = { id: string };
 
@@ -89,7 +69,33 @@ declare namespace Eris {
   type MessageContent = string | AdvancedMessageContent;
   type MFALevel = 0 | 1;
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
+
+  // Interaction
   type InteractionType = 1 | 2 | 3;
+  type InteractionResponseType = 1 | 4 | 5 | 6 | 7;
+  type SlashCommandOptionType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
+  type InteractionDataOptions = {
+    name: string;
+    type: SlashCommandOptionType;
+    value?: SlashCommandOptionType;
+    options?: [InteractionDataOptions];
+  };
+
+  type InteractionOptions = {
+    type: InteractionResponseType;
+    data?: InteractionContent;
+  };
+
+  type InteractionContent = {
+    allowedMentions?: AllowedMentions;
+    content?: string;
+    embeds?: EmbedOptions;
+    flags?: number;
+    tts?: boolean;
+  };
+
+  type InteractionWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions" | "tts" | "flags">;
 
   // Permission
   type PermissionType = 0 | 1;
@@ -1346,6 +1352,18 @@ declare namespace Eris {
       RESUMED: 9;
       DISCONNECT: 13;
     };
+    InteractionTypes: {
+      ping: 1;
+      slashCommand: 2;
+      messageComponent: 3;
+    };
+    InteractionResponseTypes: {
+      PONG: 1;
+      CHANNEL_MESSAGE_WITH_SOURCE: 4;
+      DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE: 5;
+      DEFERRED_UPDATE_MESSAGE: 6;
+      UPDATE_MESSAGE: 7;
+    };
   }
 
   // Selfbot
@@ -2237,18 +2255,20 @@ declare namespace Eris {
     applicationId: string;
     channelId: string;
     data?: {
-      componentType?: number;
+      componentType?: 2 | 3;
       id?: string;
       custom_id?: string;
       name?: string;
-      options?: { name?: string; value: string }
+      options?: [InteractionDataOptions];
+      values?: [string];
     };
     guildId?: string;
     id: string;
-    member: Member;
-    message: Message;
+    member?: Member;
+    message?: Message;
     token: string;
-    type: number;
+    type: InteractionType;
+    user?: User;
     version: number;
     acknowledge(): Promise<void>;
     createFollowup(content: string | InteractionWebhookContent): Promise<Message<GuildTextableChannel>>;
