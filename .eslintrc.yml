@@ -88,4 +88,3 @@ rules:
         custom-inspect-method:
         - name: "[util.inspect.custom]"
           type: method
-
