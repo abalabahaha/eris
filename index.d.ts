@@ -785,6 +785,8 @@ declare namespace Eris {
   interface CreateInviteOptions {
     maxAge?: number;
     maxUses?: number;
+    targetApplicationID?: string;
+    targetType?: 1 | 2;
     temporary?: boolean;
     unique?: boolean;
   }
