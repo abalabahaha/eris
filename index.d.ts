@@ -799,6 +799,7 @@ declare namespace Eris {
   interface PartialUser {
     avatar: string | null;
     banner: string | null;
+    bannerColor: string | null;
     discriminator: string;
     id: string;
     username: string;
@@ -2195,6 +2196,7 @@ declare namespace Eris {
     avatar: string | null;
     avatarURL: string;
     banner: string | null;
+    bannerColor: string | null;
     bannerURL: string | null;
     bot: boolean;
     clientStatus?: ClientStatus;
@@ -2573,6 +2575,7 @@ declare namespace Eris {
     avatar: string | null;
     avatarURL: string;
     banner: string | null;
+    bannerColor: string | null;
     bannerURL: string | null;
     bot: boolean;
     createdAt: number;
