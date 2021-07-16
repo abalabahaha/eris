@@ -135,7 +135,7 @@ declare namespace Eris {
   type ActivityType = BotActivityType | Constants["ActivityTypes"]["CUSTOM"];
   type BotActivityType = Constants["ActivityTypes"][Exclude<keyof Constants["ActivityTypes"], "CUSTOM">];
   type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
-  type Status = "online" | "idle" | "dnd" | "invisible";
+  type Status = "online" | "idle" | "dnd" | "invisible" | "offline";
 
   // Selfbot
   type ConnectionVisibilityTypes = Constants["ConnectionVisibilityTypes"][keyof Constants["ConnectionVisibilityTypes"]];
