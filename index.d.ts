@@ -77,7 +77,7 @@ declare namespace Eris {
   type ActivityType = BotActivityType | 4;
   type BotActivityType = 0 | 1 | 2 | 3 | 5;
   type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
-  type Status = "online" | "idle" | "dnd" | "offline";
+  type Status = "online" | "idle" | "dnd" | "invisible" | "offline";
 
   // Voice
   type ConverterCommand = "./ffmpeg" | "./avconv" | "ffmpeg" | "avconv";
