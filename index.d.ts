@@ -90,7 +90,7 @@ declare namespace Eris {
   type InteractionContent = {
     allowedMentions?: AllowedMentions;
     content?: string;
-    embeds?: EmbedOptions;
+    embeds?: EmbedOptions[];
     flags?: number;
     tts?: boolean;
   };
