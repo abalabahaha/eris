@@ -2276,7 +2276,9 @@ declare namespace Eris {
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageId: string): Promise<void>;
+    deleteOriginalMessage(): Promise<void>;
     editMessage(messageId: string, content: string | MessageWebhookContent): Promise<Message>;
+    editOriginalMessage(content: string | MessageWebhookContent): Promise<Message>;
     editParent(content: MessageWebhookContent): Promise<Message>;
     getOriginalMessage(): Promise<Message>
   }
