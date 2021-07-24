@@ -2271,13 +2271,14 @@ declare namespace Eris {
     user?: User;
     version: number;
     acknowledge(flags?: number): Promise<void>;
-    createFollowup(content: string | InteractionWebhookContent): Promise<Message<GuildTextableChannel>>;
+    createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
     createMessage(content: string | InteractionContent): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
-    delete(messageId: string): Promise<void>;
-    edit(messageId: string, content: string | MessageWebhookContent): Promise<Message<GuildTextableChannel>>;
-    editParent(content: MessageWebhookContent): Promise<Message<GuildTextableChannel>>;
+    deleteMessage(messageId: string): Promise<void>;
+    editMessage(messageId: string, content: string | MessageWebhookContent): Promise<Message>;
+    editParent(content: MessageWebhookContent): Promise<Message>;
+    getOriginalMessage(): Promise<Message>
   }
 
   // If CT (count) is "withMetadata", it will not have count properties
