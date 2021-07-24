@@ -79,7 +79,7 @@ declare namespace Eris {
     name: string;
     type: SlashCommandOptionType;
     value?: SlashCommandOptionType;
-    options?: [InteractionDataOptions];
+    options?: InteractionDataOptions[];
   };
 
   type InteractionOptions = {
@@ -2259,8 +2259,8 @@ declare namespace Eris {
       id?: string;
       custom_id?: string;
       name?: string;
-      options?: [InteractionDataOptions];
-      values?: [string];
+      options?: InteractionDataOptions[];
+      values?: string[];
     };
     guildId?: string;
     id: string;
