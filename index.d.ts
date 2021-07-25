@@ -2252,8 +2252,8 @@ declare namespace Eris {
 
   //Interaction
   export class Interaction {
-    applicationId: string;
-    channelId: string;
+    applicationID: string;
+    channelID: string;
     data?: {
       componentType?: 2 | 3;
       id?: string;
@@ -2262,7 +2262,7 @@ declare namespace Eris {
       options?: InteractionDataOptions[];
       values?: string[];
     };
-    guildId?: string;
+    guildID?: string;
     id: string;
     member?: Member;
     message?: Message;
@@ -2275,9 +2275,9 @@ declare namespace Eris {
     createMessage(content: string | InteractionContent): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
-    deleteMessage(messageId: string): Promise<void>;
+    deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
-    editMessage(messageId: string, content: string | MessageWebhookContent): Promise<Message>;
+    editMessage(messageID: string, content: string | MessageWebhookContent): Promise<Message>;
     editOriginalMessage(content: string | MessageWebhookContent): Promise<Message>;
     editParent(content: MessageWebhookContent): Promise<Message>;
     getOriginalMessage(): Promise<Message>
