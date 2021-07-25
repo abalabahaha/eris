@@ -797,9 +797,9 @@ declare namespace Eris {
     user: User;
   }
   interface PartialUser {
+    accentColor: number | null;
     avatar: string | null;
     banner: string | null;
-    bannerColor: number | null;
     discriminator: string;
     id: string;
     username: string;
@@ -2192,11 +2192,11 @@ declare namespace Eris {
   }
 
   export class Member extends Base implements Presence {
+    accentColor: number | null;
     activities?: Activity[];
     avatar: string | null;
     avatarURL: string;
     banner: string | null;
-    bannerColor: number | null;
     bannerURL: string | null;
     bot: boolean;
     clientStatus?: ClientStatus;
@@ -2572,10 +2572,10 @@ declare namespace Eris {
   }
 
   export class User extends Base {
+    accentColor: number | null;
     avatar: string | null;
     avatarURL: string;
     banner: string | null;
-    bannerColor: number | null;
     bannerURL: string | null;
     bot: boolean;
     createdAt: number;
