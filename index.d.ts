@@ -70,6 +70,45 @@ declare namespace Eris {
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
   type InteractionType = 1 | 2;
 
+  //Slash Commands
+  type SlashCommandTypes = 1 | 2 | 3;
+
+  type SlashCommandOptionTypes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
+  type SlashCommandOptions = {
+    type: SlashCommandOptionTypes;
+    name: string;
+    description: string;
+    required?: boolean;
+    choices?: { name: string; value: string | number};
+  };
+
+  type SlashCommand = {
+    id: string;
+    application_id: string;
+    guild_id?: string;
+    name: string;
+    description: string;
+    options?: SlashCommandOptions[];
+    type?: SlashCommandTypes;
+    defaultPermission?: boolean;
+  };
+
+  type SlashCommandStructure = Exclude<SlashCommand, "id" | "application_id" | "guild_id">;
+
+  type SlashCommandPermissions = {
+    id: string;
+    type: 1 | 2;
+    permission: boolean;
+  };
+
+  type GuildSlashCommandPermissions = {
+    id: string;
+    application_id: string;
+    guild_id: string;
+    permissions?: SlashCommandPermissions[];
+  };
+
   // Permission
   type PermissionType = 0 | 1;
 
@@ -1322,6 +1361,26 @@ declare namespace Eris {
       RESUMED: 9;
       DISCONNECT: 13;
     };
+    CommandOptionTypes: {
+    SUB_COMMAND:       1;
+    SUB_COMMAND_GROUP: 2;
+    STRING:            3;
+    INTEGER:           4;
+    BOOLEAN:           5;
+    USER:              6;
+    CHANNEL:           7;
+    ROLE:              8;
+    MENTIONABLE:       9;
+  };
+  CommandPermissionTypes: {
+    ROLE: 1;
+    USER: 2;
+  };
+  CommandTypes: {
+    COMMAND: 1;
+    USER: 2;
+    MESSAGE: 3;
+  };
   }
 
   // Selfbot
@@ -1508,6 +1567,9 @@ declare namespace Eris {
     addRelationship(userID: string, block?: boolean): Promise<void>;
     addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
     banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
+    bulkEditCommandPermissions(guildID: string, permissions: SlashCommandPermissions[]): Promise<GuildSlashCommandPermissions[]>;
+    bulkEditCommands(commands: SlashCommandStructure[]): Promise<SlashCommand[]>;
+    bulkEditGuildCommands(guildID: string, commands: SlashCommandStructure[]): Promise<SlashCommand[]>;
     closeVoiceConnection(guildID: string): void;
     connect(): Promise<void>;
     createChannel(guildID: string, name: string): Promise<TextChannel>;
@@ -1619,14 +1681,27 @@ declare namespace Eris {
       options: { name: string; avatar?: string | null },
       reason?: string
     ): Promise<Webhook>;
+    createCommand(command: SlashCommandStructure): Promise<SlashCommand>;
     createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
+    createGuildCommand(guildID: string, command: SlashCommandStructure): Promise<SlashCommand>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
+    deleteCommand(commandID: string): Promise<void>;
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
+    deleteGuildCommand(guildID: string, commandID: string): Promise<void>;
+    editCommand(commandID: string, command: SlashCommandStructure): Promise<SlashCommand>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
+    editCommandPermissions(guildID: string, commandID: string, permissions: SlashCommandPermissions[]): Promise<GuildSlashCommandPermissions>;    
+    editGuildCommand(guildID: string, commandID: string, command: SlashCommandStructure): Promise<SlashCommand>;
     createMessage(channelID: string, content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
+    getCommand(commandID: string): Promise<SlashCommand>;
+    getCommandPermissions(guildID: string, commandID: string): Promise<GuildSlashCommandPermissions>;
     createRole(guildID: string, options?: RoleOptions | Role, reason?: string): Promise<Role>;
+    getCommands(): Promise<SlashCommand[]>;
+    getGuildCommand(guildID: string, commandID: string): Promise<SlashCommand>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
+    getGuildCommandPermissions(guildID: string): Promise<GuildSlashCommandPermissions[]>;
+    getGuildCommands(guildID: string): Promise<SlashCommand[]>;
     deleteChannel(channelID: string, reason?: string): Promise<void>;
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
     deleteGuild(guildID: string): Promise<void>;
@@ -2014,10 +2089,18 @@ declare namespace Eris {
     addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     banMember(userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
+    bulkEditCommands(commands: SlashCommandStructure[]): Promise<SlashCommand[]>;
     createChannel(name: string): Promise<TextChannel>;
     createChannel(name: string, type: 0, options?: CreateChannelOptions): Promise<TextChannel>;
+    createCommand(command: SlashCommandStructure): Promise<SlashCommand>;
     createChannel(name: string, type: 2, options?: CreateChannelOptions): Promise<VoiceChannel>;
+    deleteCommand(commandID: string): Promise<void>;
+    editCommand(commandID: string, command: SlashCommandStructure): Promise<SlashCommand>;
     createChannel(name: string, type: 4, options?: CreateChannelOptions): Promise<CategoryChannel>;
+    editCommandPermissions(permissions: SlashCommandPermissions[]): Promise<GuildSlashCommandPermissions[]>;
+    getCommand(commandID: string): Promise<SlashCommand>;
+    getCommands(): Promise<SlashCommand[]>;
+    getCommandPermissions(): Promise<GuildSlashCommandPermissions[]>;
     createChannel(name: string, type: 5, options?: CreateChannelOptions | string): Promise<NewsChannel>;
     createChannel(name: string, type: 6, options?: CreateChannelOptions | string): Promise<StoreChannel>;
     createChannel(name: string, type: 13, options?: CreateChannelOptions | string): Promise<StageChannel>;
