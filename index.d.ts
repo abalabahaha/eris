@@ -73,7 +73,7 @@ declare namespace Eris {
   //Slash Commands
   type SlashCommandTypes = 1 | 2 | 3;
 
-  type SlashCommandOptionTypes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+  type SlashCommandOptionTypes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
   type SlashCommandOptions = {
     type: SlashCommandOptionTypes;
@@ -1371,6 +1371,7 @@ declare namespace Eris {
       CHANNEL:           7;
       ROLE:              8;
       MENTIONABLE:       9;
+      NUMBER:            10;
     };
     CommandPermissionTypes: {
       ROLE: 1;
