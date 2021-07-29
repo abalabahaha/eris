@@ -18,30 +18,29 @@ Ping Pong Example
 -----------------
 
 ```js
-const Eris = require("eris");
-
-var bot = new Eris("Bot TOKEN");
+const { Client } = require('eris');
+const client = new Client('Bot TOKEN');
 // Replace TOKEN with your bot account's token
 
-bot.on("ready", () => { // When the bot is ready
-    console.log("Ready!"); // Log "Ready!"
+client.on('ready', () => { // When the bot is ready
+  console.log('Ready!'); // Log "Ready!"
 });
 
-bot.on("error", (err) => {
+client.on('error', (err) => {
   console.error(err); // or your preferred logger
 });
 
-bot.on("messageCreate", (msg) => { // When a message is created
-    if(msg.content === "!ping") { // If the message content is "!ping"
-        bot.createMessage(msg.channel.id, "Pong!");
-        // Send a message in the same channel with "Pong!"
-    } else if(msg.content === "!pong") { // Otherwise, if the message is "!pong"
-        bot.createMessage(msg.channel.id, "Ping!");
-        // Respond with "Ping!"
-    }
+client.on('messageCreate', (msg) => { // When a message is created
+  if (msg.content === '!ping') { // If the message content is "!ping"
+    msg.channel.createMessage('Pong!');
+      // Send a message in the same channel with "Pong!"
+  } else if (msg.content === '!pong') { // Otherwise, if the message is "!pong"
+    msg.channel.createMessage('Ping!');
+    // Respond with "Ping!"
+  }
 });
 
-bot.connect(); // Get the bot to connect to Discord
+client.connect(); // Get the bot to connect to Discord
 ```
 
 More examples can be found in [the examples folder](https://github.com/abalabahaha/eris/tree/master/examples).

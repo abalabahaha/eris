@@ -16,7 +16,7 @@
   },
   "typings": "./index.d.ts",
   "engines": {
-    "node": ">=10.4.0"
+    "node": ">=14.0.0"
   },
   "scripts": {
     "lint:js": "eslint -c .eslintrc.yml lib examples *.js",
@@ -45,7 +45,7 @@
     "ws": "^7.2.1"
   },
   "devDependencies": {
-    "@types/node": "^14.14.35",
+    "@types/node": "^14.17.3",
     "@types/ws": "^7.4.2",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
