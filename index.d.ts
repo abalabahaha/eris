@@ -2304,7 +2304,6 @@ declare namespace Eris {
     stickerItems?: StickerItems[];
     /** @deprecated */
     stickers?: Sticker[];
-
     timestamp: number;
     tts: boolean;
     type: number;
