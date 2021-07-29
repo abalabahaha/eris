@@ -62,7 +62,7 @@ declare namespace Eris {
     messageReference?: MessageReferenceReply;
     /** @deprecated */
     messageReferenceID?: string;
-    stickerIDS?: string[];
+    stickerIDs?: string[];
     tts?: boolean;
   };
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
