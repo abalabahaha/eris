@@ -94,7 +94,7 @@ declare namespace Eris {
     defaultPermission?: boolean;
   };
 
-  type SlashCommandStructure = Exclude<SlashCommand, "id" | "application_id" | "guild_id">;
+  type SlashCommandStructure = Omit<SlashCommand, "id" | "application_id" | "guild_id">;
 
   type SlashCommandPermissions = {
     id: string;
