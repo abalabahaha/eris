@@ -2268,7 +2268,7 @@ declare namespace Eris {
   export class CommandInteraction extends Interaction {
     type: 2;
     channelID: string;
-    data?: {
+    data: {
       id: string;
       name: string;
       resolved?: {
@@ -2295,8 +2295,8 @@ declare namespace Eris {
 
   export class ComponentInteraction extends Interaction {
     channelID: string;
-    data?: {
-      componentType?: 2 | 3;
+    data: {
+      componentType: 2 | 3;
       custom_id: string;
       values?: string[];
     };
@@ -2319,11 +2319,11 @@ declare namespace Eris {
 
   export class UnknownInteraction extends Interaction {
     channelID?: string;
-    data?: object;
+    data?: unknown;
     guildID?: string;
     member?: Member;
     message?: Message;
-    type: Exclude<number, InteractionType>;
+    type: number;
     user?: User;
     createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
     createMessage(content: string | InteractionContent): Promise<void>;
