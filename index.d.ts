@@ -1401,7 +1401,7 @@ declare namespace Eris {
       DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE: 5;
       DEFERRED_UPDATE_MESSAGE: 6;
       UPDATE_MESSAGE: 7;
-    }
+    };
     CommandOptionTypes: {
       SUB_COMMAND:       1;
       SUB_COMMAND_GROUP: 2;
@@ -2349,21 +2349,21 @@ declare namespace Eris {
   }
 
   export class CommandInteraction extends Interaction {
-    type: 2;
     channelID: string;
     data: {
       id: string;
       name: string;
       resolved?: {
-        users?: {[id: string]: User}
-        members?: { [id: string]: Omit<Member, "user" | "deaf" | "mute"> }
-        roles?: { [id: string]: Role }
-        channels?: { [id: string]: PartialChannel }
+        users?: {[id: string]: User};
+        members?: { [id: string]: Omit<Member, "user" | "deaf" | "mute"> };
+        roles?: { [id: string]: Role };
+        channels?: { [id: string]: PartialChannel };
       };
       options?: InteractionDataOptions[];
     };
     guildID?: string;
     member?: Member;
+    type: 2;
     user?: User;
     acknowledge(flags?: number): Promise<void>;
     createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
