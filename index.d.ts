@@ -557,7 +557,7 @@ declare namespace Eris {
     (event: "guildUnavailable" | "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): T;
     (event: "guildUpdate", listener: (guild: Guild, oldGuild: OldGuild) => void): T;
     (event: "hello", listener: (trace: string[], id: number) => void): T;
-    (event: "interactionCreate", listener: (interaction: Interaction) => void): T;
+    (event: "interactionCreate", listener: (interaction: PingInteraction | CommandInteraction | ComponentInteraction | UnknownInteraction) => void): T;
     (event: "inviteCreate" | "inviteDelete", listener: (guild: Guild, invite: Invite) => void): T;
     (event: "messageCreate", listener: (message: Message<PossiblyUncachedTextableChannel>) => void): T;
     (event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): T;
@@ -1353,9 +1353,9 @@ declare namespace Eris {
       DISCONNECT: 13;
     };
     InteractionTypes: {
-      ping: 1;
-      slashCommand: 2;
-      messageComponent: 3;
+      PING:              1;
+      SLASH_COMMAND:     2;
+      MESSAGE_COMPONENT: 3;
     };
     InteractionResponseTypes: {
       PONG: 1;
@@ -2251,26 +2251,60 @@ declare namespace Eris {
   }
 
   //Interaction
-  export class Interaction {
+  export class Interaction extends Base {
     applicationID: string;
+    id: string;
+    token: string;
+    type: InteractionType | number;
+    version: number;
+  }
+
+  export class PingInteraction extends Interaction {
+    type: 1;
+    acknowledge(): Promise<void>;
+    pong(): Promise<void>;
+  }
+
+  export class CommandInteraction extends Interaction {
+    type: 2;
+    channelID: string;
+    data?: {
+      id: string;
+      name: string;
+      resolved?: {
+        users?: {[id: string]: User}
+        members?: { [id: string]: Omit<Member, "user" | "deaf" | "mute"> }
+        roles?: { [id: string]: Role }
+        channels?: { [id: string]: PartialChannel }
+      };
+      options?: InteractionDataOptions[];
+    };
+    guildID?: string;
+    member?: Member;
+    user?: User;
+    acknowledge(flags?: number): Promise<void>;
+    createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
+    createMessage(content: string | InteractionContent): Promise<void>;
+    defer(flags?: number): Promise<void>;
+    deleteMessage(messageID: string): Promise<void>;
+    deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | MessageWebhookContent): Promise<Message>;
+    editOriginalMessage(content: string | MessageWebhookContent): Promise<Message>;
+    getOriginalMessage(): Promise<Message>
+  }
+
+  export class ComponentInteraction extends Interaction {
     channelID: string;
     data?: {
       componentType?: 2 | 3;
-      id?: string;
-      custom_id?: string;
-      name?: string;
-      options?: InteractionDataOptions[];
+      custom_id: string;
       values?: string[];
     };
     guildID?: string;
-    id: string;
     member?: Member;
-    message?: Message;
-    token: string;
-    type: InteractionType;
+    message: Message;
     user?: User;
-    version: number;
-    acknowledge(flags?: number): Promise<void>;
+    acknowledge(): Promise<void>;
     createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
     createMessage(content: string | InteractionContent): Promise<void>;
     defer(flags?: number): Promise<void>;
@@ -2281,6 +2315,27 @@ declare namespace Eris {
     editOriginalMessage(content: string | MessageWebhookContent): Promise<Message>;
     editParent(content: MessageWebhookContent): Promise<Message>;
     getOriginalMessage(): Promise<Message>
+  }
+
+  export class UnknownInteraction extends Interaction {
+    channelID?: string;
+    data?: object;
+    guildID?: string;
+    member?: Member;
+    message?: Message;
+    type: Exclude<number, InteractionType>;
+    user?: User;
+    createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
+    createMessage(content: string | InteractionContent): Promise<void>;
+    defer(flags?: number): Promise<void>;
+    deferUpdate(): Promise<void>;
+    deleteMessage(messageID: string): Promise<void>;
+    deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | MessageWebhookContent): Promise<Message>;
+    editOriginalMessage(content: string | MessageWebhookContent): Promise<Message>;
+    editParent(content: MessageWebhookContent): Promise<Message>;
+    getOriginalMessage(): Promise<Message>
+    pong(): Promise<void>;
   }
 
   // If CT (count) is "withMetadata", it will not have count properties
