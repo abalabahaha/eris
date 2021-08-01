@@ -71,18 +71,15 @@ declare namespace Eris {
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
 
   // Interaction
-  type InteractionType = 1 | 2 | 3;
-  type InteractionResponseType = 1 | 4 | 5 | 6 | 7;
-
   type InteractionDataOptions = {
     name: string;
-    type: SlashCommandOptionType;
-    value?: SlashCommandOptionType;
+    type: Constants["CommandOptionTypes"][keyof Constants["CommandOptionTypes"]];
+    value?: Constants["CommandOptionTypes"][keyof Constants["CommandOptionTypes"]];
     options?: InteractionDataOptions[];
   };
 
   type InteractionOptions = {
-    type: InteractionResponseType;
+    type: Constants["InteractionResponseTypes"][keyof Constants["InteractionResponseTypes"]];
     data?: InteractionContent;
   };
 
@@ -97,16 +94,13 @@ declare namespace Eris {
   type InteractionWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions" | "tts" | "flags">;
 
   //Slash Commands
-  type SlashCommandType = 1 | 2 | 3;
-
-  type SlashCommandOptionType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
-
   type SlashCommandOptions = {
-    type: SlashCommandOptionType;
+    type: Constants["CommandOptionTypes"][keyof Constants["CommandOptionTypes"]];
     name: string;
     description: string;
     required?: boolean;
     choices?: { name: string; value: string | number};
+    options?: SlashCommandOptions[];
   };
 
   type SlashCommand = {
@@ -116,7 +110,7 @@ declare namespace Eris {
     name: string;
     description: string;
     options?: SlashCommandOptions[];
-    type?: SlashCommandType;
+    type?: Constants["CommandTypes"][keyof Constants["CommandTypes"]];
     defaultPermission?: boolean;
   };
 
@@ -124,7 +118,7 @@ declare namespace Eris {
 
   type SlashCommandPermissions = {
     id: string;
-    type: 1 | 2;
+    type: Constants["CommandPermissionTypes"][keyof Constants["CommandPermissionTypes"]];
     permission: boolean;
   };
 
@@ -952,7 +946,7 @@ declare namespace Eris {
     id: string;
     member: Member | null;
     name: string;
-    type: InteractionType;
+    type: Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
     user: User;
   }
   interface MessageReference extends MessageReferenceBase {
@@ -2338,7 +2332,7 @@ declare namespace Eris {
     applicationID: string;
     id: string;
     token: string;
-    type: InteractionType | number;
+    type: number;
     version: number;
   }
 
