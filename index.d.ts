@@ -64,7 +64,7 @@ declare namespace Eris {
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
   type MFALevel = 0 | 1;
-  type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
+  type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guild: Uncached; guildID?: string; id: string };
   type InteractionType = 1 | 2;
 
   // Permission
@@ -2234,6 +2234,7 @@ declare namespace Eris {
     editedTimestamp?: number;
     embeds: Embed[];
     flags: number;
+    guild: T extends GuildTextable ? Guild : null;
     guildID: T extends GuildTextable ? string : undefined;
     id: string;
     interaction: MessageInteraction | null;
