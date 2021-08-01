@@ -83,14 +83,7 @@ declare namespace Eris {
     data?: InteractionContent;
   };
 
-  type InteractionContent = {
-    allowedMentions?: AllowedMentions;
-    content?: string;
-    embeds?: EmbedOptions[];
-    flags?: number;
-    tts?: boolean;
-  };
-
+  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags">
   type InteractionWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions" | "tts" | "flags">;
 
   //Slash Commands
@@ -99,7 +92,7 @@ declare namespace Eris {
     name: string;
     description: string;
     required?: boolean;
-    choices?: { name: string; value: string | number};
+    choices?: { name: string; value: string | number}[];
     options?: SlashCommandOptions[];
   };
 
@@ -2348,10 +2341,10 @@ declare namespace Eris {
       id: string;
       name: string;
       resolved?: {
-        users?: {[id: string]: User};
-        members?: { [id: string]: Omit<Member, "user" | "deaf" | "mute"> };
-        roles?: { [id: string]: Role };
-        channels?: { [id: string]: PartialChannel };
+        users?: Record<string, User>;
+        members?: Record<string, Omit<Member, "user" | "deaf" | "mute">>;
+        roles?: Record<string, Role>;
+        channels?: Record<string, PartialChannel>;
       };
       options?: InteractionDataOptions[];
     };
@@ -2373,7 +2366,7 @@ declare namespace Eris {
   export class ComponentInteraction extends Interaction {
     channelID: string;
     data: {
-      componentType: 2 | 3;
+      component_type: 2 | 3;
       custom_id: string;
       values?: string[];
     };
