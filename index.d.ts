@@ -20,14 +20,14 @@ declare namespace Eris {
   // Channel
   type AnyChannel = AnyGuildChannel | PrivateChannel;
   type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel | StoreChannel;
-  type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel;
+  type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
   type AnyVoiceChannel = VoiceChannel | StageChannel;
   type ChannelTypes = Constants["ChannelTypes"][keyof Constants["ChannelTypes"]];
-  type GuildTextableChannel = TextChannel | NewsChannel | AnyThreadChannel;
+  type GuildTextableChannel = TextChannel | NewsChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
   type PossiblyUncachedTextable = Textable | Uncached;
   type PossiblyUncachedTextableChannel = TextableChannel | Uncached;
-  type TextableChannel = (GuildTextable & GuildTextableChannel) | (Textable & PrivateChannel);
+  type TextableChannel = (GuildTextable & GuildTextableChannel) | (ThreadTextable & AnyThreadChannel) | (Textable & PrivateChannel);
   type VideoQualityMode = 1 | 2;
 
   // Command
@@ -140,7 +140,7 @@ declare namespace Eris {
     createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     getWebhooks(): Promise<Webhook[]>;
-    purge(limit: number, filter?: (message: Message<this>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
+    purge(options: PurgeChannelOptions): Promise<number>;
     removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
     sendTyping(): Promise<void>;
@@ -186,6 +186,16 @@ declare namespace Eris {
     sendTyping(): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
+  }
+  // @ts-ignore ts(2430) - ThreadTextable can't properly extend Textable because of getMessageReaction deprecated overload
+  interface ThreadTextable extends Textable {
+    lastPinTimestamp?: number;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<ThreadChannel>>;
+    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<ThreadChannel>>;
+    getMessage(messageID: string): Promise<Message<ThreadChannel>>;
+    getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
+    getMessages(options?: GetMessagesOptions): Promise<Message<ThreadChannel>[]>;
+    getPins(): Promise<Message<ThreadChannel>[]>;
   }
   interface WebhookData {
     channelID: string;
@@ -2446,7 +2456,7 @@ declare namespace Eris {
 
   export class NewsThreadChannel extends ThreadChannel {
     type: 10;
-    createMessage(content: MessageContent, file?: MessageFile | MessageFile): Promise<Message<NewsThreadChannel>>;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<NewsThreadChannel>>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<NewsThreadChannel>>;
     getMessage(messageID: string): Promise<Message<NewsThreadChannel>>;
     getMessages(options?: GetMessagesOptions): Promise<Message<NewsThreadChannel>[]>;
@@ -2518,7 +2528,7 @@ declare namespace Eris {
   
   export class PrivateThreadChannel extends ThreadChannel {
     type: 12;
-    createMessage(content: MessageContent, file?: MessageFile | MessageFile): Promise<Message<PrivateThreadChannel>>;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<PrivateThreadChannel>>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<PrivateThreadChannel>>;
     getMessage(messageID: string): Promise<Message<PrivateThreadChannel>>;
     getMessages(options?: GetMessagesOptions): Promise<Message<PrivateThreadChannel>[]>;
@@ -2527,7 +2537,7 @@ declare namespace Eris {
 
   export class PublicThreadChannel extends ThreadChannel {
     type: 10 | 11;
-    createMessage(content: MessageContent, file?: MessageFile | MessageFile): Promise<Message<PublicThreadChannel>>;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<PublicThreadChannel>>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<PublicThreadChannel>>;
     getMessage(messageID: string): Promise<Message<PublicThreadChannel>>;
     getMessages(options?: GetMessagesOptions): Promise<Message<PublicThreadChannel>[]>;
@@ -2758,20 +2768,24 @@ declare namespace Eris {
     unsendMessage(messageID: string): Promise<void>;
   }
 
-  export class ThreadChannel extends GuildChannel {
+  type A<T extends TextableChannel> = T;
+  type B = A<PublicThreadChannel>;
+
+  export class ThreadChannel extends GuildChannel implements ThreadTextable {
     lastMessageID: string;
+    lastPinTimestamp?: number;
     member?: ThreadMember;
     memberCount: number;
     members: Collection<ThreadMember>;
     messageCount: number;
-    messages: Collection<Message>;
+    messages: Collection<Message<this>>;
     ownerID: string;
     rateLimitPerUser: number;
     threadMetadata: ThreadMetadata;
     type: 10 | 11 | 12;
     constructor(data: BaseData, client: Client, messageLimit?: number);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
-    createMessage(content: MessageContent, file?: MessageFile | MessageFile): Promise<Message<ThreadChannel>>;
+    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<ThreadChannel>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
