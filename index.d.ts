@@ -74,7 +74,7 @@ declare namespace Eris {
   type InteractionDataOptions = {
     name: string;
     type: Constants["CommandOptionTypes"][keyof Constants["CommandOptionTypes"]];
-    value?: Constants["CommandOptionTypes"][keyof Constants["CommandOptionTypes"]];
+    value?: string;
     options?: InteractionDataOptions[];
   };
 
