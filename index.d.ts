@@ -983,7 +983,7 @@ declare namespace Eris {
     hoist?: boolean;
     mentionable?: boolean;
     name?: string;
-    permissions?: bigint | number | Permission;
+    permissions?: bigint | number | string | Permission;
   }
   interface RoleTags {
     bot_id?: string;
