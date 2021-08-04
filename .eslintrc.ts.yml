@@ -12,7 +12,7 @@ rules:
   "@typescript-eslint/member-delimiter-style": 2
   "@typescript-eslint/no-explicit-any": 0
   "@typescript-eslint/no-use-before-define":
-  - 2
+  - 0
   - classes: false
   "@typescript-eslint/semi":
   - 2
