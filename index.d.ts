@@ -1232,9 +1232,9 @@ declare namespace Eris {
       GUILD_CATEGORY: 4;
       GUILD_NEWS: 5;
       GUILD_STORE: 6;
-      GUILD_NEWS_THREAD: 10,
-      GUILD_PUBLIC_THREAD: 11,
-      GUILD_PRIVATE_THREAD: 12,
+      GUILD_NEWS_THREAD: 10;
+      GUILD_PUBLIC_THREAD: 11;
+      GUILD_PRIVATE_THREAD: 12;
       GUILD_STAGE: 13;
     };
     GATEWAY_VERSION: 9;
@@ -2410,9 +2410,9 @@ declare namespace Eris {
     reactions: { [s: string]: { count: number; me: boolean } };
     referencedMessage?: Message | null;
     roleMentions: string[];
+    stickerItems?: StickerItems[];
     /** @deprecated */
     stickers?: Sticker[];
-    stickerItems?: StickerItems[];
     timestamp: number;
     tts: boolean;
     type: number;
@@ -2526,7 +2526,7 @@ declare namespace Eris {
     unpinMessage(messageID: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
   }
-  
+
   export class PrivateThreadChannel extends ThreadChannel {
     type: 12;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<PrivateThreadChannel>>;
@@ -2705,16 +2705,16 @@ declare namespace Eris {
   }
 
   export class StageInstance extends Base {
-    client: Client;
     channel: StageChannel | Uncached;
+    client: Client;
     discoverableDisabled: boolean;
     guild: Guild | Uncached;
     privacyLevel: StageInstancePrivacyLevel;
     topic: string;
     constructor(data: BaseData, client: Client);
-    update(data: BaseData): void;
     delete(): Promise<void>;
     edit(options: StageInstanceOptions): Promise<StageInstance>;
+    update(data: BaseData): void;
   }
 
   export class StoreChannel extends GuildChannel {
@@ -2736,8 +2736,8 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", TextChannel>>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<TextChannel>>;
-    createThreadWithoutMessage(options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
     createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<PublicThreadChannel>;
+    createThreadWithoutMessage(options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
     createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
@@ -2810,11 +2810,11 @@ declare namespace Eris {
 
   export class ThreadMember extends Base {
     client: Client;
-    threadID: string;
     joinTimestamp: number;
+    threadID: string;
     constructor(data: BaseData, client: Client);
-    update(data: BaseData): void;
     leave(): Promise<void>;
+    update(data: BaseData): void;
   }
 
   export class UnavailableGuild extends Base {
