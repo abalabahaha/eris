@@ -2322,6 +2322,7 @@ declare namespace Eris {
 
   //Interaction
   export class Interaction extends Base {
+    acknowledged: boolean;
     applicationID: string;
     id: string;
     token: string;
