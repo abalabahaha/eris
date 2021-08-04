@@ -1,3 +1,4 @@
+/*eslint @typescript-eslint/no-use-before-define: "off"*/
 import { EventEmitter } from "events";
 import { Duplex, Readable as ReadableStream, Stream } from "stream";
 import { Agent as HTTPSAgent } from "https";
