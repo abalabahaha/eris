@@ -13,11 +13,11 @@ bot.on('ready', async () => { // When the bot is ready
 
     // First we have to load the command list.
 
-  await client.slashCommand.loadCommandList();
+  await bot.slashCommand.loadCommandList();
 
 
     // Let's create commands globally.
-  await client.slashCommand.createCommand(
+  await bot.slashCommand.createCommand(
     new CommandBase()
           .setName('blep')
           .setDescription("Send a random adorable animal photo")
