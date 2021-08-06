@@ -1265,6 +1265,8 @@ declare namespace Eris {
       manageRoles: 268435456n;
       manageWebhooks: 536870912n;
       manageEmojisAndStickers: 1073741824n;
+      /** @deprecated */
+      manageEmojis: 1073741824n;
       useSlashCommands: 2147483648n;
       voiceRequestToSpeak: 4294967296n;
       useExternalStickers: 137438953472n;
