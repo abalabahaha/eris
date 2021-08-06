@@ -1267,10 +1267,11 @@ declare namespace Eris {
       manageEmojis: 1073741824n;
       useSlashCommands: 2147483648n;
       voiceRequestToSpeak: 4294967296n;
+      useExternalStickers: 137438953472n;
       allGuild: 2080899262n;
-      allText: 2953313361n;
+      allText: 140392266833n;
       allVoice: 4629464849n;
-      all: 8589934591n;
+      all: 146028888063n;
     };
     REST_VERSION: 8;
     StickerFormats: {
