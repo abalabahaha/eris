@@ -2355,7 +2355,7 @@ declare namespace Eris {
     user?: User;
     acknowledge(flags?: number): Promise<void>;
     createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
-    createMessage(content: string | InteractionContent): Promise<void>;
+    createMessage(content: string | InteractionContent | InteractionWebhookContent): Promise<void>;
     defer(flags?: number): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
@@ -2377,7 +2377,7 @@ declare namespace Eris {
     user?: User;
     acknowledge(): Promise<void>;
     createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
-    createMessage(content: string | InteractionContent): Promise<void>;
+    createMessage(content: string | InteractionContent | InteractionWebhookContent): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
@@ -2397,7 +2397,7 @@ declare namespace Eris {
     type: number;
     user?: User;
     createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
-    createMessage(content: string | InteractionContent): Promise<void>;
+    createMessage(content: string | InteractionContent | InteractionWebhookContent): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
