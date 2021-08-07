@@ -428,6 +428,7 @@ declare namespace Eris {
     region: string;
     rulesChannelID: string | null;
     splash: string | null;
+    stickers?: Sticker[];
     systemChannelFlags: number;
     systemChannelID: string | null;
     vanityURL: string | null;
@@ -517,6 +518,7 @@ declare namespace Eris {
     (event: "guildAvailable" | "guildCreate", listener: (guild: Guild) => void): T;
     (event: "guildDelete", listener: (guild: PossiblyUncachedGuild) => void): T;
     (event: "guildEmojisUpdate", listener: (guild: PossiblyUncachedGuild, emojis: Emoji[], oldEmojis: Emoji[] | null) => void): T;
+    (event: "guildStickersUpdate", listener: (guild: PossiblyUncachedGuild, stickers: Sticker[], oldStickers: Sticker[] | null) => void): T;
     (event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): T;
     (event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): T;
     (event: "guildMemberRemove", listener: (guild: Guild, member: Member | MemberPartial) => void): T;
@@ -910,12 +912,22 @@ declare namespace Eris {
     pack_id?: string;
     sort_value?: number;
     tags: string;
+    type: Constants["StickerTypes"][keyof Constants["StickerTypes"]];
     user?: User;
   }
   interface StickerItems {
     id: string;
     name: string;
     format_type: Constants["StickerFormats"][keyof Constants["StickerFormats"]];
+  }
+  interface StickerPack {
+    id: string;
+    stickers: Sticker[];
+    name: string;
+    sku_id: string;
+    cover_sticker_id?: string;
+    description: string;
+    banner_asset_id: string;
   }
 
   // Presence
@@ -1138,6 +1150,10 @@ declare namespace Eris {
       INTEGRATION_CREATE: 80;
       INTEGRATION_UPDATE: 81;
       INTEGRATION_DELETE: 82;
+
+      STICKER_CREATE: 90,
+      STICKER_UPDATE: 91,
+      STICKER_DELETE: 92
     };
     ChannelTypes: {
       GUILD_TEXT: 0;
@@ -1273,6 +1289,10 @@ declare namespace Eris {
       all: 8589934591n;
     };
     REST_VERSION: 8;
+    StickerTypes: {
+      STANDARD: 1,
+      GUILD: 2
+    };
     StickerFormats: {
       PNG: 1;
       APNG: 2;
@@ -1628,6 +1648,7 @@ declare namespace Eris {
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
+    createGuildSticker(guildID: string, options: { description?: string, file: Omit<MessageFile, "name">, name: string, tags: string }, reason?: string): Promise<Sticker>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
     createMessage(channelID: string, content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
     createRole(guildID: string, options?: RoleOptions | Role, reason?: string): Promise<Role>;
@@ -1638,6 +1659,7 @@ declare namespace Eris {
     deleteGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<void>;
     deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
     deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
+    deleteGuildSticker(guildID: string, stickerID: string, reason?: string): Promise<void>;
     deleteGuildTemplate(guildID: string, code: string): Promise<GuildTemplate>;
     deleteInvite(inviteID: string, reason?: string): Promise<void>;
     deleteMessage(channelID: string, messageID: string, reason?: string): Promise<void>;
@@ -1675,6 +1697,7 @@ declare namespace Eris {
     ): Promise<Emoji>;
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
+    editGuildSticker(guildID: string, stickerID: string, options?: { description?: string, name?: string, tags?: string }, reason?: string): Promise<Sticker>;
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
     editGuildVanity(guildID: string, code: string | null): Promise<GuildVanity>;
     editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
@@ -1750,6 +1773,7 @@ declare namespace Eris {
     getMessages(channelID: string, options?: GetMessagesOptions): Promise<Message[]>;
     /** @deprecated */
     getMessages(channelID: string, limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
+    getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getOAuthApplication(appID?: string): Promise<OAuthApplicationInfo>;
     getPins(channelID: string): Promise<Message[]>;
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
@@ -1766,6 +1790,9 @@ declare namespace Eris {
     getRESTGuilds(options?: GetRESTGuildsOptions): Promise<Guild[]>;
     /** @deprecated */
     getRESTGuilds(limit?: number, before?: string, after?: string): Promise<Guild[]>;
+    getRESTGuildSticker(guildID: string, stickerID: string): Promise<Sticker>;
+    getRESTGuildStickers(guildID: string): Promise<Sticker[]>;
+    getRESTSticker(): Promise<Sticker>;
     getRESTUser(userID: string): Promise<User>;
     getSelf(): Promise<ExtendedUser>;
     getSelfBilling(): Promise<{
@@ -2006,6 +2033,7 @@ declare namespace Eris {
     shard: Shard;
     splash: string | null;
     splashURL: string | null;
+    stickers?: Sticker[];
     systemChannelFlags: number;
     systemChannelID: string | null;
     unavailable: boolean;
@@ -2043,12 +2071,14 @@ declare namespace Eris {
     createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
     createEmoji(options: { image: string; name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     createRole(options: RoleOptions | Role, reason?: string): Promise<Role>;
+    createSticker(options: { description?: string, file: Omit<MessageFile, "name">, name: string, tags: string }, reason?: string): Promise<Sticker>;
     createTemplate(name: string, description?: string | null): Promise<GuildTemplate>;
     delete(): Promise<void>;
     deleteDiscoverySubcategory(categoryID: string, reason?: string): Promise<void>;
     deleteEmoji(emojiID: string, reason?: string): Promise<void>;
     deleteIntegration(integrationID: string): Promise<void>;
     deleteRole(roleID: string): Promise<void>;
+    deleteSticker(stickerID: string, reason?: string): Promise<void>;
     deleteTemplate(code: string): Promise<GuildTemplate>;
     dynamicBannerURL(format?: ImageFormat, size?: number): string;
     dynamicDiscoverySplashURL(format?: ImageFormat, size?: number): string;
@@ -2061,6 +2091,7 @@ declare namespace Eris {
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
     editNickname(nick: string): Promise<void>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
+    editSticker(stickerID: string, options?: { description?: string, name?: string, tags?: string }, reason?: string): Promise<Sticker>;
     editTemplate(code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
     editVanity(code: string | null): Promise<GuildVanity>;
     editVoiceState(options: VoiceStateOptions, userID?: string): Promise<void>;
@@ -2087,6 +2118,8 @@ declare namespace Eris {
     /** @deprecated */
     getRESTMembers(limit?: number, after?: string): Promise<Member[]>;
     getRESTRoles(): Promise<Role[]>;
+    getRESTSticker(): Promise<Sticker>;
+    getRESTStickers(): Promise<Sticker[]>;
     getTemplates(): Promise<GuildTemplate[]>;
     getVanity(): Promise<GuildVanity>;
     getVoiceRegions(): Promise<VoiceRegion[]>;
