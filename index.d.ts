@@ -1426,7 +1426,87 @@ declare namespace Eris {
     constructor(data: BaseData);
     static from(data: BaseData, client: Client): AnyChannel;
   }
+  export class CommandList {
+    commands: Map<string, CommandBase>
+  }
+  export class Choice {
+    name: string;
+    value: string;
+    setName(name: string) : this
+    setValue(value: string) : this
+  }
+  export class CommandOptions {
+    name: string;
+    // @ts-ignore
+    description: string;
+    type: number;
+    required: boolean
+    choices: Array<Choice>;
+    options: Array<CommandOptions>
+    setName(name: string) : this
+    setDescription(description: string) : this
+    setType(type: number) : this
+    isRequired() : this
+    addChoices(...choice: Choice[]) : this
+    addOptions(...options: CommandOptions[]) : this
 
+    /**
+     * @returns {{name, options: (CommandOptions), description, type, choices: (Choice[]), required: (*|boolean)}}
+     */
+    // @ts-ignore
+    toJSON() {
+      return {
+        type: this.type,
+        name: this.name,
+        description: this.description,
+        required: this.required,
+        choices: this.choices,
+        options: this.options
+      };
+    }
+  }
+  export class CommandBase {
+    id: string;
+    applicationID: string;
+    defaultPermission: boolean;
+    name: string;
+    description: string;
+    options: CommandOptions[]
+
+    addOptions(...options: Eris.CommandOptions[]) : this
+    setDescription(description: string) : this
+    setName(name: string) : this
+    // @ts-ignore
+    get data() {
+      return  {
+        name: this.name,
+        description: this.description,
+        options: this.options
+      }
+    }
+    // @ts-ignore
+    get toJSON() {
+      return {
+        id: this.id,
+        application_id: this.applicationID,
+        name: this.name,
+        description: this.description,
+        default_permission: this.defaultPermission,
+        options: this.options
+      };
+    }
+  }
+  export class SlashCommand {
+    client: Client;
+    queue: CommandBase[]
+    commandList: CommandList
+    // @ts-ignore
+    async createCommand(...command: CommandBase[]) : this
+    // @ts-ignore
+    async deleteCommand({ command: CommandBase, guildID: string }) : this
+    // @ts-ignore
+    async loadCommandList() : this;
+  }
   export class Client extends EventEmitter {
     application?: { id: string; flags: number };
     bot: boolean;
@@ -1440,6 +1520,7 @@ declare namespace Eris {
     notes: { [s: string]: string };
     options: ClientOptions;
     presence: Presence;
+    slashCommand: SlashCommand;
     privateChannelMap: { [s: string]: string };
     privateChannels: Collection<PrivateChannel>;
     ready: boolean;
