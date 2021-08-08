@@ -1432,7 +1432,17 @@ declare namespace Eris {
   export class Choice {
     name: string;
     value: string;
+    /**
+     *
+     * @param name
+     * @returns {Choice}
+     */
     setName(name: string) : this
+    /**
+     *
+     * @param value
+     * @returns {Choice}
+     */
     setValue(value: string) : this
   }
   export class CommandOptions {
@@ -1441,13 +1451,55 @@ declare namespace Eris {
     description: string;
     type: number;
     required: boolean
-    choices: Array<Choice>;
-    options: Array<CommandOptions>
+    choices: Choice[];
+    options: CommandOptions[];
+    /**
+     *
+     * @param name
+     * @returns {CommandOptions}
+     */
     setName(name: string) : this
+    /**
+     *
+     * @param description
+     * @returns {CommandOptions}
+     */
     setDescription(description: string) : this
+    /**
+     *
+     * @param type
+     * @returns {CommandOptions}
+     *
+     * | Name              | Value | Note                                    |
+     * |-------------------|-------|-----------------------------------------|
+     * | SUB_COMMAND       | 1     |                                         |
+     * | SUB_COMMAND_GROUP | 2     |                                         |
+     * | STRING            | 3     |                                         |
+     * | INTEGER           | 4     | Any integer between -2^53 and 2^53      |
+     * | BOOLEAN           | 5     |                                         |
+     * | USER              | 6     |                                         |
+     * | CHANNEL           | 7     | Includes all channel types + categories |
+     * | ROLE              | 8     |                                         |
+     * | MENTIONABLE       | 9     | Includes users and roles                |
+     * | NUMBER            | 10    | Any double between -2^53 and 2^53       |
+     */
     setType(type: number) : this
+    /***
+     *
+     * @returns {CommandOptions}
+     */
     isRequired() : this
+    /**
+     *
+     * @param choice
+     * @returns {CommandOptions}
+     */
     addChoices(...choice: Choice[]) : this
+    /**
+     *
+     * @param options
+     * @returns {CommandOptions}
+     */
     addOptions(...options: CommandOptions[]) : this
 
     /**
@@ -1466,16 +1518,59 @@ declare namespace Eris {
     }
   }
   export class CommandBase {
+    /**
+     *
+     * @type {string}
+     */
     id: string;
+    /**
+     *
+     * @type {*|null|string}
+     */
     applicationID: string;
+    /**
+     *
+     * @type {*|boolean}
+     */
     defaultPermission: boolean;
+    /**
+     *
+     * @type {string}
+     */
     name: string;
+    /**
+     *
+     * @type {string|string}
+     */
     description: string;
+    /**
+     *
+     * @type {CommandOptions|*[]}
+     */
     options: CommandOptions[]
 
+    /**
+     *
+     * @param options
+     * @returns {CommandOptions}
+     */
     addOptions(...options: Eris.CommandOptions[]) : this
+    /**
+     *
+     * @param description
+     * @returns {CommandOptions}
+     */
     setDescription(description: string) : this
+    /**
+     *
+     * @param name
+     * @returns {CommandOptions}
+     */
     setName(name: string) : this
+    /**
+     *
+     * @returns {{name: string, options: (CommandOptions|*[]), description: string}}
+     */
     // @ts-ignore
     get data() {
       return  {
@@ -1484,6 +1579,10 @@ declare namespace Eris {
         options: this.options
       }
     }
+    /**
+     *
+     * @returns {{default_permission: (*|boolean), name: string, options: (CommandOptions|*[]), description: string, id: (string|null), application_id: (*|string|null)}}
+     */
     // @ts-ignore
     get toJSON() {
       return {
@@ -1498,6 +1597,10 @@ declare namespace Eris {
   }
   export class SlashCommand {
     client: Client;
+    /**
+     * @description Queue of commands that are about to be checked and see if there are any changes!
+     * @type {CommandBase[]}
+     */
     queue: CommandBase[]
     commandList: CommandList
     // @ts-ignore
