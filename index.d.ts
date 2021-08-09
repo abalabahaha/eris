@@ -2866,6 +2866,9 @@ declare namespace Eris {
     defaultAvatar: string;
     defaultAvatarURL: string;
     discriminator: string;
+    banner: string;
+    bannerColor: string;
+    accentColor: string;
     id: string;
     mention: string;
     publicFlags?: number;
