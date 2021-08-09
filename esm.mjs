@@ -35,7 +35,6 @@ export const {
   CommandOptions,
   SlashCommand,
   SlashCommandGuild,
-  FollowUp,
   HookInteraction,
   NewsChannel,
   Permission,

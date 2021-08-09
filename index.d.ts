@@ -2500,26 +2500,10 @@ declare namespace Eris {
     /**
      *
      * @param content
-     */
-    editMessage(content: String | object): MessageInteraction
-    /**
-     *
-     * @param content
      * @param file
      */
     editMessage(content: String | object, file: any): MessageInteraction
     sendPingInteraction(): boolean
-    setEphemeral(is: boolean): this
-  }
-  export class FollowUp {
-    interaction: Interaction;
-    client: Client;
-    ephemeral: number;
-    createMessage(content: String | object): MessageInteraction
-    createMessage(content: String | object, file: any): MessageInteraction
-    deleteMessage(): MessageInteraction
-    editMessage(content: String | object): MessageInteraction
-    editMessage(content: String | object, file: any): MessageInteraction
     setEphemeral(is: boolean): this
   }
   export class Interaction {
@@ -2529,7 +2513,6 @@ declare namespace Eris {
     channel: TextChannel;
     token: string;
     hook: HookInteraction;
-    followup: FollowUp;
     applicationID: string;
     client: Client;
   }
