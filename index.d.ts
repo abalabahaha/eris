@@ -527,6 +527,10 @@ declare namespace Eris {
     (event: "hello", listener: (trace: string[], id: number) => void): T;
     (event: "inviteCreate" | "inviteDelete", listener: (guild: Guild, invite: Invite) => void): T;
     (event: "messageCreate", listener: (message: Message<PossiblyUncachedTextableChannel>) => void): T;
+    (event: "interactionCreate", listener: (interaction: Interaction) => void): T;
+    (event: "interactionUpdate", listener: (interaction: Interaction) => void): T;
+    (event: "interactionDelete", listener: (interaction: Interaction) => void): T;
+    (event: "slashCommand", listener: (interaction: Interaction) => void): T;
     (event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): T;
     (event: "messageReactionRemoveEmoji", listener: (message: PossiblyUncachedMessage, emoji: PartialEmoji) => void): T;
     (event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): T;
@@ -861,6 +865,7 @@ declare namespace Eris {
     member: Member | null;
     name: string;
     type: InteractionType;
+    deferInteraction: DeferInteraction
     user: User;
   }
   interface MessageReference extends MessageReferenceBase {
@@ -2404,7 +2409,130 @@ declare namespace Eris {
     removeRole(roleID: string, reason?: string): Promise<void>;
     unban(reason?: string): Promise<void>;
   }
+  export class MessageComponents {
+    type: number;
+    customID: string;
+    disabled: boolean;
+    style: number;
+    label: string;
+    emoji: Emoji
+    url: string;
+    options: Options[] | Button[] | SelectionMenu[]
+    placeholder?: string;
+    minValues?: number;
+    maxValues?: number;
+    components: MessageComponents[]
+  }
+  export class SelectionMenu {
+    type: number;
+    customID: string;
+    options: Options[]
+    placeholder?: string;
+    minValues?: number;
+    maxValues?: number;
+    disabled: boolean;
+  }
+  export class Button {
+    type: number;
+    styl: number;
+    label: string;
+    emoji: Emoji;
+    customID: string;
+    url: string;
+    disabled: boolean;
+  }
+  export class Options {
+    type: number;
+    label: string;
+    value: string;
+    description: string;
+    emoji: Emoji;
+    default: boolean;
+  }
+  export class ActionRow {
+    type: number;
+    options: Options[] | Button[] | SelectionMenu[]
+    components: MessageComponents[]
+    addComponent(...component: Options[] | Button[] | SelectionMenu[]): this
+    get buildComponents(): MessageComponents[]
+    get buildOptions(): Options[] | Button[] | SelectionMenu[]
+    get build(): this
+  }
+  export class DeferInteraction {
+    constructor(client: Client, interaction: Interaction)
+    client: Client;
+    interaction: Interaction;
 
+    /**
+     *
+     * @param content
+     * @param file
+     */
+    deferEdit(content: String | object, file: any): MessageInteraction
+
+    /**
+     *
+     * @param content
+     * @param file
+     */
+    deferEditMessage(content: String | object, file: any): MessageInteraction
+    deferDeleteMessage(): MessageInteraction
+    sendPingInteraction(): boolean
+    sendTypeInteraction(type: number): boolean
+  }
+  export class HookInteraction {
+    interaction: Interaction;
+    client: Client;
+    ephemeral: number;
+
+    /**
+     *
+     * @param content
+     */
+    createMessage(content: String | object): MessageInteraction
+    /**
+     *
+     * @param content
+     * @param file
+     */
+    createMessage(content: String | object, file: any): MessageInteraction
+    deleteMessage(): MessageInteraction
+    /**
+     *
+     * @param content
+     */
+    editMessage(content: String | object): MessageInteraction
+    /**
+     *
+     * @param content
+     * @param file
+     */
+    editMessage(content: String | object, file: any): MessageInteraction
+    sendPingInteraction(): boolean
+    setEphemeral(is: boolean): this
+  }
+  export class FollowUp {
+    interaction: Interaction;
+    client: Client;
+    ephemeral: number;
+    createMessage(content: String | object): MessageInteraction
+    createMessage(content: String | object, file: any): MessageInteraction
+    deleteMessage(): MessageInteraction
+    editMessage(content: String | object): MessageInteraction
+    editMessage(content: String | object, file: any): MessageInteraction
+    setEphemeral(is: boolean): this
+  }
+  export class Interaction {
+    type: number;
+    id: string;
+    data: ActionRow;
+    channel: TextChannel;
+    token: string;
+    hook: HookInteraction;
+    followup: FollowUp;
+    applicationID: string;
+    client: Client;
+  }
   export class Message<T extends PossiblyUncachedTextable = TextableChannel> extends Base {
     activity?: MessageActivity;
     application?: MessageApplication;
