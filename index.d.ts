@@ -1175,6 +1175,8 @@ declare namespace Eris {
       guilds: 1;
       guildMembers: 2;
       guildBans: 4;
+      guildEmojisAndStickers: 8;
+      /** @deprecated */
       guildEmojis: 8;
       guildIntegrations: 16;
       guildWebhooks: 32;
