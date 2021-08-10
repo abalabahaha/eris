@@ -1269,6 +1269,8 @@ declare namespace Eris {
       manageEmojisAndStickers: 1073741824n;
       /** @deprecated */
       manageEmojis: 1073741824n;
+      useApplicationCommands: 2147483648n;
+      /** @deprecated */
       useSlashCommands: 2147483648n;
       voiceRequestToSpeak: 4294967296n;
       useExternalStickers: 137438953472n;
