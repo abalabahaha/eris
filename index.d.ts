@@ -1522,6 +1522,27 @@ declare namespace Eris {
       };
     }
   }
+  export class CommandDataOption {
+    /**
+     *
+     * @param commandFolder
+     * @param option
+     * @param guild
+     */
+    constructor(commandFolder: CommandFolder, option: any, guild: Guild)
+    value: string | User | TextChannel | CategoryChannel | StageChannel | NewsChannel | VoiceChannel | Channel | Role;
+    type: number;
+    ok: boolean;
+    name: string;
+    options: CommandDataOption[];
+  }
+  export class CommandFolder {
+    commandName: string;
+    options: CommandDataOption[];
+    interface: Map<String, CommandDataOption>
+    id: string;
+    guild: Guild;
+  }
   export class CommandBase {
     /**
      *
@@ -2513,6 +2534,7 @@ declare namespace Eris {
     channel: TextChannel;
     token: string;
     hook: HookInteraction;
+    command: CommandFolder;
     applicationID: string;
     client: Client;
   }
