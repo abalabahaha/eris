@@ -59,7 +59,7 @@ bot.on("ready", async () => { // When the bot is ready
         bot.createCommand({
             name: "Test Message Menu",
             type: Constants.CommandTypes.MESSAGE
-        }); //Create a user context menu
+        }); //Create a message context menu
 
         bot.createCommand({
             name: "test_edit_command",
