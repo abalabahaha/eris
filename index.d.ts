@@ -69,7 +69,7 @@ declare namespace Eris {
   type MessageContent = string | AdvancedMessageContent;
   type MFALevel = 0 | 1;
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
-  type PossiblyEphemeralMessage = Message | { id: string; flags: number };
+  type PossiblyEphemeralMessage = Message | { id: string; flags: 64 };
 
   // Interaction
   type InteractionDataOptions = {
