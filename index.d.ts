@@ -1549,6 +1549,7 @@ declare namespace Eris {
      * @type {string}
      */
     id: string;
+    type: number;
     /**
      *
      * @type {*|null|string}
@@ -1593,6 +1594,11 @@ declare namespace Eris {
      * @returns {CommandOptions}
      */
     setName(name: string) : this
+    /**
+     *
+     * @param type
+     */
+    setType(type: number): this
     /**
      *
      * @returns {{name: string, options: (CommandOptions|*[]), description: string}}
