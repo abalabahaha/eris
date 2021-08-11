@@ -172,7 +172,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
-    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
+    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     editMessage(messageID: string, content: MessageContent): Promise<Message>;
     getMessage(messageID: string): Promise<Message>;
@@ -613,7 +613,7 @@ declare namespace Eris {
   interface RawRESTRequest {
     auth: boolean;
     body?: unknown;
-    file?: MessageFile;
+    file?: FileContent;
     method: string;
     resp: IncomingMessage;
     route: string;
@@ -864,8 +864,7 @@ declare namespace Eris {
     width?: number;
   }
   interface CreateStickerOptions extends Required<Pick<EditStickerOptions, "name" | "tags">> {
-    description?: string;
-    file: Omit<MessageFile, "name">;
+    file: FileContent;
   }
   interface EditStickerOptions {
     description?: string;
@@ -889,7 +888,7 @@ declare namespace Eris {
     id: string;
     name: string;
   }
-  interface MessageFile {
+  interface FileContent {
     file: Buffer | string;
     name: string;
   }
@@ -1076,7 +1075,7 @@ declare namespace Eris {
     avatarURL?: string;
     content?: string;
     embeds?: EmbedOptions[];
-    file?: MessageFile | MessageFile[];
+    file?: FileContent | FileContent[];
     tts?: boolean;
     username?: string;
     wait?: boolean;
@@ -1659,7 +1658,7 @@ declare namespace Eris {
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
-    createMessage(channelID: string, content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
+    createMessage(channelID: string, content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
     createRole(guildID: string, options?: RoleOptions | Role, reason?: string): Promise<Role>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
     deleteChannel(channelID: string, reason?: string): Promise<void>;
@@ -2373,7 +2372,7 @@ declare namespace Eris {
     rateLimitPerUser: 0;
     type: 5;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", NewsChannel>>;
-    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<NewsChannel>>;
+    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<NewsChannel>>;
     crosspostMessage(messageID: string): Promise<Message<NewsChannel>>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<NewsChannel>>;
     follow(webhookChannelID: string): Promise<ChannelFollow>;
@@ -2425,7 +2424,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
-    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<PrivateChannel>>;
+    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<PrivateChannel>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<PrivateChannel>>;
     getMessage(messageID: string): Promise<Message<PrivateChannel>>;
@@ -2469,7 +2468,7 @@ declare namespace Eris {
     /** @deprecated */
     constructor(client: Client, forceQueueing?: boolean);
     globalUnblock(): void;
-    request(method: RequestMethod, url: string, auth?: boolean, body?: { [s: string]: unknown }, file?: MessageFile, _route?: string, short?: boolean): Promise<unknown>;
+    request(method: RequestMethod, url: string, auth?: boolean, body?: { [s: string]: unknown }, file?: FileContent, _route?: string, short?: boolean): Promise<unknown>;
     routefy(url: string, method: RequestMethod): string;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
@@ -2620,7 +2619,7 @@ declare namespace Eris {
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", TextChannel>>;
-    createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<TextChannel>>;
+    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<TextChannel>>;
     createWebhook(options: { name: string; avatar?: string | null}, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
