@@ -1040,11 +1040,6 @@ declare namespace Eris {
   }
 
   // Thread
-  interface ListedThreads<T extends ThreadChannel = AnyThreadChannel> {
-    hasMore: boolean;
-    members: ThreadMember[];
-    threads: T[];
-  }
   interface CreateThreadOptions {
     autoArchiveDuration: AutoArchiveDuration;
     name: string;
@@ -1055,6 +1050,11 @@ declare namespace Eris {
   interface GetArchivedThreadsOptions {
     before?: Date;
     limit?: number;
+  }
+  interface ListedThreads<T extends ThreadChannel = AnyThreadChannel> {
+    hasMore: boolean;
+    members: ThreadMember[];
+    threads: T[];
   }
   interface ThreadMetadata {
     archiveTimestamp: number;
