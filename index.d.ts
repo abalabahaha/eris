@@ -1636,6 +1636,8 @@ declare namespace Eris {
     // @ts-ignore
     async deleteCommand({ command: CommandBase, guildID: string }) : this
     // @ts-ignore
+    async addVolumeOfCommands(commands: CommandBase[]) : this
+    // @ts-ignore
     async loadCommandList() : this;
   }
   export class Client extends EventEmitter {
