@@ -1406,7 +1406,7 @@ declare namespace Eris {
       USER: 2;
     };
     CommandTypes: {
-      COMMAND: 1;
+      CHAT_INPUT: 1;
       USER: 2;
       MESSAGE: 3;
     };
