@@ -69,7 +69,6 @@ declare namespace Eris {
   type MessageContent = string | AdvancedMessageContent;
   type MFALevel = 0 | 1;
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
-  type PossiblyEphemeralMessage = Message | { id: string; flags: 64 };
 
   // Interaction
   type InteractionDataOptions = {
@@ -2377,7 +2376,7 @@ declare namespace Eris {
     };
     guildID?: string;
     member?: Member;
-    message: PossiblyEphemeralMessage;
+    message: Message;
     user?: User;
     acknowledge(): Promise<void>;
     createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
@@ -2397,7 +2396,7 @@ declare namespace Eris {
     data?: unknown;
     guildID?: string;
     member?: Member;
-    message?: PossiblyEphemeralMessage;
+    message?: Message;
     type: number;
     user?: User;
     createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
