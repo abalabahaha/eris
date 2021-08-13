@@ -22,7 +22,7 @@ bot.on("ready", async () => { // When the bot is ready
                 {
                     "name": "animal", //The name of the option
                     "description": "The type of animal",
-                    "type": Constants.CommandOptionTypes.STRING, //This is the type of string, see the types here https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type
+                    "type": Constants.ApplicationCommandOptionTypes.STRING, //This is the type of string, see the types here https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type
                     "required": true,
                     "choices": [ //The possible choices for the options
                         {
@@ -42,33 +42,33 @@ bot.on("ready", async () => { // When the bot is ready
                 {
                     "name": "only_smol",
                     "description": "Whether to show only baby animals",
-                    "type": Constants.CommandOptionTypes.BOOLEAN,
+                    "type": Constants.ApplicationCommandOptionTypes.BOOLEAN,
                     "required": false
                 }
             ],
-            type: Constants.CommandTypes.CHAT_INPUT //Not required for Chat input type, but recommended
+            type: Constants.ApplicationCommandTypes.CHAT_INPUT //Not required for Chat input type, but recommended
         }); //Create a chat input command
 
         bot.createCommand({
             name: "Test User Menu",
-            type: Constants.CommandTypes.USER
+            type: Constants.ApplicationCommandTypes.USER
         }); //Create a user context menu
 
         bot.createCommand({
             name: "Test Message Menu",
-            type: Constants.CommandTypes.MESSAGE
+            type: Constants.ApplicationCommandTypes.MESSAGE
         }); //Create a message context menu
 
         bot.createCommand({
             name: "test_edit_command",
             description: "Test command to show off how to edit commands",
-            type: Constants.CommandTypes.CHAT_INPUT //Not required for Chat input type, but recommended
+            type: Constants.ApplicationCommandTypes.CHAT_INPUT //Not required for Chat input type, but recommended
         }); //Create a chat input command
 
         bot.createCommand({
             name: "test_delete_command",
             description: "Test command to show off how to delete commands",
-            type: Constants.CommandTypes.CHAT_INPUT //Not required for Chat input type, but recommended
+            type: Constants.ApplicationCommandTypes.CHAT_INPUT //Not required for Chat input type, but recommended
         }); //Create a chat input command
 
         //In practice, you should use bulkEditCommands if you need to create multiple commands
