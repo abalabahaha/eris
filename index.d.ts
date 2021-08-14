@@ -1275,6 +1275,7 @@ declare namespace Eris {
       APPLICATION_COMMAND: 20;
 
       GUILD_INVITE_REMINDER: 22;
+      CONTEXT_MENU_COMMAND:  23;
     };
     Permissions: {
       createInstantInvite: 1n;
