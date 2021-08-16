@@ -8,7 +8,7 @@ A Node.js wrapper for interfacing with Discord.
 Installing
 ----------
 
-You will need NodeJS 10.4+. If you need voice support you will also need Python 2.7 and a C++ compiler. Refer to [the Getting Started section of the docs](https://abal.moe/Eris/docs) for more details.
+You will need NodeJS 14.0+. If you need voice support you will also need Python 2.7 and a C++ compiler. Refer to [the Getting Started section of the docs](https://abal.moe/Eris/docs) for more details.
 
 ```
 npm install --no-optional eris
