@@ -1370,12 +1370,13 @@ declare namespace Eris {
       useSlashCommands: 2147483648n;
       voiceRequestToSpeak: 4294967296n;
       manageThreads: 17179869184n;
-      usePublicThreads: 34359738368n;
-      usePrivateThreads: 68719476736n;
+      createPublicThreads: 34359738368n;
+      createPrivateThreads: 68719476736n;
+      sendMessagesInThreads: 274877906944n;
       allGuild: 2080899262n;
-      allText: 123212397649n;
+      allText: 398090304593n;
       allVoice: 4629464849n;
-      all: 128849018879n;
+      all: 403726925823n;
     };
     REST_VERSION: 9;
     StickerFormats: {
