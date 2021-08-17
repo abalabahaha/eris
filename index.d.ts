@@ -118,6 +118,7 @@ declare namespace Eris {
     autoArchiveDuration?: AutoArchiveDuration;
     defaultAutoArchiveDuration?: AutoArchiveDuration;
     icon?: string;
+    invitable?: boolean;
     locked?: boolean;
     name?: string;
     ownerID?: string;
@@ -1044,8 +1045,9 @@ declare namespace Eris {
     autoArchiveDuration: AutoArchiveDuration;
     name: string;
   }
-  interface CreateThreadWithoutMessageOptions extends CreateThreadOptions {
-    type: AnyThreadChannel["type"];
+  interface CreateThreadWithoutMessageOptions<T = AnyThreadChannel["type"]> extends CreateThreadOptions {
+    invitable: T extends PrivateThreadChannel["type"] ? boolean : never;
+    type: T;
   }
   interface GetArchivedThreadsOptions {
     before?: Date;
@@ -1057,6 +1059,9 @@ declare namespace Eris {
   interface ListedGuildThreads<T extends ThreadChannel = AnyThreadChannel> {
     members: ThreadMember[];
     threads: T[];
+  }
+  interface PrivateThreadMetadata extends ThreadMetadata {
+    invitable: boolean;
   }
   interface ThreadMetadata {
     archiveTimestamp: number;
@@ -2468,6 +2473,7 @@ declare namespace Eris {
   export class NewsThreadChannel extends ThreadChannel {
     type: 10;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<NewsThreadChannel>>;
+    edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<NewsThreadChannel>>;
     getMessage(messageID: string): Promise<Message<NewsThreadChannel>>;
     getMessages(options?: GetMessagesOptions): Promise<Message<NewsThreadChannel>[]>;
@@ -2538,8 +2544,10 @@ declare namespace Eris {
   }
 
   export class PrivateThreadChannel extends ThreadChannel {
+    threadMetadata: PrivateThreadMetadata;
     type: 12;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<PrivateThreadChannel>>;
+    edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "invitable" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<PrivateThreadChannel>>;
     getMessage(messageID: string): Promise<Message<PrivateThreadChannel>>;
     getMessages(options?: GetMessagesOptions): Promise<Message<PrivateThreadChannel>[]>;
@@ -2549,6 +2557,7 @@ declare namespace Eris {
   export class PublicThreadChannel extends ThreadChannel {
     type: 10 | 11;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<PublicThreadChannel>>;
+    edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<PublicThreadChannel>>;
     getMessage(messageID: string): Promise<Message<PublicThreadChannel>>;
     getMessages(options?: GetMessagesOptions): Promise<Message<PublicThreadChannel>[]>;
@@ -2800,7 +2809,7 @@ declare namespace Eris {
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<ThreadChannel>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
-    edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
+    edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "invitable" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<ThreadChannel>>;
     getMembers(): Promise<ThreadMember[]>;
     getMessage(messageID: string): Promise<Message<ThreadChannel>>;
