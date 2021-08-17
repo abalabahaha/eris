@@ -1159,9 +1159,9 @@ declare namespace Eris {
       INTEGRATION_UPDATE: 81;
       INTEGRATION_DELETE: 82;
 
-      STICKER_CREATE: 90,
-      STICKER_UPDATE: 91,
-      STICKER_DELETE: 92
+      STICKER_CREATE: 90;
+      STICKER_UPDATE: 91;
+      STICKER_DELETE: 92;
     };
     ChannelTypes: {
       GUILD_TEXT: 0;
