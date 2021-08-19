@@ -7,7 +7,7 @@ import { URL } from "url";
 import { Socket as DgramSocket } from "dgram";
 import * as WebSocket from "ws";
 
-declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
+declare function Eris(token: string, options: Eris.ClientOptions): Eris.Client;
 
 declare namespace Eris {
   export const Constants: Constants;
@@ -568,6 +568,7 @@ declare namespace Eris {
       listener: (member: Member, newChannel: AnyVoiceChannel, oldChannel: AnyVoiceChannel) => void
     ): T;
     (event: "voiceStateUpdate", listener: (member: Member, oldState: OldVoiceState) => void): T;
+    (event: "voiceStateUpdate", listener: (member: UncachedMemberVoiceState, oldState: null) => void): T;
     (event: "warn" | "debug", listener: (message: string, id: number) => void): T;
     (event: "webhooksUpdate", listener: (data: WebhookData) => void): T;
     (event: string, listener: (...args: any[]) => void): T;
@@ -1020,7 +1021,7 @@ declare namespace Eris {
     hoist?: boolean;
     mentionable?: boolean;
     name?: string;
-    permissions?: bigint | number | Permission;
+    permissions?: bigint | number | string | Permission;
   }
   interface RoleTags {
     bot_id?: string;
@@ -1029,6 +1030,10 @@ declare namespace Eris {
   }
 
   // Voice
+  interface UncachedMemberVoiceState {
+    id: string;
+    voiceState: OldVoiceState;
+  }
   interface VoiceConnectData {
     channel_id: string;
     endpoint: string;
