@@ -141,7 +141,7 @@ declare namespace Eris {
   }
   interface PartialChannel {
     bitrate?: number;
-    id?: number;
+    id: string;
     name?: string;
     nsfw?: boolean;
     parent_id?: number;
@@ -1013,7 +1013,7 @@ declare namespace Eris {
   interface PartialRole {
     color?: number;
     hoist?: boolean;
-    id?: number;
+    id: string;
     mentionable?: boolean;
     name?: string;
     permissions?: number;
