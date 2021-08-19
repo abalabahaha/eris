@@ -14,6 +14,7 @@ declare namespace Eris {
   export const VERSION: string;
 
   // TYPES
+
   // Cache
   type Uncached = { id: string };
 
@@ -73,7 +74,58 @@ declare namespace Eris {
   type MessageContent = string | AdvancedMessageContent;
   type MFALevel = 0 | 1;
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
-  type InteractionType = 1 | 2;
+
+  // Interaction
+  type InteractionDataOptions = {
+    name: string;
+    type: Constants["ApplicationCommandOptionTypes"][keyof Constants["ApplicationCommandOptionTypes"]];
+    value?: string;
+    options?: InteractionDataOptions[];
+  };
+
+  type InteractionOptions = {
+    type: Constants["InteractionResponseTypes"][keyof Constants["InteractionResponseTypes"]];
+    data?: InteractionContent;
+  };
+
+  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags">;
+  type InteractionWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions" | "tts" | "flags">;
+
+  //Application Commands
+  type ApplicationCommandOptions = {
+    type: Constants["ApplicationCommandOptionTypes"][keyof Constants["ApplicationCommandOptionTypes"]];
+    name: string;
+    description: string;
+    required?: boolean;
+    choices?: { name: string; value: string | number}[];
+    options?: ApplicationCommandOptions[];
+  };
+
+  type ApplicationCommand = {
+    id: string;
+    application_id: string;
+    guild_id?: string;
+    name: string;
+    description?: string;
+    options?: ApplicationCommandOptions[];
+    type?: Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
+    defaultPermission?: boolean;
+  };
+
+  type ApplicationCommandStructure = Omit<ApplicationCommand, "id" | "application_id" | "guild_id">;
+
+  type ApplicationCommandPermissions = {
+    id: string;
+    type: Constants["ApplicationCommandPermissionTypes"][keyof Constants["ApplicationCommandPermissionTypes"]];
+    permission: boolean;
+  };
+
+  type GuildApplicationCommandPermissions = {
+    id: string;
+    application_id: string;
+    guild_id: string;
+    permissions?: ApplicationCommandPermissions[];
+  };
 
   // Permission
   type PermissionType = 0 | 1;
@@ -501,6 +553,7 @@ declare namespace Eris {
     selfStream: boolean;
     selfVideo: boolean;
   }
+
   interface EventListeners<T> {
     (event: "ready" | "disconnect", listener: () => void): T;
     (event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): T;
@@ -536,6 +589,7 @@ declare namespace Eris {
     (event: "guildUnavailable" | "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): T;
     (event: "guildUpdate", listener: (guild: Guild, oldGuild: OldGuild) => void): T;
     (event: "hello", listener: (trace: string[], id: number) => void): T;
+    (event: "interactionCreate", listener: (interaction: PingInteraction | CommandInteraction | ComponentInteraction | UnknownInteraction) => void): T;
     (event: "inviteCreate" | "inviteDelete", listener: (guild: Guild, invite: Invite) => void): T;
     (event: "messageCreate", listener: (message: Message<PossiblyUncachedTextableChannel>) => void): T;
     (event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): T;
@@ -923,7 +977,7 @@ declare namespace Eris {
     id: string;
     member: Member | null;
     name: string;
-    type: InteractionType;
+    type: Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
     user: User;
   }
   interface MessageReference extends MessageReferenceBase {
@@ -1098,6 +1152,7 @@ declare namespace Eris {
     content?: string;
     embeds?: EmbedOptions[];
     file?: MessageFile | MessageFile[];
+    flags?: number;
     tts?: boolean;
     username?: string;
     wait?: boolean;
@@ -1247,6 +1302,7 @@ declare namespace Eris {
       SUPPRESS_EMBEDS: 4;
       SOURCE_MESSAGE_DELETED: 8;
       URGENT: 16;
+      EPHEMERAL: 64;
     };
     MessageTypes: {
       DEFAULT: 0;
@@ -1268,9 +1324,10 @@ declare namespace Eris {
       GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING: 16;
       GUILD_DISCOVERY_GRACE_PERIOD_FINAL_WARNING: 17;
       REPLY: 19;
-      APPLICATION_COMMAND: 20;
+      CHAT_INPUT_COMMAND: 20;
 
       GUILD_INVITE_REMINDER: 22;
+      CONTEXT_MENU_COMMAND:  23;
     };
     Permissions: {
       createInstantInvite: 1n;
@@ -1378,6 +1435,39 @@ declare namespace Eris {
       HELLO: 8;
       RESUMED: 9;
       DISCONNECT: 13;
+    };
+    InteractionTypes: {
+      PING:              1;
+      APPLICATION_COMMAND:     2;
+      MESSAGE_COMPONENT: 3;
+    };
+    InteractionResponseTypes: {
+      PONG: 1;
+      CHANNEL_MESSAGE_WITH_SOURCE: 4;
+      DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE: 5;
+      DEFERRED_UPDATE_MESSAGE: 6;
+      UPDATE_MESSAGE: 7;
+    };
+    ApplicationCommandOptionTypes: {
+      SUB_COMMAND:       1;
+      SUB_COMMAND_GROUP: 2;
+      STRING:            3;
+      INTEGER:           4;
+      BOOLEAN:           5;
+      USER:              6;
+      CHANNEL:           7;
+      ROLE:              8;
+      MENTIONABLE:       9;
+      NUMBER:            10;
+    };
+    ApplicationCommandPermissionTypes: {
+      ROLE: 1;
+      USER: 2;
+    };
+    ApplicationCommandTypes: {
+      CHAT_INPUT: 1;
+      USER: 2;
+      MESSAGE: 3;
     };
   }
 
@@ -1565,6 +1655,9 @@ declare namespace Eris {
     addRelationship(userID: string, block?: boolean): Promise<void>;
     addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
     banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
+    bulkEditCommandPermissions(guildID: string, permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions[]>;
+    bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
+    bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
     closeVoiceConnection(guildID: string): void;
     connect(): Promise<void>;
     createChannel(guildID: string, name: string): Promise<TextChannel>;
@@ -1676,17 +1769,22 @@ declare namespace Eris {
       options: { name: string; avatar?: string | null },
       reason?: string
     ): Promise<Webhook>;
+    createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
+    createGuildCommand(guildID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
+    createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionOptions): Promise<void>;
     createMessage(channelID: string, content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
     createRole(guildID: string, options?: RoleOptions | Role, reason?: string): Promise<Role>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
     deleteChannel(channelID: string, reason?: string): Promise<void>;
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
+    deleteCommand(commandID: string): Promise<void>;
     deleteGuild(guildID: string): Promise<void>;
+    deleteGuildCommand(guildID: string, commandID: string): Promise<void>;
     deleteGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<void>;
     deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
     deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
@@ -1717,7 +1815,10 @@ declare namespace Eris {
       reason?: string
     ): Promise<void>;
     editChannelPosition(channelID: string, position: number, options?: EditChannelPositionOptions): Promise<void>;
+    editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
+    editCommandPermissions(guildID: string, commandID: string, permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
+    editGuildCommand(guildID: string, commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     editGuildDiscovery(guildID: string, options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editGuildEmoji(
       guildID: string,
@@ -1772,6 +1873,9 @@ declare namespace Eris {
     getChannel(channelID: string): AnyChannel;
     getChannelInvites(channelID: string): Promise<Invite[]>;
     getChannelWebhooks(channelID: string): Promise<Webhook[]>;
+    getCommand(commandID: string): Promise<ApplicationCommand>;
+    getCommandPermissions(guildID: string, commandID: string): Promise<GuildApplicationCommandPermissions>;
+    getCommands(): Promise<ApplicationCommand[]>;
     getDiscoveryCategories(): Promise<DiscoveryCategory[]>;
     getDMChannel(userID: string): Promise<PrivateChannel>;
     getEmojiGuild(emojiID: string): Promise<Guild>;
@@ -1781,6 +1885,9 @@ declare namespace Eris {
     getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getGuildBan(guildID: string, userID: string): Promise<{ reason?: string; user: User }>;
     getGuildBans(guildID: string): Promise<{ reason?: string; user: User }[]>;
+    getGuildCommand(guildID: string, commandID: string): Promise<ApplicationCommand>;
+    getGuildCommandPermissions(guildID: string): Promise<GuildApplicationCommandPermissions[]>;
+    getGuildCommands(guildID: string): Promise<ApplicationCommand[]>;
     getGuildDiscovery(guildID: string): Promise<DiscoveryMetadata>;
     /** @deprecated */
     getGuildEmbed(guildID: string): Promise<Widget>;
@@ -2072,6 +2179,7 @@ declare namespace Eris {
     addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     banMember(userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
+    bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
     createChannel(name: string): Promise<TextChannel>;
     createChannel(name: string, type: 0, options?: CreateChannelOptions): Promise<TextChannel>;
     createChannel(name: string, type: 2, options?: CreateChannelOptions): Promise<VoiceChannel>;
@@ -2094,10 +2202,12 @@ declare namespace Eris {
     createChannel(name: string, type: 13, reason?: string, options?: CreateChannelOptions | string): Promise<StageChannel>;
     /** @deprecated */
     createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
+    createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     createEmoji(options: { image: string; name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     createRole(options: RoleOptions | Role, reason?: string): Promise<Role>;
     createTemplate(name: string, description?: string | null): Promise<GuildTemplate>;
     delete(): Promise<void>;
+    deleteCommand(commandID: string): Promise<void>;
     deleteDiscoverySubcategory(categoryID: string, reason?: string): Promise<void>;
     deleteEmoji(emojiID: string, reason?: string): Promise<void>;
     deleteIntegration(integrationID: string): Promise<void>;
@@ -2108,6 +2218,8 @@ declare namespace Eris {
     dynamicIconURL(format?: ImageFormat, size?: number): string;
     dynamicSplashURL(format?: ImageFormat, size?: number): string;
     edit(options: GuildOptions, reason?: string): Promise<Guild>;
+    editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
+    editCommandPermissions(permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions[]>;
     editDiscovery(options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
@@ -2127,6 +2239,9 @@ declare namespace Eris {
     getAuditLogs(limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getBan(userID: string): Promise<{ reason?: string; user: User }>;
     getBans(): Promise<{ reason?: string; user: User }[]>;
+    getCommand(commandID: string): Promise<ApplicationCommand>;
+    getCommandPermissions(): Promise<GuildApplicationCommandPermissions[]>;
+    getCommands(): Promise<ApplicationCommand[]>;
     getDiscovery(): Promise<DiscoveryMetadata>;
     /** @deprecated */
     getEmbed(): Promise<Widget>;
@@ -2266,6 +2381,98 @@ declare namespace Eris {
     toJSON(props?: string[]): JSONCache;
   }
 
+  //Interaction
+  export class Interaction extends Base {
+    acknowledged: boolean;
+    applicationID: string;
+    id: string;
+    token: string;
+    type: number;
+    version: number;
+  }
+
+  export class PingInteraction extends Interaction {
+    type: 1;
+    acknowledge(): Promise<void>;
+    pong(): Promise<void>;
+  }
+
+  export class CommandInteraction extends Interaction {
+    channelID: string;
+    data: {
+      id: string;
+      name: string;
+      type: Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
+      target_id?: string;
+      resolved?: {
+        users?: Record<string, User>;
+        members?: Record<string, Omit<Member, "user" | "deaf" | "mute">>;
+        roles?: Record<string, Role>;
+        channels?: Record<string, PartialChannel>;
+        messages?: Record<string, Message>;
+      };
+      options?: InteractionDataOptions[];
+    };
+    guildID?: string;
+    member?: Member;
+    type: 2;
+    user?: User;
+    acknowledge(flags?: number): Promise<void>;
+    createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
+    createMessage(content: string | InteractionContent | InteractionWebhookContent): Promise<void>;
+    defer(flags?: number): Promise<void>;
+    deleteMessage(messageID: string): Promise<void>;
+    deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | MessageWebhookContent): Promise<Message>;
+    editOriginalMessage(content: string | MessageWebhookContent): Promise<Message>;
+    getOriginalMessage(): Promise<Message>
+  }
+
+  export class ComponentInteraction extends Interaction {
+    channelID: string;
+    data: {
+      component_type: 2 | 3;
+      custom_id: string;
+      values?: string[];
+    };
+    guildID?: string;
+    member?: Member;
+    message: Message;
+    user?: User;
+    acknowledge(): Promise<void>;
+    createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
+    createMessage(content: string | InteractionContent | InteractionWebhookContent): Promise<void>;
+    defer(flags?: number): Promise<void>;
+    deferUpdate(): Promise<void>;
+    deleteMessage(messageID: string): Promise<void>;
+    deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | MessageWebhookContent): Promise<Message>;
+    editOriginalMessage(content: string | MessageWebhookContent): Promise<Message>;
+    editParent(content: MessageWebhookContent): Promise<Message>;
+    getOriginalMessage(): Promise<Message>
+  }
+
+  export class UnknownInteraction extends Interaction {
+    channelID?: string;
+    data?: unknown;
+    guildID?: string;
+    member?: Member;
+    message?: Message;
+    type: number;
+    user?: User;
+    createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
+    createMessage(content: string | InteractionContent | InteractionWebhookContent): Promise<void>;
+    defer(flags?: number): Promise<void>;
+    deferUpdate(): Promise<void>;
+    deleteMessage(messageID: string): Promise<void>;
+    deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | MessageWebhookContent): Promise<Message>;
+    editOriginalMessage(content: string | MessageWebhookContent): Promise<Message>;
+    editParent(content: MessageWebhookContent): Promise<Message>;
+    getOriginalMessage(): Promise<Message>
+    pong(): Promise<void>;
+  }
+
   // If CT (count) is "withMetadata", it will not have count properties
   export class Invite<CT extends "withMetadata" | "withCount" | "withoutCount" = "withMetadata", CH extends InviteChannel = InviteChannel> extends Base {
     channel: CH;
@@ -2355,9 +2562,9 @@ declare namespace Eris {
     reactions: { [s: string]: { count: number; me: boolean } };
     referencedMessage?: Message | null;
     roleMentions: string[];
+    stickerItems?: StickerItems[];
     /** @deprecated */
     stickers?: Sticker[];
-    stickerItems?: StickerItems[];
     timestamp: number;
     tts: boolean;
     type: number;
@@ -2634,7 +2841,7 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", TextChannel>>;
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<TextChannel>>;
-    createWebhook(options: { name: string; avatar?: string | null}, reason?: string): Promise<Webhook>;
+    createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
