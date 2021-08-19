@@ -42,11 +42,11 @@
   },
   "homepage": "https://abal.moe/Eris/",
   "dependencies": {
-    "ws": "^7.2.1"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "@types/node": "^14.14.35",
-    "@types/ws": "^7.4.2",
+    "@types/ws": "^7.4.4",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
     "eslint": "^7.22.0",
