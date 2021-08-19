@@ -53,20 +53,6 @@ declare namespace Eris {
   type VerificationLevel = 0 | 1 | 2 | 3 | 4;
 
   // Message
-  type AdvancedMessageContent = {
-    allowedMentions?: AllowedMentions;
-    components?: ActionRow[];
-    content?: string;
-    /** @deprecated */
-    embed?: EmbedOptions;
-    embeds?: EmbedOptions[];
-    flags?: number;
-    messageReference?: MessageReferenceReply;
-    /** @deprecated */
-    messageReferenceID?: string;
-    stickerIDs?: string[];
-    tts?: boolean;
-  };
   type ActionRowComponents = Button | SelectMenu;
   type Button = InteractionButton | URLButton;
   type Component = ActionRow | ActionRowComponents;
@@ -854,6 +840,21 @@ declare namespace Eris {
     args: string[];
     command: Command;
     timeout: NodeJS.Timer;
+  }
+  
+  interface AdvancedMessageContent {
+    allowedMentions?: AllowedMentions;
+    components?: ActionRow[];
+    content?: string;
+    /** @deprecated */
+    embed?: EmbedOptions;
+    embeds?: EmbedOptions[];
+    flags?: number;
+    messageReference?: MessageReferenceReply;
+    /** @deprecated */
+    messageReferenceID?: string;
+    stickerIDs?: string[];
+    tts?: boolean;
   }
   interface AllowedMentions {
     everyone?: boolean;
