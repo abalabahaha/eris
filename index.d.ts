@@ -2350,6 +2350,7 @@ declare namespace Eris {
         members?: Record<string, Omit<Member, "user" | "deaf" | "mute">>;
         roles?: Record<string, Role>;
         channels?: Record<string, PartialChannel>;
+        messages?: Record<string, Message>;
       };
       options?: InteractionDataOptions[];
     };
