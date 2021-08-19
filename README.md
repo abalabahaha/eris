@@ -24,7 +24,7 @@ const Eris = require("eris");
 const bot = new Eris("Bot TOKEN", {
     intents: [
         "guildMessages"
-    ];
+    ]
 });
 
 bot.on("ready", () => { // When the bot is ready
