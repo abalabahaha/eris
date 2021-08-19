@@ -957,6 +957,7 @@ declare namespace Eris {
     messageReference?: MessageReferenceReply;
     /** @deprecated */
     messageReferenceID?: string;
+    stickerIDs?: string[];
     tts?: boolean;
   }
   interface AdvancedMessageContentEdit extends AdvancedMessageContent {
