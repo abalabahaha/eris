@@ -7,7 +7,7 @@ import { URL } from "url";
 import { Socket as DgramSocket } from "dgram";
 import * as WebSocket from "ws";
 
-declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
+declare function Eris(token: string, options: Eris.ClientOptions): Eris.Client;
 
 declare namespace Eris {
   export const Constants: Constants;
@@ -46,6 +46,7 @@ declare namespace Eris {
   // Guild
   type DefaultNotifications = 0 | 1;
   type ExplicitContentFilter = 0 | 1 | 2;
+  type GuildFeatures = "ANIMATED_ICON" | "BANNER" | "COMMERCE" | "COMMUNITY" | "DISCOVERABLE" | "FEATURABLE" | "INVITE_SPLASH" | "MEMBER_VERIFICATION_GATE_ENABLED" | "NEWS" | "PARTNERED" | "PREVIEW_ENABLED" | "VANITY_URL" | "VERIFIED" | "VIP_REGIONS" | "WELCOME_SCREEN_ENABLED" | "TICKETED_EVENTS_ENABLED" | "MONETIZATION_ENABLED" | "MORE_STICKERS" | "THREE_DAY_THREAD_ARCHIVE" | "SEVEN_DAY_THREAD_ARCHIVE" | "PRIVATE_THREADS";
   type NSFWLevel = 0 | 1 | 2 | 3;
   type PossiblyUncachedGuild = Guild | Uncached;
   type PremiumTier = 0 | 1 | 2 | 3;
@@ -54,6 +55,7 @@ declare namespace Eris {
   // Message
   type AdvancedMessageContent = {
     allowedMentions?: AllowedMentions;
+    components?: ActionRow[];
     content?: string;
     /** @deprecated */
     embed?: EmbedOptions;
@@ -65,6 +67,9 @@ declare namespace Eris {
     stickerIDs?: string[];
     tts?: boolean;
   };
+  type ActionRowComponents = Button | SelectMenu;
+  type Button = InteractionButton | URLButton;
+  type Component = ActionRow | ActionRowComponents;
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
   type MFALevel = 0 | 1;
@@ -84,7 +89,7 @@ declare namespace Eris {
   type ConverterCommand = "./ffmpeg" | "./avconv" | "ffmpeg" | "avconv";
 
   // Webhook
-  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions">;
+  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions" | "components">;
 
   // INTERFACES
   // Internals
@@ -411,7 +416,7 @@ declare namespace Eris {
     discoverySplash: string | null;
     emojis: Omit<Emoji, "user" | "icon">[];
     explicitContentFilter: ExplicitContentFilter;
-    features: string[];
+    features: GuildFeatures[];
     icon: string | null;
     large: boolean;
     maxMembers?: number;
@@ -697,7 +702,7 @@ declare namespace Eris {
     description?: string;
     discoverySplash?: string;
     explicitContentFilter?: ExplicitContentFilter;
-    features?: string[];
+    features?: GuildFeatures[]; // Though only some are editable?
     icon?: string;
     name?: string;
     ownerID?: string;
@@ -841,6 +846,10 @@ declare namespace Eris {
   }
 
   // Message
+  interface ActionRow {
+    components: ActionRowComponents[];
+    type: 1;
+  }
   interface ActiveMessages {
     args: string[];
     command: Command;
@@ -862,11 +871,37 @@ declare namespace Eris {
     url: string;
     width?: number;
   }
+  interface ButtonBase {
+    disabled?: boolean;
+    emoji?: Partial<PartialEmoji>;
+    label?: string;
+    type: 2;
+  }
+  interface SelectMenu {
+    custom_id: string;
+    disabled?: boolean;
+    max_values?: number;
+    min_values?: number;
+    options: SelectMenuOptions[];
+    placeholder?: string;
+    type: 3;
+  }
+  interface SelectMenuOptions {
+    default?: boolean;
+    description?: string;
+    emoji?: Partial<PartialEmoji>;
+    label: string;
+    value: string;
+  }
   interface GetMessageReactionOptions {
     after?: string;
     /** @deprecated */
     before?: string;
     limit?: number;
+  }
+  interface InteractionButton extends ButtonBase {
+    custom_id: string;
+    style: 1 | 2 | 3 | 4;
   }
   interface MessageActivity {
     party_id?: string;
@@ -917,6 +952,10 @@ declare namespace Eris {
     id: string;
     name: string;
     format_type: Constants["StickerFormats"][keyof Constants["StickerFormats"]];
+  }
+  interface URLButton extends ButtonBase {
+    style: 5;
+    url: string;
   }
 
   // Presence
@@ -984,7 +1023,7 @@ declare namespace Eris {
     hoist?: boolean;
     mentionable?: boolean;
     name?: string;
-    permissions?: bigint | number | Permission;
+    permissions?: bigint | number | string | Permission;
   }
   interface RoleTags {
     bot_id?: string;
@@ -1054,6 +1093,7 @@ declare namespace Eris {
     allowedMentions?: AllowedMentions;
     auth?: boolean;
     avatarURL?: string;
+    components?: ActionRow[];
     content?: string;
     embeds?: EmbedOptions[];
     file?: MessageFile | MessageFile[];
@@ -1139,6 +1179,9 @@ declare namespace Eris {
       INTEGRATION_CREATE: 80;
       INTEGRATION_UPDATE: 81;
       INTEGRATION_DELETE: 82;
+      STAGE_INSTANCE_CREATE: 83;
+      STAGE_INSTANCE_UPDATE: 84;
+      STAGE_INSTANCE_DELETE: 85;
     };
     ChannelTypes: {
       GUILD_TEXT: 0;
@@ -1176,6 +1219,8 @@ declare namespace Eris {
       guilds: 1;
       guildMembers: 2;
       guildBans: 4;
+      guildEmojisAndStickers: 8;
+      /** @deprecated */
       guildEmojis: 8;
       guildIntegrations: 16;
       guildWebhooks: 32;
@@ -1265,13 +1310,18 @@ declare namespace Eris {
       manageNicknames: 134217728n;
       manageRoles: 268435456n;
       manageWebhooks: 536870912n;
+      manageEmojisAndStickers: 1073741824n;
+      /** @deprecated */
       manageEmojis: 1073741824n;
+      useApplicationCommands: 2147483648n;
+      /** @deprecated */
       useSlashCommands: 2147483648n;
       voiceRequestToSpeak: 4294967296n;
+      useExternalStickers: 137438953472n;
       allGuild: 2080899262n;
-      allText: 2953313361n;
+      allText: 140392266833n;
       allVoice: 4629464849n;
-      all: 8589934591n;
+      all: 146028888063n;
     };
     REST_VERSION: 8;
     StickerFormats: {
@@ -1978,7 +2028,7 @@ declare namespace Eris {
     emojiCount?: number;
     emojis: Emoji[];
     explicitContentFilter: ExplicitContentFilter;
-    features: string[];
+    features: GuildFeatures[];
     icon: string | null;
     iconURL: string | null;
     id: string;
@@ -2181,7 +2231,7 @@ declare namespace Eris {
     discoverySplash: string | null;
     discoverySplashURL: string | null;
     emojis: Emoji[];
-    features: string[];
+    features: GuildFeatures[];
     icon: string | null;
     iconURL: string | null;
     id: string;
@@ -2283,6 +2333,7 @@ declare namespace Eris {
     /** @deprecated */
     cleanContent: string;
     command?: Command;
+    components?: ActionRow[];
     content: string;
     createdAt: number;
     editedTimestamp?: number;
