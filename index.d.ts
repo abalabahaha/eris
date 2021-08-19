@@ -206,7 +206,7 @@ declare namespace Eris {
   }
   interface PartialChannel {
     bitrate?: number;
-    id?: string;
+    id: string;
     name?: string;
     nsfw?: boolean;
     parent_id?: number;
@@ -2405,11 +2405,11 @@ declare namespace Eris {
       type: Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
       target_id?: string;
       resolved?: {
-        users?: Record<string, User>;
-        members?: Record<string, Omit<Member, "user" | "deaf" | "mute">>;
-        roles?: Record<string, Role>;
-        channels?: Record<string, PartialChannel>;
-        messages?: Record<string, Message>;
+        users?: Collection<User>;
+        members?: Collection<Omit<Member, "user" | "deaf" | "mute">>;
+        roles?: Collection<Role>;
+        channels?: Collection<PartialChannel>;
+        messages?: Collection<Message>;
       };
       options?: InteractionDataOptions[];
     };
