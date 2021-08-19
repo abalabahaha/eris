@@ -246,6 +246,7 @@ declare namespace Eris {
   interface RequestHandlerOptions {
     agent?: HTTPSAgent;
     baseURL?: string;
+    decodeReasons?: boolean;
     disableLatencyCompensation?: boolean;
     domain?: string;
     latencyThreshold?: number;
