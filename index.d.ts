@@ -465,10 +465,11 @@ declare namespace Eris {
     videoQualityMode: VideoQualityMode;
   }
   interface OldMember {
-    roles: string[];
+    avatar: string | null;
     nick: string | null;
-    premiumSince: number;
     pending?: boolean;
+    premiumSince: number;
+    roles: string[];
   }
   interface OldMessage {
     attachments: Attachment[];
@@ -818,7 +819,7 @@ declare namespace Eris {
     channelID?: string | null;
     deaf?: boolean;
     mute?: boolean;
-    nick?: string;
+    nick?: string | null;
     roles?: string[];
   }
   interface MemberPartial {
@@ -1732,6 +1733,7 @@ declare namespace Eris {
     editGuildWelcomeScreen(guildID: string, options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editGuildWidget(guildID: string, options: Widget): Promise<Widget>;
     editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
+    /** @deprecated */
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
     editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
@@ -2110,6 +2112,7 @@ declare namespace Eris {
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
+    /** @deprecated */
     editNickname(nick: string): Promise<void>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     editTemplate(code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
