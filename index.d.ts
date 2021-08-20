@@ -590,9 +590,6 @@ declare namespace Eris {
     (event: "guildUpdate", listener: (guild: Guild, oldGuild: OldGuild) => void): T;
     (event: "hello", listener: (trace: string[], id: number) => void): T;
     (event: "interactionCreate", listener: (interaction: PingInteraction | CommandInteraction | ComponentInteraction | UnknownInteraction) => void): T;
-    (event: "commandCreate", listener: (interaction: ApplicationCommand) => void): T;
-    (event: "commandUpdate", listener: (interaction: ApplicationCommand) => void): T;
-    (event: "commandDelete", listener: (interaction: ApplicationCommand) => void): T;
     (event: "inviteCreate" | "inviteDelete", listener: (guild: Guild, invite: Invite) => void): T;
     (event: "messageCreate", listener: (message: Message<PossiblyUncachedTextableChannel>) => void): T;
     (event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): T;
