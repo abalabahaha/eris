@@ -2397,8 +2397,8 @@ declare namespace Eris {
     pong(): Promise<void>;
   }
 
-  export class CommandInteraction extends Interaction {
-    channelID: string;
+  export class CommandInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+    channel: T;
     data: {
       id: string;
       name: string;
@@ -2428,8 +2428,8 @@ declare namespace Eris {
     getOriginalMessage(): Promise<Message>
   }
 
-  export class ComponentInteraction extends Interaction {
-    channelID: string;
+  export class ComponentInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+    channel: T;
     data: {
       component_type: 2 | 3;
       custom_id: string;
@@ -2452,8 +2452,8 @@ declare namespace Eris {
     getOriginalMessage(): Promise<Message>
   }
 
-  export class UnknownInteraction extends Interaction {
-    channelID?: string;
+  export class UnknownInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+    channel?: T;
     data?: unknown;
     guildID?: string;
     member?: Member;
