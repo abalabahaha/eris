@@ -553,102 +553,97 @@ declare namespace Eris {
     selfStream: boolean;
     selfVideo: boolean;
   }
-
-  interface EventListeners<T> {
-    (event: "ready" | "disconnect", listener: () => void): T;
-    (event: "callCreate" | "callRing" | "callDelete", listener: (call: Call) => void): T;
-    (event: "callUpdate", listener: (call: Call, oldCall: OldCall) => void): T;
-    (event: "channelCreate" | "channelDelete", listener: (channel: AnyChannel) => void): T;
-    (
-      event: "channelPinUpdate",
-      listener: (channel: TextableChannel, timestamp: number, oldTimestamp: number) => void
-    ): T;
-    (
-      event: "channelRecipientAdd" | "channelRecipientRemove",
-      listener: (channel: GroupChannel, user: User) => void
-    ): T;
-    (event: "channelUpdate", listener: (channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldGuildVoiceChannel) => void): T;
-    (event: "channelUpdate", listener: (channel: GroupChannel, oldChannel: OldGroupChannel) => void): T;
-    (event: "connect" | "shardPreReady", listener: (id: number) => void): T;
-    (event: "error", listener: (err: Error, id: number) => void): T;
-    (event: "friendSuggestionCreate", listener: (user: User, reasons: FriendSuggestionReasons) => void): T;
-    (event: "friendSuggestionDelete", listener: (user: User) => void): T;
-    (event: "guildBanAdd" | "guildBanRemove", listener: (guild: Guild, user: User) => void): T;
-    (event: "guildAvailable" | "guildCreate", listener: (guild: Guild) => void): T;
-    (event: "guildDelete", listener: (guild: PossiblyUncachedGuild) => void): T;
-    (event: "guildEmojisUpdate", listener: (guild: PossiblyUncachedGuild, emojis: Emoji[], oldEmojis: Emoji[] | null) => void): T;
-    (event: "guildMemberAdd", listener: (guild: Guild, member: Member) => void): T;
-    (event: "guildMemberChunk", listener: (guild: Guild, members: Member[]) => void): T;
-    (event: "guildMemberRemove", listener: (guild: Guild, member: Member | MemberPartial) => void): T;
-    (
-      event: "guildMemberUpdate",
-      listener: (guild: Guild, member: Member, oldMember: OldMember | null) => void
-    ): T;
-    (event: "guildRoleCreate" | "guildRoleDelete", listener: (guild: Guild, role: Role) => void): T;
-    (event: "guildRoleUpdate", listener: (guild: Guild, role: Role, oldRole: OldRole) => void): T;
-    (event: "guildUnavailable" | "unavailableGuildCreate", listener: (guild: UnavailableGuild) => void): T;
-    (event: "guildUpdate", listener: (guild: Guild, oldGuild: OldGuild) => void): T;
-    (event: "hello", listener: (trace: string[], id: number) => void): T;
-    (event: "interactionCreate", listener: (interaction: PingInteraction | CommandInteraction | ComponentInteraction | UnknownInteraction) => void): T;
-    (event: "inviteCreate" | "inviteDelete", listener: (guild: Guild, invite: Invite) => void): T;
-    (event: "messageCreate", listener: (message: Message<PossiblyUncachedTextableChannel>) => void): T;
-    (event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): T;
-    (event: "messageReactionRemoveEmoji", listener: (message: PossiblyUncachedMessage, emoji: PartialEmoji) => void): T;
-    (event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): T;
-    (
-      event: "messageReactionAdd",
-      listener: (message: PossiblyUncachedMessage, emoji: PartialEmoji, reactor: Member | Uncached) => void
-    ): T;
-    (
-      event: "messageReactionRemove",
-      listener: (message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string) => void
-    ): T;
-    (event: "messageUpdate", listener: (message: Message<PossiblyUncachedTextableChannel>, oldMessage: OldMessage | null) => void
-    ): T;
-    (event: "presenceUpdate", listener: (other: Member | Relationship, oldPresence: Presence | null) => void): T;
-    (event: "rawREST", listener: (request: RawRESTRequest) => void): T;
-    (event: "rawWS" | "unknown", listener: (packet: RawPacket, id: number) => void): T;
-    (event: "relationshipAdd" | "relationshipRemove", listener: (relationship: Relationship) => void): T;
-    (
-      event: "relationshipUpdate",
-      listener: (relationship: Relationship, oldRelationship: { type: number }) => void
-    ): T;
-    (event: "typingStart", listener: (channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member) => void): T;
-    (event: "typingStart", listener: (channel: PrivateChannel | Uncached, user: User | Uncached, member: null) => void): T;
-    (
-      event: "userUpdate",
-      listener: (user: User, oldUser: PartialUser | null) => void
-    ): T;
-    (event: "voiceChannelJoin" | "voiceChannelLeave", listener: (member: Member, channel: AnyVoiceChannel) => void): T;
-    (
-      event: "voiceChannelSwitch",
-      listener: (member: Member, newChannel: AnyVoiceChannel, oldChannel: AnyVoiceChannel) => void
-    ): T;
-    (event: "voiceStateUpdate", listener: (member: Member, oldState: OldVoiceState) => void): T;
-    (event: "voiceStateUpdate", listener: (member: UncachedMemberVoiceState, oldState: null) => void): T;
-    (event: "warn" | "debug", listener: (message: string, id: number) => void): T;
-    (event: "webhooksUpdate", listener: (data: WebhookData) => void): T;
-    (event: string, listener: (...args: any[]) => void): T;
+  interface EventListeners {
+    callCreate: [call: Call];
+    callDelete: [call: Call];
+    callRing: [call: Call];
+    callUpdate: [call: Call, oldCall: OldCall];
+    channelCreate: [channel: AnyChannel];
+    channelDelete: [channel: AnyChannel];
+    channelPinUpdate: [channel: TextableChannel, timestamp: number, oldTimestamp: number];
+    channelRecipientAdd: [channel: GroupChannel, user: User];
+    channelRecipientRemove: [channel: GroupChannel, user: User];
+    channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldGuildVoiceChannel] 
+      | [channel: GroupChannel, oldChannel: OldGroupChannel];
+    connect: [id: number];
+    debug: [message: string, id: number];
+    disconnect: [];
+    error: [err: Error, id: number];
+    friendSuggestionCreate: [user: User, reasons: FriendSuggestionReasons];
+    friendSuggestionDelete: [user: User];
+    guildAvailable: [guild: Guild];
+    guildBanAdd: [guild: Guild, user: User];
+    guildBanRemove: [guild: Guild, user: User];
+    guildCreate: [guild: Guild];
+    guildDelete: [guild: PossiblyUncachedGuild];
+    guildEmojisUpdate: [guild: PossiblyUncachedGuild, emojis: Emoji[], oldEmojis: Emoji[] | null];
+    guildMemberAdd: [guild: Guild, member: Member];
+    guildMemberChunk: [guild: Guild, member: Member[]];
+    guildMemberRemove: [guild: Guild, member: Member | MemberPartial];
+    guildMemberUpdate: [guild: Guild, member: Member, oldMember: OldMember | null];
+    guildRoleCreate: [guild: Guild, role: Role];
+    guildRoleDelete: [guild: Guild, role: Role];
+    guildRoleUpdate: [guild: Guild, role: Role, oldRole: OldRole];
+    guildUnavailable: [guild: UnavailableGuild];
+    guildUpdate: [guild: Guild, oldGuild: OldGuild];
+    hello: [trace: string[], id: number];
+    interactionCreate: [interaction: PingInteraction | CommandInteraction | ComponentInteraction | UnknownInteraction]
+    inviteCreate: [guild: Guild, invite: Invite];
+    inviteDelete: [guild: Guild, invite: Invite];
+    messageCreate: [message: Message<PossiblyUncachedTextableChannel>];
+    messageDelete: [message: PossiblyUncachedMessage];
+    messageDeleteBulk: [messages: PossiblyUncachedMessage[]];
+    messageReactionAdd: [message: PossiblyUncachedMessage, emoji: PartialEmoji, reactor: Member | Uncached];
+    messageReactionRemove: [message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string];
+    messageReactionRemoveAll: [message: PossiblyUncachedMessage];
+    messageReactionRemoveEmoji: [message: PossiblyUncachedMessage, emoji: PartialEmoji];
+    messageUpdate: [message: Message<PossiblyUncachedTextableChannel>, oldMessage: OldMessage | null];
+    presenceUpdate: [other: Member | Relationship, oldPresence: Presence | null];
+    rawREST: [request: RawRESTRequest];
+    rawWS: [packet: RawPacket, id: number];
+    ready: [];
+    relationshipAdd: [relationship: Relationship];
+    relationshipRemove: [relationship: Relationship];
+    relationshipUpdate: [relationship: Relationship, oldRelationship: { type: number }];
+    typingStart: [channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member] 
+      | [channel: PrivateChannel | Uncached, user: User | Uncached, member: null];
+    unavailableGuildCreate: [guild: UnavailableGuild];
+    unknown: [packet: RawPacket, id: number];
+    userUpdate: [user: User, oldUser: PartialUser | null];
+    voiceChannelJoin: [member: Member, channel: AnyVoiceChannel];
+    voiceChannelLeave: [member: Member, channel: AnyVoiceChannel];
+    voiceChannelSwitch: [member: Member, newChannel: AnyVoiceChannel, oldChannel: AnyVoiceChannel];
+    voiceStateUpdate: [member: Member, oldState: OldVoiceState];
+    warn: [message: string, id: number];
+    webhooksUpdate: [data: WebhookData];
   }
-  interface ClientEvents<T> extends EventListeners<T> {
-    (event: "shardReady" | "shardResume", listener: (id: number) => void): T;
-    (event: "shardDisconnect", listener: (err: Error | undefined, id: number) => void): T;
+  interface ClientEvents extends EventListeners {
+    shardDisconnect: [err: Error | undefined, id: number];
+    shardReady: [id: number];
+    shardResume: [id: number];
   }
-  interface ShardEvents<T> extends EventListeners<T> {
-    (event: "resume", listener: () => void): T;
+  interface ShardEvents extends EventListeners {
+    resume: [];
   }
-  interface StreamEvents<T> extends EventListeners<T> {
-    (event: "end" | "start", listener: () => void): T;
-    (event: "error", listener: (err: Error) => void): T;
+  interface StreamEvents {
+    end: [];
+    error: [err: Error];
+    start: [];
   }
-  interface VoiceEvents<T> {
-    (event: "connect" | "end" | "ready" | "start", listener: () => void): T;
-    (event: "debug" | "warn", listener: (message: string) => void): T;
-    (event: "disconnect", listener: (err?: Error) => void): T;
-    (event: "error", listener: (err: Error) => void): T;
-    (event: "pong", listener: (latency: number) => void): T;
-    (event: "speakingStart" | "speakingStop" | "userDisconnect", listener: (userID: string) => void): T;
-    (event: "unknown", listener: (packet: unknown) => void): T;
+  interface VoiceEvents {
+    connect: [];
+    debug: [message: string];
+    disconnect: [err?: Error];
+    end: [];
+    error: [err: Error];
+    ping: [latency: number];
+    ready: [];
+    speakingStart: [userID: string];
+    speakingStop: [userID: string];
+    start: [];
+    unknown: [packet: RawPacket];
+    userDisconnect: [userID: string];
+    warn: [message: string];
   }
 
   // Gateway/REST
@@ -1997,7 +1992,14 @@ declare namespace Eris {
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     unpinMessage(channelID: string, messageID: string): Promise<void>;
     validateDiscoverySearchTerm(term: string): Promise<{ valid: boolean }>;
-    on: ClientEvents<this>;
+    emit<K extends keyof ClientEvents>(event: K, ...args: ClientEvents[K]): boolean;
+    emit(event: string, ...args: any[]): boolean;
+    on<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
+    on(event: string, listener: (...args: any[]) => void): this;
+    once<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
+    once(event: string, listener: (...args: any[]) => void): this;
+    off<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
+    off(event: string, listener: (...args: any[]) => void): this;
     toString(): string;
   }
 
@@ -2781,7 +2783,14 @@ declare namespace Eris {
     sendWS(op: number, _data: Record<string, unknown>, priority?: boolean): void;
     syncGuild(guildID: string): void;
     wsEvent(packet: Required<RawPacket>): void;
-    on: ShardEvents<this>;
+    emit<K extends keyof ShardEvents>(event: K, ...args: ShardEvents[K]): boolean;
+    emit(event: string, ...args: any[]): boolean;
+    on<K extends keyof ShardEvents>(event: K, listener: (...args: ShardEvents[K]) => void): this;
+    on(event: string, listener: (...args: any[]) => void): this;
+    once<K extends keyof ShardEvents>(event: K, listener: (...args: ShardEvents[K]) => void): this;
+    once(event: string, listener: (...args: any[]) => void): this;
+    off<K extends keyof ShardEvents>(event: K, listener: (...args: ShardEvents[K]) => void): this;
+    off(event: string, listener: (...args: any[]) => void): this;
     toJSON(props?: string[]): JSONCache;
   }
 
@@ -2815,7 +2824,14 @@ declare namespace Eris {
     setSpeaking(value: boolean): void;
     setVolume(volume: number): void;
     stopPlaying(): void;
-    on: StreamEvents<this>;
+    emit<K extends keyof StreamEvents>(event: K, ...args: StreamEvents[K]): boolean;
+    emit(event: string, ...args: any[]): boolean;
+    on<K extends keyof StreamEvents>(event: K, listener: (...args: StreamEvents[K]) => void): this;
+    on(event: string, listener: (...args: any[]) => void): this;
+    once<K extends keyof StreamEvents>(event: K, listener: (...args: StreamEvents[K]) => void): this;
+    once(event: string, listener: (...args: any[]) => void): this;
+    off<K extends keyof StreamEvents>(event: K, listener: (...args: StreamEvents[K]) => void): this;
+    off(event: string, listener: (...args: any[]) => void): this;
   }
 
   export class StageChannel extends VoiceChannel {
@@ -2970,7 +2986,14 @@ declare namespace Eris {
     stopPlaying(): void;
     switchChannel(channelID: string): void;
     updateVoiceState(selfMute: boolean, selfDeaf: boolean): void;
-    on: VoiceEvents<this>;
+    emit<K extends keyof VoiceEvents>(event: K, ...args: VoiceEvents[K]): boolean;
+    emit(event: string, ...args: any[]): boolean;
+    on<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
+    on(event: string, listener: (...args: any[]) => void): this;
+    once<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
+    once(event: string, listener: (...args: any[]) => void): this;
+    off<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
+    off(event: string, listener: (...args: any[]) => void): this;
     toJSON(props?: string[]): JSONCache;
   }
 
