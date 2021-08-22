@@ -1532,6 +1532,11 @@ declare namespace Eris {
     constructor(commandFolder: CommandFolder, option: any, guild: Guild)
     value: string | User | TextChannel | CategoryChannel | StageChannel | NewsChannel | VoiceChannel | Channel | Role;
     type: number;
+    member: Member;
+    channel: TextChannel | CategoryChannel | StageChannel | NewsChannel | VoiceChannel | Channel | Role;
+    role: Role;
+    mentionEmoji: Array<any>;
+    typeOfValue: 'role' | 'user' | 'channel' | 'string' | 'number' | 'bigint' | 'boolean' | 'unknown';
     ok: boolean;
     name: string;
     options: CommandDataOption[];
