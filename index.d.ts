@@ -1533,7 +1533,7 @@ declare namespace Eris {
     value: string | User | TextChannel | CategoryChannel | StageChannel | NewsChannel | VoiceChannel | Channel | Role;
     type: number;
     member: Member;
-    channel: TextChannel | CategoryChannel | StageChannel | NewsChannel | VoiceChannel | Channel | Role;
+    channel: TextChannel | CategoryChannel | StageChannel | NewsChannel | VoiceChannel | Channel;
     role: Role;
     mentionEmoji: Array<any>;
     typeOfValue: 'role' | 'user' | 'channel' | 'string' | 'number' | 'bigint' | 'boolean' | 'unknown';
