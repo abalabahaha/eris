@@ -1298,8 +1298,8 @@ declare namespace Eris {
     };
     REST_VERSION: 8;
     StickerTypes: {
-      STANDARD: 1,
-      GUILD: 2
+      STANDARD: 1;
+      GUILD: 2;
     };
     StickerFormats: {
       PNG: 1;
