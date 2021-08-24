@@ -76,7 +76,7 @@ declare namespace Eris {
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
 
   // Interaction
-  type InteractionDataOptions = InteractionDataOptionsSubCommand | InteractionDataOptionsSubCommandGroup |InteractionDataOptionsWithValue;
+  type InteractionDataOptions = InteractionDataOptionsSubCommand | InteractionDataOptionsSubCommandGroup | InteractionDataOptionsWithValue;
   type InteractionDataOptionsWithValue = InteractionDataOptionsString | InteractionDataOptionsInteger | InteractionDataOptionsBoolean | InteractionDataOptionsUser | InteractionDataOptionsChannel | InteractionDataOptionsRole | InteractionDataOptionsMentionable | InteractionDataOptionsNumber;
   interface InteractionDataOptionsSubCommand {
     name: string;
@@ -102,25 +102,25 @@ declare namespace Eris {
   type InteractionDataOptionsMentionable = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"], string>;
   type InteractionDataOptionsNumber = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["NUMBER"], number>;
 
-  type InteractionOptions = {
+  interface InteractionOptions {
     type: Constants["InteractionResponseTypes"][keyof Constants["InteractionResponseTypes"]];
     data?: InteractionContent;
-  };
+  }
 
   type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags">;
   type InteractionWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions" | "tts" | "flags">;
 
   //Application Commands
-  type ApplicationCommandOptions = {
+  interface ApplicationCommandOptions {
     type: Constants["ApplicationCommandOptionTypes"][keyof Constants["ApplicationCommandOptionTypes"]];
     name: string;
     description: string;
     required?: boolean;
     choices?: { name: string; value: string | number}[];
     options?: ApplicationCommandOptions[];
-  };
+  }
 
-  type ApplicationCommand = {
+  interface ApplicationCommand {
     id: string;
     application_id: string;
     guild_id?: string;
@@ -129,22 +129,22 @@ declare namespace Eris {
     options?: ApplicationCommandOptions[];
     type?: Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
     defaultPermission?: boolean;
-  };
+  }
 
   type ApplicationCommandStructure = Omit<ApplicationCommand, "id" | "application_id" | "guild_id">;
 
-  type ApplicationCommandPermissions = {
+  interface ApplicationCommandPermissions {
     id: string;
     type: Constants["ApplicationCommandPermissionTypes"][keyof Constants["ApplicationCommandPermissionTypes"]];
     permission: boolean;
-  };
+  }
 
-  type GuildApplicationCommandPermissions = {
+  interface GuildApplicationCommandPermissions {
     id: string;
     application_id: string;
     guild_id: string;
     permissions?: ApplicationCommandPermissions[];
-  };
+  }
 
   // Permission
   type PermissionType = 0 | 1;
@@ -606,7 +606,7 @@ declare namespace Eris {
     guildUnavailable: [guild: UnavailableGuild];
     guildUpdate: [guild: Guild, oldGuild: OldGuild];
     hello: [trace: string[], id: number];
-    interactionCreate: [interaction: PingInteraction | CommandInteraction | ComponentInteraction | UnknownInteraction]
+    interactionCreate: [interaction: PingInteraction | CommandInteraction | ComponentInteraction | UnknownInteraction];
     inviteCreate: [guild: Guild, invite: Invite];
     inviteDelete: [guild: Guild, invite: Invite];
     messageCreate: [message: Message<PossiblyUncachedTextableChannel>];
