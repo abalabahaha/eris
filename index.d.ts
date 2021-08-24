@@ -76,12 +76,30 @@ declare namespace Eris {
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
 
   // Interaction
-  type InteractionDataOptions = {
+  type InteractionDataOptions = InteractionDataOptionsSubCommand;
+  interface InteractionDataOptionsSubCommand {
     name: string;
-    type: Constants["ApplicationCommandOptionTypes"][keyof Constants["ApplicationCommandOptionTypes"]];
-    value?: string | number | boolean;
-    options?: InteractionDataOptions[];
-  };
+    type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"];
+    options: InteractionDataOptions[];
+  }
+  interface InteractionDataOptionsSubCommandGroup {
+    name: string;
+    type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"];
+    options: InteractionDataOptions[];
+  }
+  interface InteractionDataOptionsWithValue<T extends (Constants["ApplicationCommandOptionTypes"])[keyof Constants["ApplicationCommandOptionTypes"]], V = unknown> {
+    name: string;
+    type: T;
+    value: V;
+  }
+  type InteractionDataOptionsString = InteractionDataOptionsWithValue<Constants["ApplicationCommandOptionTypes"]["STRING"], string>;
+  type InteractionDataOptionsInteger = InteractionDataOptionsWithValue<Constants["ApplicationCommandOptionTypes"]["INTEGER"], number>;
+  type InteractionDataOptionsBoolean = InteractionDataOptionsWithValue<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"], boolean>;
+  type InteractionDataOptionsUser = InteractionDataOptionsWithValue<Constants["ApplicationCommandOptionTypes"]["USER"], string>;
+  type InteractionDataOptionsChannel = InteractionDataOptionsWithValue<Constants["ApplicationCommandOptionTypes"]["CHANNEL"], string>;
+  type InteractionDataOptionsRole = InteractionDataOptionsWithValue<Constants["ApplicationCommandOptionTypes"]["ROLE"], string>;
+  type InteractionDataOptionsMentionable = InteractionDataOptionsWithValue<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"], string>;
+  type InteractionDataOptionsNumber = InteractionDataOptionsWithValue<Constants["ApplicationCommandOptionTypes"]["NUMBER"], number>;
 
   type InteractionOptions = {
     type: Constants["InteractionResponseTypes"][keyof Constants["InteractionResponseTypes"]];
