@@ -12,9 +12,6 @@ rules:
   "@typescript-eslint/member-delimiter-style": 2
   "@typescript-eslint/no-explicit-any": 0
   "@typescript-eslint/consistent-type-definitions": 2
-  "@typescript-eslint/no-use-before-define":
-  - 0
-  - classes: false
   "@typescript-eslint/semi":
   - 2
   - always
