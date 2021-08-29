@@ -644,7 +644,7 @@ declare namespace Eris {
     guildUnavailable: [guild: UnavailableGuild];
     guildUpdate: [guild: Guild, oldGuild: OldGuild];
     hello: [trace: string[], id: number];
-    interactionCreate: [interaction: PingInteraction | CommandInteraction | ComponentInteraction | UnknownInteraction];
+    interactionCreate: [interaction: PingInteraction | CommandInteraction | ComponentInteraction | Interaction];
     inviteCreate: [guild: Guild, invite: Invite];
     inviteDelete: [guild: Guild, invite: Invite];
     messageCreate: [message: Message<PossiblyUncachedTextableChannel>];
@@ -2449,6 +2449,7 @@ declare namespace Eris {
   export class Interaction extends Base {
     acknowledged: boolean;
     applicationID: string;
+    data?: unknown;
     id: string;
     token: string;
     type: number;
@@ -2456,6 +2457,7 @@ declare namespace Eris {
   }
 
   export class PingInteraction extends Interaction {
+    data: undefined;
     type: Constants["InteractionTypes"]["PING"];
     acknowledge(): Promise<void>;
     pong(): Promise<void>;
@@ -2522,27 +2524,6 @@ declare namespace Eris {
     editOriginalMessage(content: string | MessageWebhookContent): Promise<Message>;
     editParent(content: MessageWebhookContent): Promise<Message>;
     getOriginalMessage(): Promise<Message>
-  }
-
-  export class UnknownInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
-    channel?: T;
-    data?: unknown;
-    guildID?: string;
-    member?: Member;
-    message?: Message;
-    type: number;
-    user?: User;
-    createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
-    createMessage(content: string | InteractionContent | InteractionWebhookContent): Promise<void>;
-    defer(flags?: number): Promise<void>;
-    deferUpdate(): Promise<void>;
-    deleteMessage(messageID: string): Promise<void>;
-    deleteOriginalMessage(): Promise<void>;
-    editMessage(messageID: string, content: string | MessageWebhookContent): Promise<Message>;
-    editOriginalMessage(content: string | MessageWebhookContent): Promise<Message>;
-    editParent(content: MessageWebhookContent): Promise<Message>;
-    getOriginalMessage(): Promise<Message>
-    pong(): Promise<void>;
   }
 
   // If CT (count) is "withMetadata", it will not have count properties
