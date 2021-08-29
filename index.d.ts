@@ -1843,7 +1843,6 @@ declare namespace Eris {
       secret: string,
       code: string
     ): Promise<{ backup_codes: { code: string; consumed: boolean }[]; token: string }>;
-
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean }): Promise<void>;
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; wait: true }): Promise<Message<GuildTextableChannel>>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message<GuildTextableChannel>>;
@@ -1949,10 +1948,7 @@ declare namespace Eris {
     once<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
     once(event: string, listener: (...args: any[]) => void): this;
     pinMessage(channelID: string, messageID: string): Promise<void>;
-
-
     pruneMembers(guildID: string, options?: PruneMemberOptions): Promise<number>;
-
     purgeChannel(channelID: string, options: PurgeChannelOptions): Promise<number>;
     /** @deprecated */
     purgeChannel(
@@ -1978,20 +1974,8 @@ declare namespace Eris {
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     unpinMessage(channelID: string, messageID: string): Promise<void>;
     validateDiscoverySearchTerm(term: string): Promise<{ valid: boolean }>;
-
-
-
-
-
     on<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
-
-
     on(event: string, listener: (...args: any[]) => void): this;
-
-
-
-
-
     toString(): string;
   }
 
@@ -2459,7 +2443,6 @@ declare namespace Eris {
     stickerItems?: StickerItems[];
     /** @deprecated */
     stickers?: Sticker[];
-
     timestamp: number;
     tts: boolean;
     type: number;
@@ -2664,7 +2647,6 @@ declare namespace Eris {
     emit<K extends keyof ShardEvents>(event: K, ...args: ShardEvents[K]): boolean;
     emit(event: string, ...args: any[]): boolean;
     getGuildMembers(guildID: string, timeout: number): void;
-
     hardReset(): void;
     heartbeat(normal?: boolean): void;
     identify(): void;
@@ -2674,10 +2656,7 @@ declare namespace Eris {
     once<K extends keyof ShardEvents>(event: K, listener: (...args: ShardEvents[K]) => void): this;
     once(event: string, listener: (...args: any[]) => void): this;
     onPacket(packet: RawPacket): void;
-
-
     requestGuildMembers(guildID: string, options?: RequestGuildMembersOptions): Promise<RequestGuildMembersReturn>;
-
     requestGuildSync(guildID: string): void;
     reset(): void;
     restartGuildCreateTimeout(): void;
@@ -2686,20 +2665,8 @@ declare namespace Eris {
     sendWS(op: number, _data: Record<string, unknown>, priority?: boolean): void;
     syncGuild(guildID: string): void;
     wsEvent(packet: Required<RawPacket>): void;
-
-
-
-
-
     on<K extends keyof ShardEvents>(event: K, listener: (...args: ShardEvents[K]) => void): this;
-
-
     on(event: string, listener: (...args: any[]) => void): this;
-
-
-
-
-
     toJSON(props?: string[]): JSONCache;
   }
 
@@ -2734,37 +2701,13 @@ declare namespace Eris {
     off(event: string, listener: (...args: any[]) => void): this;
     once<K extends keyof StreamEvents>(event: K, listener: (...args: StreamEvents[K]) => void): this;
     once(event: string, listener: (...args: any[]) => void): this;
-play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
-
-
-
-    
+    play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
     remove(connection: VoiceConnection): void;
-
-
-
     setSpeaking(value: boolean): void;
-
-
     setVolume(volume: number): void;
-
-
     stopPlaying(): void;
-
-
-
-
-
-
     on<K extends keyof StreamEvents>(event: K, listener: (...args: StreamEvents[K]) => void): this;
-
-
     on(event: string, listener: (...args: any[]) => void): this;
-
-
-
-
-
   }
 
   export class StageChannel extends VoiceChannel {
@@ -2910,22 +2853,14 @@ play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
     emit<K extends keyof VoiceEvents>(event: K, ...args: VoiceEvents[K]): boolean;
     emit(event: string, ...args: any[]): boolean;
     heartbeat(): void;
-
     off<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
     off(event: string, listener: (...args: any[]) => void): this;
     once<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
     once(event: string, listener: (...args: any[]) => void): this;
     pause(): void;
-
-
-
     play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
-
-
     receive(type: "opus" | "pcm"): VoiceDataStream;
-
     registerReceiveEventHandler(): void;
-
     resume(): void;
     sendWS(op: number, data: Record<string, unknown>): void;
     setSpeaking(value: boolean): void;
@@ -2933,20 +2868,8 @@ play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
     stopPlaying(): void;
     switchChannel(channelID: string): void;
     updateVoiceState(selfMute: boolean, selfDeaf: boolean): void;
-
-
-
-
-
     on<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
-
-
     on(event: string, listener: (...args: any[]) => void): this;
-
-
-
-
-
     toJSON(props?: string[]): JSONCache;
   }
 
