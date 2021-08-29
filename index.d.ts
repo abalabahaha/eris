@@ -1483,6 +1483,11 @@ declare namespace Eris {
       USER: 2;
       MESSAGE: 3;
     };
+    ComponentTypes: {
+      ACTION_ROW: 1;
+      BUTTON: 2;
+      SELECT_MENU: 3;
+    };
   }
 
   // Selfbot
@@ -2452,7 +2457,7 @@ declare namespace Eris {
   export class ComponentInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
     channel: T;
     data: {
-      component_type: 2 | 3;
+      component_type: Constants["ComponentTypes"][keyof Omit<Constants["ComponentTypes"], "ACTION_ROW">];
       custom_id: string;
       values?: string[];
     };
