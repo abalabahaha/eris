@@ -114,11 +114,11 @@ declare namespace Eris {
   type ApplicationCommandOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup | ApplicationCommandOptionsWithValue;
   type ApplicationCommandOptionsWithValue = ApplicationCommandOptionsString | ApplicationCommandOptionsInteger | ApplicationCommandOptionsBoolean | ApplicationCommandOptionsUser | ApplicationCommandOptionsChannel | ApplicationCommandOptionsRole | ApplicationCommandOptionsMentionable | ApplicationCommandOptionsNumber;
   interface ApplicationCommandOptionsSubCommand {
-    type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"];
+    type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"];
     name: string;
     description: string;
     required?: boolean;
-    options: ApplicationCommandOptionsWithValue[];
+    options?: ApplicationCommandOptionsWithValue[];
   }
   interface ApplicationCommandOptionsSubCommandGroup {
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"];
