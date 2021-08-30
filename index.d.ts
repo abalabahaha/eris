@@ -1448,10 +1448,10 @@ declare namespace Eris {
       COMPETING: 5;
     };
     ButtonType: {
-      PRIMARY_CTA: 1;
-      PRIMARY_SUCCESS: 2;
-      SECONDARY: 3;
-      DESTRUCTIVE: 4;
+      PRIMARY: 1;
+      SECONDARY: 2;
+      SUCCESS: 3;
+      DANGER: 4;
       LINK: 5;
     };
     PremiumType: {
