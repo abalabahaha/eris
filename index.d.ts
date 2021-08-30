@@ -454,18 +454,18 @@ declare namespace Eris {
     rateLimitPerUser?: number;
     rtcRegion?: string | null;
     topic?: string | null;
-    type: Exclude<ChannelTypes, 1 | 3>;
+    type: GuildChannelTypes;
   }
   interface OldGuildTextChannel extends OldGuildChannel {
     nsfw: boolean;
     rateLimitPerUser: number;
     topic: string | null;
-    type: 0 | 5;
+    type: GuildTextChannelTypes;
   }
   interface OldGuildVoiceChannel extends OldGuildChannel {
     bitrate: number;
     rtcRegion: string | null;
-    type: 2 | 13;
+    type: GuildVoiceChannelTypes;
     userLimit: number;
     videoQualityMode: VideoQualityMode;
   }
