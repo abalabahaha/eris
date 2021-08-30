@@ -411,6 +411,7 @@ declare namespace Eris {
     name: string;
     ownerID: string;
     icon: string;
+    type: Constants["ChannelTypes"]["GROUP_DM"];
   }
   interface OldGuild {
     afkChannelID: string | null;
