@@ -1105,7 +1105,7 @@ declare namespace Eris {
     archiveTimestamp: number;
     archived: boolean;
     autoArchiveDuration: AutoArchiveDuration;
-    locked?: boolean;
+    locked: boolean;
   }
 
   // Voice
