@@ -1109,6 +1109,12 @@ declare namespace Eris {
   }
 
   // Voice
+  interface JoinVoiceChannelOptions {
+    opusOnly?: boolean;
+    selfDeaf?: boolean;
+    selfMute?: boolean;
+    shared?: boolean;
+  }
   interface StageInstanceOptions {
     privacyLevel?: StageInstancePrivacyLevel;
     topic?: string;
@@ -1973,7 +1979,7 @@ declare namespace Eris {
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
     getWebhookMessage(webhookID: string, token: string, messageID: string): Promise<Message<GuildTextableChannel>>;
     joinThread(channelID: string, userID?: string): Promise<void>;
-    joinVoiceChannel(channelID: string, options?: { opusOnly?: boolean; shared?: boolean }): Promise<VoiceConnection>;
+    joinVoiceChannel(channelID: string, options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
     kickGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     leaveGuild(guildID: string): Promise<void>;
     leaveThread(channelID: string, userID?: string): Promise<void>;
@@ -2948,7 +2954,7 @@ declare namespace Eris {
     voiceMembers: Collection<Member>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", VoiceChannel>>;
     getInvites(): Promise<(Invite<"withMetadata", VoiceChannel>)[]>;
-    join(options: { opusOnly?: boolean; shared?: boolean }): Promise<VoiceConnection>;
+    join(options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
     leave(): void;
   }
 
