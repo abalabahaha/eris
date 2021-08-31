@@ -56,6 +56,7 @@ declare namespace Eris {
   type PossiblyUncachedGuild = Guild | Uncached;
   type PremiumTier = (Constants["PremiumTier"])[keyof Constants["PremiumTier"]];
   type VerificationLevel = (Constants["VerificationLevel"])[keyof Constants["VerificationLevel"]];
+  type SystemChannelFlags = (Constants["SystemChannelFlags"])[keyof Constants["SystemChannelFlags"]];
 
   // Message
   type AdvancedMessageContent = {
@@ -440,7 +441,7 @@ declare namespace Eris {
     region: string;
     rulesChannelID: string | null;
     splash: string | null;
-    systemChannelFlags: number;
+    systemChannelFlags: SystemChannelFlags;
     systemChannelID: string | null;
     vanityURL: string | null;
     verificationLevel: VerificationLevel;
@@ -714,7 +715,7 @@ declare namespace Eris {
     region?: string;
     rulesChannelID?: string;
     splash?: string;
-    systemChannelFlags?: number;
+    systemChannelFlags?: SystemChannelFlags;
     systemChannelID?: string;
     verificationLevel?: VerificationLevel;
   }
@@ -2151,7 +2152,7 @@ declare namespace Eris {
     shard: Shard;
     splash: string | null;
     splashURL: string | null;
-    systemChannelFlags: number;
+    systemChannelFlags: SystemChannelFlags;
     systemChannelID: string | null;
     unavailable: boolean;
     vanityURL: string | null;
