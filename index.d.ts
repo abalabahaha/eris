@@ -65,6 +65,7 @@ declare namespace Eris {
     /** @deprecated */
     messageReferenceID?: string;
     tts?: boolean;
+    file?: MessageFile | MessageFile[]
   };
   type ActionRowComponents = Button | SelectMenu;
   type Button = InteractionButton | URLButton;
@@ -177,6 +178,8 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
+    createMessage(content: MessageContent): Promise<Message>;
+    /** @deprecated */
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     editMessage(messageID: string, content: MessageContent): Promise<Message>;
@@ -1683,6 +1686,8 @@ declare namespace Eris {
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
+    createMessage(channelID: string, content: MessageContent): Promise<Message>;
+    /** @deprecated */
     createMessage(channelID: string, content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
     createRole(guildID: string, options?: RoleOptions | Role, reason?: string): Promise<Role>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
@@ -2395,6 +2400,8 @@ declare namespace Eris {
     rateLimitPerUser: 0;
     type: 5;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", NewsChannel>>;
+    createMessage(content: MessageContent): Promise<Message<NewsChannel>>;
+    /** @deprecated */
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<NewsChannel>>;
     crosspostMessage(messageID: string): Promise<Message<NewsChannel>>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<NewsChannel>>;
@@ -2447,6 +2454,8 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
+    createMessage(content: MessageContent): Promise<Message<PrivateChannel>>;
+    /** @deprecated */
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<PrivateChannel>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<PrivateChannel>>;
@@ -2656,6 +2665,8 @@ declare namespace Eris {
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", TextChannel>>;
+    createMessage(content: MessageContent): Promise<Message<TextChannel>>;
+    /** @deprecated */
     createMessage(content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message<TextChannel>>;
     createWebhook(options: { name: string; avatar?: string | null}, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
