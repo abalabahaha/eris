@@ -88,7 +88,7 @@ declare namespace Eris {
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"];
     options: InteractionDataOptions[];
   }
-  interface InteractionDataOptionWithValue<T extends (Constants["ApplicationCommandOptionTypes"])[keyof Constants["ApplicationCommandOptionTypes"]], V = unknown> {
+  interface InteractionDataOptionWithValue<T extends (Constants["ApplicationCommandOptionTypes"])[Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">] = (Constants["ApplicationCommandOptionTypes"])[Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">], V = unknown> {
     name: string;
     type: T;
     value: V;
@@ -125,16 +125,16 @@ declare namespace Eris {
     name: string;
     description: string;
     required?: boolean;
-    options: (ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsWithValue)[];
+    options?: (ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsWithValue)[];
   }
-  interface ApplicationCommandOptionWithChoices<T extends (Constants["ApplicationCommandOptionTypes"])[keyof Constants["ApplicationCommandOptionTypes"]]> {
+  interface ApplicationCommandOptionWithChoices<T extends (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">] = (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">]> {
     name: string;
     type: T;
     description: string;
     required?: boolean;
     choices?: { name: string; value: T extends Constants["ApplicationCommandOptionTypes"]["STRING"] ? string : number }[];
   }
-  interface ApplicationCommandOptionWithValue<T extends (Constants["ApplicationCommandOptionTypes"])[keyof Constants["ApplicationCommandOptionTypes"]]> {
+  interface ApplicationCommandOption<T extends (Constants["ApplicationCommandOptionTypes"])[Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">]> {
     type: T;
     name: string;
     description: string;
@@ -143,11 +143,11 @@ declare namespace Eris {
 
   type ApplicationCommandOptionsString = ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["STRING"]>;
   type ApplicationCommandOptionsInteger = ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>;
-  type ApplicationCommandOptionsBoolean = ApplicationCommandOptionWithValue<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
-  type ApplicationCommandOptionsUser = ApplicationCommandOptionWithValue<Constants["ApplicationCommandOptionTypes"]["USER"]>;
-  type ApplicationCommandOptionsChannel = ApplicationCommandOptionWithValue<Constants["ApplicationCommandOptionTypes"]["CHANNEL"]>;
-  type ApplicationCommandOptionsRole = ApplicationCommandOptionWithValue<Constants["ApplicationCommandOptionTypes"]["ROLE"]>;
-  type ApplicationCommandOptionsMentionable = ApplicationCommandOptionWithValue<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"]>;
+  type ApplicationCommandOptionsBoolean = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
+  type ApplicationCommandOptionsUser = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["USER"]>;
+  type ApplicationCommandOptionsChannel = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["CHANNEL"]>;
+  type ApplicationCommandOptionsRole = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["ROLE"]>;
+  type ApplicationCommandOptionsMentionable = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"]>;
   type ApplicationCommandOptionsNumber = ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>;
 
   interface ApplicationCommand<T extends (Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]] = (Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]]> {
