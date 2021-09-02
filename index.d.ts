@@ -839,7 +839,6 @@ declare namespace Eris {
     command: Command;
     timeout: NodeJS.Timer;
   }
-  
   interface AdvancedMessageContent {
     allowedMentions?: AllowedMentions;
     components?: ActionRow[];
