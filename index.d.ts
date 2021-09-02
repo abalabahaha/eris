@@ -53,19 +53,6 @@ declare namespace Eris {
   type VerificationLevel = 0 | 1 | 2 | 3 | 4;
 
   // Message
-  type AdvancedMessageContent = {
-    allowedMentions?: AllowedMentions;
-    components?: ActionRow[];
-    content?: string;
-    /** @deprecated */
-    embed?: EmbedOptions;
-    embeds?: EmbedOptions[];
-    flags?: number;
-    messageReference?: MessageReferenceReply;
-    /** @deprecated */
-    messageReferenceID?: string;
-    tts?: boolean;
-  };
   type ActionRowComponents = Button | SelectMenu;
   type Button = InteractionButton | URLButton;
   type Component = ActionRow | ActionRowComponents;
@@ -154,7 +141,7 @@ declare namespace Eris {
   }
   interface PartialChannel {
     bitrate?: number;
-    id?: number;
+    id: string;
     name?: string;
     nsfw?: boolean;
     parent_id?: number;
@@ -852,6 +839,20 @@ declare namespace Eris {
     command: Command;
     timeout: NodeJS.Timer;
   }
+  interface AdvancedMessageContent {
+    allowedMentions?: AllowedMentions;
+    components?: ActionRow[];
+    content?: string;
+    /** @deprecated */
+    embed?: EmbedOptions;
+    embeds?: EmbedOptions[];
+    flags?: number;
+    messageReference?: MessageReferenceReply;
+    /** @deprecated */
+    messageReferenceID?: string;
+    stickerIDs?: string[];
+    tts?: boolean;
+  }
   interface AllowedMentions {
     everyone?: boolean;
     repliedUser?: boolean;
@@ -1009,7 +1010,7 @@ declare namespace Eris {
   interface PartialRole {
     color?: number;
     hoist?: boolean;
-    id?: number;
+    id: string;
     mentionable?: boolean;
     name?: string;
     permissions?: number;
@@ -2364,9 +2365,9 @@ declare namespace Eris {
     reactions: { [s: string]: { count: number; me: boolean } };
     referencedMessage?: Message | null;
     roleMentions: string[];
+    stickerItems?: StickerItems[];
     /** @deprecated */
     stickers?: Sticker[];
-    stickerItems?: StickerItems[];
     timestamp: number;
     tts: boolean;
     type: number;
