@@ -2550,6 +2550,7 @@ declare namespace Eris {
     command: CommandFolder;
     applicationID: string;
     client: Client;
+    constructor(json: any, client: Client | undefined, guild: Guild | undefined, member: Member | undefined, channel: TextChannel | undefined)
   }
   export class Message<T extends PossiblyUncachedTextable = TextableChannel> extends Base {
     activity?: MessageActivity;
