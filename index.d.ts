@@ -906,7 +906,7 @@ declare namespace Eris {
 
   interface InteractionButton extends ButtonBase {
     custom_id: string;
-    style: (Constants["ButtonTypes"])[Exclude<keyof Constants["ButtonTypes"], "LINK">];
+    style: Constants["ButtonTypes"][Exclude<keyof Constants["ButtonTypes"], "LINK">];
   }
   interface MessageActivity {
     party_id?: string;
