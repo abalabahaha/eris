@@ -26,7 +26,7 @@ declare namespace Eris {
   type PossiblyUncachedTextable = Textable | Uncached;
   type PossiblyUncachedTextableChannel = TextableChannel | Uncached;
   type TextableChannel = (GuildTextable & GuildTextableChannel) | (Textable & PrivateChannel);
-  type VideoQualityMode = Constants["VideoQualityMode"][keyof Constants["VideoQualityMode"]];
+  type VideoQualityMode = Constants["VideoQualityModes"][keyof Constants["VideoQualityModes"]];
   type ChannelTypes = GuildChannelTypes | PrivateChannelTypes;
   type GuildChannelTypes = Exclude<Constants["ChannelTypes"][keyof Constants["ChannelTypes"]], PrivateChannelTypes>;
   type TextChannelTypes = GuildTextChannelTypes | PrivateChannelTypes;
@@ -49,13 +49,13 @@ declare namespace Eris {
   type RequestMethod = "GET" | "PATCH" | "DELETE" | "POST" | "PUT";
 
   // Guild
-  type DefaultNotifications = Constants["DefaultMessageNotificationLevel"][keyof Constants["DefaultMessageNotificationLevel"]];
-  type ExplicitContentFilter = Constants["ExplicitContentFilterLevel"][keyof Constants["ExplicitContentFilterLevel"]];
+  type DefaultNotifications = Constants["DefaultMessageNotificationLevels"][keyof Constants["DefaultMessageNotificationLevels"]];
+  type ExplicitContentFilter = Constants["ExplicitContentFilterLevels"][keyof Constants["ExplicitContentFilterLevels"]];
   type GuildFeatures = Constants["GuildFeatures"][number];
-  type NSFWLevel = Constants["GuildNSFWLevel"][keyof Constants["GuildNSFWLevel"]];
+  type NSFWLevel = Constants["GuildNSFWLevels"][keyof Constants["GuildNSFWLevels"]];
   type PossiblyUncachedGuild = Guild | Uncached;
-  type PremiumTier = Constants["PremiumTier"][keyof Constants["PremiumTier"]];
-  type VerificationLevel = Constants["VerificationLevel"][keyof Constants["VerificationLevel"]];
+  type PremiumTier = Constants["PremiumTiers"][keyof Constants["PremiumTiers"]];
+  type VerificationLevel = Constants["VerificationLevels"][keyof Constants["VerificationLevels"]];
   type SystemChannelFlags = Constants["SystemChannelFlags"][keyof Constants["SystemChannelFlags"]];
 
   // Message
@@ -77,16 +77,16 @@ declare namespace Eris {
   type Component = ActionRow | ActionRowComponents;
   type ImageFormat = Constants["ImageFormats"][number];
   type MessageContent = string | AdvancedMessageContent;
-  type MFALevel = Constants["MFALevel"][keyof Constants["MFALevel"]];
+  type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
   type InteractionType = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
 
   // Permission
-  type PermissionType = Constants["PermissionOverwriteType"][keyof Constants["PermissionOverwriteType"]];
+  type PermissionType = Constants["PermissionOverwriteTypes"][keyof Constants["PermissionOverwriteTypes"]];
 
   // Presence/Relationship
-  type ActivityType = BotActivityType | Constants["ActivityType"]["CUSTOM"];
-  type BotActivityType = Constants["ActivityType"][Exclude<keyof Constants["ActivityType"], "CUSTOM">];
+  type ActivityType = BotActivityType | Constants["ActivityTypes"]["CUSTOM"];
+  type BotActivityType = Constants["ActivityTypes"][Exclude<keyof Constants["ActivityTypes"], "CUSTOM">];
   type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
   type Status = "online" | "idle" | "dnd" | "offline";
 
@@ -906,7 +906,7 @@ declare namespace Eris {
 
   interface InteractionButton extends ButtonBase {
     custom_id: string;
-    style: (Constants["ButtonType"])[Exclude<keyof Constants["ButtonType"], "LINK">];
+    style: (Constants["ButtonTypes"])[Exclude<keyof Constants["ButtonTypes"], "LINK">];
   }
   interface MessageActivity {
     party_id?: string;
@@ -959,7 +959,7 @@ declare namespace Eris {
     format_type: Constants["StickerFormats"][keyof Constants["StickerFormats"]];
   }
   interface URLButton extends ButtonBase {
-    style: Constants["ButtonType"]["LINK"];
+    style: Constants["ButtonTypes"]["LINK"];
     url: string;
   }
 
@@ -1146,7 +1146,7 @@ declare namespace Eris {
     user: PartialUser;
   }
   interface Constants {
-    ActivityType: {
+    ActivityTypes: {
       GAME: 0;
       STREAMING: 1;
       LISTENING: 2;
@@ -1207,7 +1207,7 @@ declare namespace Eris {
       STAGE_INSTANCE_UPDATE: 84;
       STAGE_INSTANCE_DELETE: 85;
     };
-    ButtonType: {
+    ButtonTypes: {
       PRIMARY: 1;
       SECONDARY: 2;
       SUCCESS: 3;
@@ -1229,11 +1229,11 @@ declare namespace Eris {
       BUTTON: 2;
       SELECT_MENU: 3;
     };
-    DefaultMessageNotificationLevel: {
+    DefaultMessageNotificationLevels: {
       ALL_MESSAGES: 0;
       ONLY_MENTIONS: 1;
     };
-    ExplicitContentFilterLevel: {
+    ExplicitContentFilterLevels: {
       DISABLED: 0;
       MEMBERS_WITHOUT_ROLES: 1;
       ALL_MEMBERS: 2;
@@ -1256,7 +1256,7 @@ declare namespace Eris {
       SYNC_CALL: 13;
     };
     GuildFeatures: ["ANIMATED_ICON", "BANNER", "COMMERCE", "COMMUNITY", "DISCOVERABLE", "FEATURABLE", "INVITE_SPLASH", "MEMBER_VERIFICATION_GATE_ENABLED", "NEWS", "PARTNERED", "PREVIEW_ENABLED", "VANITY_URL", "VERIFIED", "VIP_REGIONS", "WELCOME_SCREEN_ENABLED", "TICKETED_EVENTS_ENABLED", "MONETIZATION_ENABLED", "MORE_STICKERS", "THREE_DAY_THREAD_ARCHIVE", "SEVEN_DAY_THREAD_ARCHIVE", "PRIVATE_THREADS"];
-    GuildNSFWLevel: {
+    GuildNSFWLevels: {
       DEFAULT: 0;
       EXPLICIT: 1;
       SAFE: 2;
@@ -1286,7 +1286,7 @@ declare namespace Eris {
       directMessageReactions: 8192;
       directMessageTyping: 16384;
     };
-    MFALevel: {
+    MFALevels: {
       NONE: 0;
       ELEVATED: 1;
     };
@@ -1327,7 +1327,7 @@ declare namespace Eris {
 
       GUILD_INVITE_REMINDER: 22;
     };
-    PermissionOverwriteType: {
+    PermissionOverwriteTypes: {
       ROLE: 0;
       USER: 1;
     };
@@ -1383,13 +1383,13 @@ declare namespace Eris {
       allVoice: 4629464849n;
       all: 146028888063n;
     };
-    PremiumTier: {
+    PremiumTiers: {
       NONE: 0;
       TIER_1: 1;
       TIER_2: 2;
       TIER_3: 3;
     };
-    PremiumType: {
+    PremiumTypes: {
       NONE: 0;
       NITRO_CLASSIC: 1;
       NITRO: 2;
@@ -1441,14 +1441,14 @@ declare namespace Eris {
       VERIFIED_BOT_DEVELOPER: 131072;
       DISCORD_CERTIFIED_MODERATOR: 262144;
     };
-    VerificationLevel: {
+    VerificationLevels: {
       NONE: 0;
       LOW: 1;
       MEDIUM: 2;
       HIGH: 3;
       VERY_HIGH: 4;
     };
-    VideoQualityMode: {
+    VideoQualityModes: {
       AUTO: 1;
       FULL: 2;
     };
@@ -2088,7 +2088,7 @@ declare namespace Eris {
   export class ExtendedUser extends User {
     email: string;
     mfaEnabled: boolean;
-    premiumType: Constants["PremiumType"][keyof Constants["PremiumType"]];
+    premiumType: Constants["PremiumTypes"][keyof Constants["PremiumTypes"]];
     verified: boolean;
   }
 
