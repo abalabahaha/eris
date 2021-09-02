@@ -59,19 +59,6 @@ declare namespace Eris {
   type SystemChannelFlags = Constants["SystemChannelFlags"][keyof Constants["SystemChannelFlags"]];
 
   // Message
-  type AdvancedMessageContent = {
-    allowedMentions?: AllowedMentions;
-    components?: ActionRow[];
-    content?: string;
-    /** @deprecated */
-    embed?: EmbedOptions;
-    embeds?: EmbedOptions[];
-    flags?: number;
-    messageReference?: MessageReferenceReply;
-    /** @deprecated */
-    messageReferenceID?: string;
-    tts?: boolean;
-  };
   type ActionRowComponents = Button | SelectMenu;
   type Button = InteractionButton | URLButton;
   type Component = ActionRow | ActionRowComponents;
@@ -160,7 +147,7 @@ declare namespace Eris {
   }
   interface PartialChannel {
     bitrate?: number;
-    id?: number;
+    id: string;
     name?: string;
     nsfw?: boolean;
     parent_id?: number;
@@ -859,6 +846,20 @@ declare namespace Eris {
     command: Command;
     timeout: NodeJS.Timer;
   }
+  interface AdvancedMessageContent {
+    allowedMentions?: AllowedMentions;
+    components?: ActionRow[];
+    content?: string;
+    /** @deprecated */
+    embed?: EmbedOptions;
+    embeds?: EmbedOptions[];
+    flags?: number;
+    messageReference?: MessageReferenceReply;
+    /** @deprecated */
+    messageReferenceID?: string;
+    stickerIDs?: string[];
+    tts?: boolean;
+  }
   interface AllowedMentions {
     everyone?: boolean;
     repliedUser?: boolean;
@@ -1017,7 +1018,7 @@ declare namespace Eris {
   interface PartialRole {
     color?: number;
     hoist?: boolean;
-    id?: number;
+    id: string;
     mentionable?: boolean;
     name?: string;
     permissions?: number;
