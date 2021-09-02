@@ -26,13 +26,13 @@ declare namespace Eris {
   type PossiblyUncachedTextable = Textable | Uncached;
   type PossiblyUncachedTextableChannel = TextableChannel | Uncached;
   type TextableChannel = (GuildTextable & GuildTextableChannel) | (Textable & PrivateChannel);
-  type VideoQualityMode = (Constants["VideoQualityMode"])[keyof Constants["VideoQualityMode"]];
+  type VideoQualityMode = Constants["VideoQualityMode"][keyof Constants["VideoQualityMode"]];
   type ChannelTypes = GuildChannelTypes | PrivateChannelTypes;
-  type GuildChannelTypes = Exclude<(Constants["ChannelTypes"])[keyof Constants["ChannelTypes"]], PrivateChannelTypes>;
+  type GuildChannelTypes = Exclude<Constants["ChannelTypes"][keyof Constants["ChannelTypes"]], PrivateChannelTypes>;
   type TextChannelTypes = GuildTextChannelTypes | PrivateChannelTypes;
-  type GuildTextChannelTypes = (Constants["ChannelTypes"])[keyof Pick<Constants["ChannelTypes"], "GUILD_TEXT" | "GUILD_NEWS">];
-  type GuildVoiceChannelTypes = (Constants["ChannelTypes"])[keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE" | "GUILD_STAGE">];
-  type PrivateChannelTypes = (Constants["ChannelTypes"])[keyof Pick<Constants["ChannelTypes"], "DM" | "GROUP_DM">];
+  type GuildTextChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_TEXT" | "GUILD_NEWS">];
+  type GuildVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE" | "GUILD_STAGE">];
+  type PrivateChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "DM" | "GROUP_DM">];
 
   // Command
   type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
@@ -49,14 +49,14 @@ declare namespace Eris {
   type RequestMethod = "GET" | "PATCH" | "DELETE" | "POST" | "PUT";
 
   // Guild
-  type DefaultNotifications = (Constants["DefaultMessageNotificationLevel"])[keyof Constants["DefaultMessageNotificationLevel"]];
-  type ExplicitContentFilter = (Constants["ExplicitContentFilterLevel"])[keyof Constants["ExplicitContentFilterLevel"]];
+  type DefaultNotifications = Constants["DefaultMessageNotificationLevel"][keyof Constants["DefaultMessageNotificationLevel"]];
+  type ExplicitContentFilter = Constants["ExplicitContentFilterLevel"][keyof Constants["ExplicitContentFilterLevel"]];
   type GuildFeatures = Constants["GuildFeatures"][number];
-  type NSFWLevel = (Constants["GuildNSFWLevel"])[keyof Constants["GuildNSFWLevel"]];
+  type NSFWLevel = Constants["GuildNSFWLevel"][keyof Constants["GuildNSFWLevel"]];
   type PossiblyUncachedGuild = Guild | Uncached;
-  type PremiumTier = (Constants["PremiumTier"])[keyof Constants["PremiumTier"]];
-  type VerificationLevel = (Constants["VerificationLevel"])[keyof Constants["VerificationLevel"]];
-  type SystemChannelFlags = (Constants["SystemChannelFlags"])[keyof Constants["SystemChannelFlags"]];
+  type PremiumTier = Constants["PremiumTier"][keyof Constants["PremiumTier"]];
+  type VerificationLevel = Constants["VerificationLevel"][keyof Constants["VerificationLevel"]];
+  type SystemChannelFlags = Constants["SystemChannelFlags"][keyof Constants["SystemChannelFlags"]];
 
   // Message
   type AdvancedMessageContent = {
@@ -77,16 +77,16 @@ declare namespace Eris {
   type Component = ActionRow | ActionRowComponents;
   type ImageFormat = Constants["ImageFormats"][number];
   type MessageContent = string | AdvancedMessageContent;
-  type MFALevel = (Constants["MFALevel"])[keyof Constants["MFALevel"]];
+  type MFALevel = Constants["MFALevel"][keyof Constants["MFALevel"]];
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
-  type InteractionType = (Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]];
+  type InteractionType = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
 
   // Permission
-  type PermissionType = (Constants["PermissionOverwriteType"])[keyof Constants["PermissionOverwriteType"]];
+  type PermissionType = Constants["PermissionOverwriteType"][keyof Constants["PermissionOverwriteType"]];
 
   // Presence/Relationship
   type ActivityType = BotActivityType | Constants["ActivityType"]["CUSTOM"];
-  type BotActivityType = (Constants["ActivityType"])[Exclude<keyof Constants["ActivityType"], "CUSTOM">];
+  type BotActivityType = Constants["ActivityType"][Exclude<keyof Constants["ActivityType"], "CUSTOM">];
   type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
   type Status = "online" | "idle" | "dnd" | "offline";
 
@@ -2088,7 +2088,7 @@ declare namespace Eris {
   export class ExtendedUser extends User {
     email: string;
     mfaEnabled: boolean;
-    premiumType: (Constants["PremiumType"])[keyof Constants["PremiumType"]];
+    premiumType: Constants["PremiumType"][keyof Constants["PremiumType"]];
     verified: boolean;
   }
 
