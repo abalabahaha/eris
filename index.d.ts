@@ -1146,6 +1146,19 @@ declare namespace Eris {
     user: PartialUser;
   }
   interface Constants {
+    ActivityType: {
+      GAME: 0;
+      STREAMING: 1;
+      LISTENING: 2;
+      WATCHING: 3;
+      CUSTOM: 4;
+      COMPETING: 5;
+    };
+    ApplicationCommandTypes: {
+      CHAT_INPUT: 1;
+      USER: 2;
+      MESSAGE: 3;
+    };
     AuditLogActions: {
       GUILD_UPDATE: 1;
 
@@ -1194,6 +1207,13 @@ declare namespace Eris {
       STAGE_INSTANCE_UPDATE: 84;
       STAGE_INSTANCE_DELETE: 85;
     };
+    ButtonType: {
+      PRIMARY: 1;
+      SECONDARY: 2;
+      SUCCESS: 3;
+      DANGER: 4;
+      LINK: 5;
+    };
     ChannelTypes: {
       GUILD_TEXT: 0;
       DM: 1;
@@ -1203,6 +1223,20 @@ declare namespace Eris {
       GUILD_NEWS: 5;
       GUILD_STORE: 6;
       GUILD_STAGE: 13;
+    };
+    ComponentTypes: {
+      ACTION_ROW: 1;
+      BUTTON: 2;
+      SELECT_MENU: 3;
+    };
+    DefaultMessageNotificationLevel: {
+      ALL_MESSAGES: 0;
+      ONLY_MENTIONS: 1;
+    };
+    ExplicitContentFilterLevel: {
+      DISABLED: 0;
+      MEMBERS_WITHOUT_ROLES: 1;
+      ALL_MEMBERS: 2;
     };
     GATEWAY_VERSION: 8;
     GatewayOPCodes: {
@@ -1221,8 +1255,14 @@ declare namespace Eris {
       SYNC_GUILD: 12;
       SYNC_CALL: 13;
     };
-    ImageFormats: ["jpg", "jpeg", "png", "webp", "gif"];
     GuildFeatures: ["ANIMATED_ICON", "BANNER", "COMMERCE", "COMMUNITY", "DISCOVERABLE", "FEATURABLE", "INVITE_SPLASH", "MEMBER_VERIFICATION_GATE_ENABLED", "NEWS", "PARTNERED", "PREVIEW_ENABLED", "VANITY_URL", "VERIFIED", "VIP_REGIONS", "WELCOME_SCREEN_ENABLED", "TICKETED_EVENTS_ENABLED", "MONETIZATION_ENABLED", "MORE_STICKERS", "THREE_DAY_THREAD_ARCHIVE", "SEVEN_DAY_THREAD_ARCHIVE", "PRIVATE_THREADS"];
+    GuildNSFWLevel: {
+      DEFAULT: 0;
+      EXPLICIT: 1;
+      SAFE: 2;
+      AGE_RESTRICTED: 3;
+    };
+    ImageFormats: ["jpg", "jpeg", "png", "webp", "gif"];
     ImageSizeBoundaries: {
       MAXIMUM: 4096;
       MINIMUM: 16;
@@ -1245,6 +1285,10 @@ declare namespace Eris {
       directMessages: 4096;
       directMessageReactions: 8192;
       directMessageTyping: 16384;
+    };
+    MFALevel: {
+      NONE: 0;
+      ELEVATED: 1;
     };
     MessageActivityTypes: {
       JOIN: 1;
@@ -1282,6 +1326,10 @@ declare namespace Eris {
       APPLICATION_COMMAND: 20;
 
       GUILD_INVITE_REMINDER: 22;
+    };
+    PermissionOverwriteType: {
+      ROLE: 0;
+      USER: 1;
     };
     Permissions: {
       createInstantInvite: 1n;
@@ -1335,11 +1383,27 @@ declare namespace Eris {
       allVoice: 4629464849n;
       all: 146028888063n;
     };
+    PremiumTier: {
+      NONE: 0;
+      TIER_1: 1;
+      TIER_2: 2;
+      TIER_3: 3;
+    };
+    PremiumType: {
+      NONE: 0;
+      NITRO_CLASSIC: 1;
+      NITRO: 2;
+    };
     REST_VERSION: 8;
     StickerFormats: {
       PNG: 1;
       APNG: 2;
       LOTTIE: 3;
+    };
+    SystemChannelFlags: {
+      SUPPRESS_JOIN_NOTIFICATIONS: 1;
+      SUPPRESS_PREMIUM_SUBSCRIPTIONS: 2;
+      SUPPRESS_GUILD_REMINDER_NOTIFICATIONS: 4;
     };
     SystemJoinMessages: [
       "%user% joined the party.",
@@ -1377,6 +1441,17 @@ declare namespace Eris {
       VERIFIED_BOT_DEVELOPER: 131072;
       DISCORD_CERTIFIED_MODERATOR: 262144;
     };
+    VerificationLevel: {
+      NONE: 0;
+      LOW: 1;
+      MEDIUM: 2;
+      HIGH: 3;
+      VERY_HIGH: 4;
+    };
+    VideoQualityMode: {
+      AUTO: 1;
+      FULL: 2;
+    };
     VoiceOPCodes: {
       IDENTIFY: 0;
       SELECT_PROTOCOL: 1;
@@ -1389,81 +1464,6 @@ declare namespace Eris {
       HELLO: 8;
       RESUMED: 9;
       DISCONNECT: 13;
-    };
-    ApplicationCommandTypes: {
-      CHAT_INPUT: 1;
-      USER: 2;
-      MESSAGE: 3;
-    };
-    ComponentTypes: {
-      ACTION_ROW: 1;
-      BUTTON: 2;
-      SELECT_MENU: 3;
-    };
-    DefaultMessageNotificationLevel: {
-      ALL_MESSAGES: 0;
-      ONLY_MENTIONS: 1;
-    };
-    ExplicitContentFilterLevel: {
-      DISABLED: 0;
-      MEMBERS_WITHOUT_ROLES: 1;
-      ALL_MEMBERS: 2;
-    };
-    MFALevel: {
-      NONE: 0;
-      ELEVATED: 1;
-    };
-    VerificationLevel: {
-      NONE: 0;
-      LOW: 1;
-      MEDIUM: 2;
-      HIGH: 3;
-      VERY_HIGH: 4;
-    };
-    GuildNSFWLevel: {
-      DEFAULT: 0;
-      EXPLICIT: 1;
-      SAFE: 2;
-      AGE_RESTRICTED: 3;
-    };
-    PremiumTier: {
-      NONE: 0;
-      TIER_1: 1;
-      TIER_2: 2;
-      TIER_3: 3;
-    };
-    SystemChannelFlags: {
-      SUPPRESS_JOIN_NOTIFICATIONS: 1;
-      SUPPRESS_PREMIUM_SUBSCRIPTIONS: 2;
-      SUPPRESS_GUILD_REMINDER_NOTIFICATIONS: 4;
-    };
-    PermissionOverwriteType: {
-      ROLE: 0;
-      USER: 1;
-    };
-    ActivityType: {
-      GAME: 0;
-      STREAMING: 1;
-      LISTENING: 2;
-      WATCHING: 3;
-      CUSTOM: 4;
-      COMPETING: 5;
-    };
-    ButtonType: {
-      PRIMARY: 1;
-      SECONDARY: 2;
-      SUCCESS: 3;
-      DANGER: 4;
-      LINK: 5;
-    };
-    PremiumType: {
-      NONE: 0;
-      NITRO_CLASSIC: 1;
-      NITRO: 2;
-    };
-    VideoQualityMode: {
-      AUTO: 1;
-      FULL: 2;
     };
   }
 
