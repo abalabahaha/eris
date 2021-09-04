@@ -813,9 +813,9 @@ declare namespace Eris {
     roles: string[];
   }
   interface PartialUser {
-    accentColor?: number;
+    accentColor?: number | null;
     avatar: string | null;
-    banner?: string;
+    banner?: string | null;
     discriminator: string;
     id: string;
     username: string;
@@ -2303,11 +2303,11 @@ declare namespace Eris {
   }
 
   export class Member extends Base implements Presence {
-    accentColor?: number;
+    accentColor?: number | null;
     activities?: Activity[];
     avatar: string | null;
     avatarURL: string;
-    banner?: string;
+    banner?: string | null;
     bannerURL: string | null;
     bot: boolean;
     clientStatus?: ClientStatus;
@@ -2699,10 +2699,10 @@ declare namespace Eris {
   }
 
   export class User extends Base {
-    accentColor?: number;
+    accentColor?: number | null;
     avatar: string | null;
     avatarURL: string;
-    banner?: string;
+    banner?: string | null;
     bannerURL: string | null;
     bot: boolean;
     createdAt: number;
