@@ -5,6 +5,7 @@ import { IncomingMessage, ClientRequest } from "http";
 import OpusScript = require("opusscript"); // Thanks TypeScript
 import { URL } from "url";
 import { Socket as DgramSocket } from "dgram";
+// @ts-ignore
 import * as WebSocket from "ws";
 
 declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
@@ -262,6 +263,7 @@ declare namespace Eris {
     cooldownReturns?: number;
     defaultSubcommandOptions?: CommandOptions;
     deleteCommand?: boolean;
+    // @ts-ignore
     description?: string;
     dmOnly?: boolean;
     errorMessage?: MessageContent | GenericCheckFunction<MessageContent>;
@@ -2071,6 +2073,7 @@ declare namespace Eris {
     registerSubcommandAlias(alias: string, label: string): void;
     unregisterSubcommand(label: string): void;
     toString(): string;
+    // @ts-ignore
     toJSON(props?: string[]): JSONCache;
   }
 
