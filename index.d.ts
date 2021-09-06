@@ -1151,7 +1151,7 @@ declare namespace Eris {
     channelID: string;
     name: string;
     privacyLevel: number;
-    scheduledStartTime: Date;
+    scheduledStartTime: number;
     description: string;
     entityType: number;
   }
@@ -2870,8 +2870,8 @@ declare namespace Eris {
     image: string;
     name: string;
     privacyLevel: number;
-    scheduledEndTime: Date;
-    scheduledStartTime: Date;
+    scheduledEndTime: number;
+    scheduledStartTime: number;
     skuIDs: string[];
     skus: string[];
     status: GuildEventStatus;
