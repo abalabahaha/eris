@@ -500,8 +500,8 @@ declare namespace Eris {
     channelPinUpdate: [channel: TextableChannel, timestamp: number, oldTimestamp: number];
     channelRecipientAdd: [channel: GroupChannel, user: User];
     channelRecipientRemove: [channel: GroupChannel, user: User];
-    channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldGuildVoiceChannel] 
-      | [channel: GroupChannel, oldChannel: OldGroupChannel];
+    channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldGuildVoiceChannel]
+    | [channel: GroupChannel, oldChannel: OldGroupChannel];
     connect: [id: number];
     debug: [message: string, id: number];
     disconnect: [];
@@ -541,8 +541,8 @@ declare namespace Eris {
     relationshipAdd: [relationship: Relationship];
     relationshipRemove: [relationship: Relationship];
     relationshipUpdate: [relationship: Relationship, oldRelationship: { type: number }];
-    typingStart: [channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member] 
-      | [channel: PrivateChannel | Uncached, user: User | Uncached, member: null];
+    typingStart: [channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member]
+    | [channel: PrivateChannel | Uncached, user: User | Uncached, member: null];
     unavailableGuildCreate: [guild: UnavailableGuild];
     unknown: [packet: RawPacket, id: number];
     userUpdate: [user: User, oldUser: PartialUser | null];
@@ -1153,7 +1153,7 @@ declare namespace Eris {
     privacyLevel: number;
     scheduledStartTime: Date;
     description: string;
-    entityType: number
+    entityType: number;
   }
   interface Constants {
     AuditLogActions: {
@@ -1401,16 +1401,16 @@ declare namespace Eris {
       DISCONNECT: 13;
     };
     GuildEventStatus: {
-      SCHEDULED: 1,
-      ACTIVE:	2,
-      COMPLETED: 3,
-      CANCELED: 4
+      SCHEDULED: 1;
+      ACTIVE:	2;
+      COMPLETED: 3;
+      CANCELED: 4;
     };
     GuildEventEntityTypes: {
-      NONE: 0,
-      STAGE_INSTANCE: 1,
-      VOICE: 2,
-      LOCATION: 3
+      NONE: 0;
+      STAGE_INSTANCE: 1;
+      VOICE: 2;
+      LOCATION: 3;
     };
   }
 
@@ -1792,6 +1792,8 @@ declare namespace Eris {
       messageID: string,
       options: MessageWebhookContent
     ): Promise<Message<GuildTextableChannel>>;
+    emit<K extends keyof ClientEvents>(event: K, ...args: ClientEvents[K]): boolean;
+    emit(event: string, ...args: any[]): boolean;
     enableSelfMFATOTP(
       secret: string,
       code: string
@@ -1896,6 +1898,10 @@ declare namespace Eris {
     kickGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     leaveGuild(guildID: string): Promise<void>;
     leaveVoiceChannel(channelID: string): void;
+    off<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
+    off(event: string, listener: (...args: any[]) => void): this;
+    once<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
+    once(event: string, listener: (...args: any[]) => void): this;
     pinMessage(channelID: string, messageID: string): Promise<void>;
     pruneMembers(guildID: string, options?: PruneMemberOptions): Promise<number>;
     purgeChannel(channelID: string, options: PurgeChannelOptions): Promise<number>;
@@ -1923,14 +1929,8 @@ declare namespace Eris {
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     unpinMessage(channelID: string, messageID: string): Promise<void>;
     validateDiscoverySearchTerm(term: string): Promise<{ valid: boolean }>;
-    emit<K extends keyof ClientEvents>(event: K, ...args: ClientEvents[K]): boolean;
-    emit(event: string, ...args: any[]): boolean;
     on<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
     on(event: string, listener: (...args: any[]) => void): this;
-    once<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
-    once(event: string, listener: (...args: any[]) => void): this;
-    off<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
-    off(event: string, listener: (...args: any[]) => void): this;
     toString(): string;
   }
 
@@ -2599,11 +2599,17 @@ declare namespace Eris {
     editStatus(activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
     // @ts-ignore: Method override
     emit(event: string, ...args: any[]): void;
+    emit<K extends keyof ShardEvents>(event: K, ...args: ShardEvents[K]): boolean;
+    emit(event: string, ...args: any[]): boolean;
     getGuildMembers(guildID: string, timeout: number): void;
     hardReset(): void;
     heartbeat(normal?: boolean): void;
     identify(): void;
     initializeWS(): void;
+    off<K extends keyof ShardEvents>(event: K, listener: (...args: ShardEvents[K]) => void): this;
+    off(event: string, listener: (...args: any[]) => void): this;
+    once<K extends keyof ShardEvents>(event: K, listener: (...args: ShardEvents[K]) => void): this;
+    once(event: string, listener: (...args: any[]) => void): this;
     onPacket(packet: RawPacket): void;
     requestGuildMembers(guildID: string, options?: RequestGuildMembersOptions): Promise<RequestGuildMembersReturn>;
     requestGuildSync(guildID: string): void;
@@ -2614,14 +2620,20 @@ declare namespace Eris {
     sendWS(op: number, _data: Record<string, unknown>, priority?: boolean): void;
     syncGuild(guildID: string): void;
     wsEvent(packet: Required<RawPacket>): void;
-    emit<K extends keyof ShardEvents>(event: K, ...args: ShardEvents[K]): boolean;
-    emit(event: string, ...args: any[]): boolean;
+
+
+
+
+
     on<K extends keyof ShardEvents>(event: K, listener: (...args: ShardEvents[K]) => void): this;
+
+
     on(event: string, listener: (...args: any[]) => void): this;
-    once<K extends keyof ShardEvents>(event: K, listener: (...args: ShardEvents[K]) => void): this;
-    once(event: string, listener: (...args: any[]) => void): this;
-    off<K extends keyof ShardEvents>(event: K, listener: (...args: ShardEvents[K]) => void): this;
-    off(event: string, listener: (...args: any[]) => void): this;
+
+
+
+
+
     toJSON(props?: string[]): JSONCache;
   }
 
@@ -2650,19 +2662,19 @@ declare namespace Eris {
     voiceConnections: Collection<VoiceConnection>;
     volume: number;
     add(connection: VoiceConnection): void;
+    emit<K extends keyof StreamEvents>(event: K, ...args: StreamEvents[K]): boolean;
+    emit(event: string, ...args: any[]): boolean;
+    off<K extends keyof StreamEvents>(event: K, listener: (...args: StreamEvents[K]) => void): this;
+    off(event: string, listener: (...args: any[]) => void): this;
+    once<K extends keyof StreamEvents>(event: K, listener: (...args: StreamEvents[K]) => void): this;
+    once(event: string, listener: (...args: any[]) => void): this;
     play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
     remove(connection: VoiceConnection): void;
     setSpeaking(value: boolean): void;
     setVolume(volume: number): void;
     stopPlaying(): void;
-    emit<K extends keyof StreamEvents>(event: K, ...args: StreamEvents[K]): boolean;
-    emit(event: string, ...args: any[]): boolean;
     on<K extends keyof StreamEvents>(event: K, listener: (...args: StreamEvents[K]) => void): this;
     on(event: string, listener: (...args: any[]) => void): this;
-    once<K extends keyof StreamEvents>(event: K, listener: (...args: StreamEvents[K]) => void): this;
-    once(event: string, listener: (...args: any[]) => void): this;
-    off<K extends keyof StreamEvents>(event: K, listener: (...args: StreamEvents[K]) => void): this;
-    off(event: string, listener: (...args: any[]) => void): this;
   }
 
   export class StageChannel extends VoiceChannel {
@@ -2805,9 +2817,21 @@ declare namespace Eris {
     constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean });
     connect(data: VoiceConnectData): NodeJS.Timer | void;
     disconnect(error?: Error, reconnecting?: boolean): void;
+    emit<K extends keyof VoiceEvents>(event: K, ...args: VoiceEvents[K]): boolean;
+    emit(event: string, ...args: any[]): boolean;
     heartbeat(): void;
+
+    off<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
+    off(event: string, listener: (...args: any[]) => void): this;
+    once<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
+    once(event: string, listener: (...args: any[]) => void): this;
     pause(): void;
+
+
+
     play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
+
+
     receive(type: "opus" | "pcm"): VoiceDataStream;
     registerReceiveEventHandler(): void;
     resume(): void;
@@ -2817,14 +2841,8 @@ declare namespace Eris {
     stopPlaying(): void;
     switchChannel(channelID: string): void;
     updateVoiceState(selfMute: boolean, selfDeaf: boolean): void;
-    emit<K extends keyof VoiceEvents>(event: K, ...args: VoiceEvents[K]): boolean;
-    emit(event: string, ...args: any[]): boolean;
     on<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
     on(event: string, listener: (...args: any[]) => void): this;
-    once<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
-    once(event: string, listener: (...args: any[]) => void): this;
-    off<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
-    off(event: string, listener: (...args: any[]) => void): this;
     toJSON(props?: string[]): JSONCache;
   }
 
@@ -2860,21 +2878,21 @@ declare namespace Eris {
   }
 
   export class GuildEvent extends Base {
-    id: string;
-    guildID: string;
     channelID: string;
-    name: string;
     description?: string;
-    image: string;
-    scheduledStartTime: Date;
-    scheduledEndTime: Date;
-    privacyLevel: number;
-    status: GuildEventStatus;
-    entityType: GuildEventEntityTypes;
     entityID: string;
     entityMetadata: GuildEventMetadata;
+    entityType: GuildEventEntityTypes;
+    guildID: string;
+    id: string;
+    image: string;
+    name: string;
+    privacyLevel: number;
+    scheduledEndTime: Date;
+    scheduledStartTime: Date;
     skuIDs: string[];
     skus: null;
+    status: GuildEventStatus;
     userCount?: number;
   }
 }
