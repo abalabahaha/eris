@@ -45,5 +45,6 @@ export const {
   VoiceChannel,
   VoiceConnection,
   VoiceConnectionManager,
-  VoiceState
+  VoiceState,
+  GuildEvent
 } = Eris;

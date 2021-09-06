@@ -47,5 +47,6 @@ Eris.VoiceChannel = require("./lib/structures/VoiceChannel");
 Eris.VoiceConnection = require("./lib/voice/VoiceConnection");
 Eris.VoiceConnectionManager = require("./lib/voice/VoiceConnectionManager");
 Eris.VoiceState = require("./lib/structures/VoiceState");
+Eris.GuildEvent = require("./lib/structures/GuildEvent");
 
 module.exports = Eris;
