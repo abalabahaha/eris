@@ -51,6 +51,8 @@ declare namespace Eris {
   type PossiblyUncachedGuild = Guild | Uncached;
   type PremiumTier = 0 | 1 | 2 | 3;
   type VerificationLevel = 0 | 1 | 2 | 3 | 4;
+  type GuildEventEntityTypes  = Constants["GuildEventEntityTypes"][keyof Constants["GuildEventEntityTypes"]];
+  type GuildEventStatus = Constants["GuildEventStatus"][keyof Constants["GuildEventStatus"]];
 
   // Message
   type ActionRowComponents = Button | SelectMenu;
@@ -1138,6 +1140,10 @@ declare namespace Eris {
     team_id: string;
     user: PartialUser;
   }
+  interface GuildEventMetadata {
+    speakerIDS?: string[];
+    location?:	string;
+  }
   interface Constants {
     AuditLogActions: {
       GUILD_UPDATE: 1;
@@ -1326,6 +1332,7 @@ declare namespace Eris {
       allText: 140392266833n;
       allVoice: 4629464849n;
       all: 146028888063n;
+      manageEvents: 8589934592n;
     };
     REST_VERSION: 8;
     StickerFormats: {
@@ -1381,6 +1388,18 @@ declare namespace Eris {
       HELLO: 8;
       RESUMED: 9;
       DISCONNECT: 13;
+    };
+    GuildEventStatus: {
+      SCHEDULED: 1,
+      ACTIVE:	   2,
+      COMPLETED: 3,
+      CANCELED:  4
+    };
+    GuildEventEntityTypes: {
+      NONE: 0,
+      STAGE_INSTANCE: 1,
+      VOICE: 2,
+      LOCATION: 3
     };
   }
 
@@ -2827,6 +2846,25 @@ declare namespace Eris {
     sessionID: string | null;
     suppress: boolean;
     constructor(data: BaseData);
+  }
+
+  export class GuildEvent extends Base {
+    id: string;
+    guildID: string;
+    channelID: string;
+    name: string;
+    description?: string;
+    image: string;
+    scheduledStartTime: Date;
+    scheduledEndTime: Date;
+    privacyLevel: number;
+    status: GuildEventStatus;
+    entityType: GuildEventEntityTypes;
+    entityID: string;
+    entityMetadata: GuildEventMetadata;
+    skuIDs: string[];
+    skus: null;
+    userCount?: number;
   }
 }
 
