@@ -1402,9 +1402,9 @@ declare namespace Eris {
     };
     GuildEventStatus: {
       SCHEDULED: 1,
-      ACTIVE:	   2,
+      ACTIVE:	2,
       COMPLETED: 3,
-      CANCELED:  4
+      CANCELED: 4
     };
     GuildEventEntityTypes: {
       NONE: 0,
