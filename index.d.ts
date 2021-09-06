@@ -2620,20 +2620,8 @@ declare namespace Eris {
     sendWS(op: number, _data: Record<string, unknown>, priority?: boolean): void;
     syncGuild(guildID: string): void;
     wsEvent(packet: Required<RawPacket>): void;
-
-
-
-
-
     on<K extends keyof ShardEvents>(event: K, listener: (...args: ShardEvents[K]) => void): this;
-
-
     on(event: string, listener: (...args: any[]) => void): this;
-
-
-
-
-
     toJSON(props?: string[]): JSONCache;
   }
 
@@ -2820,18 +2808,12 @@ declare namespace Eris {
     emit<K extends keyof VoiceEvents>(event: K, ...args: VoiceEvents[K]): boolean;
     emit(event: string, ...args: any[]): boolean;
     heartbeat(): void;
-
     off<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
     off(event: string, listener: (...args: any[]) => void): this;
     once<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
     once(event: string, listener: (...args: any[]) => void): this;
     pause(): void;
-
-
-
     play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
-
-
     receive(type: "opus" | "pcm"): VoiceDataStream;
     registerReceiveEventHandler(): void;
     resume(): void;
