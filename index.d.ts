@@ -2873,7 +2873,7 @@ declare namespace Eris {
     scheduledEndTime: Date;
     scheduledStartTime: Date;
     skuIDs: string[];
-    skus: null;
+    skus: string[];
     status: GuildEventStatus;
     userCount?: number;
   }
