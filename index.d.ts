@@ -552,6 +552,9 @@ declare namespace Eris {
     voiceStateUpdate: [member: Member, oldState: OldVoiceState];
     warn: [message: string, id: number];
     webhooksUpdate: [data: WebhookData];
+    guildEventCreate: [event: GuildEvent];
+    guildEventUpdate: [event: GuildEvent | null, oldEvent: PartialGuildEvent];
+    guildEventDelete: [event: GuildEvent];
   }
   interface ClientEvents extends EventListeners {
     shardDisconnect: [err: Error | undefined, id: number];
@@ -1142,7 +1145,15 @@ declare namespace Eris {
   }
   interface GuildEventMetadata {
     speakerIDS?: string[];
-    location?:	string;
+    location?: string;
+  }
+  interface PartialGuildEvent {
+    channelID: string;
+    name: string;
+    privacyLevel: number;
+    scheduledStartTime: Date;
+    description: string;
+    entityType: number
   }
   interface Constants {
     AuditLogActions: {
