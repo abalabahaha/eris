@@ -5,6 +5,7 @@ import { IncomingMessage, ClientRequest } from "http";
 import OpusScript = require("opusscript"); // Thanks TypeScript
 import { URL } from "url";
 import { Socket as DgramSocket } from "dgram";
+// @ts-ignore
 import * as WebSocket from "ws";
 
 declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
@@ -64,7 +65,7 @@ declare namespace Eris {
   type ImageFormat = "jpg" | "jpeg" | "png" | "gif" | "webp";
   type MessageContent = string | AdvancedMessageContent;
   type MFALevel = 0 | 1;
-  type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
+  type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guild: Uncached; guildID?: string; id: string };
   type InteractionType = 1 | 2;
 
   // Permission
@@ -262,6 +263,7 @@ declare namespace Eris {
     cooldownReturns?: number;
     defaultSubcommandOptions?: CommandOptions;
     deleteCommand?: boolean;
+    // @ts-ignore
     description?: string;
     dmOnly?: boolean;
     errorMessage?: MessageContent | GenericCheckFunction<MessageContent>;
@@ -527,6 +529,10 @@ declare namespace Eris {
     (event: "hello", listener: (trace: string[], id: number) => void): T;
     (event: "inviteCreate" | "inviteDelete", listener: (guild: Guild, invite: Invite) => void): T;
     (event: "messageCreate", listener: (message: Message<PossiblyUncachedTextableChannel>) => void): T;
+    (event: "interactionCreate", listener: (interaction: Interaction) => void): T;
+    (event: "interactionUpdate", listener: (interaction: Interaction) => void): T;
+    (event: "interactionDelete", listener: (interaction: Interaction) => void): T;
+    (event: "slashCommand", listener: (interaction: Interaction) => void): T;
     (event: "messageDelete" | "messageReactionRemoveAll", listener: (message: PossiblyUncachedMessage) => void): T;
     (event: "messageReactionRemoveEmoji", listener: (message: PossiblyUncachedMessage, emoji: PartialEmoji) => void): T;
     (event: "messageDeleteBulk", listener: (messages: PossiblyUncachedMessage[]) => void): T;
@@ -861,6 +867,7 @@ declare namespace Eris {
     member: Member | null;
     name: string;
     type: InteractionType;
+    deferInteraction: DeferInteraction
     user: User;
   }
   interface MessageReference extends MessageReferenceBase {
@@ -1426,7 +1433,226 @@ declare namespace Eris {
     constructor(data: BaseData);
     static from(data: BaseData, client: Client): AnyChannel;
   }
+  export class CommandList {
+    commands: Map<string, CommandBase>
+  }
+  export class Choice {
+    name: string;
+    value: string;
+    /**
+     *
+     * @param name
+     * @returns {Choice}
+     */
+    setName(name: string) : this
+    /**
+     *
+     * @param value
+     * @returns {Choice}
+     */
+    setValue(value: string) : this
+  }
+  export class CommandOptions {
+    name: string;
+    // @ts-ignore
+    description: string;
+    type: number;
+    required: boolean
+    choices: Choice[];
+    options: CommandOptions[];
+    /**
+     *
+     * @param name
+     * @returns {CommandOptions}
+     */
+    setName(name: string) : this
+    /**
+     *
+     * @param description
+     * @returns {CommandOptions}
+     */
+    setDescription(description: string) : this
+    /**
+     *
+     * @param type
+     * @returns {CommandOptions}
+     *
+     * | Name              | Value | Note                                    |
+     * |-------------------|-------|-----------------------------------------|
+     * | SUB_COMMAND       | 1     |                                         |
+     * | SUB_COMMAND_GROUP | 2     |                                         |
+     * | STRING            | 3     |                                         |
+     * | INTEGER           | 4     | Any integer between -2^53 and 2^53      |
+     * | BOOLEAN           | 5     |                                         |
+     * | USER              | 6     |                                         |
+     * | CHANNEL           | 7     | Includes all channel types + categories |
+     * | ROLE              | 8     |                                         |
+     * | MENTIONABLE       | 9     | Includes users and roles                |
+     * | NUMBER            | 10    | Any double between -2^53 and 2^53       |
+     */
+    setType(type: number) : this
+    /***
+     *
+     * @returns {CommandOptions}
+     */
+    isRequired() : this
+    /**
+     *
+     * @param choice
+     * @returns {CommandOptions}
+     */
+    addChoices(...choice: Choice[]) : this
+    /**
+     *
+     * @param options
+     * @returns {CommandOptions}
+     */
+    addOptions(...options: CommandOptions[]) : this
 
+    /**
+     * @returns {{name, options: (CommandOptions), description, type, choices: (Choice[]), required: (*|boolean)}}
+     */
+    // @ts-ignore
+    toJSON() {
+      return {
+        type: this.type,
+        name: this.name,
+        description: this.description,
+        required: this.required,
+        choices: this.choices,
+        options: this.options
+      };
+    }
+  }
+  export class CommandDataOption {
+    /**
+     *
+     * @param commandFolder
+     * @param option
+     * @param guild
+     */
+    constructor(commandFolder: CommandFolder, option: any, guild: Guild)
+    value: string | User | TextChannel | CategoryChannel | StageChannel | NewsChannel | VoiceChannel | Channel | Role;
+    type: number;
+    member: Member;
+    channel: TextChannel | CategoryChannel | StageChannel | NewsChannel | VoiceChannel | Channel;
+    role: Role;
+    mentionEmoji: Array<any>;
+    typeOfValue: 'role' | 'user' | 'channel' | 'string' | 'number' | 'bigint' | 'boolean' | 'unknown';
+    ok: boolean;
+    name: string;
+    options: CommandDataOption[];
+  }
+  export class CommandFolder {
+    commandName: string;
+    options: CommandDataOption[];
+    interface: Map<String, CommandDataOption>
+    id: string;
+    guild: Guild;
+  }
+  export class CommandBase {
+    /**
+     *
+     * @type {string}
+     */
+    id: string;
+    type: number;
+    /**
+     *
+     * @type {*|null|string}
+     */
+    applicationID: string;
+    /**
+     *
+     * @type {*|boolean}
+     */
+    defaultPermission: boolean;
+    /**
+     *
+     * @type {string}
+     */
+    name: string;
+    /**
+     *
+     * @type {string|string}
+     */
+    description: string;
+    /**
+     *
+     * @type {CommandOptions|*[]}
+     */
+    options: CommandOptions[]
+
+    /**
+     *
+     * @param options
+     * @returns {CommandOptions}
+     */
+    addOptions(...options: Eris.CommandOptions[]) : this
+    /**
+     *
+     * @param description
+     * @returns {CommandOptions}
+     */
+    setDescription(description: string) : this
+    /**
+     *
+     * @param name
+     * @returns {CommandOptions}
+     */
+    setName(name: string) : this
+    /**
+     *
+     * @param type
+     */
+    setType(type: number): this
+    /**
+     *
+     * @returns {{name: string, options: (CommandOptions|*[]), description: string}}
+     */
+    // @ts-ignore
+    get data() {
+      return  {
+        name: this.name,
+        description: this.description,
+        options: this.options
+      }
+    }
+    /**
+     *
+     * @returns {{default_permission: (*|boolean), name: string, options: (CommandOptions|*[]), description: string, id: (string|null), application_id: (*|string|null)}}
+     */
+    // @ts-ignore
+    get toJSON() {
+      return {
+        id: this.id,
+        application_id: this.applicationID,
+        name: this.name,
+        description: this.description,
+        default_permission: this.defaultPermission,
+        options: this.options
+      };
+    }
+  }
+  export class SlashCommand {
+    client: Client;
+    /**
+     * @description Queue of commands that are about to be checked and see if there are any changes!
+     * @type {CommandBase[]}
+     */
+    queue: CommandBase[]
+    commandList: CommandList
+    // @ts-ignore
+    async createCommand(...command: CommandBase[]) : this
+    // @ts-ignore
+    async createCommand(command: CommandBase) : this
+    // @ts-ignore
+    async deleteCommand({ command: CommandBase, guildID: string }) : this
+    // @ts-ignore
+    async addVolumeOfCommands(commands: CommandBase[]) : this
+    // @ts-ignore
+    async loadCommandList() : this;
+  }
   export class Client extends EventEmitter {
     application?: { id: string; flags: number };
     bot: boolean;
@@ -1440,6 +1666,7 @@ declare namespace Eris {
     notes: { [s: string]: string };
     options: ClientOptions;
     presence: Presence;
+    slashCommand: SlashCommand;
     privateChannelMap: { [s: string]: string };
     privateChannels: Collection<PrivateChannel>;
     ready: boolean;
@@ -1846,6 +2073,7 @@ declare namespace Eris {
     registerSubcommandAlias(alias: string, label: string): void;
     unregisterSubcommand(label: string): void;
     toString(): string;
+    // @ts-ignore
     toJSON(props?: string[]): JSONCache;
   }
 
@@ -2218,7 +2446,115 @@ declare namespace Eris {
     removeRole(roleID: string, reason?: string): Promise<void>;
     unban(reason?: string): Promise<void>;
   }
+  export class MessageComponents {
+    type: number;
+    customID: string;
+    disabled: boolean;
+    style: number;
+    label: string;
+    emoji: Emoji
+    url: string;
+    options: Options[] | Button[] | SelectionMenu[]
+    placeholder?: string;
+    minValues?: number;
+    maxValues?: number;
+    components: MessageComponents[]
+  }
+  export class SelectionMenu {
+    type: number;
+    customID: string;
+    options: Options[]
+    placeholder?: string;
+    minValues?: number;
+    maxValues?: number;
+    disabled: boolean;
+  }
+  export class Button {
+    type: number;
+    styl: number;
+    label: string;
+    emoji: Emoji;
+    customID: string;
+    url: string;
+    disabled: boolean;
+  }
+  export class Options {
+    type: number;
+    label: string;
+    value: string;
+    description: string;
+    emoji: Emoji;
+    default: boolean;
+  }
+  export class ActionRow {
+    type: number;
+    options: Options[] | Button[] | SelectionMenu[]
+    components: MessageComponents[]
+    addComponent(...component: Options[] | Button[] | SelectionMenu[]): this
+    get buildComponents(): MessageComponents[]
+    get buildOptions(): Options[] | Button[] | SelectionMenu[]
+    get build(): this
+  }
+  export class DeferInteraction {
+    constructor(client: Client, interaction: Interaction)
+    client: Client;
+    interaction: Interaction;
 
+    /**
+     *
+     * @param content
+     * @param file
+     */
+    deferEdit(content: String | object, file: any): MessageInteraction
+
+    /**
+     *
+     * @param content
+     * @param file
+     */
+    deferEditMessage(content: String | object, file: any): MessageInteraction
+    deferDeleteMessage(): MessageInteraction
+    sendPingInteraction(): boolean
+    sendTypeInteraction(type: number): boolean
+  }
+  export class HookInteraction {
+    interaction: Interaction;
+    client: Client;
+    ephemeral: number;
+
+    /**
+     *
+     * @param content
+     */
+    createMessage(content: String | object): MessageInteraction
+    /**
+     *
+     * @param content
+     * @param file
+     */
+    createMessage(content: String | object, file: any): MessageInteraction
+    deleteMessage(): MessageInteraction
+    /**
+     *
+     * @param content
+     * @param file
+     */
+    editMessage(content: String | object, file: any): MessageInteraction
+    sendPingInteraction(): boolean
+    setEphemeral(is: boolean): this
+  }
+  export class Interaction {
+    type: number;
+    id: string;
+    data: ActionRow;
+    channel: TextChannel;
+    token: string;
+    hook: HookInteraction;
+    command: CommandFolder;
+    applicationID: string;
+    client: Client;
+    constructor(json: any, client: Client | undefined, guild: Guild | undefined, member: Member | undefined, channel: TextChannel | undefined)
+  }
   export class Message<T extends PossiblyUncachedTextable = TextableChannel> extends Base {
     activity?: MessageActivity;
     application?: MessageApplication;
@@ -2234,6 +2570,7 @@ declare namespace Eris {
     editedTimestamp?: number;
     embeds: Embed[];
     flags: number;
+    guild: T extends GuildTextable ? Guild : null;
     guildID: T extends GuildTextable ? string : undefined;
     id: string;
     interaction: MessageInteraction | null;
@@ -2568,6 +2905,9 @@ declare namespace Eris {
     defaultAvatar: string;
     defaultAvatarURL: string;
     discriminator: string;
+    banner: string;
+    bannerColor: string;
+    accentColor: string;
     id: string;
     mention: string;
     publicFlags?: number;
