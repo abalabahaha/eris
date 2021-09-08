@@ -552,9 +552,9 @@ declare namespace Eris {
     voiceStateUpdate: [member: Member, oldState: OldVoiceState];
     warn: [message: string, id: number];
     webhooksUpdate: [data: WebhookData];
-    guildEventCreate: [event: GuildEvent];
-    guildEventUpdate: [event: GuildEvent | null, oldEvent: PartialGuildEvent];
-    guildEventDelete: [event: GuildEvent];
+    guildScheduledEventCreate: [event: GuildEvent];
+    guildScheduledEventUpdate: [event: GuildEvent, oldEvent: PartialGuildEvent | null];
+    guildScheduledEventDelete: [event: GuildEvent];
     guildScheduledEventUserCreate: [event: GuildEvent | string, user: User | string];
     guildScheduledEventUserDelete: [event: GuildEvent | string, user: User | string];
   }
