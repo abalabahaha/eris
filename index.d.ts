@@ -942,6 +942,7 @@ declare namespace Eris {
     color?: number;
     hoist?: boolean;
     id?: number;
+    icon: string;
     mentionable?: boolean;
     name?: string;
     permissions?: number;
@@ -950,6 +951,7 @@ declare namespace Eris {
   interface RoleOptions {
     color?: number;
     hoist?: boolean;
+    icon?: string;
     mentionable?: boolean;
     name?: string;
     permissions?: bigint | number;
@@ -2729,8 +2731,12 @@ declare namespace Eris {
     name: string;
     permissions: Permission;
     position: number;
+    icon: string;
     tags?: RoleTags;
     constructor(data: BaseData, guild: Guild);
+    // @ts-ignore
+    _getIconURL(format: string, size: number, mode: string): string | null;
+    get getIconURL(): string | null;
     delete(reason?: string): Promise<void>;
     edit(options: RoleOptions, reason?: string): Promise<Role>;
     editPosition(position: number): Promise<void>;
