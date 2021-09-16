@@ -942,7 +942,8 @@ declare namespace Eris {
     color?: number;
     hoist?: boolean;
     id?: number;
-    icon: string;
+    icon?: string;
+    unicode_emoji?: string;
     mentionable?: boolean;
     name?: string;
     permissions?: number;
@@ -952,6 +953,7 @@ declare namespace Eris {
     color?: number;
     hoist?: boolean;
     icon?: string;
+    unicode_emoji?: string;
     mentionable?: boolean;
     name?: string;
     permissions?: bigint | number;
@@ -2731,7 +2733,8 @@ declare namespace Eris {
     name: string;
     permissions: Permission;
     position: number;
-    icon: string;
+    unicodeEmoji?: string;
+    icon?: string;
     tags?: RoleTags;
     constructor(data: BaseData, guild: Guild);
     // @ts-ignore
