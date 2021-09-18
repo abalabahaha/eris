@@ -501,9 +501,9 @@ declare namespace Eris {
     channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldGuildVoiceChannel] 
       | [channel: GroupChannel, oldChannel: OldGroupChannel];
     connect: [id: number];
-    debug: [message: string, id: number];
+    debug: [message: string, id?: number];
     disconnect: [];
-    error: [err: Error, id: number];
+    error: [err: Error, id?: number];
     friendSuggestionCreate: [user: User, reasons: FriendSuggestionReasons];
     friendSuggestionDelete: [user: User];
     guildAvailable: [guild: Guild];
@@ -542,13 +542,13 @@ declare namespace Eris {
     typingStart: [channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member] 
       | [channel: PrivateChannel | Uncached, user: User | Uncached, member: null];
     unavailableGuildCreate: [guild: UnavailableGuild];
-    unknown: [packet: RawPacket, id: number];
+    unknown: [packet: RawPacket, id?: number];
     userUpdate: [user: User, oldUser: PartialUser | null];
     voiceChannelJoin: [member: Member, channel: AnyVoiceChannel];
     voiceChannelLeave: [member: Member, channel: AnyVoiceChannel];
     voiceChannelSwitch: [member: Member, newChannel: AnyVoiceChannel, oldChannel: AnyVoiceChannel];
     voiceStateUpdate: [member: Member, oldState: OldVoiceState];
-    warn: [message: string, id: number];
+    warn: [message: string, id?: number];
     webhooksUpdate: [data: WebhookData];
   }
   interface ClientEvents extends EventListeners {
