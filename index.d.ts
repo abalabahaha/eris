@@ -553,7 +553,7 @@ declare namespace Eris {
     warn: [message: string, id: number];
     webhooksUpdate: [data: WebhookData];
     guildScheduledEventCreate: [event: GuildEvent];
-    guildScheduledEventUpdate: [event: GuildEvent, oldEvent: PartialGuildEvent | null];
+    guildScheduledEventUpdate: [event: GuildEvent, oldEvent: GuildEventOptions | null];
     guildScheduledEventDelete: [event: GuildEvent];
     guildScheduledEventUserCreate: [event: GuildEvent | string, user: User | string];
     guildScheduledEventUserDelete: [event: GuildEvent | string, user: User | string];
@@ -1149,7 +1149,7 @@ declare namespace Eris {
     speakerIDs?: string[];
     location?: string;
   }
-  interface PartialGuildEvent {
+  interface GuildEventOptions {
     channelID: string;
     name: string;
     privacyLevel: number;
@@ -1714,7 +1714,7 @@ declare namespace Eris {
     createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
-    createGuildEvent(guildID: string, event: PartialGuildEvent): Promise<GuildEvent>;
+    createGuildEvent(guildID: string, event: GuildEventOptions): Promise<GuildEvent>;
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
     createMessage(channelID: string, content: MessageContent, file?: MessageFile | MessageFile[]): Promise<Message>;
@@ -1762,7 +1762,7 @@ declare namespace Eris {
       options: { name?: string; roles?: string[] },
       reason?: string
     ): Promise<Emoji>;
-    editGuildEvent(event: PartialGuildEvent, eventID: string): Promise<GuildEvent>;
+    editGuildEvent(event: GuildEventOptions, eventID: string): Promise<GuildEvent>;
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
@@ -2142,7 +2142,7 @@ declare namespace Eris {
     /** @deprecated */
     createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
     createEmoji(options: { image: string; name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
-    createEvent(event: PartialGuildEvent): Promise<GuildEvent>;
+    createEvent(event: GuildEventOptions): Promise<GuildEvent>;
     createRole(options: RoleOptions | Role, reason?: string): Promise<Role>;
     createTemplate(name: string, description?: string | null): Promise<GuildTemplate>;
     delete(): Promise<void>;
@@ -2885,7 +2885,7 @@ declare namespace Eris {
     status: GuildEventStatus;
     userCount?: number;
     delete(): Promise<void>;
-    edit(event: PartialGuildEvent): Promise<GuildEvent>;
+    edit(event: GuildEventOptions): Promise<GuildEvent>;
   }
 }
 
