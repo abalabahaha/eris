@@ -54,19 +54,6 @@ declare namespace Eris {
   type VerificationLevel = 0 | 1 | 2 | 3 | 4;
 
   // Message
-  type AdvancedMessageContent = {
-    allowedMentions?: AllowedMentions;
-    components?: ActionRow[];
-    content?: string;
-    /** @deprecated */
-    embed?: EmbedOptions;
-    embeds?: EmbedOptions[];
-    flags?: number;
-    messageReference?: MessageReferenceReply;
-    /** @deprecated */
-    messageReferenceID?: string;
-    tts?: boolean;
-  };
   type ActionRowComponents = Button | SelectMenu;
   type Button = InteractionButton | URLButton;
   type Component = ActionRow | ActionRowComponents;
@@ -975,6 +962,20 @@ declare namespace Eris {
     command: Command;
     timeout: NodeJS.Timer;
   }
+  interface AdvancedMessageContent {
+    allowedMentions?: AllowedMentions;
+    components?: ActionRow[];
+    content?: string;
+    /** @deprecated */
+    embed?: EmbedOptions;
+    embeds?: EmbedOptions[];
+    flags?: number;
+    messageReference?: MessageReferenceReply;
+    /** @deprecated */
+    messageReferenceID?: string;
+    stickerIDs?: string[];
+    tts?: boolean;
+  }
   interface AllowedMentions {
     everyone?: boolean;
     repliedUser?: boolean;
@@ -1133,7 +1134,7 @@ declare namespace Eris {
   interface PartialRole {
     color?: number;
     hoist?: boolean;
-    id?: string;
+    id: string;
     mentionable?: boolean;
     name?: string;
     permissions?: number;
@@ -1153,6 +1154,12 @@ declare namespace Eris {
   }
 
   // Voice
+  interface JoinVoiceChannelOptions {
+    opusOnly?: boolean;
+    selfDeaf?: boolean;
+    selfMute?: boolean;
+    shared?: boolean;
+  }
   interface UncachedMemberVoiceState {
     id: string;
     voiceState: OldVoiceState;
@@ -2041,7 +2048,7 @@ declare namespace Eris {
     getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
     getWebhookMessage(webhookID: string, token: string, messageID: string): Promise<Message<GuildTextableChannel>>;
-    joinVoiceChannel(channelID: string, options?: { opusOnly?: boolean; shared?: boolean }): Promise<VoiceConnection>;
+    joinVoiceChannel(channelID: string, options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
     kickGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     leaveGuild(guildID: string): Promise<void>;
     leaveVoiceChannel(channelID: string): void;
@@ -3028,7 +3035,7 @@ declare namespace Eris {
     voiceMembers: Collection<Member>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", VoiceChannel>>;
     getInvites(): Promise<(Invite<"withMetadata", VoiceChannel>)[]>;
-    join(options: { opusOnly?: boolean; shared?: boolean }): Promise<VoiceConnection>;
+    join(options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
     leave(): void;
   }
 
