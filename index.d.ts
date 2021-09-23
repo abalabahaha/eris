@@ -104,11 +104,10 @@ declare namespace Eris {
 
   interface InteractionOptions {
     type: Constants["InteractionResponseTypes"][keyof Constants["InteractionResponseTypes"]];
-    data?: InteractionContent;
+    data?: unknown;
   }
 
-  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
-  type InteractionWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions" | "tts" | "flags" | "components">;
+  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions" | "tts" | "flags" | "components">;
 
   // Application Commands
   type ApplicationCommandOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup | ApplicationCommandOptionsWithValue;
@@ -127,12 +126,22 @@ declare namespace Eris {
     required?: boolean;
     options?: (ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsWithValue)[];
   }
-  interface ApplicationCommandOptionWithChoices<T extends (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">] = (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">]> {
+  interface ApplicationCommandOptionChoice<T extends (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">] | unknown
+  = unknown> {
+    name: string;
+    value: T extends Constants["ApplicationCommandOptionTypes"]["STRING"] ? string :
+      T extends Constants["ApplicationCommandOptionTypes"]["NUMBER"] ? number :
+        T extends Constants["ApplicationCommandOptionTypes"]["INTEGER"] ? number :
+          number | string;
+  }
+  interface ApplicationCommandOptionWithChoices<T extends (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">]
+  = (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">]> {
     type: T;
     name: string;
     description: string;
     required?: boolean;
-    choices?: { name: string; value: T extends Constants["ApplicationCommandOptionTypes"]["STRING"] ? string : number }[];
+    choices?: ApplicationCommandOptionChoice<T>[];
+    autocomplete?: boolean;
   }
   interface ApplicationCommandOption<T extends (Constants["ApplicationCommandOptionTypes"])[Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">]> {
     type: T;
@@ -141,16 +150,20 @@ declare namespace Eris {
     required?: boolean;
   }
 
-  type ApplicationCommandOptionsString = ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["STRING"]>;
-  type ApplicationCommandOptionsInteger = ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>;
+  type ApplicationCommandOptionsString = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["STRING"]>, "choices" | "autocomplete">
+  & ({ choices: ApplicationCommandOptionChoice<Constants["ApplicationCommandOptionTypes"]["STRING"]>[]; autocomplete?: false } | { autocomplete: true });
+  type ApplicationCommandOptionsInteger = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>, "choices" | "autocomplete">
+  & ({ choices: ApplicationCommandOptionChoice<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>[]; autocomplete?: false } | { autocomplete: true });
   type ApplicationCommandOptionsBoolean = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
   type ApplicationCommandOptionsUser = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["USER"]>;
-  type ApplicationCommandOptionsChannel = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["CHANNEL"]> & { channel_types?: ChannelTypes; };
+  type ApplicationCommandOptionsChannel = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["CHANNEL"]> & { channel_types?: ChannelTypes };
   type ApplicationCommandOptionsRole = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["ROLE"]>;
   type ApplicationCommandOptionsMentionable = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"]>;
-  type ApplicationCommandOptionsNumber = ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>;
+  type ApplicationCommandOptionsNumber = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>, "choices" | "autocomplete">
+  & ({ choices: ApplicationCommandOptionChoice<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>[]; autocomplete?: false } | { autocomplete: true });
 
-  interface ApplicationCommand<T extends (Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]] = (Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]]> {
+  interface ApplicationCommand<T extends (Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]]
+  = (Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]]> {
     id: string;
     application_id: string;
     guild_id?: string;
@@ -644,7 +657,7 @@ declare namespace Eris {
     guildUnavailable: [guild: UnavailableGuild];
     guildUpdate: [guild: Guild, oldGuild: OldGuild];
     hello: [trace: string[], id: number];
-    interactionCreate: [interaction: PingInteraction | CommandInteraction | ComponentInteraction | UnknownInteraction];
+    interactionCreate: [interaction: PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction | UnknownInteraction];
     inviteCreate: [guild: Guild, invite: Invite];
     inviteDelete: [guild: Guild, invite: Invite];
     messageCreate: [message: Message<PossiblyUncachedTextableChannel>];
@@ -1490,16 +1503,18 @@ declare namespace Eris {
       DISCONNECT: 13;
     };
     InteractionTypes: {
-      PING:              1;
-      APPLICATION_COMMAND:     2;
-      MESSAGE_COMPONENT: 3;
+      PING:                             1;
+      APPLICATION_COMMAND:              2;
+      MESSAGE_COMPONENT:                3;
+      APPLICATION_COMMAND_AUTOCOMPLETE: 4;
     };
     InteractionResponseTypes: {
-      PONG: 1;
-      CHANNEL_MESSAGE_WITH_SOURCE: 4;
-      DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE: 5;
-      DEFERRED_UPDATE_MESSAGE: 6;
-      UPDATE_MESSAGE: 7;
+      PONG:                                    1;
+      CHANNEL_MESSAGE_WITH_SOURCE:             4;
+      DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE:    5;
+      DEFERRED_UPDATE_MESSAGE:                 6;
+      UPDATE_MESSAGE:                          7;
+      APPLICATION_COMMAND_AUTOCOMPLETE_RESULT: 8;
     };
     ApplicationCommandOptionTypes: {
       SUB_COMMAND:       1;
@@ -1519,8 +1534,8 @@ declare namespace Eris {
     };
     ApplicationCommandTypes: {
       CHAT_INPUT: 1;
-      USER: 2;
-      MESSAGE: 3;
+      USER:       2;
+      MESSAGE:    3;
     };
     ComponentTypes: {
       ACTION_ROW: 1;
@@ -2483,8 +2498,8 @@ declare namespace Eris {
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
     user?: User;
     acknowledge(flags?: number): Promise<void>;
-    createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
-    createMessage(content: string | InteractionContent | InteractionWebhookContent): Promise<void>;
+    createFollowup(content: string | InteractionContent): Promise<Message>;
+    createMessage(content: string | InteractionContent | InteractionContent): Promise<void>;
     defer(flags?: number): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
@@ -2506,15 +2521,15 @@ declare namespace Eris {
 
   export class ComponentInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
     channel: T;
-    data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData;
+    data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData | unknown;
     guildID?: string;
     member?: Member;
     message: Message;
     type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
     user?: User;
     acknowledge(): Promise<void>;
-    createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
-    createMessage(content: string | InteractionContent | InteractionWebhookContent): Promise<void>;
+    createFollowup(content: string | InteractionContent): Promise<Message>;
+    createMessage(content: string | InteractionContent | InteractionContent): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
@@ -2524,7 +2539,22 @@ declare namespace Eris {
     editParent(content: MessageWebhookContent): Promise<void>;
     getOriginalMessage(): Promise<Message>
   }
-
+  export class AutocompleteInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+    channel: T;
+    data: {
+      id: string;
+      name: string;
+      type: Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
+      target_id?: string;
+      options?: InteractionDataOptions[];
+    };
+    guildID?: string;
+    member?: Member;
+    type: Constants["InteractionTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE"];
+    user?: User;
+    acknowledge(choices: ApplicationCommandOptionChoice[]): Promise<void>;
+    result(choices: ApplicationCommandOptionChoice[]): Promise<void>;
+  }
   export class UnknownInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
     channel?: T;
     data?: unknown;
@@ -2533,8 +2563,9 @@ declare namespace Eris {
     message?: Message;
     type: number;
     user?: User;
-    createFollowup(content: string | InteractionWebhookContent): Promise<Message>;
-    createMessage(content: string | InteractionContent | InteractionWebhookContent): Promise<void>;
+    acknowledge(data: InteractionOptions): Promise<void>;
+    createFollowup(content: string | InteractionContent): Promise<Message>;
+    createMessage(content: string | InteractionContent | InteractionContent): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
@@ -2544,6 +2575,7 @@ declare namespace Eris {
     editParent(content: MessageWebhookContent): Promise<void>;
     getOriginalMessage(): Promise<Message>
     pong(): Promise<void>;
+    result(choices: ApplicationCommandOptionChoice[]): Promise<void>;
   }
 
   // If CT (count) is "withMetadata", it will not have count properties

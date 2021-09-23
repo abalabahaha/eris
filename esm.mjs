@@ -5,6 +5,7 @@ export default function(token, options) {
 }
 
 export const {
+  AutocompleteInteraction,
   Base,
   Bucket,
   Call,
