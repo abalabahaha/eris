@@ -474,11 +474,13 @@ declare namespace Eris {
   interface OldRole {
     color: number;
     hoist: boolean;
+    icon: string | null;
     managed: boolean;
     mentionable: boolean;
     name: string;
     permissions: Permission;
     position: number;
+    unicodeEmoji: string | null;
   }
   interface OldVoiceState {
     deaf: boolean;
@@ -1019,9 +1021,11 @@ declare namespace Eris {
   interface RoleOptions {
     color?: number;
     hoist?: boolean;
+    icon?: string;
     mentionable?: boolean;
     name?: string;
     permissions?: bigint | number | string | Permission;
+    unicodeEmoji?: string;
   }
   interface RoleTags {
     bot_id?: string;
@@ -2503,6 +2507,8 @@ declare namespace Eris {
     createdAt: number;
     guild: Guild;
     hoist: boolean;
+    icon: string | null;
+    iconURL: string | null;
     id: string;
     json: Partial<Record<Exclude<keyof Constants["Permissions"], "all" | "allGuild" | "allText" | "allVoice">, boolean>>;
     managed: boolean;
@@ -2512,6 +2518,7 @@ declare namespace Eris {
     permissions: Permission;
     position: number;
     tags?: RoleTags;
+    unicodeEmoji: string | null;
     constructor(data: BaseData, guild: Guild);
     delete(reason?: string): Promise<void>;
     edit(options: RoleOptions, reason?: string): Promise<Role>;
