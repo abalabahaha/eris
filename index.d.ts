@@ -1567,6 +1567,7 @@ declare namespace Eris {
     id: string;
     constructor(id: string);
     static getCreatedAt(id: string): number;
+    static getDiscordEpoch(id: string): number;
     inspect(): this;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
