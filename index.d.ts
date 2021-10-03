@@ -907,7 +907,7 @@ declare namespace Eris {
 
   interface InteractionButton extends ButtonBase {
     custom_id: string;
-    style: Constants["ButtonTypes"][Exclude<keyof Constants["ButtonTypes"], "LINK">];
+    style: Constants["ButtonStyles"][Exclude<keyof Constants["ButtonStyles"], "LINK">];
   }
   interface MessageActivity {
     party_id?: string;
@@ -960,7 +960,7 @@ declare namespace Eris {
     format_type: Constants["StickerFormats"][keyof Constants["StickerFormats"]];
   }
   interface URLButton extends ButtonBase {
-    style: Constants["ButtonTypes"]["LINK"];
+    style: Constants["ButtonStyles"]["LINK"];
     url: string;
   }
 
@@ -1208,7 +1208,7 @@ declare namespace Eris {
       STAGE_INSTANCE_UPDATE: 84;
       STAGE_INSTANCE_DELETE: 85;
     };
-    ButtonTypes: {
+    ButtonStyles: {
       PRIMARY: 1;
       SECONDARY: 2;
       SUCCESS: 3;
