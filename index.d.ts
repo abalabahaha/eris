@@ -579,7 +579,7 @@ declare namespace Eris {
     threadCreate: [channel: AnyThreadChannel];
     threadDelete: [channel: AnyThreadChannel];
     threadListSync: [guild: Guild, deletedThreads: (AnyThreadChannel | Uncached)[], activeThreads: AnyThreadChannel[], joinedThreadsMember: ThreadMember[]];
-    threadMembersUpdate: [channel: AnyThreadChannel, removedMembers: (ThreadMember | Uncached)[], addedMembers: ThreadMember[]];
+    threadMembersUpdate: [channel: AnyThreadChannel, addedMembers: ThreadMember[], removedMembers: (ThreadMember | Uncached)[]];
     threadMemberUpdate: [channel: AnyThreadChannel, member: ThreadMember, oldMember: OldThreadMember];
     threadUpdate: [channel: AnyThreadChannel, oldChannel: OldThread | null];
     typingStart: [channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member] 
