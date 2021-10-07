@@ -1366,12 +1366,12 @@ declare namespace Eris {
       /** @deprecated */
       useSlashCommands: 2147483648n;
       voiceRequestToSpeak: 4294967296n;
+      manageEvents: 8589934592n;
       useExternalStickers: 137438953472n;
-      allGuild: 2080899262n;
+      allGuild: 10670833854n;
       allText: 140392266833n;
       allVoice: 4629464849n;
-      all: 146028888063n;
-      manageEvents: 8589934592n;
+      all: 154618822655n;
     };
     REST_VERSION: 8;
     StickerTypes: {
