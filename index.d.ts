@@ -164,11 +164,11 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
-    createMessage(content: MessageContent): Promise<Message>;
+    createMessage(content: MessageContent, attachments?: FileContent[]): Promise<Message>;
     /** @deprecated */
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
-    editMessage(messageID: string, content: MessageContent): Promise<Message>;
+    editMessage(messageID: string, content: MessageContent, attachments?: FileContent[]): Promise<Message>;
     getMessage(messageID: string): Promise<Message>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
@@ -847,7 +847,7 @@ declare namespace Eris {
   }
   interface AdvancedMessageContent {
     allowedMentions?: AllowedMentions;
-    attachments?: FileContent[];
+    attachments?: {id: string, filename: string};
     components?: ActionRow[];
     content?: string;
     /** @deprecated */
@@ -1720,7 +1720,7 @@ declare namespace Eris {
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
-    createMessage(channelID: string, content: MessageContent): Promise<Message>;
+    createMessage(channelID: string, content: MessageContent, attachments?: FileContent[]): Promise<Message>;
     /** @deprecated */
     createMessage(channelID: string, content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
     createRole(guildID: string, options?: RoleOptions | Role, reason?: string): Promise<Role>;
@@ -1775,7 +1775,7 @@ declare namespace Eris {
     editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
     editGuildWelcomeScreen(guildID: string, options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editGuildWidget(guildID: string, options: Widget): Promise<Widget>;
-    editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
+    editMessage(channelID: string, messageID: string, content: MessageContent, attachments?: FileContent[]): Promise<Message>;
     /** @deprecated */
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
@@ -1800,7 +1800,8 @@ declare namespace Eris {
       webhookID: string,
       token: string,
       messageID: string,
-      options: MessageWebhookContent
+      options: MessageWebhookContent, 
+      attachments?: FileContent[]
     ): Promise<Message<GuildTextableChannel>>;
     enableSelfMFATOTP(
       secret: string,
@@ -2432,8 +2433,8 @@ declare namespace Eris {
     crosspost(): Promise<T extends NewsChannel ? Message<NewsChannel> : never>;
     delete(reason?: string): Promise<void>;
     deleteWebhook(token: string): Promise<void>;
-    edit(content: MessageContent): Promise<Message<T>>;
-    editWebhook(token: string, options: MessageWebhookContent): Promise<Message<T>>;
+    edit(content: MessageContent, attachments?: FileContent[]): Promise<Message<T>>;
+    editWebhook(token: string, options: MessageWebhookContent, attachments?: FileContent[]): Promise<Message<T>>;
     getReaction(reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
     getReaction(reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
@@ -2449,11 +2450,11 @@ declare namespace Eris {
     rateLimitPerUser: 0;
     type: 5;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", NewsChannel>>;
-    createMessage(content: MessageContent): Promise<Message<NewsChannel>>;
+    createMessage(content: MessageContent, attachments?: FileContent[]): Promise<Message<NewsChannel>>;
     /** @deprecated */
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<NewsChannel>>;
     crosspostMessage(messageID: string): Promise<Message<NewsChannel>>;
-    editMessage(messageID: string, content: MessageContent): Promise<Message<NewsChannel>>;
+    editMessage(messageID: string, content: MessageContent, attachments?: FileContent[]): Promise<Message<NewsChannel>>;
     follow(webhookChannelID: string): Promise<ChannelFollow>;
     getInvites(): Promise<(Invite<"withMetadata", NewsChannel>)[]>;
     getMessage(messageID: string): Promise<Message<NewsChannel>>;
@@ -2503,11 +2504,11 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
-    createMessage(content: MessageContent): Promise<Message<PrivateChannel>>;
+    createMessage(content: MessageContent, attachments?: FileContent[]): Promise<Message<PrivateChannel>>;
     /** @deprecated */
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<PrivateChannel>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
-    editMessage(messageID: string, content: MessageContent): Promise<Message<PrivateChannel>>;
+    editMessage(messageID: string, content: MessageContent, attachments?: FileContent[]): Promise<Message<PrivateChannel>>;
     getMessage(messageID: string): Promise<Message<PrivateChannel>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
@@ -2714,14 +2715,14 @@ declare namespace Eris {
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", TextChannel>>;
-    createMessage(content: MessageContent): Promise<Message<TextChannel>>;
+    createMessage(content: MessageContent, attachments?: FileContent[]): Promise<Message<TextChannel>>;
     /** @deprecated */
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<TextChannel>>;
     createWebhook(options: { name: string; avatar?: string | null}, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
-    editMessage(messageID: string, content: MessageContent): Promise<Message<TextChannel>>;
+    editMessage(messageID: string, content: MessageContent, attachments?: FileContent[]): Promise<Message<TextChannel>>;
     getInvites(): Promise<(Invite<"withMetadata", TextChannel>)[]>;
     getMessage(messageID: string): Promise<Message<TextChannel>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
