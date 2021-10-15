@@ -847,7 +847,7 @@ declare namespace Eris {
   }
   interface AdvancedMessageContent {
     allowedMentions?: AllowedMentions;
-    attachments?: {id: string, filename: string};
+    attachments?: Attachment[];
     components?: ActionRow[];
     content?: string;
     /** @deprecated */
