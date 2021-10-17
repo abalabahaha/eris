@@ -543,7 +543,8 @@ declare namespace Eris {
     relationshipAdd: [relationship: Relationship];
     relationshipRemove: [relationship: Relationship];
     relationshipUpdate: [relationship: Relationship, oldRelationship: { type: number }];
-    typingStart: [channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member]
+    shardPreReady: [id: number];
+    typingStart: [channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member] 
       | [channel: PrivateChannel | Uncached, user: User | Uncached, member: null];
     unavailableGuildCreate: [guild: UnavailableGuild];
     unknown: [packet: RawPacket, id: number];
@@ -579,7 +580,7 @@ declare namespace Eris {
     disconnect: [err?: Error];
     end: [];
     error: [err: Error];
-    ping: [latency: number];
+    pong: [latency: number];
     ready: [];
     speakingStart: [userID: string];
     speakingStop: [userID: string];
