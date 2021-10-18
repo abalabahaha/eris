@@ -94,7 +94,9 @@ declare namespace Eris {
     data?: unknown;
   }
 
-  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions" | "tts" | "flags" | "components">;
+  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
+
+  type InteractionEditContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components">;
 
   // Application Commands
   type ApplicationCommandOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup | ApplicationCommandOptionsWithValue;
@@ -2572,13 +2574,13 @@ declare namespace Eris {
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
     user?: User;
     acknowledge(flags?: number): Promise<void>;
-    createFollowup(content: string | InteractionContent): Promise<Message>;
-    createMessage(content: string | InteractionContent | InteractionContent): Promise<void>;
+    createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createMessage(content: string | InteractionContent , file?: FileContent | FileContent[]): Promise<void>;
     defer(flags?: number): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
-    editMessage(messageID: string, content: string | MessageWebhookContent): Promise<Message>;
-    editOriginalMessage(content: string | MessageWebhookContent): Promise<Message>;
+    editMessage(messageID: string, content: string | InteractionEditContent, file?: FileContent | FileContent[]): Promise<Message>;
+    editOriginalMessage(content: string | InteractionEditContent, file?: FileContent | FileContent[]): Promise<Message>;
     getOriginalMessage(): Promise<Message>
   }
 
@@ -2602,15 +2604,15 @@ declare namespace Eris {
     type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
     user?: User;
     acknowledge(): Promise<void>;
-    createFollowup(content: string | InteractionContent): Promise<Message>;
-    createMessage(content: string | InteractionContent | InteractionContent): Promise<void>;
+    createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
-    editMessage(messageID: string, content: string | MessageWebhookContent): Promise<Message>;
-    editOriginalMessage(content: string | MessageWebhookContent): Promise<Message>;
-    editParent(content: MessageWebhookContent): Promise<void>;
+    editMessage(messageID: string, content: string | InteractionEditContent, file?: FileContent | FileContent[]): Promise<Message>;
+    editOriginalMessage(content: string | InteractionEditContent, file?: FileContent | FileContent[]): Promise<Message>;
+    editParent(content: InteractionEditContent, file?: FileContent | FileContent[]): Promise<void>;
     getOriginalMessage(): Promise<Message>
   }
   export class AutocompleteInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
@@ -2638,15 +2640,15 @@ declare namespace Eris {
     type: number;
     user?: User;
     acknowledge(data: InteractionOptions): Promise<void>;
-    createFollowup(content: string | InteractionContent): Promise<Message>;
-    createMessage(content: string | InteractionContent | InteractionContent): Promise<void>;
+    createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
-    editMessage(messageID: string, content: string | MessageWebhookContent): Promise<Message>;
-    editOriginalMessage(content: string | MessageWebhookContent): Promise<Message>;
-    editParent(content: MessageWebhookContent): Promise<void>;
+    editMessage(messageID: string, content: string | InteractionEditContent, file?: FileContent | FileContent[]): Promise<Message>;
+    editOriginalMessage(content: string | InteractionEditContent, file?: FileContent | FileContent[]): Promise<Message>;
+    editParent(content: InteractionEditContent, file?: FileContent | FileContent[]): Promise<void>;
     getOriginalMessage(): Promise<Message>
     pong(): Promise<void>;
     result(choices: ApplicationCommandOptionChoice[]): Promise<void>;
