@@ -1267,14 +1267,14 @@ declare namespace Eris {
     };
     MessageActivityTypes: {
       INSTANCE: 0;
-      JOIN: 1;
-      SPECTATE: 2;
-      LISTEN: 3;
-      SYNC: 4;
-      PLAY: 5;
-      PARTY_PRIVACY_FRIENDS: 6;
-      PARTY_PRIVACY_VOICE_CHANNEL: 7;
-      EMBEDDED: 8;
+      JOIN: 2;
+      SPECTATE: 4;
+      JOIN_REQUEST: 8;
+      SYNC: 16;
+      PLAY: 32;
+      PARTY_PRIVACY_FRIENDS: 64;
+      PARTY_PRIVACY_VOICE_CHANNEL: 128;
+      EMBEDDED: 256;
     };
     MessageFlags: {
       CROSSPOSTED: 0;
