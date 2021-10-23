@@ -1266,10 +1266,15 @@ declare namespace Eris {
       directMessageTyping: 16384;
     };
     MessageActivityTypes: {
+      INSTANCE: 0;
       JOIN: 1;
       SPECTATE: 2;
       LISTEN: 3;
-      JOIN_REQUEST: 5;
+      SYNC: 4;
+      PLAY: 5;
+      PARTY_PRIVACY_FRIENDS: 6;
+      PARTY_PRIVACY_VOICE_CHANNEL: 7;
+      EMBEDDED: 8;
     };
     MessageFlags: {
       CROSSPOSTED: 0;
