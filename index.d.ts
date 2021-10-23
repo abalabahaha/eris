@@ -1266,7 +1266,7 @@ declare namespace Eris {
       directMessageTyping: 16384;
     };
     MessageActivityTypes: {
-      INSTANCE: 0;
+      INSTANCE: 1;
       JOIN: 2;
       SPECTATE: 4;
       JOIN_REQUEST: 8;
