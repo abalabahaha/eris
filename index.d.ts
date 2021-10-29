@@ -75,7 +75,7 @@ declare namespace Eris {
   type ConverterCommand = "./ffmpeg" | "./avconv" | "ffmpeg" | "avconv";
 
   // Webhook
-  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions" | "components">;
+  type MessageWebhookContent = Pick<WebhookPayload, "attachments" | "content" | "embeds" | "file" | "allowedMentions" | "components">;
 
   // INTERFACES
   // Internals
@@ -845,6 +845,7 @@ declare namespace Eris {
   }
   interface AdvancedMessageContent {
     allowedMentions?: AllowedMentions;
+    attachments?: PartialAttachment[];
     components?: ActionRow[];
     content?: string;
     /** @deprecated */
@@ -863,7 +864,7 @@ declare namespace Eris {
     roles?: boolean | string[];
     users?: boolean | string[];
   }
-  interface Attachment {
+  interface Attachment extends PartialAttachment {
     content_type?: string;
     filename: string;
     height?: number;
@@ -886,6 +887,12 @@ declare namespace Eris {
     description?: string;
     name?: string;
     tags?: string;
+  }
+  interface PartialAttachment {
+    description?: string;
+    filename?: string;
+    /** When creating an attachment, the ID is the index number of the file you wish to add relevant attributes to. When editing the attachment, this is the normal attachment ID */
+    id: string | number;
   }
   interface SelectMenu {
     custom_id: string;
@@ -1117,6 +1124,7 @@ declare namespace Eris {
   }
   interface WebhookPayload {
     allowedMentions?: AllowedMentions;
+    attachments: PartialAttachment[];
     auth?: boolean;
     avatarURL?: string;
     components?: ActionRow[];
