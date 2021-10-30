@@ -47,7 +47,7 @@ declare namespace Eris {
   // Guild
   type DefaultNotifications = 0 | 1;
   type ExplicitContentFilter = 0 | 1 | 2;
-  type GuildFeatures = "ANIMATED_ICON" | "BANNER" | "COMMERCE" | "COMMUNITY" | "DISCOVERABLE" | "FEATURABLE" | "INVITE_SPLASH" | "MEMBER_VERIFICATION_GATE_ENABLED" | "NEWS" | "PARTNERED" | "PREVIEW_ENABLED" | "VANITY_URL" | "VERIFIED" | "VIP_REGIONS" | "WELCOME_SCREEN_ENABLED" | "TICKETED_EVENTS_ENABLED" | "MONETIZATION_ENABLED" | "MORE_STICKERS" | "THREE_DAY_THREAD_ARCHIVE" | "SEVEN_DAY_THREAD_ARCHIVE" | "PRIVATE_THREADS";
+  type GuildFeatures = "ANIMATED_ICON" | "BANNER" | "COMMERCE" | "COMMUNITY" | "DISCOVERABLE" | "FEATURABLE" | "INVITE_SPLASH" | "MEMBER_VERIFICATION_GATE_ENABLED" | "NEWS" | "PARTNERED" | "PREVIEW_ENABLED" | "ROLE_ICONS" | "VANITY_URL" | "VERIFIED" | "VIP_REGIONS" | "WELCOME_SCREEN_ENABLED" | "TICKETED_EVENTS_ENABLED" | "MONETIZATION_ENABLED" | "MORE_STICKERS" | "THREE_DAY_THREAD_ARCHIVE" | "SEVEN_DAY_THREAD_ARCHIVE" | "PRIVATE_THREADS";
   type NSFWLevel = 0 | 1 | 2 | 3;
   type PossiblyUncachedGuild = Guild | Uncached;
   type PremiumTier = 0 | 1 | 2 | 3;
@@ -616,11 +616,13 @@ declare namespace Eris {
   interface OldRole {
     color: number;
     hoist: boolean;
+    icon: string | null;
     managed: boolean;
     mentionable: boolean;
     name: string;
     permissions: Permission;
     position: number;
+    unicodeEmoji: string | null;
   }
   interface OldVoiceState {
     deaf: boolean;
@@ -683,7 +685,8 @@ declare namespace Eris {
     relationshipAdd: [relationship: Relationship];
     relationshipRemove: [relationship: Relationship];
     relationshipUpdate: [relationship: Relationship, oldRelationship: { type: number }];
-    typingStart: [channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member]
+    shardPreReady: [id: number];
+    typingStart: [channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member] 
     | [channel: PrivateChannel | Uncached, user: User | Uncached, member: null];
     unavailableGuildCreate: [guild: UnavailableGuild];
     unknown: [packet: RawPacket, id: number];
@@ -714,7 +717,7 @@ declare namespace Eris {
     disconnect: [err?: Error];
     end: [];
     error: [err: Error];
-    ping: [latency: number];
+    pong: [latency: number];
     ready: [];
     speakingStart: [userID: string];
     speakingStop: [userID: string];
@@ -1184,9 +1187,11 @@ declare namespace Eris {
   interface RoleOptions {
     color?: number;
     hoist?: boolean;
+    icon?: string;
     mentionable?: boolean;
     name?: string;
     permissions?: bigint | number | string | Permission;
+    unicodeEmoji?: string;
   }
   interface RoleTags {
     bot_id?: string;
@@ -2884,6 +2889,8 @@ declare namespace Eris {
     createdAt: number;
     guild: Guild;
     hoist: boolean;
+    icon: string | null;
+    iconURL: string | null;
     id: string;
     json: Partial<Record<Exclude<keyof Constants["Permissions"], "all" | "allGuild" | "allText" | "allVoice">, boolean>>;
     managed: boolean;
@@ -2893,6 +2900,7 @@ declare namespace Eris {
     permissions: Permission;
     position: number;
     tags?: RoleTags;
+    unicodeEmoji: string | null;
     constructor(data: BaseData, guild: Guild);
     delete(reason?: string): Promise<void>;
     edit(options: RoleOptions, reason?: string): Promise<Role>;
