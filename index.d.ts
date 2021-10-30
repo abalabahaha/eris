@@ -916,7 +916,7 @@ declare namespace Eris {
   }
   interface MessageActivity {
     party_id?: string;
-    type: Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
+    type: Constants["MessageActivityFlags"][keyof Constants["MessageActivityFlags"]];
   }
   interface MessageApplication {
     cover_image?: string;
@@ -1265,7 +1265,7 @@ declare namespace Eris {
       directMessageReactions: 8192;
       directMessageTyping: 16384;
     };
-    MessageActivityTypes: {
+    MessageActivityFlags: {
       INSTANCE: 1;
       JOIN: 2;
       SPECTATE: 4;
