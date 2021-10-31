@@ -918,7 +918,7 @@ declare namespace Eris {
   }
   interface MessageActivity {
     party_id?: string;
-    type: Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
+    type: Constants["MessageActivityFlags"][keyof Constants["MessageActivityFlags"]];
   }
   interface MessageApplication {
     cover_image?: string;
@@ -1269,14 +1269,19 @@ declare namespace Eris {
       directMessageReactions: 8192;
       directMessageTyping: 16384;
     };
-    MessageActivityTypes: {
-      JOIN: 1;
-      SPECTATE: 2;
-      LISTEN: 3;
-      JOIN_REQUEST: 5;
+    MessageActivityFlags: {
+      INSTANCE: 1;
+      JOIN: 2;
+      SPECTATE: 4;
+      JOIN_REQUEST: 8;
+      SYNC: 16;
+      PLAY: 32;
+      PARTY_PRIVACY_FRIENDS: 64;
+      PARTY_PRIVACY_VOICE_CHANNEL: 128;
+      EMBEDDED: 256;
     };
     MessageFlags: {
-      CROSSPOSTED: 0;
+      CROSSPOSTED: 1;
       IS_CROSSPOST: 2;
       SUPPRESS_EMBEDS: 4;
       SOURCE_MESSAGE_DELETED: 8;
