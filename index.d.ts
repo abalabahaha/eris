@@ -2967,7 +2967,6 @@ declare namespace Eris {
     emit<K extends keyof ShardEvents>(event: K, ...args: ShardEvents[K]): boolean;
     emit(event: string, ...args: any[]): boolean;
     getGuildMembers(guildID: string, timeout: number): void;
-
     hardReset(): void;
     heartbeat(normal?: boolean): void;
     identify(): void;
