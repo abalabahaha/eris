@@ -1426,6 +1426,7 @@ declare namespace Eris {
       SOURCE_MESSAGE_DELETED: 8;
       URGENT: 16;
       EPHEMERAL: 64;
+      LOADING: 128;
     };
     MessageTypes: {
       DEFAULT: 0;
