@@ -1929,6 +1929,8 @@ declare namespace Eris {
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
+    createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionOptions, files?: FileContent[]): Promise<void>;
+    /** @deprecated */
     createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionOptions, file?: FileContent | FileContent[]): Promise<void>;
     createMessage(channelID: string, content: MessageContent, files?: FileContent[]): Promise<Message>;
     /** @deprecated */
@@ -2015,7 +2017,7 @@ declare namespace Eris {
       webhookID: string,
       token: string,
       messageID: string,
-      options: MessageWebhookContent, 
+      options: MessageWebhookContent,
       files?: FileContent[]
     ): Promise<Message<GuildTextableChannel>>;
     emit<K extends keyof ClientEvents>(event: K, ...args: ClientEvents[K]): boolean;
@@ -2593,14 +2595,22 @@ declare namespace Eris {
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
     user?: User;
     acknowledge(flags?: number): Promise<void>;
+    createFollowup(content: string | InteractionContent, files?: FileContent[]): Promise<Message>;
+    /** @deprecated */
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createMessage(content: string | InteractionContent , files?: FileContent[]): Promise<void>;
+    /** @deprecated */
     createMessage(content: string | InteractionContent , file?: FileContent | FileContent[]): Promise<void>;
     defer(flags?: number): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | InteractionEditContent, files?: FileContent[]): Promise<Message>;
+    /** @deprecated */
     editMessage(messageID: string, content: string | InteractionEditContent, file?: FileContent | FileContent[]): Promise<Message>;
+    editOriginalMessage(content: string | InteractionEditContent, files?: FileContent[]): Promise<Message>;
+    /** @deprecated */
     editOriginalMessage(content: string | InteractionEditContent, file?: FileContent | FileContent[]): Promise<Message>;
-    getOriginalMessage(): Promise<Message>
+    getOriginalMessage(): Promise<Message>;
   }
 
   interface ComponentInteractionButtonData {
@@ -2623,16 +2633,26 @@ declare namespace Eris {
     type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
     user?: User;
     acknowledge(): Promise<void>;
+    createFollowup(content: string | InteractionContent, files?: FileContent[]): Promise<Message>;
+    /** @deprecated */
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createMessage(content: string | InteractionContent, files?: FileContent[]): Promise<void>;
+    /** @deprecated */
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | InteractionEditContent, files?: FileContent[]): Promise<Message>;
+    /** @deprecated */
     editMessage(messageID: string, content: string | InteractionEditContent, file?: FileContent | FileContent[]): Promise<Message>;
+    editOriginalMessage(content: string | InteractionEditContent, files?: FileContent[]): Promise<Message>;
+    /** @deprecated */
     editOriginalMessage(content: string | InteractionEditContent, file?: FileContent | FileContent[]): Promise<Message>;
+    editParent(content: InteractionEditContent, files?: FileContent[]): Promise<void>;
+    /** @deprecated */
     editParent(content: InteractionEditContent, file?: FileContent | FileContent[]): Promise<void>;
-    getOriginalMessage(): Promise<Message>
+    getOriginalMessage(): Promise<Message>;
   }
   export class AutocompleteInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
     channel: T;
@@ -2659,16 +2679,26 @@ declare namespace Eris {
     type: number;
     user?: User;
     acknowledge(data: InteractionOptions): Promise<void>;
+    createFollowup(content: string | InteractionContent, files?: FileContent[]): Promise<Message>;
+    /** @deprecated */
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createMessage(content: string | InteractionContent, files?: FileContent[]): Promise<void>;
+    /** @deprecated */
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | InteractionEditContent, files?: FileContent[]): Promise<Message>;
+    /** @deprecated */
     editMessage(messageID: string, content: string | InteractionEditContent, file?: FileContent | FileContent[]): Promise<Message>;
+    editOriginalMessage(content: string | InteractionEditContent, files?: FileContent[]): Promise<Message>;
+    /** @deprecated */
     editOriginalMessage(content: string | InteractionEditContent, file?: FileContent | FileContent[]): Promise<Message>;
+    editParent(content: InteractionEditContent, files?: FileContent[]): Promise<void>;
+    /** @deprecated */
     editParent(content: InteractionEditContent, file?: FileContent | FileContent[]): Promise<void>;
-    getOriginalMessage(): Promise<Message>
+    getOriginalMessage(): Promise<Message>;
     pong(): Promise<void>;
     result(choices: ApplicationCommandOptionChoice[]): Promise<void>;
   }
