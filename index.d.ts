@@ -16,7 +16,7 @@ declare namespace Eris {
   // TYPES
 
   // Cache
-  type Uncached = { id: string };
+  interface Uncached { id: string }
 
   // Channel
   type AnyChannel = AnyGuildChannel | PrivateChannel;
