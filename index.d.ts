@@ -686,7 +686,7 @@ declare namespace Eris {
     relationshipRemove: [relationship: Relationship];
     relationshipUpdate: [relationship: Relationship, oldRelationship: { type: number }];
     shardPreReady: [id: number];
-    typingStart: [channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member] 
+    typingStart: [channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member]
     | [channel: PrivateChannel | Uncached, user: User | Uncached, member: null];
     unavailableGuildCreate: [guild: UnavailableGuild];
     unknown: [packet: RawPacket, id: number];
@@ -1610,7 +1610,7 @@ declare namespace Eris {
       SUCCESS:   3;
       DANGER:    4;
       LINK:      5;
-    }
+    };
   }
 
   // Selfbot
