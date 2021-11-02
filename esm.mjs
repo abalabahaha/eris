@@ -5,6 +5,7 @@ export default function(token, options) {
 }
 
 export const {
+  AutocompleteInteraction,
   Base,
   Bucket,
   Call,
@@ -14,6 +15,8 @@ export const {
   Collection,
   Command,
   CommandClient,
+  CommandInteraction,
+  ComponentInteraction,
   Constants,
   DiscordHTTPError,
   DiscordRESTError,
@@ -24,6 +27,7 @@ export const {
   GuildIntegration,
   GuildPreview,
   GuildTemplate,
+  Interaction,
   Invite,
   Member,
   Message,
@@ -31,6 +35,7 @@ export const {
   NewsThreadChannel,
   Permission,
   PermissionOverwrite,
+  PingInteraction,
   PrivateChannel,
   PrivateThreadChannel,
   PublicThreadChannel,
@@ -47,6 +52,7 @@ export const {
   ThreadChannel,
   ThreadMember,
   UnavailableGuild,
+  UnknownInteraction,
   User,
   VERSION,
   VoiceChannel,
