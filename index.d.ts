@@ -1598,7 +1598,13 @@ declare namespace Eris {
      * @type {CommandOptions|*[]}
      */
     options: CommandOptions[]
+    channel_types: number;
+    max_value: number;
+    min_value: number;
 
+    setMaxValue(value: number): this
+    setMinValue(value: number): this
+    setChannelType(type: number): this
     /**
      *
      * @param options
