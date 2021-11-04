@@ -2577,6 +2577,8 @@ declare namespace Eris {
   }
 
   //Interaction
+  type AnyInteraction = PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction;
+
   export class Interaction extends Base {
     acknowledged: boolean;
     applicationID: string;
@@ -2659,9 +2661,9 @@ declare namespace Eris {
     data: {
       id: string;
       name: string;
-      type: Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
+      type: Constants["ApplicationCommandTypes"]["CHAT_INPUT"];
       target_id?: string;
-      options?: InteractionDataOptions[];
+      options: InteractionDataOptions[];
     };
     guildID?: string;
     member?: Member;
