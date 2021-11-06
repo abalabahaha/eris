@@ -1367,6 +1367,16 @@ declare namespace Eris {
     theme: string;
   }
 
+  class AutoComplete {
+    options: Array<any>;
+    interaction: Interaction;
+    constructor(interaction: Interaction);
+
+    addOptions(options: Array<any>): this;
+    callback(data?: any): void;
+  }
+
+
   class Base implements SimpleJSON {
     createdAt: number;
     id: string;
@@ -2573,6 +2583,7 @@ declare namespace Eris {
     token: string;
     hook: HookInteraction;
     command: CommandFolder;
+    autoComplete?: AutoComplete;
     applicationID: string;
     client: Client;
     constructor(json: any, client: Client | undefined, guild: Guild | undefined, member: Member | undefined, channel: TextChannel | undefined)
