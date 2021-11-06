@@ -2305,7 +2305,7 @@ declare namespace Eris {
     joinedAt: number;
     large: boolean;
     maxMembers: number;
-    maxPresences: number;
+    maxPresences: number | null;
     maxVideoChannelUsers?: number;
     memberCount: number;
     members: Collection<Member>;
@@ -2316,6 +2316,7 @@ declare namespace Eris {
     nsfwLevel: NSFWLevel;
     ownerID: string;
     preferredLocale: string;
+    premiumProgressBarEnabled: boolean;
     premiumSubscriptionCount?: number;
     premiumTier: PremiumTier;
     primaryCategory?: DiscoveryCategory;
