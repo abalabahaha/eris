@@ -2305,7 +2305,7 @@ declare namespace Eris {
     joinedAt: number;
     large: boolean;
     maxMembers: number;
-    maxPresences: number | null;
+    maxPresences?: number | null;
     maxVideoChannelUsers?: number;
     memberCount: number;
     members: Collection<Member>;
