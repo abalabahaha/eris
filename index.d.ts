@@ -2952,7 +2952,7 @@ declare namespace Eris {
     requestMembersPromise: { [s: string]: RequestMembersPromise };
     seq: number;
     sessionID: string | null;
-    status: "disconnected" | "connecting" | "handshaking" | "ready" | "resuming";
+    status: "connecting" | "disconnected" | "handshaking" | "identifying" | "ready" | "resuming";
     unsyncedGuilds: number;
     ws: WebSocket | BrowserWebSocket | null;
     constructor(id: number, client: Client);
