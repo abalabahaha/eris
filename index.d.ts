@@ -558,8 +558,8 @@ declare namespace Eris {
     guildScheduledEventCreate: [event: GuildEvent];
     guildScheduledEventUpdate: [event: GuildEvent, oldEvent: GuildEventOptions | null];
     guildScheduledEventDelete: [event: GuildEvent];
-    guildScheduledEventUserCreate: [event: GuildEvent | string, user: User | string];
-    guildScheduledEventUserDelete: [event: GuildEvent | string, user: User | string];
+    guildScheduledEventUserAdd: [event: GuildEvent | string, user: User | string];
+    guildScheduledEventUserRemove: [event: GuildEvent | string, user: User | string];
   }
   interface ClientEvents extends EventListeners {
     shardDisconnect: [err: Error | undefined, id: number];
