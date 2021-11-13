@@ -49,7 +49,7 @@ declare namespace Eris {
   type ExplicitContentFilter = 0 | 1 | 2;
   type GuildEventEntityTypes = Constants["GuildEventEntityTypes"][keyof Constants["GuildEventEntityTypes"]];
   type GuildEventStatus = Constants["GuildEventStatus"][keyof Constants["GuildEventStatus"]];
-  type GuildFeatures = "ANIMATED_ICON" | "BANNER" | "COMMERCE" | "COMMUNITY" | "DISCOVERABLE" | "FEATURABLE" | "INVITE_SPLASH" | "MEMBER_VERIFICATION_GATE_ENABLED" | "NEWS" | "PARTNERED" | "PREVIEW_ENABLED" | "ROLE_ICONS" | "VANITY_URL" | "VERIFIED" | "VIP_REGIONS" | "WELCOME_SCREEN_ENABLED" | "TICKETED_EVENTS_ENABLED" | "MONETIZATION_ENABLED" | "MORE_STICKERS" | "THREE_DAY_THREAD_ARCHIVE" | "SEVEN_DAY_THREAD_ARCHIVE" | "PRIVATE_THREADS";  
+  type GuildFeatures = "ANIMATED_ICON" | "BANNER" | "COMMERCE" | "COMMUNITY" | "DISCOVERABLE" | "FEATURABLE" | "INVITE_SPLASH" | "MEMBER_VERIFICATION_GATE_ENABLED" | "NEWS" | "PARTNERED" | "PREVIEW_ENABLED" | "ROLE_ICONS" | "VANITY_URL" | "VERIFIED" | "VIP_REGIONS" | "WELCOME_SCREEN_ENABLED" | "TICKETED_EVENTS_ENABLED" | "MONETIZATION_ENABLED" | "MORE_STICKERS" | "THREE_DAY_THREAD_ARCHIVE" | "SEVEN_DAY_THREAD_ARCHIVE" | "PRIVATE_THREADS";
   type NSFWLevel = 0 | 1 | 2 | 3;
   type PossiblyUncachedGuild = Guild | Uncached;
   type PremiumTier = 0 | 1 | 2 | 3;
@@ -645,7 +645,7 @@ declare namespace Eris {
     channelRecipientAdd: [channel: GroupChannel, user: User];
     channelRecipientRemove: [channel: GroupChannel, user: User];
     channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldGuildVoiceChannel]
-      | [channel: GroupChannel, oldChannel: OldGroupChannel];
+    | [channel: GroupChannel, oldChannel: OldGroupChannel];
     connect: [id: number];
     debug: [message: string, id: number];
     disconnect: [];
@@ -1380,10 +1380,10 @@ declare namespace Eris {
       STICKER_CREATE: 90;
       STICKER_UPDATE: 91;
       STICKER_DELETE: 92;
-      
+
       GUILD_SCHEDULED_EVENT_CREATE: 100;
       GUILD_SCHEDULED_EVENT_UPDATE: 101;
-      GUILD_SCHEDULED_EVENT_DELETE: 102; 
+      GUILD_SCHEDULED_EVENT_DELETE: 102;
     };
     ChannelTypes: {
       GUILD_TEXT: 0;
