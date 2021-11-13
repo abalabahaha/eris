@@ -1232,6 +1232,10 @@ declare namespace Eris {
       STICKER_CREATE: 90;
       STICKER_UPDATE: 91;
       STICKER_DELETE: 92;
+      
+      GUILD_SCHEDULED_EVENT_CREATE: 100;
+      GUILD_SCHEDULED_EVENT_UPDATE: 101;
+      GUILD_SCHEDULED_EVENT_DELETE: 102; 
     };
     ChannelTypes: {
       GUILD_TEXT: 0;
