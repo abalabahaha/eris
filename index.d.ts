@@ -227,7 +227,7 @@ declare namespace Eris {
 
   // Voice
   type ConverterCommand = "./ffmpeg" | "./avconv" | "ffmpeg" | "avconv";
-  type StageInstancePrivacyLevel = 1 | 2;
+  type StageInstancePrivacyLevel = Constants["StageInstancePrivacyLevel"][keyof Constants["StageInstancePrivacyLevel"]];
 
   // Webhook
   type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions" | "components">;
@@ -1769,6 +1769,10 @@ declare namespace Eris {
       NONE:          0;
       NITRO_CLASSIC: 1;
       NITRO:         2;
+    };
+    StageInstancePrivacyLevel: {
+      PUBLIC: 1;
+      GUILD_ONLY: 2;
     };
     StickerFormats: {
       PNG:    1;
