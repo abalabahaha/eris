@@ -1345,6 +1345,7 @@ declare namespace Eris {
   }
 
   // Webhook
+  type WebhookTypes = Constants["WebhookTypes"][keyof Constants["WebhookTypes"]];
   interface Webhook {
     application_id: string | null;
     avatar: string | null;
@@ -1355,7 +1356,7 @@ declare namespace Eris {
     source_channel?: { id: string; name: string };
     source_guild: { icon: string | null; id: string; name: string };
     token?: string;
-    type: 1 | 2 | 3;
+    type: WebhookTypes;
     url?: string;
     user?: PartialUser;
   }
@@ -1532,6 +1533,10 @@ declare namespace Eris {
       ACTION_ROW:  1;
       BUTTON:      2;
       SELECT_MENU: 3;
+    };
+    ConnectionVisibilityTypes: {
+      NONE:     0,
+      EVERYONE: 1
     };
     DefaultMessageNotificationLevels: {
       ALL_MESSAGES:  0;
@@ -1882,9 +1887,15 @@ declare namespace Eris {
       /** @deprecated */
       DISCONNECT:          13;
     };
+    WebhookTypes: {
+      INCOMING:         1;
+      CHANNEL_FOLLOWER: 2;
+      APPLICATION:      3;
+    };
   }
 
   // Selfbot
+  type ConnectionVisibilityTypes = Constants["ConnectionVisibilityTypes"][keyof Constants["ConnectionVisibilityTypes"]];
   interface Connection {
     friend_sync: boolean;
     id: string;
@@ -1893,7 +1904,7 @@ declare namespace Eris {
     revoked: boolean;
     type: string;
     verified: boolean;
-    visibility: number;
+    visibility: ConnectionVisibilityTypes;
   }
   interface GuildSettings {
     channel_override: {
