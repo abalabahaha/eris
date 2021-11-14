@@ -61,6 +61,7 @@ declare namespace Eris {
   type VerificationLevel = Constants["VerificationLevels"][keyof Constants["VerificationLevels"]];
   type SystemChannelFlags = Constants["SystemChannelFlags"][keyof Constants["SystemChannelFlags"]];
   type GuildIntegrationTypes = Constants["GuildIntegrationTypes"][number];
+  type GuildIntegrationExpireBehavior = Constants["GuildIntegrationExpireBehavior"][keyof Constants["GuildIntegrationExpireBehavior"]];
 
   // Message
   type ActionRowComponents = Button | SelectMenu;
@@ -1588,6 +1589,10 @@ declare namespace Eris {
       "VIP_REGIONS",
       "WELCOME_SCREEN_ENABLED"
     ];
+    GuildIntegrationExpireBehavior: {
+      REMOVE_ROLE: 0;
+      KICK: 1;
+    };
     GuildIntegrationTypes: [
       "twitch",
       "youtube",
@@ -2770,7 +2775,7 @@ declare namespace Eris {
     createdAt: number;
     enabled: boolean;
     enableEmoticons?: boolean;
-    expireBehavior?: number;
+    expireBehavior?: GuildIntegrationExpireBehavior;
     expireGracePeriod?: number;
     id: string;
     name: string;
