@@ -1591,7 +1591,7 @@ declare namespace Eris {
     ];
     GuildIntegrationExpireBehavior: {
       REMOVE_ROLE: 0;
-      KICK: 1;
+      KICK:        1;
     };
     GuildIntegrationTypes: [
       "twitch",
@@ -1650,6 +1650,10 @@ declare namespace Eris {
       APPLICATION_COMMAND:              2;
       MESSAGE_COMPONENT:                3;
       APPLICATION_COMMAND_AUTOCOMPLETE: 4;
+    };
+    InviteTargetTypes: {
+      STREAM:               1;
+      EMBEDDED_APPLICATION: 2;
     };
     MFALevels: {
       NONE:     0;
