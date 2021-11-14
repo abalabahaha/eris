@@ -1,6 +1,6 @@
 {
   "name": "eris",
-  "version": "0.15.1",
+  "version": "0.16.0-dev",
   "description": "A NodeJS Discord library",
   "main": "./index.js",
   "exports": {
@@ -42,20 +42,20 @@
   },
   "homepage": "https://abal.moe/Eris/",
   "dependencies": {
-    "ws": "^7.2.1"
+    "ws": "^8.2.3"
   },
   "devDependencies": {
-    "@types/node": "^14.14.35",
-    "@types/ws": "^7.4.2",
-    "@typescript-eslint/eslint-plugin": "^4.19.0",
-    "@typescript-eslint/parser": "^4.19.0",
-    "eslint": "^7.22.0",
-    "eslint-plugin-sort-class-members": "^1.10.0",
-    "typescript": "^4.2.2"
+    "@types/node": "^16.11.7",
+    "@types/ws": "^8.2.0",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-sort-class-members": "^1.14.0",
+    "typescript": "^4.4.4"
   },
   "optionalDependencies": {
     "opusscript": "^0.0.8",
-    "tweetnacl": "^1.0.1"
+    "tweetnacl": "^1.0.3"
   },
   "browser": {
     "@discordjs/opus": false,
