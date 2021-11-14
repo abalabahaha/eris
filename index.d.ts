@@ -1411,8 +1411,6 @@ declare namespace Eris {
   }
   interface Constants {
     ActivityTypes: {
-      PLAYING:   0;
-      /** @deprecated */
       GAME:      0;
       STREAMING: 1;
       LISTENING: 2;
