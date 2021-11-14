@@ -1809,16 +1809,13 @@ declare namespace Eris {
     };
     UserFlags: {
       NONE:                         0;
-      STAFF:                        1;
-      /** @deprecated */
+      DISCORD_STAFF:                1;
       DISCORD_EMPLOYEE:             1;
       PARTNER:                      2;
-      /** @deprecated */
       PARTNERED_SERVER_OWNER:       2;
       /** @deprecated */
       DISCORD_PARTNER:              2;
       HYPESQUAD:                    4;
-      /** @deprecated */
       HYPESQUAD_EVENTS:             4;
       BUG_HUNTER_LEVEL_1:           8;
       HYPESQUAD_ONLINE_HOUSE_1:     64;
@@ -1828,21 +1825,16 @@ declare namespace Eris {
       HYPESQUAD_ONLINE_HOUSE_3:     256;
       HOUSE_BALANCE:                256;
       PREMIUM_EARLY_SUPPORTER:      512;
-      /** @deprecated */
       EARLY_SUPPORTER:              512;
       TEAM_PSEUDO_USER:             1024;
-      /** @deprecated */
       TEAM_USER:                    1024;
       SYSTEM:                       4096;
       BUG_HUNTER_LEVEL_2:           16384;
       VERIFIED_BOT:                 65536;
       VERIFIED_DEVELOPER:           131072;
-      /** @deprecated */
       VERIFIED_BOT_DEVELOPER:       131072;
-      /** @deprecated */
       EARLY_VERIFIED_BOT_DEVELOPER: 131072;
-      CERTIFIED_MODERATOR:  262144;
-      /** @deprecated */
+      CERTIFIED_MODERATOR:          262144;
       DISCORD_CERTIFIED_MODERATOR:  262144;
       BOT_HTTP_INTERACTIONS:        524288;
     };
