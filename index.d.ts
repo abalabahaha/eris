@@ -1320,6 +1320,8 @@ declare namespace Eris {
   }
   interface Constants {
     ActivityTypes: {
+        PLAYING:   0;
+        /** @deprecated */
         GAME:      0;
         STREAMING: 1;
         LISTENING: 2;
@@ -1399,6 +1401,14 @@ declare namespace Eris {
         STICKER_CREATE:           90;
         STICKER_UPDATE:           91;
         STICKER_DELETE:           92;
+
+        THREAD_CREATE:            110;
+        THREAD_UPDATE:            111;
+        THREAD_DELETE:            112;
+
+        THREAD_CREATE:            110;
+        THREAD_UPDATE:            111;
+        THREAD_DELETE:            112;
     };
     ButtonStyles: {
         PRIMARY:   1;
@@ -1408,14 +1418,20 @@ declare namespace Eris {
         LINK:      5;
     };
     ChannelTypes: {
-        GUILD_TEXT:     0;
-        DM:             1;
-        GUILD_VOICE:    2;
-        GROUP_DM:       3;
-        GUILD_CATEGORY: 4;
-        GUILD_NEWS:     5;
-        GUILD_STORE:    6;
-        GUILD_STAGE:    13;
+        GUILD_TEXT:           0;
+        DM:                   1;
+        GUILD_VOICE:          2;
+        GROUP_DM:             3;
+        GUILD_CATEGORY:       4;
+        GUILD_NEWS:           5;
+        GUILD_STORE:          6;
+
+        GUILD_NEWS_THREAD:    10;
+        GUILD_PUBLIC_THREAD:  11;
+        GUILD_PRIVATE_THREAD: 12;
+        GUILD_STAGE_VOICE:    13;
+        /** @deprecated */
+        GUILD_STAGE:          13;
     };
     ComponentTypes: {
         ACTION_ROW:  1;
@@ -1433,20 +1449,26 @@ declare namespace Eris {
     };
     GATEWAY_VERSION: 8;
     GatewayOPCodes: {
-        EVENT:              0;
-        HEARTBEAT:          1;
-        IDENTIFY:           2;
-        STATUS_UPDATE:      3;
-        VOICE_STATE_UPDATE: 4;
-        VOICE_SERVER_PING:  5;
-        RESUME:             6;
-        RECONNECT:          7;
-        GET_GUILD_MEMBERS:  8;
-        INVALID_SESSION:    9;
-        HELLO:              10;
-        HEARTBEAT_ACK:      11;
-        SYNC_GUILD:         12;
-        SYNC_CALL:          13;
+        DISPATCH:              0;
+        /** @deprecated */
+        EVENT:                 0;
+        HEARTBEAT:             1;
+        IDENTIFY:              2;
+        PRESENCE_UPDATE:       3;
+        /** @deprecated */
+        STATUS_UPDATE:         3;
+        VOICE_STATE_UPDATE:    4;
+        VOICE_SERVER_PING:     5;
+        RESUME:                6;
+        RECONNECT:             7;
+        REQUEST_GUILD_MEMBERS: 8;
+        /** @deprecated */
+        GET_GUILD_MEMBERS:     8;
+        INVALID_SESSION:       9;
+        HELLO:                 10;
+        HEARTBEAT_ACK:         11;
+        SYNC_GUILD:            12;
+        SYNC_CALL:             13;
     };
     GuildFeatures: [
         "ANIMATED_ICON",
@@ -1551,6 +1573,7 @@ declare namespace Eris {
         SUPPRESS_EMBEDS:        4;
         SOURCE_MESSAGE_DELETED: 8;
         URGENT:                 16;
+        HAS_THREAD:             32;
         EPHEMERAL:              64;
         LOADING:                128;
     };
@@ -1630,7 +1653,13 @@ declare namespace Eris {
         /** @deprecated */
         useSlashCommands:        2147483648n;
         voiceRequestToSpeak:     4294967296n;
+        manageEvents:            8589934592n;
+        manageThreads:           17179869184n;
+        createPublicThreads:     34359738368n;
+        createPrivateThreads:    68719476736n;
         useExternalStickers:     137438953472n;
+        sendMessagesInThreads:   274877906944n;
+        startEmbeddedActivities: 549755813888n;
         allGuild:                2080899262n;
         allText:                 140392266833n;
         allVoice:                4629464849n;
@@ -1680,24 +1709,42 @@ declare namespace Eris {
     ];
     UserFlags: {
         NONE:                         0;
+        STAFF:                        1;
+        /** @deprecated */
         DISCORD_EMPLOYEE:             1;
+        PARTNER:                      2;
+        /** @deprecated */
         PARTNERED_SERVER_OWNER:       2;
         /** @deprecated */
         DISCORD_PARTNER:              2;
+        HYPESQUAD:                    4;
+        /** @deprecated */
         HYPESQUAD_EVENTS:             4;
         BUG_HUNTER_LEVEL_1:           8;
+        HYPESQUAD_ONLINE_HOUSE_1:     64;
         HOUSE_BRAVERY:                64;
+        HYPESQUAD_ONLINE_HOUSE_2:     128;
         HOUSE_BRILLIANCE:             128;
+        HYPESQUAD_ONLINE_HOUSE_3:     256;
         HOUSE_BALANCE:                256;
+        PREMIUM_EARLY_SUPPORTER:      512;
+        /** @deprecated */
         EARLY_SUPPORTER:              512;
+        TEAM_PSEUDO_USER:             1024;
+        /** @deprecated */
         TEAM_USER:                    1024;
         SYSTEM:                       4096;
         BUG_HUNTER_LEVEL_2:           16384;
         VERIFIED_BOT:                 65536;
-        EARLY_VERIFIED_BOT_DEVELOPER: 131072;
+        VERIFIED_DEVELOPER:           131072;
         /** @deprecated */
         VERIFIED_BOT_DEVELOPER:       131072;
+        /** @deprecated */
+        EARLY_VERIFIED_BOT_DEVELOPER: 131072;
+        CERTIFIED_MODERATOR:  262144;
+        /** @deprecated */
         DISCORD_CERTIFIED_MODERATOR:  262144;
+        BOT_HTTP_INTERACTIONS:        524288;
     };
     VerificationLevels: {
         NONE:      0;
@@ -1721,11 +1768,10 @@ declare namespace Eris {
         RESUME:              7;
         HELLO:               8;
         RESUMED:             9;
+        CLIENT_DISCONNECT:   13;
         /** @deprecated */
         DISCONNECT:          13;
-        CLIENT_DISCONNECT:   13;
-    };
-    
+    }; 
   }
 
   // Selfbot
