@@ -1410,6 +1410,8 @@ declare namespace Eris {
     user: PartialUser;
   }
   interface Constants {
+    GATEWAY_VERSION: 9;
+    REST_VERSION: 9;
     ActivityTypes: {
       GAME:      0;
       STREAMING: 1;
@@ -1538,7 +1540,6 @@ declare namespace Eris {
       MEMBERS_WITHOUT_ROLES: 1;
       ALL_MEMBERS:           2;
     };
-    GATEWAY_VERSION: 9;
     GatewayOPCodes: {
       DISPATCH:              0;
       /** @deprecated */
@@ -1770,7 +1771,6 @@ declare namespace Eris {
       NITRO_CLASSIC: 1;
       NITRO:         2;
     };
-    REST_VERSION: 9;
     StickerFormats: {
       PNG:    1;
       APNG:   2;
