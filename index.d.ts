@@ -1799,10 +1799,10 @@ declare namespace Eris {
       "Yay you made it, %user%!"
     ];
     ThreadMemberFlags: {
-      HAS_INTERACTED: 1,
-      ALL_MESSAGES:   2,
-      ONLY_MENTIONS:  4,
-      NO_MESSAGES:    8
+      HAS_INTERACTED: 1;
+      ALL_MESSAGES:   2;
+      ONLY_MENTIONS:  4;
+      NO_MESSAGES:    8;
     };
     UserFlags: {
       NONE:                         0;
