@@ -1441,21 +1441,22 @@ declare namespace Eris {
       "FEATURABLE",
       "INVITE_SPLASH",
       "MEMBER_VERIFICATION_GATE_ENABLED",
+      "MONETIZATION_ENABLED",
+      "MORE_STICKERS",
       "NEWS",
       "PARTNERED",
       "PREVIEW_ENABLED",
+      "PRIVATE_THREADS",
+      "ROLE_ICONS",
+      "ROLE_SUBSCRIPTIONS_ENABLED",
+      "SEVEN_DAY_THREAD_ARCHIVE",
+      "THREADS_ENABLED_TESTING",
+      "THREE_DAY_THREAD_ARCHIVE",
+      "TICKETED_EVENTS_ENABLED",
       "VANITY_URL",
       "VERIFIED",
       "VIP_REGIONS",
-      "WELCOME_SCREEN_ENABLED",
-      "TICKETED_EVENTS_ENABLED",
-      "MONETIZATION_ENABLED",
-      "MORE_STICKERS",
-      "THREE_DAY_THREAD_ARCHIVE",
-      "SEVEN_DAY_THREAD_ARCHIVE",
-      "PRIVATE_THREADS",
-      "THREADS_ENABLED_TESTING",
-      "ROLE_ICONS"
+      "WELCOME_SCREEN_ENABLED"
     ];
     GuildNSFWLevels: {
       DEFAULT: 0;
@@ -1714,23 +1715,6 @@ declare namespace Eris {
     ApplicationCommandPermissionTypes: {
       ROLE: 1;
       USER: 2;
-    };
-    ApplicationCommandTypes: {
-      CHAT_INPUT: 1;
-      USER:       2;
-      MESSAGE:    3;
-    };
-    ComponentTypes: {
-      ACTION_ROW:  1;
-      BUTTON:      2;
-      SELECT_MENU: 3;
-    };
-    ButtonStyles: {
-      PRIMARY:   1;
-      SECONDARY: 2;
-      SUCCESS:   3;
-      DANGER:    4;
-      LINK:      5;
     };
   }
 
