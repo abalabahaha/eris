@@ -2415,7 +2415,7 @@ declare namespace Eris {
     joinedAt: number;
     large: boolean;
     maxMembers: number;
-    maxPresences: number;
+    maxPresences?: number | null;
     maxVideoChannelUsers?: number;
     memberCount: number;
     members: Collection<Member>;
@@ -2426,6 +2426,7 @@ declare namespace Eris {
     nsfwLevel: NSFWLevel;
     ownerID: string;
     preferredLocale: string;
+    premiumProgressBarEnabled: boolean;
     premiumSubscriptionCount?: number;
     premiumTier: PremiumTier;
     primaryCategory?: DiscoveryCategory;
@@ -3061,7 +3062,7 @@ declare namespace Eris {
     requestMembersPromise: { [s: string]: RequestMembersPromise };
     seq: number;
     sessionID: string | null;
-    status: "disconnected" | "connecting" | "handshaking" | "ready" | "resuming";
+    status: "connecting" | "disconnected" | "handshaking" | "identifying" | "ready" | "resuming";
     unsyncedGuilds: number;
     ws: WebSocket | BrowserWebSocket | null;
     constructor(id: number, client: Client);
