@@ -44,8 +44,7 @@ rules:
     groups:
       screaming-snake-case-static-properties:
       - name: "/^[A-Z_0-9]+$/"
-      - type: property
-        sort: none
+        type: property
         static: true
       alphabetical-static-properties:
       - type: property
@@ -58,6 +57,7 @@ rules:
       alphabetical-methods:
       - type: method
         sort: alphabetical
+        static: false
       alphabetical-properties:
       - type: property
         sort: alphabetical
