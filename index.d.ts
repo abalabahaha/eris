@@ -969,7 +969,7 @@ declare namespace Eris {
   // Invite
   interface CreateChannelInviteOptions extends CreateInviteOptions {
     targetApplicationID?: string;
-    targetType?: 1 | 2;
+    targetType?: Constants["InviteTargetTypes"][keyof Constants["InviteTargetTypes"]];
     targetUserID?: string;
   }
   interface CreateInviteOptions {
