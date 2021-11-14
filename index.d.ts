@@ -1491,9 +1491,15 @@ declare namespace Eris {
       STICKER_UPDATE:           91;
       STICKER_DELETE:           92;
 
+      GUILD_SCHEDULED_EVENT_CREATE: 100;
+      GUILD_SCHEDULED_EVENT_UPDATE: 101;
+      GUILD_SCHEDULED_EVENT_DELETE: 102;
+
       THREAD_CREATE:            110;
       THREAD_UPDATE:            111;
       THREAD_DELETE:            112;
+
+      APPLICATION_COMMAND_PERMISSION_UPDATE: 121;
     };
     ButtonStyles: {
       PRIMARY:   1;
@@ -1792,6 +1798,12 @@ declare namespace Eris {
       "Good to see you, %user%.",
       "Yay you made it, %user%!"
     ];
+    ThreadMemberFlags: {
+      HAS_INTERACTED: 1,
+      ALL_MESSAGES:   2,
+      ONLY_MENTIONS:  4,
+      NO_MESSAGES:    8
+    };
     UserFlags: {
       NONE:                         0;
       STAFF:                        1;
@@ -3441,6 +3453,7 @@ declare namespace Eris {
   }
 
   export class ThreadMember extends Base {
+    flags: number;
     guildMember?: Member;
     joinTimestamp: number;
     threadID: string;
