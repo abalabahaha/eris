@@ -60,6 +60,7 @@ declare namespace Eris {
   type PremiumTier = Constants["PremiumTiers"][keyof Constants["PremiumTiers"]];
   type VerificationLevel = Constants["VerificationLevels"][keyof Constants["VerificationLevels"]];
   type SystemChannelFlags = Constants["SystemChannelFlags"][keyof Constants["SystemChannelFlags"]];
+  type GuildIntegrationTypes = Constants["GuildIntegrationTypes"][number];
 
   // Message
   type ActionRowComponents = Button | SelectMenu;
@@ -1587,6 +1588,11 @@ declare namespace Eris {
       "VIP_REGIONS",
       "WELCOME_SCREEN_ENABLED"
     ];
+    GuildIntegrationTypes: [
+      "twitch",
+      "youtube",
+      "discord"
+    ];
     GuildNSFWLevels: {
       DEFAULT:        0;
       EXPLICIT:       1;
@@ -2757,6 +2763,7 @@ declare namespace Eris {
     permissionsOf(memberID: string | Member | MemberRoles): Permission;
   }
 
+
   export class GuildIntegration extends Base {
     account: { id: string; name: string };
     application?: IntegrationApplication;
@@ -2772,7 +2779,7 @@ declare namespace Eris {
     subscriberCount?: number;
     syncedAt?: number;
     syncing?: boolean;
-    type: string;
+    type: GuildIntegrationTypes;
     user?: User;
     constructor(data: BaseData, guild: Guild);
     delete(): Promise<void>;
