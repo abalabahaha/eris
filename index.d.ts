@@ -3304,6 +3304,7 @@ declare namespace Eris {
 
   export class ThreadMember extends Base {
     client: Client;
+    guildMember?: Member;
     joinTimestamp: number;
     threadID: string;
     constructor(data: BaseData, client: Client);
