@@ -1537,8 +1537,8 @@ declare namespace Eris {
       SELECT_MENU: 3;
     };
     ConnectionVisibilityTypes: {
-      NONE:     0,
-      EVERYONE: 1
+      NONE:     0;
+      EVERYONE: 1;
     };
     DefaultMessageNotificationLevels: {
       ALL_MESSAGES:  0;
