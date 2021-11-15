@@ -366,15 +366,15 @@ declare namespace Eris {
     unpinMessage(messageID: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
   }
-  // @ts-ignore ts(2430) - ThreadTextable can't properly extend Textable because of getMessageReaction deprecated overload
   interface ThreadTextable extends Textable {
     lastPinTimestamp?: number;
-    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<ThreadChannel>>;
-    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<ThreadChannel>>;
-    getMessage(messageID: string): Promise<Message<ThreadChannel>>;
-    getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
-    getMessages(options?: GetMessagesOptions): Promise<Message<ThreadChannel>[]>;
-    getPins(): Promise<Message<ThreadChannel>[]>;
+    deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
+    getMembers(): Promise<ThreadMember[]>;
+    join(userID: string): Promise<void>;
+    leave(userID: string): Promise<void>;
+    purge(options: PurgeChannelOptions): Promise<number>;
+    removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
+    removeMessageReactions(messageID: string): Promise<void>;
   }
   interface WebhookData {
     channelID: string;
