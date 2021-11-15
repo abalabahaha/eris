@@ -57,6 +57,7 @@ declare namespace Eris {
   type DefaultNotifications = Constants["DefaultMessageNotificationLevels"][keyof Constants["DefaultMessageNotificationLevels"]];
   type ExplicitContentFilter = Constants["ExplicitContentFilterLevels"][keyof Constants["ExplicitContentFilterLevels"]];
   type GuildEventEntityTypes = Constants["GuildEventEntityTypes"][keyof Constants["GuildEventEntityTypes"]];
+  type GuildEventPrivacyLevel = Constants["GuildEventPrivacyLevel"][keyof Constants["GuildEventPrivacyLevel"]];
   type GuildEventStatus = Constants["GuildEventStatus"][keyof Constants["GuildEventStatus"]];
   type GuildFeatures = Constants["GuildFeatures"][number];
   type NSFWLevel = Constants["GuildNSFWLevels"][keyof Constants["GuildNSFWLevels"]];
@@ -1919,6 +1920,10 @@ declare namespace Eris {
       VOICE: 2;
       LOCATION: 3;
     };
+    GuildEventPrivacyLevel: {
+      PUBLIC: 1;
+      GUILD_ONLY: 2;
+    };
     WebhookTypes: {
       INCOMING:         1;
       CHANNEL_FOLLOWER: 2;
@@ -3680,13 +3685,14 @@ declare namespace Eris {
     entityMetadata: GuildEventMetadata;
     entityType: GuildEventEntityTypes;
     guildID: string;
+    creatorID: string;    
     id: string;
-    image: string;
     name: string;
-    privacyLevel: number;
+    privacyLevel: GuildEventPrivacyLevel;
     scheduledEndTime: number;
     scheduledStartTime: number;
     status: GuildEventStatus;
+    creator?: User;
     userCount?: number;
     delete(): Promise<void>;
     edit(event: GuildEventOptions): Promise<GuildEvent>;
