@@ -22,8 +22,8 @@ declare namespace Eris {
   type AnyChannel = AnyGuildChannel | PrivateChannel;
   type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel | StoreChannel;
   type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
-  type AnyVoiceChannel = VoiceChannel | StageChannel;
-  type GuildTextableChannel = TextChannel | NewsChannel;
+  type AnyVoiceChannel = GuildVoiceChannel | StageChannel;
+  type GuildTextableChannel = TextChannel | NewsChannel | GuildVoiceChannel;
   type GuildTextableWithThread = GuildTextableChannel | AnyThreadChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
   type PossiblyUncachedTextable = Textable | Uncached;
@@ -2873,6 +2873,34 @@ declare namespace Eris {
     edit(options: GuildTemplateOptions): Promise<GuildTemplate>;
     sync(): Promise<GuildTemplate>;
     toJSON(props?: string[]): JSONCache;
+  }
+
+  export class GuildVoiceChannel extends VoiceChannel implements Omit<GuildTextable, 'lastPinTimestamp' | 'getPins' | 'pinMessage' | 'unpinMessage' | 'topic'> {
+	lastMessageID: string;
+    messages: Collection<Message<this>>;
+    rateLimitPerUser: number;
+    addMessageReaction(messageID: string, reaction: string): Promise<void>;
+    /** @deprecated */
+    addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
+	createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
+    deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
+	deleteMessage(messageID: string, reason?: string): Promise<void>;
+    editMessage(messageID: string, content: MessageContentEdit): Promise<Message>;
+    getMessage(messageID: string): Promise<Message>;
+    getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
+    /** @deprecated */
+    getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
+    getMessages(options?: GetMessagesOptions): Promise<Message[]>;
+    /** @deprecated */
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
+    getWebhooks(): Promise<Webhook[]>;
+    purge(options: PurgeChannelOptions): Promise<number>;
+	removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
+    removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
+    removeMessageReactions(messageID: string): Promise<void>;
+    sendTyping(): Promise<void>;
+	unsendMessage(messageID: string): Promise<void>;
   }
 
   //Interaction
