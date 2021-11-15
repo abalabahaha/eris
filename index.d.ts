@@ -3686,8 +3686,6 @@ declare namespace Eris {
     privacyLevel: number;
     scheduledEndTime: number;
     scheduledStartTime: number;
-    skuIDs: string[];
-    skus: string[];
     status: GuildEventStatus;
     userCount?: number;
     delete(): Promise<void>;
