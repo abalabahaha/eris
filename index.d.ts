@@ -255,12 +255,6 @@ declare namespace Eris {
     channel_id: string;
     webhook_id: string;
   }
-  interface CreateChannelInviteOptions {
-    maxAge?: number;
-    maxUses?: number;
-    temporary?: boolean;
-    unique?: boolean;
-  }
   interface CreateChannelOptions {
     bitrate?: number;
     nsfw?: boolean;
@@ -980,6 +974,11 @@ declare namespace Eris {
   }
 
   // Invite
+  interface CreateChannelInviteOptions extends CreateInviteOptions {
+    targetApplicationID?: string;
+    targetType?: Constants["InviteTargetTypes"][keyof Constants["InviteTargetTypes"]];
+    targetUserID?: string;
+  }
   interface CreateInviteOptions {
     maxAge?: number;
     maxUses?: number;
