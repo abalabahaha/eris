@@ -3134,12 +3134,6 @@ declare namespace Eris {
 
   export class NewsThreadChannel extends ThreadChannel {
     type: Constants["ChannelTypes"]["GUILD_NEWS_THREAD"];
-    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<NewsThreadChannel>>;
-    edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
-    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<NewsThreadChannel>>;
-    getMessage(messageID: string): Promise<Message<NewsThreadChannel>>;
-    getMessages(options?: GetMessagesOptions): Promise<Message<NewsThreadChannel>[]>;
-    getPins(): Promise<Message<NewsThreadChannel>[]>;
   }
 
   export class Permission extends Base {
@@ -3208,22 +3202,11 @@ declare namespace Eris {
   export class PrivateThreadChannel extends ThreadChannel {
     threadMetadata: PrivateThreadMetadata;
     type: Constants["ChannelTypes"]["GUILD_PRIVATE_THREAD"];
-    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<PrivateThreadChannel>>;
-    edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "invitable" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
-    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<PrivateThreadChannel>>;
-    getMessage(messageID: string): Promise<Message<PrivateThreadChannel>>;
-    getMessages(options?: GetMessagesOptions): Promise<Message<PrivateThreadChannel>[]>;
-    getPins(): Promise<Message<PrivateThreadChannel>[]>;
   }
 
   export class PublicThreadChannel extends ThreadChannel {
     type: GuildPublicThreadChannelTypes;
-    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<PublicThreadChannel>>;
     edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
-    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<PublicThreadChannel>>;
-    getMessage(messageID: string): Promise<Message<PublicThreadChannel>>;
-    getMessages(options?: GetMessagesOptions): Promise<Message<PublicThreadChannel>[]>;
-    getPins(): Promise<Message<PublicThreadChannel>[]>;
   }
 
   export class Relationship extends Base implements Omit<Presence, "activities"> {
