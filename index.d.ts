@@ -1051,7 +1051,6 @@ declare namespace Eris {
     allowedMentions?: AllowedMentions;
     components?: ActionRow[];
     content?: string;
-    /** @deprecated */
     embed?: EmbedOptions;
     embeds?: EmbedOptions[];
     flags?: number;
@@ -1372,6 +1371,7 @@ declare namespace Eris {
     avatarURL?: string;
     components?: ActionRow[];
     content?: string;
+    embed?: EmbedOptions;
     embeds?: EmbedOptions[];
     file?: FileContent | FileContent[];
     flags?: number;
