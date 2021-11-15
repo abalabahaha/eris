@@ -7,7 +7,7 @@ import { URL } from "url";
 import { Socket as DgramSocket } from "dgram";
 import * as WebSocket from "ws";
 
-declare function Eris(token: string, options: Eris.ClientOptions): Eris.Client;
+declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
 
 declare namespace Eris {
   export const Constants: Constants;
@@ -2071,7 +2071,7 @@ declare namespace Eris {
     users: Collection<User>;
     userSettings: UserSettings;
     voiceConnections: VoiceConnectionManager;
-    constructor(token: string, options: ClientOptions);
+    constructor(token: string, options?: ClientOptions);
     acceptInvite(inviteID: string): Promise<Invite<"withoutCount">>;
     addGroupRecipient(groupID: string, userID: string): Promise<void>;
     addGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
