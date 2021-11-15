@@ -713,9 +713,9 @@ declare namespace Eris {
     channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldGuildVoiceChannel]
     | [channel: GroupChannel, oldChannel: OldGroupChannel];
     connect: [id: number];
-    debug: [message: string, id: number];
+    debug: [message: string, id?: number];
     disconnect: [];
-    error: [err: Error, id: number];
+    error: [err: Error, id?: number];
     friendSuggestionCreate: [user: User, reasons: FriendSuggestionReasons];
     friendSuggestionDelete: [user: User];
     guildAvailable: [guild: Guild];
@@ -766,13 +766,13 @@ declare namespace Eris {
     typingStart: [channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member]
     | [channel: PrivateChannel | Uncached, user: User | Uncached, member: null];
     unavailableGuildCreate: [guild: UnavailableGuild];
-    unknown: [packet: RawPacket, id: number];
+    unknown: [packet: RawPacket, id?: number];
     userUpdate: [user: User, oldUser: PartialUser | null];
     voiceChannelJoin: [member: Member, channel: AnyVoiceChannel];
     voiceChannelLeave: [member: Member, channel: AnyVoiceChannel];
     voiceChannelSwitch: [member: Member, newChannel: AnyVoiceChannel, oldChannel: AnyVoiceChannel];
     voiceStateUpdate: [member: Member, oldState: OldVoiceState];
-    warn: [message: string, id: number];
+    warn: [message: string, id?: number];
     webhooksUpdate: [data: WebhookData];
   }
   interface ClientEvents extends EventListeners {
@@ -1474,7 +1474,7 @@ declare namespace Eris {
       MESSAGE:    3;
     };
     AuditLogActions: {
-      GUILD_UPDATE:             1;
+      GUILD_UPDATE: 1;
 
       CHANNEL_CREATE:           10;
       CHANNEL_UPDATE:           11;
@@ -1483,55 +1483,55 @@ declare namespace Eris {
       CHANNEL_OVERWRITE_UPDATE: 14;
       CHANNEL_OVERWRITE_DELETE: 15;
 
-      MEMBER_KICK:              20;
-      MEMBER_PRUNE:             21;
-      MEMBER_BAN_ADD:           22;
-      MEMBER_BAN_REMOVE:        23;
-      MEMBER_UPDATE:            24;
-      MEMBER_ROLE_UPDATE:       25;
-      MEMBER_MOVE:              26;
-      MEMBER_DISCONNECT:        27;
-      BOT_ADD:                  28;
+      MEMBER_KICK:        20;
+      MEMBER_PRUNE:       21;
+      MEMBER_BAN_ADD:     22;
+      MEMBER_BAN_REMOVE:  23;
+      MEMBER_UPDATE:      24;
+      MEMBER_ROLE_UPDATE: 25;
+      MEMBER_MOVE:        26;
+      MEMBER_DISCONNECT:  27;
+      BOT_ADD:            28;
 
-      ROLE_CREATE:              30;
-      ROLE_UPDATE:              31;
-      ROLE_DELETE:              32;
+      ROLE_CREATE: 30;
+      ROLE_UPDATE: 31;
+      ROLE_DELETE: 32;
 
-      INVITE_CREATE:            40;
-      INVITE_UPDATE:            41;
-      INVITE_DELETE:            42;
+      INVITE_CREATE: 40;
+      INVITE_UPDATE: 41;
+      INVITE_DELETE: 42;
 
-      WEBHOOK_CREATE:           50;
-      WEBHOOK_UPDATE:           51;
-      WEBHOOK_DELETE:           52;
+      WEBHOOK_CREATE: 50;
+      WEBHOOK_UPDATE: 51;
+      WEBHOOK_DELETE: 52;
 
-      EMOJI_CREATE:             60;
-      EMOJI_UPDATE:             61;
-      EMOJI_DELETE:             62;
+      EMOJI_CREATE: 60;
+      EMOJI_UPDATE: 61;
+      EMOJI_DELETE: 62;
 
-      MESSAGE_DELETE:           72;
-      MESSAGE_BULK_DELETE:      73;
-      MESSAGE_PIN:              74;
-      MESSAGE_UNPIN:            75;
+      MESSAGE_DELETE:      72;
+      MESSAGE_BULK_DELETE: 73;
+      MESSAGE_PIN:         74;
+      MESSAGE_UNPIN:       75;
 
-      INTEGRATION_CREATE:       80;
-      INTEGRATION_UPDATE:       81;
-      INTEGRATION_DELETE:       82;
-      STAGE_INSTANCE_CREATE:    83;
-      STAGE_INSTANCE_UPDATE:    84;
-      STAGE_INSTANCE_DELETE:    85;
+      INTEGRATION_CREATE:    80;
+      INTEGRATION_UPDATE:    81;
+      INTEGRATION_DELETE:    82;
+      STAGE_INSTANCE_CREATE: 83;
+      STAGE_INSTANCE_UPDATE: 84;
+      STAGE_INSTANCE_DELETE: 85;
 
-      STICKER_CREATE:           90;
-      STICKER_UPDATE:           91;
-      STICKER_DELETE:           92;
+      STICKER_CREATE: 90;
+      STICKER_UPDATE: 91;
+      STICKER_DELETE: 92;
 
       GUILD_SCHEDULED_EVENT_CREATE: 100;
       GUILD_SCHEDULED_EVENT_UPDATE: 101;
       GUILD_SCHEDULED_EVENT_DELETE: 102;
 
-      THREAD_CREATE:            110;
-      THREAD_UPDATE:            111;
-      THREAD_DELETE:            112;
+      THREAD_CREATE: 110;
+      THREAD_UPDATE: 111;
+      THREAD_DELETE: 112;
 
       APPLICATION_COMMAND_PERMISSION_UPDATE: 121;
     };
