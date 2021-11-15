@@ -93,6 +93,7 @@ declare namespace Eris {
     name: string;
     type: T;
     value: V;
+    focused?: boolean;
   }
   type InteractionDataOptionsString = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["STRING"], string>;
   type InteractionDataOptionsInteger = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["INTEGER"], number>;
@@ -119,14 +120,12 @@ declare namespace Eris {
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"];
     name: string;
     description: string;
-    required?: boolean;
     options?: ApplicationCommandOptionsWithValue[];
   }
   interface ApplicationCommandOptionsSubCommandGroup {
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"];
     name: string;
     description: string;
-    required?: boolean;
     options?: (ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsWithValue)[];
   }
   interface ApplicationCommandOptionChoice<T extends (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">] | unknown
@@ -146,6 +145,17 @@ declare namespace Eris {
     choices?: ApplicationCommandOptionChoice<T>[];
     autocomplete?: boolean;
   }
+  interface ApplicationCommandOptionWithMinMax<T extends (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "INTEGER" | "NUMBER">]
+  = (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "INTEGER" | "NUMBER">]> {
+    type: T;
+    name: string;
+    description: string;
+    required?: boolean;
+    choices?: ApplicationCommandOptionChoice<T>[];
+    autocomplete?: boolean;
+    min_value?: number;
+    max_value?: number;
+  }
   interface ApplicationCommandOption<T extends (Constants["ApplicationCommandOptionTypes"])[Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">]> {
     type: T;
     name: string;
@@ -160,11 +170,20 @@ declare namespace Eris {
   type ApplicationCommandOptionsStringWithoutAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["STRING"]>, "autocomplete">
   & { autocomplete?: false };
   // Integer
-  type ApplicationCommandOptionsInteger = ApplicationCommandOptionsIntegerWithAutocomplete | ApplicationCommandOptionsIntegerWithoutAutocomplete;
-  type ApplicationCommandOptionsIntegerWithAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>, "choices">
+  type ApplicationCommandOptionsInteger = ApplicationCommandOptionsIntegerWithAutocomplete | ApplicationCommandOptionsIntegerWithoutAutocomplete | ApplicationCommandOptionsIntegerWithMinMax;
+  type ApplicationCommandOptionsIntegerWithAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>, "choices" | "min_value" | "max_value">
   & { autocomplete: true };
-  type ApplicationCommandOptionsIntegerWithoutAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>, "autocomplete">
-  & {  autocomplete?: false };
+  type ApplicationCommandOptionsIntegerWithoutAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>, "autocomplete" | "min_value" | "max_value">
+  & {
+    autocomplete?: false;
+    min_value?: null;
+    max_value?: null;
+  };
+  type ApplicationCommandOptionsIntegerWithMinMax = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>, "choices" | "autocomplete">
+  & {
+    autocomplete?: false;
+    choices?: null;
+  };
   // Boolean
   type ApplicationCommandOptionsBoolean = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
   // User
@@ -176,11 +195,20 @@ declare namespace Eris {
   // Mentionable
   type ApplicationCommandOptionsMentionable = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"]>;
   // Number
-  type ApplicationCommandOptionsNumber = ApplicationCommandOptionsNumberWithAutocomplete | ApplicationCommandOptionsNumberWithoutAutocomplete;
-  type ApplicationCommandOptionsNumberWithAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>, "choices">
+  type ApplicationCommandOptionsNumber = ApplicationCommandOptionsNumberWithAutocomplete | ApplicationCommandOptionsNumberWithoutAutocomplete | ApplicationCommandOptionsNumberWithMinMax;
+  type ApplicationCommandOptionsNumberWithAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>, "choices" | "min_value" | "max_value">
   & { autocomplete: true };
-  type ApplicationCommandOptionsNumberWithoutAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>, "autocomplete">
-  & { autocomplete?: false };
+  type ApplicationCommandOptionsNumberWithoutAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>, "autocomplete" | "min_value" | "max_value">
+  & {
+    autocomplete?: false;
+    min_value?: null;
+    max_value?: null;
+  };
+  type ApplicationCommandOptionsNumberWithMinMax = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>, "choices" | "autocomplete">
+  & {
+    autocomplete?: false;
+    choices?: null;
+  };
 
   interface ApplicationCommand<T extends (Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]]
   = (Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]]> {
@@ -2848,6 +2876,8 @@ declare namespace Eris {
   }
 
   //Interaction
+  type AnyInteraction = PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction;
+
   export class Interaction extends Base {
     acknowledged: boolean;
     applicationID: string;
@@ -2930,9 +2960,9 @@ declare namespace Eris {
     data: {
       id: string;
       name: string;
-      type: Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
+      type: Constants["ApplicationCommandTypes"]["CHAT_INPUT"];
       target_id?: string;
-      options?: InteractionDataOptions[];
+      options: InteractionDataOptions[];
     };
     guildID?: string;
     member?: Member;
