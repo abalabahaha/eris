@@ -3624,6 +3624,8 @@ declare namespace Eris {
     receive(type: "opus" | "pcm"): VoiceDataStream;
     registerReceiveEventHandler(): void;
     resume(): void;
+    sendAudioFrame(frame: Buffer): void;
+    sendUDPPacket(packet: Buffer): void;
     sendWS(op: number, data: Record<string, unknown>): void;
     setSpeaking(value: boolean): void;
     setVolume(volume: number): void;
