@@ -323,7 +323,6 @@ declare namespace Eris {
     purge(options: PurgeChannelOptions): Promise<number>;
     removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
-    sendTyping(): Promise<void>;
   }
   interface PartialChannel {
     bitrate?: number;
