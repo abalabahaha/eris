@@ -3468,9 +3468,6 @@ declare namespace Eris {
     unsendMessage(messageID: string): Promise<void>;
   }
 
-  type A<T extends TextableChannel> = T;
-  type B = A<PublicThreadChannel>;
-
   export class ThreadChannel extends GuildChannel implements ThreadTextable {
     lastMessageID: string;
     lastPinTimestamp?: number;
