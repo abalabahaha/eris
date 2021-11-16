@@ -3685,7 +3685,6 @@ declare namespace Eris {
     entityMetadata: GuildEventMetadata;
     entityType: GuildEventEntityTypes;
     guildID: string;
-    creatorID: string;    
     id: string;
     name: string;
     privacyLevel: GuildEventPrivacyLevel;
