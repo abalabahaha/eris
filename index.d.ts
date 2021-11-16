@@ -137,7 +137,7 @@ declare namespace Eris {
   type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
   type Status = "online" | "idle" | "dnd" | "offline";
 
-  // Selfbot  
+  // Selfbot
   type ConnectionVisibilityTypes = Constants["ConnectionVisibilityTypes"][keyof Constants["ConnectionVisibilityTypes"]];
 
   // Sticker
