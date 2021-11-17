@@ -2885,7 +2885,7 @@ declare namespace Eris {
     token: string;
     type: number;
     version: number;
-    from(data: BaseData): AnyInteraction;
+    static from(data: BaseData): AnyInteraction;
   }
 
   export class PingInteraction extends Interaction {
