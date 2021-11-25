@@ -11,9 +11,7 @@ rules:
     ignoreComments: false
   "@typescript-eslint/member-delimiter-style": 2
   "@typescript-eslint/no-explicit-any": 0
-  "@typescript-eslint/no-use-before-define":
-  - 2
-  - classes: false
+  "@typescript-eslint/consistent-type-definitions": 2
   "@typescript-eslint/semi":
   - 2
   - always
@@ -46,8 +44,7 @@ rules:
     groups:
       screaming-snake-case-static-properties:
       - name: "/^[A-Z_0-9]+$/"
-      - type: property
-        sort: none
+        type: property
         static: true
       alphabetical-static-properties:
       - type: property
@@ -60,6 +57,7 @@ rules:
       alphabetical-methods:
       - type: method
         sort: alphabetical
+        static: false
       alphabetical-properties:
       - type: property
         sort: alphabetical
