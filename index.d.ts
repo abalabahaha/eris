@@ -248,12 +248,6 @@ declare namespace Eris {
   // Permission
   type PermissionType = Constants["PermissionOverwriteTypes"][keyof Constants["PermissionOverwriteTypes"]];
 
-  // Presence/Relationship
-  type ActivityType = BotActivityType | Constants["ActivityTypes"]["CUSTOM"];
-  type BotActivityType = Constants["ActivityTypes"][Exclude<keyof Constants["ActivityTypes"], "CUSTOM">];
-  type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
-  type Status = "online" | "idle" | "dnd" | "offline";
-
   // Thread
   type AutoArchiveDuration = 60 | 1440 | 4320 | 10080;
 
@@ -745,13 +739,10 @@ declare namespace Eris {
     messageReactionRemoveAll: [message: PossiblyUncachedMessage];
     messageReactionRemoveEmoji: [message: PossiblyUncachedMessage, emoji: PartialEmoji];
     messageUpdate: [message: Message<PossiblyUncachedTextableChannel>, oldMessage: OldMessage | null];
-    presenceUpdate: [other: Member | Relationship, oldPresence: Presence | null];
+    presenceUpdate: [other: Member, oldPresence: Presence | null];
     rawREST: [request: RawRESTRequest];
     rawWS: [packet: RawPacket, id: number];
     ready: [];
-    relationshipAdd: [relationship: Relationship];
-    relationshipRemove: [relationship: Relationship];
-    relationshipUpdate: [relationship: Relationship, oldRelationship: { type: number }];
     shardPreReady: [id: number];
     stageInstanceCreate: [stageInstance: StageInstance];
     stageInstanceDelete: [stageInstance: StageInstance];
@@ -2063,7 +2054,6 @@ declare namespace Eris {
     privateChannels: Collection<PrivateChannel>;
     ready: boolean;
     reconnectAttempts: number;
-    relationships: Collection<Relationship>;
     requestHandler: RequestHandler;
     shards: ShardManager;
     startTime: number;
@@ -2071,7 +2061,6 @@ declare namespace Eris {
     unavailableGuilds: Collection<UnavailableGuild>;
     uptime: number;
     user: ExtendedUser;
-    userGuildSettings: { [s: string]: GuildSettings };
     users: Collection<User>;
     voiceConnections: VoiceConnectionManager;
     constructor(token: string, options?: ClientOptions);
@@ -2082,7 +2071,6 @@ declare namespace Eris {
     addMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(channelID: string, messageID: string, reaction: string, userID: string): Promise<void>;
-    addRelationship(userID: string, block?: boolean): Promise<void>;
     addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
     banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     bulkEditCommandPermissions(guildID: string, permissions: { id: string; permissions: ApplicationCommandPermissions[] }[]): Promise<GuildApplicationCommandPermissions[]>;
@@ -2443,7 +2431,6 @@ declare namespace Eris {
     removeMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactionEmoji(channelID: string, messageID: string, reaction: string): Promise<void>;
     removeMessageReactions(channelID: string, messageID: string): Promise<void>;
-    removeRelationship(userID: string): Promise<void>;
     searchChannelMessages(channelID: string, query: SearchOptions): Promise<SearchResults>;
     searchGuildMembers(guildID: string, query: string, limit?: number): Promise<Member[]>;
     searchGuildMessages(guildID: string, query: SearchOptions): Promise<SearchResults>;
@@ -3184,15 +3171,6 @@ declare namespace Eris {
     edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
   }
 
-  export class Relationship extends Base implements Omit<Presence, "activities"> {
-    activities: Activity[] | null;
-    clientStatus?: ClientStatus;
-    id: string;
-    status: Status;
-    type: number;
-    user: User;
-    constructor(data: BaseData, client: Client);
-  }
 
   export class RequestHandler implements SimpleJSON {
     globalBlock: boolean;
@@ -3502,14 +3480,10 @@ declare namespace Eris {
     system: boolean;
     username: string;
     constructor(data: BaseData, client: Client);
-    addRelationship(block?: boolean): Promise<void>;
-    deleteNote(): Promise<void>;
     dynamicAvatarURL(format?: ImageFormat, size?: number): string;
     dynamicBannerURL(format?: ImageFormat, size?: number): string | null;
-    editNote(note: string): Promise<void>;
     getDMChannel(): Promise<PrivateChannel>;
     getProfile(): Promise<UserProfile>;
-    removeRelationship(): Promise<void>;
   }
 
   export class VoiceChannel extends GuildChannel implements Invitable {

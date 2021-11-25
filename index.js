@@ -40,7 +40,6 @@ Eris.PingInteraction = require("./lib/structures/PingInteraction");
 Eris.PrivateChannel = require("./lib/structures/PrivateChannel");
 Eris.PrivateThreadChannel = require("./lib/structures/PrivateThreadChannel");
 Eris.PublicThreadChannel = require("./lib/structures/PublicThreadChannel");
-Eris.Relationship = require("./lib/structures/Relationship");
 Eris.RequestHandler = require("./lib/rest/RequestHandler");
 Eris.Role = require("./lib/structures/Role");
 Eris.SequentialBucket = require("./lib/util/SequentialBucket");

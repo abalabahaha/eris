@@ -39,7 +39,6 @@ export const {
   PrivateChannel,
   PrivateThreadChannel,
   PublicThreadChannel,
-  Relationship,
   RequestHandler,
   Role,
   SequentialBucket,
