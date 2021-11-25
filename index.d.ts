@@ -1926,18 +1926,6 @@ declare namespace Eris {
     verified: boolean;
     visibility: ConnectionVisibilityTypes;
   }
-  interface GuildSettings {
-    channel_override: {
-      channel_id: string;
-      message_notifications: number;
-      muted: boolean;
-    }[];
-    guild_id: string;
-    message_notifications: number;
-    mobile_push: boolean;
-    muted: boolean;
-    suppress_everyone: boolean;
-  }
   interface SearchOptions {
     attachmentExtensions?: string;
     attachmentFilename?: string;
