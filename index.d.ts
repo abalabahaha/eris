@@ -146,11 +146,6 @@ declare namespace Eris {
     type: T;
     name: string;
     description: string;
-    value:
-    T extends Constants["ApplicationCommandOptionTypes"]["STRING"] ? string :
-      T extends Constants["ApplicationCommandOptionTypes"]["INTEGER" | "NUMBER"] ? number :
-        T extends Constants["ApplicationCommandOptionTypes"]["BOOLEAN"] ? boolean :
-          never;
     required?: boolean;
   }
 
