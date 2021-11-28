@@ -198,7 +198,7 @@ declare namespace Eris {
     name: string;
     // I think never is the best we can do
     description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : never;
-    options?: (ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup)[] | ApplicationCommandOptionsWithValue[];
+    options?: ApplicationCommandOptions[];
     type: T;
     defaultPermission?: boolean;
   }
