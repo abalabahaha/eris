@@ -74,20 +74,21 @@ declare namespace Eris {
   type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
   type MessageContentEdit = string | AdvancedMessageContentEdit;
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
-  type InteractionType = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
 
   // Interaction
+  type InteractionType = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
   type InteractionDataOptions = InteractionDataOptionsSubCommand | InteractionDataOptionsSubCommandGroup | InteractionDataOptionsWithValue;
   type InteractionDataOptionsWithValue = InteractionDataOptionsString | InteractionDataOptionsInteger | InteractionDataOptionsBoolean | InteractionDataOptionsUser | InteractionDataOptionsChannel | InteractionDataOptionsRole | InteractionDataOptionsMentionable | InteractionDataOptionsNumber;
   interface InteractionDataOptionsSubCommand {
     name: string;
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"];
-    options?: InteractionDataOptions[];
+    options?: InteractionDataOptionsWithValue[];
   }
   interface InteractionDataOptionsSubCommandGroup {
     name: string;
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"];
-    options: InteractionDataOptions[];
+    // technically these can have zero options, but it will then not show in the client
+    options: (InteractionDataOptionsSubCommand | InteractionDataOptionsWithValue)[];
   }
   interface InteractionDataOptionWithValue<T extends (Constants["ApplicationCommandOptionTypes"])[Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">] = (Constants["ApplicationCommandOptionTypes"])[Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">], V = unknown> {
     name: string;
@@ -104,9 +105,23 @@ declare namespace Eris {
   type InteractionDataOptionsMentionable = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"], string>;
   type InteractionDataOptionsNumber = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["NUMBER"], number>;
 
-  interface InteractionOptions {
-    type: Constants["InteractionResponseTypes"][keyof Constants["InteractionResponseTypes"]];
-    data?: unknown;
+  type InteractionResponse = InteractionMessageResponse | InteractionDeferredResponse | InteractionAutocompleteResponse;
+
+  interface InteractionMessageResponse {
+    type: Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE"];
+    data: InteractionContent;
+  }
+
+  interface InteractionDeferredResponse {
+    type: Constants["InteractionResponseTypes"]["DEFERRED_UPDATE_MESSAGE" | "DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE"];
+    data: {
+      flags?: number;
+    };
+  }
+
+  interface InteractionAutocompleteResponse {
+    type: Constants["InteractionResponseTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE_RESULT"];
+    data: ApplicationCommandOptionChoice[]
   }
 
   type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
@@ -144,12 +159,12 @@ declare namespace Eris {
   }
 
   interface ApplicationCommandOptionChoices<T extends ApplicationCommandOptionTypesWithChoices = ApplicationCommandOptionTypesWithChoices> { choices?: ApplicationCommandOptionChoice<T>[] }
-  interface ApplicationCommandOptionChoice<T extends ApplicationCommandOptionTypesWithChoices> {
+  interface ApplicationCommandOptionChoice<T extends ApplicationCommandOptionTypesWithChoices = ApplicationCommandOptionTypesWithChoices> {
     name: string;
     value:
     T extends Constants["ApplicationCommandOptionTypes"]["STRING"] ? string :
       T extends Constants["ApplicationCommandOptionTypes"]["INTEGER" | "NUMBER"] ? number :
-        never;
+        string | number;
   }
 
   interface ApplicationCommandOptionMinMax {
@@ -2202,7 +2217,7 @@ declare namespace Eris {
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
-    createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionOptions, file?: FileContent | FileContent[]): Promise<void>;
+    createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionResponse, file?: FileContent | FileContent[]): Promise<void>;
     createMessage(channelID: string, content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
     createRole(guildID: string, options?: RoleOptions | Role, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
@@ -2950,7 +2965,7 @@ declare namespace Eris {
     message?: Message;
     type: number;
     user?: User;
-    acknowledge(data: InteractionOptions): Promise<void>;
+    acknowledge(data: InteractionResponse): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     defer(flags?: number): Promise<void>;
