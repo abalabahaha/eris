@@ -53,7 +53,6 @@ Eris.TextChannel = require("./lib/structures/TextChannel");
 Eris.ThreadChannel = require("./lib/structures/ThreadChannel");
 Eris.ThreadMember = require("./lib/structures/ThreadMember");
 Eris.UnavailableGuild = require("./lib/structures/UnavailableGuild");
-Eris.UnknownInteraction = require("./lib/structures/UnknownInteraction");
 Eris.User = require("./lib/structures/User");
 Eris.VERSION = require("./package.json").version;
 Eris.VoiceChannel = require("./lib/structures/VoiceChannel");
