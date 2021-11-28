@@ -114,111 +114,81 @@ declare namespace Eris {
   type InteractionEditContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components">;
 
   // Application Commands
+  type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
+  type ApplicationCommandOptionTypes = Constants["ApplicationCommandOptionTypes"][keyof Constants["ApplicationCommandOptionTypes"]];
+  type ApplicationCommandOptionTypesWithValue = Constants["ApplicationCommandOptionTypes"][Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">];
+  type ApplicationCommandOptionTypesWithChoices = Constants["ApplicationCommandOptionTypes"][keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">];
+  type ApplicationCommandOptionTypesWithAutocomplete = Constants["ApplicationCommandOptionTypes"][keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">];
+  type ApplicationCommandOptionTypesWithMinMax = Constants["ApplicationCommandOptionTypes"][keyof Pick<Constants["ApplicationCommandOptionTypes"], "INTEGER" | "NUMBER">];
+
   type ApplicationCommandOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup | ApplicationCommandOptionsWithValue;
   type ApplicationCommandOptionsWithValue = ApplicationCommandOptionsString | ApplicationCommandOptionsInteger | ApplicationCommandOptionsBoolean | ApplicationCommandOptionsUser | ApplicationCommandOptionsChannel | ApplicationCommandOptionsRole | ApplicationCommandOptionsMentionable | ApplicationCommandOptionsNumber;
+  type ApplicationCommandOptionsWithChoices = Extract<ApplicationCommandOptionsWithValue, { type: ApplicationCommandOptionTypesWithChoices; }>;
+  type ApplicationCommandOptionsWithAutocomplete = Extract<ApplicationCommandOptionsWithValue, { type: ApplicationCommandOptionTypesWithAutocomplete; }>;
+  type ApplicationCommandOptionsWithMinMax = Extract<ApplicationCommandOptionsWithValue, { type: ApplicationCommandOptionTypesWithMinMax; }>;
+
+  interface ApplicationCommandOptionsGeneric<T extends ApplicationCommandOptionTypesWithValue> {
+    type: T;
+    name: string;
+    description: string;
+    value:
+    T extends Constants["ApplicationCommandOptionTypes"]["STRING"] ? string :
+      T extends Constants["ApplicationCommandOptionTypes"]["INTEGER" | "NUMBER"] ? number :
+        T extends Constants["ApplicationCommandOptionTypes"]["BOOLEAN"] ? boolean :
+          never;
+    required?: boolean;
+  }
+
+  interface ApplicationCommandOptionAutocomplete {
+    autocomplete?: boolean;
+  }
+
+  type ApplicationCommandOptionChoices<T extends ApplicationCommandOptionTypesWithChoices = ApplicationCommandOptionTypesWithChoices> = { choices?: ApplicationCommandOptionChoice<T>[]; }
+  interface ApplicationCommandOptionChoice<T extends ApplicationCommandOptionTypesWithChoices> {
+    name: string;
+    value: 
+    T extends Constants["ApplicationCommandOptionTypes"]["STRING"] ? string :
+      T extends Constants["ApplicationCommandOptionTypes"]["INTEGER" | "NUMBER"] ? number :
+        never;
+  }
+
+  interface ApplicationCommandOptionMinMax {
+    min_value?: number;
+    max_value?: number;
+  }
+
   interface ApplicationCommandOptionsSubCommand {
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"];
     name: string;
     description: string;
     options?: ApplicationCommandOptionsWithValue[];
   }
+
   interface ApplicationCommandOptionsSubCommandGroup {
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"];
     name: string;
     description: string;
     options?: (ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsWithValue)[];
   }
-  interface ApplicationCommandOptionChoice<T extends (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">] | unknown
-  = unknown> {
-    name: string;
-    value: T extends Constants["ApplicationCommandOptionTypes"]["STRING"] ? string :
-      T extends Constants["ApplicationCommandOptionTypes"]["NUMBER"] ? number :
-        T extends Constants["ApplicationCommandOptionTypes"]["INTEGER"] ? number :
-          number | string;
-  }
-  interface ApplicationCommandOptionWithChoices<T extends (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">]
-  = (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">]> {
-    type: T;
-    name: string;
-    description: string;
-    required?: boolean;
-    choices?: ApplicationCommandOptionChoice<T>[];
-    autocomplete?: boolean;
-  }
-  interface ApplicationCommandOptionWithMinMax<T extends (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "INTEGER" | "NUMBER">]
-  = (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "INTEGER" | "NUMBER">]> {
-    type: T;
-    name: string;
-    description: string;
-    required?: boolean;
-    choices?: ApplicationCommandOptionChoice<T>[];
-    autocomplete?: boolean;
-    min_value?: number;
-    max_value?: number;
-  }
-  interface ApplicationCommandOption<T extends (Constants["ApplicationCommandOptionTypes"])[Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">]> {
-    type: T;
-    name: string;
-    description: string;
-    required?: boolean;
-  }
 
-  // String
-  type ApplicationCommandOptionsString = ApplicationCommandOptionsStringWithAutocomplete | ApplicationCommandOptionsStringWithoutAutocomplete;
-  type ApplicationCommandOptionsStringWithAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["STRING"]>, "choices">
-  & { autocomplete: true };
-  type ApplicationCommandOptionsStringWithoutAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["STRING"]>, "autocomplete">
-  & { autocomplete?: false };
-  // Integer
-  type ApplicationCommandOptionsInteger = ApplicationCommandOptionsIntegerWithAutocomplete | ApplicationCommandOptionsIntegerWithoutAutocomplete | ApplicationCommandOptionsIntegerWithMinMax;
-  type ApplicationCommandOptionsIntegerWithAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>, "choices" | "min_value" | "max_value">
-  & { autocomplete: true };
-  type ApplicationCommandOptionsIntegerWithoutAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>, "autocomplete" | "min_value" | "max_value">
-  & {
-    autocomplete?: false;
-    min_value?: null;
-    max_value?: null;
-  };
-  type ApplicationCommandOptionsIntegerWithMinMax = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>, "choices" | "autocomplete">
-  & {
-    autocomplete?: false;
-    choices?: null;
-  };
-  // Boolean
-  type ApplicationCommandOptionsBoolean = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
-  // User
-  type ApplicationCommandOptionsUser = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["USER"]>;
-  // Channel
-  type ApplicationCommandOptionsChannel = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["CHANNEL"]> & { channel_types?: ChannelTypes };
-  // Role
-  type ApplicationCommandOptionsRole = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["ROLE"]>;
-  // Mentionable
-  type ApplicationCommandOptionsMentionable = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"]>;
-  // Number
-  type ApplicationCommandOptionsNumber = ApplicationCommandOptionsNumberWithAutocomplete | ApplicationCommandOptionsNumberWithoutAutocomplete | ApplicationCommandOptionsNumberWithMinMax;
-  type ApplicationCommandOptionsNumberWithAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>, "choices" | "min_value" | "max_value">
-  & { autocomplete: true };
-  type ApplicationCommandOptionsNumberWithoutAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>, "autocomplete" | "min_value" | "max_value">
-  & {
-    autocomplete?: false;
-    min_value?: null;
-    max_value?: null;
-  };
-  type ApplicationCommandOptionsNumberWithMinMax = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>, "choices" | "autocomplete">
-  & {
-    autocomplete?: false;
-    choices?: null;
-  };
+  type ApplicationCommandOptionsString = ApplicationCommandOptionsGeneric<Constants["ApplicationCommandOptionTypes"]["STRING"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["STRING"]>);
+  type ApplicationCommandOptionsInteger = ApplicationCommandOptionsGeneric<Constants["ApplicationCommandOptionTypes"]["INTEGER"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]> | ApplicationCommandOptionMinMax);
+  type ApplicationCommandOptionsBoolean = ApplicationCommandOptionsGeneric<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
+  type ApplicationCommandOptionsUser = ApplicationCommandOptionsGeneric<Constants["ApplicationCommandOptionTypes"]["USER"]>;
+  type ApplicationCommandOptionsChannel = ApplicationCommandOptionsGeneric<Constants["ApplicationCommandOptionTypes"]["CHANNEL"]> & { channel_types?: number[]; };
+  type ApplicationCommandOptionsRole = ApplicationCommandOptionsGeneric<Constants["ApplicationCommandOptionTypes"]["ROLE"]>;
+  type ApplicationCommandOptionsMentionable = ApplicationCommandOptionsGeneric<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"]>;
+  type ApplicationCommandOptionsNumber = ApplicationCommandOptionsGeneric<Constants["ApplicationCommandOptionTypes"]["NUMBER"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]> | ApplicationCommandOptionMinMax);
 
-  interface ApplicationCommand<T extends (Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]]
-  = (Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]]> {
+
+  interface ApplicationCommand<T extends ApplicationCommandTypes = ApplicationCommandTypes> {
     id: string;
     application_id: string;
     guild_id?: string;
     name: string;
     // I think never is the best we can do
     description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : never;
-    options?: ApplicationCommandOptions[];
+    options?: (ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup)[] | ApplicationCommandOptionsWithValue[];
     type: T;
     defaultPermission?: boolean;
   }
@@ -2916,7 +2886,7 @@ declare namespace Eris {
     user?: User;
     acknowledge(flags?: number): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
-    createMessage(content: string | InteractionContent , file?: FileContent | FileContent[]): Promise<void>;
+    createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     defer(flags?: number): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
@@ -2969,8 +2939,8 @@ declare namespace Eris {
     member?: Member;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE"];
     user?: User;
-    acknowledge(choices: ApplicationCommandOptionChoice[]): Promise<void>;
-    result(choices: ApplicationCommandOptionChoice[]): Promise<void>;
+    acknowledge(choices: ApplicationCommandOptionChoices): Promise<void>;
+    result(choices: ApplicationCommandOptionChoices): Promise<void>;
   }
   export class UnknownInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
     channel?: T;
@@ -2992,7 +2962,7 @@ declare namespace Eris {
     editParent(content: InteractionEditContent, file?: FileContent | FileContent[]): Promise<void>;
     getOriginalMessage(): Promise<Message>
     pong(): Promise<void>;
-    result(choices: ApplicationCommandOptionChoice[]): Promise<void>;
+    result(choices: ApplicationCommandOptionChoices): Promise<void>;
   }
 
   // If CT (count) is "withMetadata", it will not have count properties
