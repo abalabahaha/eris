@@ -76,13 +76,13 @@ declare namespace Eris {
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
 
   // Interaction
-  type InteractionType = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
-  type InteractionDataOption = InteractionDataOptionSubCommand | InteractionDataOptionSubCommandGroup | InteractionDataOptionsWithValue;
-  type InteractionDataOptionsWithValue = InteractionDataOptionString | InteractionDataOptionInteger | InteractionDataOptionBoolean | InteractionDataOptionUser | InteractionDataOptionChannel | InteractionDataOptionRole | InteractionDataOptionMentionable | InteractionDataOptionNumber;
+  type InteractionType = Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
+  type InteractionDataOption = InteractionDataOptionSubCommand | InteractionDataOptionSubCommandGroup | InteractionDataOptionWithValue;
+  type InteractionDataOptionWithValue = InteractionDataOptionString | InteractionDataOptionInteger | InteractionDataOptionBoolean | InteractionDataOptionUser | InteractionDataOptionChannel | InteractionDataOptionRole | InteractionDataOptionMentionable | InteractionDataOptionNumber;
   interface InteractionDataOptionSubCommand {
     name: string;
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"];
-    options?: InteractionDataOptionsWithValue[];
+    options?: InteractionDataOptionWithValue[];
   }
   interface InteractionDataOptionSubCommandGroup {
     name: string;
