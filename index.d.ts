@@ -90,20 +90,20 @@ declare namespace Eris {
     // technically these can have zero options, but it will then not show in the client
     options: (InteractionDataOptionSubCommand | InteractionDataOptionWithValue)[];
   }
-  interface InteractionDataOptionWithValue<T extends (Constants["ApplicationCommandOptionTypes"])[Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">] = (Constants["ApplicationCommandOptionTypes"])[Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">], V = unknown> {
+  interface InteractionDataOptionGeneric<T extends (Constants["ApplicationCommandOptionTypes"])[Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">] = (Constants["ApplicationCommandOptionTypes"])[Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">], V = unknown> {
     name: string;
     type: T;
     value: V;
     focused?: boolean;
   }
-  type InteractionDataOptionString = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["STRING"], string>;
-  type InteractionDataOptionInteger = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["INTEGER"], number>;
-  type InteractionDataOptionBoolean = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"], boolean>;
-  type InteractionDataOptionUser = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["USER"], string>;
-  type InteractionDataOptionChannel = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["CHANNEL"], string>;
-  type InteractionDataOptionRole = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["ROLE"], string>;
-  type InteractionDataOptionMentionable = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"], string>;
-  type InteractionDataOptionNumber = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["NUMBER"], number>;
+  type InteractionDataOptionString = InteractionDataOptionGeneric<Constants["ApplicationCommandOptionTypes"]["STRING"], string>;
+  type InteractionDataOptionInteger = InteractionDataOptionGeneric<Constants["ApplicationCommandOptionTypes"]["INTEGER"], number>;
+  type InteractionDataOptionBoolean = InteractionDataOptionGeneric<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"], boolean>;
+  type InteractionDataOptionUser = InteractionDataOptionGeneric<Constants["ApplicationCommandOptionTypes"]["USER"], string>;
+  type InteractionDataOptionChannel = InteractionDataOptionGeneric<Constants["ApplicationCommandOptionTypes"]["CHANNEL"], string>;
+  type InteractionDataOptionRole = InteractionDataOptionGeneric<Constants["ApplicationCommandOptionTypes"]["ROLE"], string>;
+  type InteractionDataOptionMentionable = InteractionDataOptionGeneric<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"], string>;
+  type InteractionDataOptionNumber = InteractionDataOptionGeneric<Constants["ApplicationCommandOptionTypes"]["NUMBER"], number>;
 
   type InteractionResponse = InteractionMessageResponse | InteractionDeferredResponse | InteractionAutocompleteResponse;
 
