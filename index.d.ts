@@ -121,7 +121,7 @@ declare namespace Eris {
 
   interface InteractionAutocompleteResponse {
     type: Constants["InteractionResponseTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE_RESULT"];
-    data: ApplicationCommandOptionChoice[]
+    data: ApplicationCommandOptionChoice[];
   }
 
   type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
