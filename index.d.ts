@@ -7,7 +7,7 @@ import { URL } from "url";
 import { Socket as DgramSocket } from "dgram";
 import * as WebSocket from "ws";
 
-declare function Eris(token: string, options: Eris.ClientOptions): Eris.Client;
+declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
 
 declare namespace Eris {
   export const Constants: Constants;
@@ -96,6 +96,7 @@ declare namespace Eris {
     name: string;
     type: T;
     value: V;
+    focused?: boolean;
   }
   type InteractionDataOptionsString = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["STRING"], string>;
   type InteractionDataOptionsInteger = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["INTEGER"], number>;
@@ -122,14 +123,12 @@ declare namespace Eris {
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"];
     name: string;
     description: string;
-    required?: boolean;
     options?: ApplicationCommandOptionsWithValue[];
   }
   interface ApplicationCommandOptionsSubCommandGroup {
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"];
     name: string;
     description: string;
-    required?: boolean;
     options?: (ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsWithValue)[];
   }
   interface ApplicationCommandOptionChoice<T extends (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">] | unknown
@@ -149,6 +148,17 @@ declare namespace Eris {
     choices?: ApplicationCommandOptionChoice<T>[];
     autocomplete?: boolean;
   }
+  interface ApplicationCommandOptionWithMinMax<T extends (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "INTEGER" | "NUMBER">]
+  = (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "INTEGER" | "NUMBER">]> {
+    type: T;
+    name: string;
+    description: string;
+    required?: boolean;
+    choices?: ApplicationCommandOptionChoice<T>[];
+    autocomplete?: boolean;
+    min_value?: number;
+    max_value?: number;
+  }
   interface ApplicationCommandOption<T extends (Constants["ApplicationCommandOptionTypes"])[Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">]> {
     type: T;
     name: string;
@@ -163,11 +173,20 @@ declare namespace Eris {
   type ApplicationCommandOptionsStringWithoutAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["STRING"]>, "autocomplete">
   & { autocomplete?: false };
   // Integer
-  type ApplicationCommandOptionsInteger = ApplicationCommandOptionsIntegerWithAutocomplete | ApplicationCommandOptionsIntegerWithoutAutocomplete;
-  type ApplicationCommandOptionsIntegerWithAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>, "choices">
+  type ApplicationCommandOptionsInteger = ApplicationCommandOptionsIntegerWithAutocomplete | ApplicationCommandOptionsIntegerWithoutAutocomplete | ApplicationCommandOptionsIntegerWithMinMax;
+  type ApplicationCommandOptionsIntegerWithAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>, "choices" | "min_value" | "max_value">
   & { autocomplete: true };
-  type ApplicationCommandOptionsIntegerWithoutAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>, "autocomplete">
-  & {  autocomplete?: false };
+  type ApplicationCommandOptionsIntegerWithoutAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>, "autocomplete" | "min_value" | "max_value">
+  & {
+    autocomplete?: false;
+    min_value?: null;
+    max_value?: null;
+  };
+  type ApplicationCommandOptionsIntegerWithMinMax = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]>, "choices" | "autocomplete">
+  & {
+    autocomplete?: false;
+    choices?: null;
+  };
   // Boolean
   type ApplicationCommandOptionsBoolean = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
   // User
@@ -179,11 +198,20 @@ declare namespace Eris {
   // Mentionable
   type ApplicationCommandOptionsMentionable = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"]>;
   // Number
-  type ApplicationCommandOptionsNumber = ApplicationCommandOptionsNumberWithAutocomplete | ApplicationCommandOptionsNumberWithoutAutocomplete;
-  type ApplicationCommandOptionsNumberWithAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>, "choices">
+  type ApplicationCommandOptionsNumber = ApplicationCommandOptionsNumberWithAutocomplete | ApplicationCommandOptionsNumberWithoutAutocomplete | ApplicationCommandOptionsNumberWithMinMax;
+  type ApplicationCommandOptionsNumberWithAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>, "choices" | "min_value" | "max_value">
   & { autocomplete: true };
-  type ApplicationCommandOptionsNumberWithoutAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>, "autocomplete">
-  & { autocomplete?: false };
+  type ApplicationCommandOptionsNumberWithoutAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>, "autocomplete" | "min_value" | "max_value">
+  & {
+    autocomplete?: false;
+    min_value?: null;
+    max_value?: null;
+  };
+  type ApplicationCommandOptionsNumberWithMinMax = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]>, "choices" | "autocomplete">
+  & {
+    autocomplete?: false;
+    choices?: null;
+  };
 
   interface ApplicationCommand<T extends (Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]]
   = (Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]]> {
@@ -298,7 +326,6 @@ declare namespace Eris {
     purge(options: PurgeChannelOptions): Promise<number>;
     removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
-    sendTyping(): Promise<void>;
   }
   interface PartialChannel {
     bitrate?: number;
@@ -325,32 +352,32 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
-    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
-    editMessage(messageID: string, content: MessageContentEdit): Promise<Message>;
-    getMessage(messageID: string): Promise<Message>;
+    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
+    getMessage(messageID: string): Promise<Message<this>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
     getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
-    getMessages(options?: GetMessagesOptions): Promise<Message[]>;
+    getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
     /** @deprecated */
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
-    getPins(): Promise<Message[]>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
+    getPins(): Promise<Message<this>[]>;
     pinMessage(messageID: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     sendTyping(): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
   }
-  // @ts-ignore ts(2430) - ThreadTextable can't properly extend Textable because of getMessageReaction deprecated overload
   interface ThreadTextable extends Textable {
     lastPinTimestamp?: number;
-    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<ThreadChannel>>;
-    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<ThreadChannel>>;
-    getMessage(messageID: string): Promise<Message<ThreadChannel>>;
-    getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
-    getMessages(options?: GetMessagesOptions): Promise<Message<ThreadChannel>[]>;
-    getPins(): Promise<Message<ThreadChannel>[]>;
+    deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
+    getMembers(): Promise<ThreadMember[]>;
+    join(userID: string): Promise<void>;
+    leave(userID: string): Promise<void>;
+    purge(options: PurgeChannelOptions): Promise<number>;
+    removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
+    removeMessageReactions(messageID: string): Promise<void>;
   }
   interface WebhookData {
     channelID: string;
@@ -688,9 +715,9 @@ declare namespace Eris {
     channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldGuildVoiceChannel]
       | [channel: GroupChannel, oldChannel: OldGroupChannel];
     connect: [id: number];
-    debug: [message: string, id: number];
+    debug: [message: string, id?: number];
     disconnect: [];
-    error: [err: Error, id: number];
+    error: [err: Error, id?: number];
     friendSuggestionCreate: [user: User, reasons: FriendSuggestionReasons];
     friendSuggestionDelete: [user: User];
     guildAvailable: [guild: Guild];
@@ -741,13 +768,13 @@ declare namespace Eris {
     typingStart: [channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member]
     | [channel: PrivateChannel | Uncached, user: User | Uncached, member: null];
     unavailableGuildCreate: [guild: UnavailableGuild];
-    unknown: [packet: RawPacket, id: number];
+    unknown: [packet: RawPacket, id?: number];
     userUpdate: [user: User, oldUser: PartialUser | null];
     voiceChannelJoin: [member: Member, channel: AnyVoiceChannel];
     voiceChannelLeave: [member: Member, channel: AnyVoiceChannel];
     voiceChannelSwitch: [member: Member, newChannel: AnyVoiceChannel, oldChannel: AnyVoiceChannel];
     voiceStateUpdate: [member: Member, oldState: OldVoiceState];
-    warn: [message: string, id: number];
+    warn: [message: string, id?: number];
     webhooksUpdate: [data: WebhookData];
     guildScheduledEventCreate: [event: GuildEvent];
     guildScheduledEventUpdate: [event: GuildEvent, oldEvent: GuildEventOptions | null];
@@ -1059,7 +1086,6 @@ declare namespace Eris {
     allowedMentions?: AllowedMentions;
     components?: ActionRow[];
     content?: string;
-    /** @deprecated */
     embed?: EmbedOptions;
     embeds?: EmbedOptions[];
     flags?: number;
@@ -1196,7 +1222,7 @@ declare namespace Eris {
   }
 
   // Presence
-  interface Activity extends ActivityPartial<ActivityType> {
+  interface Activity<T extends ActivityType = ActivityType> extends ActivityPartial<T> {
     application_id?: string;
     assets?: {
       large_image?: string;
@@ -1214,12 +1240,13 @@ declare namespace Eris {
     secrets?: { join?: string; spectate?: string; match?: string };
     state?: string;
     timestamps?: { end?: number; start: number };
+    type: T;
     // the stuff attached to this object apparently varies even more than documented, so...
     [key: string]: unknown;
   }
   interface ActivityPartial<T extends ActivityType = BotActivityType> {
     name: string;
-    type: T;
+    type?: T;
     url?: string;
   }
   interface ClientPresence {
@@ -1380,6 +1407,7 @@ declare namespace Eris {
     avatarURL?: string;
     components?: ActionRow[];
     content?: string;
+    embed?: EmbedOptions;
     embeds?: EmbedOptions[];
     file?: FileContent | FileContent[];
     flags?: number;
@@ -1471,7 +1499,7 @@ declare namespace Eris {
       MESSAGE:    3;
     };
     AuditLogActions: {
-      GUILD_UPDATE:             1;
+      GUILD_UPDATE: 1;
 
       CHANNEL_CREATE:           10;
       CHANNEL_UPDATE:           11;
@@ -1480,55 +1508,55 @@ declare namespace Eris {
       CHANNEL_OVERWRITE_UPDATE: 14;
       CHANNEL_OVERWRITE_DELETE: 15;
 
-      MEMBER_KICK:              20;
-      MEMBER_PRUNE:             21;
-      MEMBER_BAN_ADD:           22;
-      MEMBER_BAN_REMOVE:        23;
-      MEMBER_UPDATE:            24;
-      MEMBER_ROLE_UPDATE:       25;
-      MEMBER_MOVE:              26;
-      MEMBER_DISCONNECT:        27;
-      BOT_ADD:                  28;
+      MEMBER_KICK:        20;
+      MEMBER_PRUNE:       21;
+      MEMBER_BAN_ADD:     22;
+      MEMBER_BAN_REMOVE:  23;
+      MEMBER_UPDATE:      24;
+      MEMBER_ROLE_UPDATE: 25;
+      MEMBER_MOVE:        26;
+      MEMBER_DISCONNECT:  27;
+      BOT_ADD:            28;
 
-      ROLE_CREATE:              30;
-      ROLE_UPDATE:              31;
-      ROLE_DELETE:              32;
+      ROLE_CREATE: 30;
+      ROLE_UPDATE: 31;
+      ROLE_DELETE: 32;
 
-      INVITE_CREATE:            40;
-      INVITE_UPDATE:            41;
-      INVITE_DELETE:            42;
+      INVITE_CREATE: 40;
+      INVITE_UPDATE: 41;
+      INVITE_DELETE: 42;
 
-      WEBHOOK_CREATE:           50;
-      WEBHOOK_UPDATE:           51;
-      WEBHOOK_DELETE:           52;
+      WEBHOOK_CREATE: 50;
+      WEBHOOK_UPDATE: 51;
+      WEBHOOK_DELETE: 52;
 
-      EMOJI_CREATE:             60;
-      EMOJI_UPDATE:             61;
-      EMOJI_DELETE:             62;
+      EMOJI_CREATE: 60;
+      EMOJI_UPDATE: 61;
+      EMOJI_DELETE: 62;
 
-      MESSAGE_DELETE:           72;
-      MESSAGE_BULK_DELETE:      73;
-      MESSAGE_PIN:              74;
-      MESSAGE_UNPIN:            75;
+      MESSAGE_DELETE:      72;
+      MESSAGE_BULK_DELETE: 73;
+      MESSAGE_PIN:         74;
+      MESSAGE_UNPIN:       75;
 
-      INTEGRATION_CREATE:       80;
-      INTEGRATION_UPDATE:       81;
-      INTEGRATION_DELETE:       82;
-      STAGE_INSTANCE_CREATE:    83;
-      STAGE_INSTANCE_UPDATE:    84;
-      STAGE_INSTANCE_DELETE:    85;
+      INTEGRATION_CREATE:    80;
+      INTEGRATION_UPDATE:    81;
+      INTEGRATION_DELETE:    82;
+      STAGE_INSTANCE_CREATE: 83;
+      STAGE_INSTANCE_UPDATE: 84;
+      STAGE_INSTANCE_DELETE: 85;
 
-      STICKER_CREATE:           90;
-      STICKER_UPDATE:           91;
-      STICKER_DELETE:           92;
+      STICKER_CREATE: 90;
+      STICKER_UPDATE: 91;
+      STICKER_DELETE: 92;
 
       GUILD_SCHEDULED_EVENT_CREATE: 100;
       GUILD_SCHEDULED_EVENT_UPDATE: 101;
       GUILD_SCHEDULED_EVENT_DELETE: 102;
 
-      THREAD_CREATE:            110;
-      THREAD_UPDATE:            111;
-      THREAD_DELETE:            112;
+      THREAD_CREATE: 110;
+      THREAD_UPDATE: 111;
+      THREAD_DELETE: 112;
 
       APPLICATION_COMMAND_PERMISSION_UPDATE: 121;
     };
@@ -2112,7 +2140,7 @@ declare namespace Eris {
     users: Collection<User>;
     userSettings: UserSettings;
     voiceConnections: VoiceConnectionManager;
-    constructor(token: string, options: ClientOptions);
+    constructor(token: string, options?: ClientOptions);
     acceptInvite(inviteID: string): Promise<Invite<"withoutCount">>;
     addGroupRecipient(groupID: string, userID: string): Promise<void>;
     addGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
@@ -2899,6 +2927,8 @@ declare namespace Eris {
   }
 
   //Interaction
+  type AnyInteraction = PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction;
+
   export class Interaction extends Base {
     acknowledged: boolean;
     applicationID: string;
@@ -2906,6 +2936,7 @@ declare namespace Eris {
     token: string;
     type: number;
     version: number;
+    from(data: BaseData): AnyInteraction;
   }
 
   export class PingInteraction extends Interaction {
@@ -2981,9 +3012,9 @@ declare namespace Eris {
     data: {
       id: string;
       name: string;
-      type: Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
+      type: Constants["ApplicationCommandTypes"]["CHAT_INPUT"];
       target_id?: string;
-      options?: InteractionDataOptions[];
+      options: InteractionDataOptions[];
     };
     guildID?: string;
     member?: Member;
@@ -3141,27 +3172,21 @@ declare namespace Eris {
     rateLimitPerUser: 0;
     type: Constants["ChannelTypes"]["GUILD_NEWS"];
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", NewsChannel>>;
-    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<NewsChannel>>;
+    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel>;
     crosspostMessage(messageID: string): Promise<Message<NewsChannel>>;
-    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<NewsChannel>>;
+    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
     follow(webhookChannelID: string): Promise<ChannelFollow>;
     getInvites(): Promise<(Invite<"withMetadata", NewsChannel>)[]>;
-    getMessage(messageID: string): Promise<Message<NewsChannel>>;
-    getMessages(options?: GetMessagesOptions): Promise<Message<NewsChannel>[]>;
+    getMessage(messageID: string): Promise<Message<this>>;
+    getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
     /** @deprecated */
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<NewsChannel>[]>;
-    getPins(): Promise<Message<NewsChannel>[]>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
+    getPins(): Promise<Message<this>[]>;
   }
 
   export class NewsThreadChannel extends ThreadChannel {
     type: Constants["ChannelTypes"]["GUILD_NEWS_THREAD"];
-    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<NewsThreadChannel>>;
-    edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
-    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<NewsThreadChannel>>;
-    getMessage(messageID: string): Promise<Message<NewsThreadChannel>>;
-    getMessages(options?: GetMessagesOptions): Promise<Message<NewsThreadChannel>[]>;
-    getPins(): Promise<Message<NewsThreadChannel>[]>;
   }
 
   export class Permission extends Base {
@@ -3204,17 +3229,17 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
-    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<PrivateChannel>>;
+    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
-    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<PrivateChannel>>;
-    getMessage(messageID: string): Promise<Message<PrivateChannel>>;
+    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
+    getMessage(messageID: string): Promise<Message<this>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
     getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
-    getMessages(options?: GetMessagesOptions): Promise<Message<PrivateChannel>[]>;
+    getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
     /** @deprecated */
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<PrivateChannel>[]>;
-    getPins(): Promise<Message<PrivateChannel>[]>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
+    getPins(): Promise<Message<this>[]>;
     leave(): Promise<void>;
     pinMessage(messageID: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string): Promise<void>;
@@ -3230,22 +3255,11 @@ declare namespace Eris {
   export class PrivateThreadChannel extends ThreadChannel {
     threadMetadata: PrivateThreadMetadata;
     type: Constants["ChannelTypes"]["GUILD_PRIVATE_THREAD"];
-    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<PrivateThreadChannel>>;
-    edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "invitable" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
-    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<PrivateThreadChannel>>;
-    getMessage(messageID: string): Promise<Message<PrivateThreadChannel>>;
-    getMessages(options?: GetMessagesOptions): Promise<Message<PrivateThreadChannel>[]>;
-    getPins(): Promise<Message<PrivateThreadChannel>[]>;
   }
 
   export class PublicThreadChannel extends ThreadChannel {
     type: GuildPublicThreadChannelTypes;
-    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<PublicThreadChannel>>;
     edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
-    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<PublicThreadChannel>>;
-    getMessage(messageID: string): Promise<Message<PublicThreadChannel>>;
-    getMessages(options?: GetMessagesOptions): Promise<Message<PublicThreadChannel>[]>;
-    getPins(): Promise<Message<PublicThreadChannel>[]>;
   }
 
   export class Relationship extends Base implements Omit<Presence, "activities"> {
@@ -3455,28 +3469,28 @@ declare namespace Eris {
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", TextChannel>>;
-    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<TextChannel>>;
+    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<PublicThreadChannel>;
     createThreadWithoutMessage(options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
     createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
-    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<TextChannel>>;
+    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
     /** @deprecated */
     getActiveThreads(): Promise<ListedChannelThreads>;
     getArchivedThreads(type: "private", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getArchivedThreads(type: "public", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel>>;
     getInvites(): Promise<(Invite<"withMetadata", TextChannel>)[]>;
     getJoinedPrivateArchivedThreads(options: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
-    getMessage(messageID: string): Promise<Message<TextChannel>>;
+    getMessage(messageID: string): Promise<Message<this>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
     getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
-    getMessages(options?: GetMessagesOptions): Promise<Message<TextChannel>[]>;
+    getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
     /** @deprecated */
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<TextChannel>[]>;
-    getPins(): Promise<Message<TextChannel>[]>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
+    getPins(): Promise<Message<this>[]>;
     getWebhooks(): Promise<Webhook[]>;
     pinMessage(messageID: string): Promise<void>;
     purge(options: PurgeChannelOptions): Promise<number>;
@@ -3489,9 +3503,6 @@ declare namespace Eris {
     unpinMessage(messageID: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
   }
-
-  type A<T extends TextableChannel> = T;
-  type B = A<PublicThreadChannel>;
 
   export class ThreadChannel extends GuildChannel implements ThreadTextable {
     lastMessageID: string;
@@ -3507,16 +3518,20 @@ declare namespace Eris {
     type: GuildThreadChannelTypes;
     constructor(data: BaseData, client: Client, messageLimit?: number);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
-    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<ThreadChannel>>;
+    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "invitable" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
-    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<ThreadChannel>>;
+    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
     getMembers(): Promise<ThreadMember[]>;
-    getMessage(messageID: string): Promise<Message<ThreadChannel>>;
+    getMessage(messageID: string): Promise<Message<this>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
-    getMessages(options?: GetMessagesOptions): Promise<Message<ThreadChannel>[]>;
-    getPins(): Promise<Message<ThreadChannel>[]>;
+    /** @deprecated */
+    getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
+    getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
+    /** @deprecated */
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
+    getPins(): Promise<Message<this>[]>;
     join(userID?: string): Promise<void>;
     leave(userID?: string): Promise<void>;
     pinMessage(messageID: string): Promise<void>;
@@ -3645,6 +3660,8 @@ declare namespace Eris {
     receive(type: "opus" | "pcm"): VoiceDataStream;
     registerReceiveEventHandler(): void;
     resume(): void;
+    sendAudioFrame(frame: Buffer): void;
+    sendUDPPacket(packet: Buffer): void;
     sendWS(op: number, data: Record<string, unknown>): void;
     setSpeaking(value: boolean): void;
     setVolume(volume: number): void;
