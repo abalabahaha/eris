@@ -1692,9 +1692,10 @@ declare namespace Eris {
       directMessages:         4096;
       directMessageReactions: 8192;
       directMessageTyping:    16384;
-      allNonPrivileged:       32509;
+      guildScheduledEvents:   65536;
+      allNonPrivileged:       98045;
       allPrivileged:          258;
-      all:                    32767;
+      all:                    98303;
     };
     InteractionResponseTypes: {
       PONG:                                    1;
