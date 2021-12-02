@@ -1450,7 +1450,6 @@ declare namespace Eris {
     user: PartialUser;
   }
   interface GuildEventMetadata {
-    speakerIDs?: string[];
     location?: string;
   }
   interface GuildEventOptions {
