@@ -2949,8 +2949,8 @@ declare namespace Eris {
     member?: Member;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE"];
     user?: User;
-    acknowledge(choices: ApplicationCommandOptionChoices): Promise<void>;
-    result(choices: ApplicationCommandOptionChoices): Promise<void>;
+    acknowledge(choices: ApplicationCommandOptionChoice[]): Promise<void>;
+    result(choices: ApplicationCommandOptionChoice[]): Promise<void>;
   }
 
   // If CT (count) is "withMetadata", it will not have count properties
