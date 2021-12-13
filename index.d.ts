@@ -313,10 +313,20 @@ declare namespace Eris {
     before?: string;
     limit?: number;
   }
+
+  interface Pinnable {
+	getPins(): Promise<Message[]>;
+    pinMessage(messageID: string): Promise<void>;
+	unpinMessage(messageID: string): Promise<void>;
+  }
+
+  interface GuildPinnable extends Pinnable {
+	lastPinTimestamp: number | null;
+	topic?: string;
+  }
+
   interface GuildTextable extends Textable {
-    lastPinTimestamp: number | null;
     rateLimitPerUser: number;
-    topic: string | null;
     createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     getWebhooks(): Promise<Webhook[]>;
@@ -360,15 +370,12 @@ declare namespace Eris {
     getMessages(options?: GetMessagesOptions): Promise<Message[]>;
     /** @deprecated */
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
-    getPins(): Promise<Message[]>;
-    pinMessage(messageID: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     sendTyping(): Promise<void>;
-    unpinMessage(messageID: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
   }
   // @ts-ignore ts(2430) - ThreadTextable can't properly extend Textable because of getMessageReaction deprecated overload
-  interface ThreadTextable extends Textable {
+  interface ThreadTextable extends Textable, Pinnable {
     lastPinTimestamp?: number;
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<ThreadChannel>>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<ThreadChannel>>;
@@ -2875,7 +2882,7 @@ declare namespace Eris {
     toJSON(props?: string[]): JSONCache;
   }
 
-  export class GuildVoiceChannel extends VoiceChannel implements Omit<GuildTextable, "lastPinTimestamp" | "getPins" | "pinMessage" | "unpinMessage" | "topic"> {
+  export class GuildVoiceChannel extends VoiceChannel implements GuildTextable {
     lastMessageID: string;
     messages: Collection<Message<this>>;
     rateLimitPerUser: number;
@@ -3144,7 +3151,7 @@ declare namespace Eris {
   }
 
   // News channel rate limit is always 0
-  export class NewsChannel extends TextChannel {
+  export class NewsChannel extends TextChannel implements GuildPinnable {
     rateLimitPerUser: 0;
     type: Constants["ChannelTypes"]["GUILD_NEWS"];
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", NewsChannel>>;
@@ -3203,7 +3210,7 @@ declare namespace Eris {
     stop(e: Error, source: Duplex): void;
   }
 
-  export class PrivateChannel extends Channel implements Textable {
+  export class PrivateChannel extends Channel implements Textable, Pinnable {
     lastMessageID: string;
     messages: Collection<Message<this>>;
     recipient: User;
@@ -3449,13 +3456,13 @@ declare namespace Eris {
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
   }
 
-  export class TextChannel extends GuildChannel implements GuildTextable, Invitable {
+  export class TextChannel extends GuildChannel implements GuildTextable, Invitable, GuildPinnable {
     defaultAutoArchiveDuration: AutoArchiveDuration;
     lastMessageID: string;
     lastPinTimestamp: number | null;
     messages: Collection<Message<this>>;
     rateLimitPerUser: number;
-    topic: string | null;
+    topic?: string;
     type: GuildTextChannelTypes;
     constructor(data: BaseData, client: Client, messageLimit: number);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
