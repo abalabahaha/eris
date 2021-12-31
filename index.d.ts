@@ -114,7 +114,7 @@ declare namespace Eris {
 
   interface InteractionDeferredResponse {
     type: Constants["InteractionResponseTypes"]["DEFERRED_UPDATE_MESSAGE" | "DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE"];
-    data: {
+    data?: {
       flags?: number;
     };
   }
