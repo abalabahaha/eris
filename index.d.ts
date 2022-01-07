@@ -2886,7 +2886,7 @@ declare namespace Eris {
       target_id?: string;
       resolved?: {
         users?: Collection<User>;
-        members?: Collection<Omit<Member, "user" | "deaf" | "mute">>;
+        members?: Collection<Omit<Member, "deaf" | "mute">>;
         roles?: Collection<Role>;
         channels?: Collection<PartialChannel>;
         messages?: Collection<Message>;
