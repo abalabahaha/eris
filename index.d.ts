@@ -840,6 +840,12 @@ declare namespace Eris {
   }
 
   // Guild
+  interface GuildChannelPosition {
+    id: string;
+    position: number;
+    lockPermissions?: boolean;
+    parentID?: string;
+  }
   interface CreateGuildOptions {
     afkChannelID?: string;
     afkTimeout?: number;
@@ -2282,6 +2288,7 @@ declare namespace Eris {
     editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     editCommandPermissions(guildID: string, commandID: string, permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
+    editGuildChannelPositions(guildID: string, guildChannelPositions: GuildChannelPosition[]): Promise<void>;
     editGuildCommand(guildID: string, commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     editGuildDiscovery(guildID: string, options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editGuildEmoji(
@@ -2711,6 +2718,7 @@ declare namespace Eris {
     dynamicSplashURL(format?: ImageFormat, size?: number): string | null;
     edit(options: GuildOptions, reason?: string): Promise<Guild>;
     editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
+    editChannelPositions(guildChannelPositions: GuildChannelPosition[]): Promise<void>;
     editCommandPermissions(permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions[]>;
     editDiscovery(options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
