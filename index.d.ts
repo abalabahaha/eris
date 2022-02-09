@@ -2884,7 +2884,9 @@ declare namespace Eris {
   export class Interaction extends Base {
     acknowledged: boolean;
     applicationID: string;
+    guildLocale?: string;
     id: string;
+    locale?: string;
     token: string;
     type: number;
     version: number;
@@ -2893,6 +2895,8 @@ declare namespace Eris {
 
   export class PingInteraction extends Interaction {
     type: Constants["InteractionTypes"]["PING"];
+    guildLocale: never;
+    locale: never;
     acknowledge(): Promise<void>;
     pong(): Promise<void>;
   }
@@ -2914,6 +2918,8 @@ declare namespace Eris {
       options?: InteractionDataOptions[];
     };
     guildID?: string;
+    guildLocale?: string;
+    locale: string;
     member?: Member;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
     user?: User;
@@ -2943,6 +2949,8 @@ declare namespace Eris {
     channel: T;
     data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData;
     guildID?: string;
+    guildLocale?: string;
+    locale: string;
     member?: Member;
     message: Message;
     type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
@@ -2969,6 +2977,8 @@ declare namespace Eris {
       options: InteractionDataOptions[];
     };
     guildID?: string;
+    guildLocale?: string;
+    locale: string;
     member?: Member;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE"];
     user?: User;
