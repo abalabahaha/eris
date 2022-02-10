@@ -2945,11 +2945,7 @@ declare namespace Eris {
     editOriginalMessage(content: string | InteractionEditContent, file?: FileContent | FileContent[]): Promise<Message>;
     getOriginalMessage(): Promise<Message>
   }
-
-  interface ModalSubmitInteractionData {
-    components: Component[];
-  }
-
+  
   interface ComponentInteractionButtonData {
     component_type: Constants["ComponentTypes"]["BUTTON"];
     custom_id: string;
@@ -2962,7 +2958,7 @@ declare namespace Eris {
     values: string[];
   }
 
-  interface ComponentInteractionTextInputData {
+  interface ModalSubmitInteractionData {
     component_type: Constants["ComponentTypes"]["TEXT_INPUT"];
     components: Component[];
   }
