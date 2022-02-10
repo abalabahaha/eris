@@ -66,7 +66,7 @@ declare namespace Eris {
   type GuildIntegrationExpireBehavior = Constants["GuildIntegrationExpireBehavior"][keyof Constants["GuildIntegrationExpireBehavior"]];
 
   // Message
-  type ActionRowComponents = Button | SelectMenu;
+  type ActionRowComponents = Button | SelectMenu | TextInput;
   type Button = InteractionButton | URLButton;
   type Component = ActionRow | ActionRowComponents;
   type ImageFormat = Constants["ImageFormats"][number];
@@ -1115,6 +1115,17 @@ declare namespace Eris {
     label?: string;
     type: Constants["ComponentTypes"]["BUTTON"];
   }
+  interface TextInput {
+    type: Constants["ComponentTypes"]["TEXT_INPUT"];
+    custom_id: string;
+    style: Constants["TextInputStyles"][keyof Constants["TextInputStyles"]];
+    label: string;
+    min_length?: number;
+    max_length?: number;
+    required?: boolean;
+    value?: string;
+    placeholder?: string;
+  }
   interface CreateStickerOptions extends Required<Pick<EditStickerOptions, "name" | "tags">> {
     file: FileContent;
   }
@@ -1564,7 +1575,12 @@ declare namespace Eris {
       ACTION_ROW:  1;
       BUTTON:      2;
       SELECT_MENU: 3;
+      TEXT_INPUT:  4;
     };
+    TextInputStyles: {
+      SHORT:     1,
+      PARAGRAPH: 2
+    }
     ConnectionVisibilityTypes: {
       NONE:     0;
       EVERYONE: 1;
