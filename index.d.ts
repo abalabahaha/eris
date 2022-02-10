@@ -1703,6 +1703,7 @@ declare namespace Eris {
       APPLICATION_COMMAND:              2;
       MESSAGE_COMPONENT:                3;
       APPLICATION_COMMAND_AUTOCOMPLETE: 4;
+      MODAL_SUBMIT:                     5;
     };
     InviteTargetTypes: {
       STREAM:               1;
