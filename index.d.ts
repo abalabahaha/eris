@@ -1696,6 +1696,7 @@ declare namespace Eris {
       DEFERRED_UPDATE_MESSAGE:                 6;
       UPDATE_MESSAGE:                          7;
       APPLICATION_COMMAND_AUTOCOMPLETE_RESULT: 8;
+      MODAL:                                   9;
     };
     InteractionTypes: {
       PING:                             1;
@@ -2953,6 +2954,11 @@ declare namespace Eris {
     component_type: Constants["ComponentTypes"]["SELECT_MENU"];
     custom_id: string;
     values: string[];
+  }
+
+  interface ComponentINteractionTextInputData {
+    component_type: Constants["ComponentTypes"]["TEXT_INPUT"];
+    components: Component[];
   }
 
   export class ComponentInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
