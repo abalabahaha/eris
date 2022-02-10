@@ -1578,9 +1578,9 @@ declare namespace Eris {
       TEXT_INPUT:  4;
     };
     TextInputStyles: {
-      SHORT:     1,
-      PARAGRAPH: 2
-    }
+      SHORT:     1;
+      PARAGRAPH: 2;
+    };
     ConnectionVisibilityTypes: {
       NONE:     0;
       EVERYONE: 1;
