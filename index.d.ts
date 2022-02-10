@@ -735,7 +735,7 @@ declare namespace Eris {
     guildUnavailable: [guild: UnavailableGuild];
     guildUpdate: [guild: Guild, oldGuild: OldGuild];
     hello: [trace: string[], id: number];
-    interactionCreate: [interaction: PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction | UnknownInteraction];
+    interactionCreate: [interaction: PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction | ModalSubmitInteraction | UnknownInteraction];
     inviteCreate: [guild: Guild, invite: Invite];
     inviteDelete: [guild: Guild, invite: Invite];
     messageCreate: [message: Message<PossiblyUncachedTextableChannel>];
@@ -2897,7 +2897,7 @@ declare namespace Eris {
   }
 
   //Interaction
-  type AnyInteraction = PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction;
+  type AnyInteraction = PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction | ModalSubmitInteraction;
 
   export class Interaction extends Base {
     acknowledged: boolean;
@@ -2945,11 +2945,16 @@ declare namespace Eris {
     editOriginalMessage(content: string | InteractionEditContent, file?: FileContent | FileContent[]): Promise<Message>;
     getOriginalMessage(): Promise<Message>
   }
+  
+  interface ModalSubmitInteractionData {
+    components: Component[];
+  }
 
   interface ComponentInteractionButtonData {
     component_type: Constants["ComponentTypes"]["BUTTON"];
     custom_id: string;
   }
+
 
   interface ComponentInteractionSelectMenuData {
     component_type: Constants["ComponentTypes"]["SELECT_MENU"];
@@ -2969,6 +2974,25 @@ declare namespace Eris {
     member?: Member;
     message: Message;
     type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
+    user?: User;
+    acknowledge(): Promise<void>;
+    createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
+    defer(flags?: number): Promise<void>;
+    deferUpdate(): Promise<void>;
+    deleteMessage(messageID: string): Promise<void>;
+    deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | InteractionEditContent, file?: FileContent | FileContent[]): Promise<Message>;
+    editOriginalMessage(content: string | InteractionEditContent, file?: FileContent | FileContent[]): Promise<Message>;
+    editParent(content: InteractionEditContent, file?: FileContent | FileContent[]): Promise<void>;
+    getOriginalMessage(): Promise<Message>
+  }
+  export class ModalSubmitInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+    channel: T;
+    data: ModalSubmitInteractionData;
+    guildID?: string;
+    member?: Member;
+    type: Constants["InteractionTypes"]["MODAL_SUBMIT"];
     user?: User;
     acknowledge(): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;

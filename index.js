@@ -31,6 +31,7 @@ Eris.GuildTemplate = require("./lib/structures/GuildTemplate");
 Eris.Interaction = require("./lib/structures/Interaction");
 Eris.Invite = require("./lib/structures/Invite");
 Eris.Member = require("./lib/structures/Member");
+Eris.ModalSubmitInteraction = require("./lib/structures/ModalSubmitInteraction.js");
 Eris.Message = require("./lib/structures/Message");
 Eris.NewsChannel = require("./lib/structures/NewsChannel");
 Eris.NewsThreadChannel = require("./lib/structures/NewsThreadChannel");

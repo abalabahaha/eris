@@ -30,6 +30,7 @@ export const {
   Interaction,
   Invite,
   Member,
+  ModalSubmitInteraction,
   Message,
   NewsChannel,
   NewsThreadChannel,
