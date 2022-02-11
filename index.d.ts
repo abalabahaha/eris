@@ -626,6 +626,7 @@ declare namespace Eris {
   }
   interface OldMember {
     avatar: string | null;
+    communicationDisabledUntil: number | null;
     nick: string | null;
     pending?: boolean;
     premiumSince: number;
@@ -1035,6 +1036,7 @@ declare namespace Eris {
   }
   interface MemberOptions {
     channelID?: string | null;
+    communicationDisabledUntil?: Date | null;
     deaf?: boolean;
     mute?: boolean;
     nick?: string | null;
@@ -1804,10 +1806,11 @@ declare namespace Eris {
       useExternalStickers:     137438953472n;
       sendMessagesInThreads:   274877906944n;
       startEmbeddedActivities: 549755813888n;
-      allGuild:                2080899262n;
+      moderateMembers:         1099511627776n;
+      allGuild:                1101592527038n;
       allText:                 518349388881n;
       allVoice:                554385278737n;
-      all:                     1073741823999n;
+      all:                     1228360646655n;
     };
     PremiumTiers: {
       NONE:   0;
@@ -2882,7 +2885,7 @@ declare namespace Eris {
     token: string;
     type: number;
     version: number;
-    from(data: BaseData): AnyInteraction;
+    static from(data: BaseData): AnyInteraction;
   }
 
   export class PingInteraction extends Interaction {
@@ -3026,6 +3029,7 @@ declare namespace Eris {
     bannerURL: string | null;
     bot: boolean;
     clientStatus?: ClientStatus;
+    communicationDisabledUntil: number | null;
     createdAt: number;
     defaultAvatar: string;
     defaultAvatarURL: string;
@@ -3097,7 +3101,7 @@ declare namespace Eris {
     addReaction(reaction: string): Promise<void>;
     /** @deprecated */
     addReaction(reaction: string, userID: string): Promise<void>;
-    createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
+    createThreadWithMessage(options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     crosspost(): Promise<T extends NewsChannel ? Message<NewsChannel> : never>;
     delete(reason?: string): Promise<void>;
     deleteWebhook(token: string): Promise<void>;
