@@ -116,7 +116,7 @@ declare namespace Eris {
   interface InteractionModalContent {
     title: string;
     custom_id: string;
-    components: ActionRowComponents[];
+    components: ActionRow[];
   }
   // Application Commands
   type ApplicationCommandOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup | ApplicationCommandOptionsWithValue;
