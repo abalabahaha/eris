@@ -3003,7 +3003,7 @@ declare namespace Eris {
 
   interface ModalSubmitInteractionData {
     custom_id: string;
-    components: Component[];
+    components: ActionRow[];
   }
 
   export class ModalSubmitInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
