@@ -3002,7 +3002,7 @@ declare namespace Eris {
   }
 
   interface ModalSubmitInteractionData {
-    component_type: Constants["ComponentTypes"]["TEXT_INPUT"];
+    custom_id: string;
     components: Component[];
   }
 
