@@ -1137,6 +1137,13 @@ declare namespace Eris {
     placeholder?: string;
     type: Constants["ComponentTypes"]["SELECT_MENU"];
   }
+  interface SelectMenuOptions {
+    default?: boolean;
+    description?: string;
+    emoji?: Partial<PartialEmoji>;
+    label: string;
+    value: string;
+  }
   interface TextInput {
     type: Constants["ComponentTypes"]["TEXT_INPUT"];
     custom_id: string;
@@ -1147,13 +1154,6 @@ declare namespace Eris {
     required?: boolean;
     value?: string;
     placeholder?: string;
-  }
-  interface SelectMenuOptions {
-    default?: boolean;
-    description?: string;
-    emoji?: Partial<PartialEmoji>;
-    label: string;
-    value: string;
   }
   interface GetMessageReactionOptions {
     after?: string;
@@ -2902,7 +2902,7 @@ declare namespace Eris {
   }
 
   //Interaction
-  type AnyInteraction = PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction | ModalSubmitInteraction;
+  type AnyInteraction = PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction;
 
   export class Interaction extends Base {
     acknowledged: boolean;
@@ -2911,7 +2911,7 @@ declare namespace Eris {
     token: string;
     type: number;
     version: number;
-    from(data: BaseData): AnyInteraction;
+    static from(data: BaseData): AnyInteraction;
   }
 
   export class PingInteraction extends Interaction {
@@ -2943,7 +2943,7 @@ declare namespace Eris {
     acknowledge(flags?: number): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
     createMessage(content: string | InteractionContent , file?: FileContent | FileContent[]): Promise<void>;
-    createModal(content: InteractionModalContent , file?: FileContent | FileContent[]): Promise<void>;
+    createModal(content: InteractionModalContent, file?: FileContent | FileContent[]): Promise<void>;
     defer(flags?: number): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
