@@ -936,7 +936,7 @@ declare namespace Eris {
     icon: string | null;
     id: string;
     name: string;
-    summary: string;
+    summary: ""; // Returns an empty string
   }
   interface IntegrationOptions {
     enableEmoticons?: string;
