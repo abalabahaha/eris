@@ -2288,7 +2288,7 @@ declare namespace Eris {
     editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     editCommandPermissions(guildID: string, commandID: string, permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
-    editGuildChannelPositions(guildID: string, channelPositions: ChannelPosition[]): Promise<void>;
+    editGuildChannelPositions(guildID: string, channelPositions: ChannelPosition[], reason?: string): Promise<void>;
     editGuildCommand(guildID: string, commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     editGuildDiscovery(guildID: string, options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editGuildEmoji(
@@ -2718,7 +2718,7 @@ declare namespace Eris {
     dynamicSplashURL(format?: ImageFormat, size?: number): string | null;
     edit(options: GuildOptions, reason?: string): Promise<Guild>;
     editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
-    editChannelPositions(channelPositions: ChannelPosition[]): Promise<void>;
+    editChannelPositions(channelPositions: ChannelPosition[], reason?: string): Promise<void>;
     editCommandPermissions(permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions[]>;
     editDiscovery(options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
