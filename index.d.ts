@@ -116,7 +116,7 @@ declare namespace Eris {
   interface InteractionModalContent {
     title: string;
     custom_id: string;
-    components: TextInput[];
+    components: ModalContentActionRow[];
   }
   // Application Commands
   type ApplicationCommandOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup | ApplicationCommandOptionsWithValue;
@@ -1074,6 +1074,10 @@ declare namespace Eris {
   // Message
   interface ActionRow {
     components: ActionRowComponents[];
+    type: Constants["ComponentTypes"]["ACTION_ROW"];
+  }
+  interface ModalContentActionRow {
+    components: TextInput[];
     type: Constants["ComponentTypes"]["ACTION_ROW"];
   }
   interface ActiveMessages {
