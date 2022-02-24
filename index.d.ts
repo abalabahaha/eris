@@ -90,7 +90,7 @@ declare namespace Eris {
     // technically these can have zero options, but it will then not show in the client
     options: (InteractionDataOptionSubCommand | InteractionDataOptionWithValue)[];
   }
-  interface InteractionDataOptionGeneric<T extends (Constants["ApplicationCommandOptionTypes"])[Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">] = (Constants["ApplicationCommandOptionTypes"])[Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">], V = unknown> {
+  interface InteractionDataOptionGeneric<T extends ApplicationCommandOptionTypeWithValue = ApplicationCommandOptionTypeWithValue, V = unknown> {
     name: string;
     type: T;
     value: V;
