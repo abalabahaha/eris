@@ -942,6 +942,8 @@ declare namespace Eris {
     color?: number;
     hoist?: boolean;
     id?: number;
+    icon?: string;
+    unicode_emoji?: string;
     mentionable?: boolean;
     name?: string;
     permissions?: number;
@@ -950,6 +952,8 @@ declare namespace Eris {
   interface RoleOptions {
     color?: number;
     hoist?: boolean;
+    icon?: string;
+    unicode_emoji?: string;
     mentionable?: boolean;
     name?: string;
     permissions?: bigint | number;
@@ -1363,6 +1367,16 @@ declare namespace Eris {
     theme: string;
   }
 
+  class AutoComplete {
+    options: Array<any>;
+    interaction: Interaction;
+    constructor(interaction: Interaction);
+
+    addOptions(options: Array<any>): this;
+    callback(data?: any): void;
+  }
+
+
   class Base implements SimpleJSON {
     createdAt: number;
     id: string;
@@ -1444,13 +1458,13 @@ declare namespace Eris {
      * @param name
      * @returns {Choice}
      */
-    setName(name: string) : this
+    setName(name: string): this
     /**
      *
      * @param value
      * @returns {Choice}
      */
-    setValue(value: string) : this
+    setValue(value: string): this
   }
   export class CommandOptions {
     name: string;
@@ -1460,18 +1474,19 @@ declare namespace Eris {
     required: boolean
     choices: Choice[];
     options: CommandOptions[];
+    autocomplete: boolean;
     /**
      *
      * @param name
      * @returns {CommandOptions}
      */
-    setName(name: string) : this
+    setName(name: string): this
     /**
      *
      * @param description
      * @returns {CommandOptions}
      */
-    setDescription(description: string) : this
+    setDescription(description: string): this
     /**
      *
      * @param type
@@ -1490,24 +1505,31 @@ declare namespace Eris {
      * | MENTIONABLE       | 9     | Includes users and roles                |
      * | NUMBER            | 10    | Any double between -2^53 and 2^53       |
      */
-    setType(type: number) : this
+    setType(type: number): this
     /***
      *
      * @returns {CommandOptions}
      */
-    isRequired() : this
+    isRequired(): this
     /**
      *
      * @param choice
      * @returns {CommandOptions}
      */
-    addChoices(...choice: Choice[]) : this
+    addChoices(...choice: Choice[]): this
     /**
      *
      * @param options
      * @returns {CommandOptions}
      */
-    addOptions(...options: CommandOptions[]) : this
+    addOptions(...options: CommandOptions[]): this
+
+
+    /**
+     * @description `choices` cannot be present when this is true
+     * @returns {CommandOptions}
+     */
+    setAutocomplete(): this
 
     /**
      * @returns {{name, options: (CommandOptions), description, type, choices: (Choice[]), required: (*|boolean)}}
@@ -1532,16 +1554,19 @@ declare namespace Eris {
      * @param guild
      */
     constructor(commandFolder: CommandFolder, option: any, guild: Guild)
-    value: string | User | TextChannel | CategoryChannel | StageChannel | NewsChannel | VoiceChannel | Channel | Role;
-    type: number;
-    member: Member;
-    channel: TextChannel | CategoryChannel | StageChannel | NewsChannel | VoiceChannel | Channel;
-    role: Role;
-    mentionEmoji: Array<any>;
-    typeOfValue: 'role' | 'user' | 'channel' | 'string' | 'number' | 'bigint' | 'boolean' | 'unknown';
-    ok: boolean;
-    name: string;
-    options: CommandDataOption[];
+    value?: string | User | TextChannel | CategoryChannel | StageChannel | NewsChannel | VoiceChannel | Channel | Role;
+    type?: number;
+    member?: Member;
+    channel?: TextChannel | CategoryChannel | StageChannel | NewsChannel | VoiceChannel | Channel;
+    role?: Role;
+    mentionEmoji?: Array<any>;
+    typeOfValue?: 'role' | 'user' | 'channel' | 'string' | 'number' | 'bigint' | 'boolean' | 'unknown';
+    ok?: boolean;
+    name?: string;
+    focused?: boolean;
+    options?: CommandDataOption[];
+
+    checkType(value: string, id: string, guild: Guild): anytaOption[];
   }
   export class CommandFolder {
     commandName: string;
@@ -1582,25 +1607,31 @@ declare namespace Eris {
      * @type {CommandOptions|*[]}
      */
     options: CommandOptions[]
+    channel_types: number;
+    max_value: number;
+    min_value: number;
 
+    setMaxValue(value: number): this
+    setMinValue(value: number): this
+    setChannelType(type: number): this
     /**
      *
      * @param options
      * @returns {CommandOptions}
      */
-    addOptions(...options: Eris.CommandOptions[]) : this
+    addOptions(...options: Eris.CommandOptions[]): this
     /**
      *
      * @param description
      * @returns {CommandOptions}
      */
-    setDescription(description: string) : this
+    setDescription(description: string): this
     /**
      *
      * @param name
      * @returns {CommandOptions}
      */
-    setName(name: string) : this
+    setName(name: string): this
     /**
      *
      * @param type
@@ -1612,7 +1643,7 @@ declare namespace Eris {
      */
     // @ts-ignore
     get data() {
-      return  {
+      return {
         name: this.name,
         description: this.description,
         options: this.options
@@ -1643,15 +1674,15 @@ declare namespace Eris {
     queue: CommandBase[]
     commandList: CommandList
     // @ts-ignore
-    async createCommand(...command: CommandBase[]) : this
+    async createCommand(...command: CommandBase[]): this
     // @ts-ignore
-    async createCommand(command: CommandBase) : this
+    async createCommand(command: CommandBase): this
     // @ts-ignore
-    async deleteCommand({ command: CommandBase, guildID: string }) : this
+    async deleteCommand({ command: CommandBase, guildID: string }): this
     // @ts-ignore
-    async addVolumeOfCommands(commands: CommandBase[]) : this
+    async addVolumeOfCommands(commands: CommandBase[]): this
     // @ts-ignore
-    async loadCommandList() : this;
+    async loadCommandList(): this;
   }
   export class Client extends EventEmitter {
     application?: { id: string; flags: number };
@@ -2551,6 +2582,7 @@ declare namespace Eris {
     token: string;
     hook: HookInteraction;
     command: CommandFolder;
+    autoComplete?: AutoComplete;
     applicationID: string;
     client: Client;
     constructor(json: any, client: Client | undefined, guild: Guild | undefined, member: Member | undefined, channel: TextChannel | undefined)
@@ -2729,8 +2761,13 @@ declare namespace Eris {
     name: string;
     permissions: Permission;
     position: number;
+    unicodeEmoji?: string;
+    icon?: string;
     tags?: RoleTags;
     constructor(data: BaseData, guild: Guild);
+    // @ts-ignore
+    _getIconURL(format: string, size: number, mode: string): string | null;
+    get getIconURL(): string | null;
     delete(reason?: string): Promise<void>;
     edit(options: RoleOptions, reason?: string): Promise<Role>;
     editPosition(position: number): Promise<void>;

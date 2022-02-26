@@ -27,6 +27,17 @@ export const {
   Invite,
   Member,
   Message,
+  MessageComponents,
+  MessageInteraction,
+  Choice,
+  CommandBase,
+  CommandList,
+  CommandOptions,
+  SlashCommand,
+  SlashCommandGuild,
+  CommandFolder,
+  CommandDataOption,
+  HookInteraction,
   NewsChannel,
   Permission,
   PermissionOverwrite,
@@ -45,5 +56,6 @@ export const {
   VoiceChannel,
   VoiceConnection,
   VoiceConnectionManager,
-  VoiceState
+  VoiceState,
+  AutoComplete
 } = Eris;
