@@ -1475,7 +1475,6 @@ declare namespace Eris {
     choices: Choice[];
     options: CommandOptions[];
     autocomplete: boolean;
-
     /**
      *
      * @param name
@@ -1567,7 +1566,7 @@ declare namespace Eris {
     focused?: boolean;
     options?: CommandDataOption[];
 
-    checkType(value: string, id: string, guild: Guild): any
+    checkType(value: string, id: string, guild: Guild): anytaOption[];
   }
   export class CommandFolder {
     commandName: string;
