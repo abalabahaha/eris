@@ -1566,7 +1566,7 @@ declare namespace Eris {
     focused?: boolean;
     options?: CommandDataOption[];
 
-    checkType(value: string, id: string, guild: Guild): anytaOption[];
+    checkType(value: string, id: string, guild: Guild): any;
   }
   export class CommandFolder {
     commandName: string;
