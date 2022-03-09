@@ -66,7 +66,7 @@ declare namespace Eris {
   type GuildIntegrationExpireBehavior = Constants["GuildIntegrationExpireBehavior"][keyof Constants["GuildIntegrationExpireBehavior"]];
 
   // Message
-  type ActionRowComponents = Button | SelectMenu | TextInput;
+  type ActionRowComponents = Button | SelectMenu;
   type Button = InteractionButton | URLButton;
   type Component = ActionRow | ActionRowComponents;
   type ImageFormat = Constants["ImageFormats"][number];
@@ -1339,6 +1339,16 @@ declare namespace Eris {
     archived: boolean;
     autoArchiveDuration: AutoArchiveDuration;
     locked: boolean;
+  }
+
+  // Modals
+  interface ModalSubmitInteractionDataComponents {
+    components: (Pick<TextInput, "custom_id" | "type"> & { value: string })[];
+    type: Constants["ComponentTypes"]["ACTION_ROW"];
+  }
+  interface ModalSubmitInteractionData {
+    custom_id: string;
+    components: ModalSubmitInteractionDataComponents[];
   }
 
   // Voice
@@ -3003,15 +3013,6 @@ declare namespace Eris {
     user?: User;
     acknowledge(choices: ApplicationCommandOptionChoice[]): Promise<void>;
     result(choices: ApplicationCommandOptionChoice[]): Promise<void>;
-  }
-
-  interface ModalSubmitInteractionDataComponents {
-    components: (Pick<TextInput, "custom_id" | "type"> & { value: string })[];
-    type: Constants["ComponentTypes"]["ACTION_ROW"];
-  }
-  interface ModalSubmitInteractionData {
-    custom_id: string;
-    components: ModalSubmitInteractionDataComponents[];
   }
 
   export class ModalSubmitInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
