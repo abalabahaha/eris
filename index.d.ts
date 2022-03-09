@@ -1586,10 +1586,6 @@ declare namespace Eris {
       SELECT_MENU: 3;
       TEXT_INPUT:  4;
     };
-    TextInputStyles: {
-      SHORT:     1;
-      PARAGRAPH: 2;
-    };
     ConnectionVisibilityTypes: {
       NONE:     0;
       EVERYONE: 1;
@@ -1888,6 +1884,10 @@ declare namespace Eris {
       ALL_MESSAGES:   2;
       ONLY_MENTIONS:  4;
       NO_MESSAGES:    8;
+    };
+    TextInputStyles: {
+      SHORT:     1;
+      PARAGRAPH: 2;
     };
     UserFlags: {
       NONE:                         0;
