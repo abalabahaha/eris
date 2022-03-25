@@ -2324,7 +2324,7 @@ declare namespace Eris {
     getChannel(channelID: string): AnyChannel;
     getChannelInvites(channelID: string): Promise<Invite[]>;
     getChannelWebhooks(channelID: string): Promise<Webhook[]>;
-    getCommand(commandID: string): Promise<ApplicationCommand>;
+    getCommand<T extends ApplicationCommand>(commandID: string): Promise<T>;
     getCommandPermissions(guildID: string, commandID: string): Promise<GuildApplicationCommandPermissions>;
     getCommands(): Promise<ApplicationCommand[]>;
     getDiscoveryCategories(): Promise<DiscoveryCategory[]>;
@@ -2711,7 +2711,7 @@ declare namespace Eris {
     getAuditLogs(limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getBan(userID: string): Promise<{ reason?: string; user: User }>;
     getBans(): Promise<{ reason?: string; user: User }[]>;
-    getCommand(commandID: string): Promise<ApplicationCommand>;
+    getCommand<T extends ApplicationCommand>(commandID: string): Promise<T>;
     getCommandPermissions(): Promise<GuildApplicationCommandPermissions[]>;
     getCommands(): Promise<ApplicationCommand[]>;
     getDiscovery(): Promise<DiscoveryMetadata>;
