@@ -206,6 +206,10 @@ declare namespace Eris {
   type UserApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["USER"]>, "description" | "options">;
   type MessageApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["MESSAGE"]>, "description" | "options">;
 
+  type StructureToReal<T extends ApplicationCommandStructure> = T extends ChatInputApplicationCommandStructure ?
+    ChatInputApplicationCommand : T extends MessageApplicationCommandStructure ?
+      MessageApplicationCommand : T extends UserApplicationCommandStructure ?
+        UserApplicationCommand : never; 
   type ApplicationCommandStructure = ChatInputApplicationCommandStructure | MessageApplicationCommandStructure | UserApplicationCommandStructure;
   type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand, "id" | "application_id" | "guild_id">;
   type MessageApplicationCommandStructure = Omit<MessageApplicationCommand, "id" | "application_id" | "guild_id">;
@@ -2205,7 +2209,7 @@ declare namespace Eris {
       options: { name: string; avatar?: string | null },
       reason?: string
     ): Promise<Webhook>;
-    createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand>;
+    createCommand<T extends ApplicationCommandStructure>(command: T): Promise<StructureToReal<T>>;
     createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
     createGuildCommand(guildID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
@@ -2670,7 +2674,7 @@ declare namespace Eris {
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE"], reason?: string, options?: CreateChannelOptions | string): Promise<StageChannel>;
     /** @deprecated */
     createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
-    createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand>;
+    createCommand<T extends ApplicationCommandStructure>(command: T): Promise<StructureToReal<T>>;
     createEmoji(options: { image: string; name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     createRole(options: RoleOptions | Role, reason?: string): Promise<Role>;
     createSticker(options: CreateStickerOptions, reason?: string): Promise<Sticker>;
