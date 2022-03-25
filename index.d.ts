@@ -146,7 +146,7 @@ declare namespace Eris {
   type ApplicationCommandOptionWithAutocomplete = Extract<ApplicationCommandOptionWithValue, { type: ApplicationCommandOptionTypeWithAutocomplete }>;
   type ApplicationCommandOptionWithMinMax = Extract<ApplicationCommandOptionWithValue, { type: ApplicationCommandOptionTypeWithMinMax }>;
 
-  interface ApplicationCommandOptionGeneric<T extends ApplicationCommandOptionTypeWithValue> {
+  interface ApplicationCommandOptionBase<T extends ApplicationCommandOptionTypeWithValue> {
     type: T;
     name: string;
     description: string;
@@ -185,14 +185,14 @@ declare namespace Eris {
     options?: (ApplicationCommandOptionSubCommand | ApplicationCommandOptionWithValue)[];
   }
 
-  type ApplicationCommandOptionString = ApplicationCommandOptionGeneric<Constants["ApplicationCommandOptionTypes"]["STRING"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["STRING"]>);
-  type ApplicationCommandOptionInteger = ApplicationCommandOptionGeneric<Constants["ApplicationCommandOptionTypes"]["INTEGER"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]> | ApplicationCommandOptionMinMax);
-  type ApplicationCommandOptionBoolean = ApplicationCommandOptionGeneric<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
-  type ApplicationCommandOptionUser = ApplicationCommandOptionGeneric<Constants["ApplicationCommandOptionTypes"]["USER"]>;
-  type ApplicationCommandOptionChannel = ApplicationCommandOptionGeneric<Constants["ApplicationCommandOptionTypes"]["CHANNEL"]> & { channel_types?: number[] };
-  type ApplicationCommandOptionRole = ApplicationCommandOptionGeneric<Constants["ApplicationCommandOptionTypes"]["ROLE"]>;
-  type ApplicationCommandOptionMentionable = ApplicationCommandOptionGeneric<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"]>;
-  type ApplicationCommandOptionNumber = ApplicationCommandOptionGeneric<Constants["ApplicationCommandOptionTypes"]["NUMBER"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]> | ApplicationCommandOptionMinMax);
+  type ApplicationCommandOptionString = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["STRING"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["STRING"]>);
+  type ApplicationCommandOptionInteger = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["INTEGER"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]> | ApplicationCommandOptionMinMax);
+  type ApplicationCommandOptionBoolean = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
+  type ApplicationCommandOptionUser = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["USER"]>;
+  type ApplicationCommandOptionChannel = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["CHANNEL"]> & { channel_types?: number[] };
+  type ApplicationCommandOptionRole = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["ROLE"]>;
+  type ApplicationCommandOptionMentionable = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"]>;
+  type ApplicationCommandOptionNumber = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["NUMBER"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]> | ApplicationCommandOptionMinMax);
 
 
   interface ApplicationCommand<T extends ApplicationCommandType = ApplicationCommandType> {
