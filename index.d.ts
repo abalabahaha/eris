@@ -119,13 +119,17 @@ declare namespace Eris {
   interface ApplicationCommandOptionsSubCommand {
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"];
     name: string;
+    name_localizations?: Record<string, string>;
     description: string;
+    description_localizations?: Record<string, string>;
     options?: ApplicationCommandOptionsWithValue[];
   }
   interface ApplicationCommandOptionsSubCommandGroup {
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"];
     name: string;
+    name_localizations?: Record<string, string>;
     description: string;
+    description_localizations?: Record<string, string>;
     options?: (ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsWithValue)[];
   }
   interface ApplicationCommandOptionChoice<T extends (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">] | unknown
@@ -140,7 +144,9 @@ declare namespace Eris {
   = (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">]> {
     type: T;
     name: string;
+    name_localizations?: Record<string, string>;
     description: string;
+    description_localizations?: Record<string, string>;
     required?: boolean;
     choices?: ApplicationCommandOptionChoice<T>[];
     autocomplete?: boolean;
@@ -149,7 +155,9 @@ declare namespace Eris {
   = (Constants["ApplicationCommandOptionTypes"])[keyof Pick<Constants["ApplicationCommandOptionTypes"], "INTEGER" | "NUMBER">]> {
     type: T;
     name: string;
+    name_localizations?: Record<string, string>;
     description: string;
+    description_localizations?: Record<string, string>;
     required?: boolean;
     choices?: ApplicationCommandOptionChoice<T>[];
     autocomplete?: boolean;
@@ -159,7 +167,9 @@ declare namespace Eris {
   interface ApplicationCommandOption<T extends (Constants["ApplicationCommandOptionTypes"])[Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">]> {
     type: T;
     name: string;
+    name_localizations?: Record<string, string>;
     description: string;
+    description_localizations?: Record<string, string>;
     required?: boolean;
   }
 
@@ -211,11 +221,12 @@ declare namespace Eris {
   };
 
   interface ApplicationCommand<T extends (Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]]
-  = (Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]]> {
+  = (Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], W extends boolean = false> {
     id: string;
     application_id: string;
     guild_id?: string;
-    name: string;
+    name_localizations?: W extends true ? Record<string, string> | null : never;
+    description_localizations?: W extends true ? T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? Record<string, string> | null : never : never;
     // I think never is the best we can do
     description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : never;
     options?: ApplicationCommandOptions[];
@@ -223,15 +234,16 @@ declare namespace Eris {
     defaultPermission?: boolean;
   }
 
-  type AnyApplicationCommand = ChatInputApplicationCommand | MessageApplicationCommand | UserApplicationCommand;
-  type ChatInputApplicationCommand = ApplicationCommand<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]>;
-  type UserApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["USER"]>, "description" | "options">;
-  type MessageApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["MESSAGE"]>, "description" | "options">;
+  type AnyApplicationCommand<W extends boolean> = ChatInputApplicationCommand<W> | MessageApplicationCommand<W> | UserApplicationCommand<W>;
+  type ChatInputApplicationCommand<W extends boolean> = ApplicationCommand<Constants["ApplicationCommandTypes"]["CHAT_INPUT"], W>;
+  type UserApplicationCommand<W extends boolean> = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["USER"], W>, "description" | "options">;
+  type MessageApplicationCommand<W extends boolean> = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["MESSAGE"], W>, "description" | "options">;
 
   type ApplicationCommandStructure = ChatInputApplicationCommandStructure | MessageApplicationCommandStructure | UserApplicationCommandStructure;
-  type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand, "id" | "application_id" | "guild_id">;
-  type MessageApplicationCommandStructure = Omit<MessageApplicationCommand, "id" | "application_id" | "guild_id">;
-  type UserApplicationCommandStructure = Omit<UserApplicationCommand, "id" | "application_id" | "guild_id">;
+  // as far as I'm concerned these are temporary so they're currently really messy
+  type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand<false>, "id" | "application_id" | "guild_id" | "name_localizations" | "description_localizations"> & Partial<Record<"name_localizations" | "description_localizations", Record<string, string>>>;
+  type MessageApplicationCommandStructure = Omit<MessageApplicationCommand<false>, "id" | "application_id" | "guild_id" | "name_localizations" | "description_localizations"> & Partial<Record<"name_localizations" | "description_localizations", Record<string, string>>>;
+  type UserApplicationCommandStructure = Omit<UserApplicationCommand<false>, "id" | "application_id" | "guild_id" | "name_localizations" | "description_localizations"> & Partial<Record<"name_localizations" | "description_localizations", Record<string, string>>>;
   interface ApplicationCommandPermissions {
     id: string;
     type: Constants["ApplicationCommandPermissionTypes"][keyof Constants["ApplicationCommandPermissionTypes"]];
@@ -2114,8 +2126,8 @@ declare namespace Eris {
     addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
     banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     bulkEditCommandPermissions(guildID: string, permissions: { id: string; permissions: ApplicationCommandPermissions[] }[]): Promise<GuildApplicationCommandPermissions[]>;
-    bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
-    bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
+    bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], true>[]>;
+    bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], true>[]>;
     closeVoiceConnection(guildID: string): void;
     connect(): Promise<void>;
     createChannel(guildID: string, name: string): Promise<TextChannel>;
@@ -2227,10 +2239,10 @@ declare namespace Eris {
       options: { name: string; avatar?: string | null },
       reason?: string
     ): Promise<Webhook>;
-    createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand>;
+    createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], true>>;
     createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
-    createGuildCommand(guildID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
+    createGuildCommand(guildID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], true>>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
@@ -2279,10 +2291,10 @@ declare namespace Eris {
       reason?: string
     ): Promise<void>;
     editChannelPosition(channelID: string, position: number, options?: EditChannelPositionOptions): Promise<void>;
-    editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
+    editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], true>>;
     editCommandPermissions(guildID: string, commandID: string, permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
-    editGuildCommand(guildID: string, commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
+    editGuildCommand(guildID: string, commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], true>>;
     editGuildDiscovery(guildID: string, options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editGuildEmoji(
       guildID: string,
@@ -2346,9 +2358,9 @@ declare namespace Eris {
     getChannel(channelID: string): AnyChannel;
     getChannelInvites(channelID: string): Promise<Invite[]>;
     getChannelWebhooks(channelID: string): Promise<Webhook[]>;
-    getCommand(commandID: string): Promise<ApplicationCommand>;
+    getCommand<T extends boolean>(commandID: string, withLocalizations?: T): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>>;
     getCommandPermissions(guildID: string, commandID: string): Promise<GuildApplicationCommandPermissions>;
-    getCommands(): Promise<ApplicationCommand[]>;
+    getCommands<T extends boolean>(withLocalizations?: T): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>[]>;
     getDiscoveryCategories(): Promise<DiscoveryCategory[]>;
     getDMChannel(userID: string): Promise<PrivateChannel>;
     getEmojiGuild(emojiID: string): Promise<Guild>;
@@ -2358,9 +2370,9 @@ declare namespace Eris {
     getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getGuildBan(guildID: string, userID: string): Promise<{ reason?: string; user: User }>;
     getGuildBans(guildID: string): Promise<{ reason?: string; user: User }[]>;
-    getGuildCommand(guildID: string, commandID: string): Promise<ApplicationCommand>;
+    getGuildCommand<T extends boolean>(guildID: string, commandID: string, withLocalizations?: T): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>>;
     getGuildCommandPermissions(guildID: string): Promise<GuildApplicationCommandPermissions[]>;
-    getGuildCommands(guildID: string): Promise<ApplicationCommand[]>;
+    getGuildCommands<T extends boolean>(guildID: string): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>[]>;
     getGuildDiscovery(guildID: string): Promise<DiscoveryMetadata>;
     /** @deprecated */
     getGuildEmbed(guildID: string): Promise<Widget>;
@@ -2669,7 +2681,7 @@ declare namespace Eris {
     addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     banMember(userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
-    bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
+    bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], true>[]>;
     createChannel(name: string): Promise<TextChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_TEXT"], options?: CreateChannelOptions): Promise<TextChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_VOICE"], options?: CreateChannelOptions): Promise<VoiceChannel>;
@@ -2692,7 +2704,7 @@ declare namespace Eris {
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE"], reason?: string, options?: CreateChannelOptions | string): Promise<StageChannel>;
     /** @deprecated */
     createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
-    createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand>;
+    createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], true>>;
     createEmoji(options: { image: string; name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     createRole(options: RoleOptions | Role, reason?: string): Promise<Role>;
     createSticker(options: CreateStickerOptions, reason?: string): Promise<Sticker>;
@@ -2710,7 +2722,7 @@ declare namespace Eris {
     dynamicIconURL(format?: ImageFormat, size?: number): string | null;
     dynamicSplashURL(format?: ImageFormat, size?: number): string | null;
     edit(options: GuildOptions, reason?: string): Promise<Guild>;
-    editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
+    editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], true>>;
     editCommandPermissions(permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions[]>;
     editDiscovery(options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
@@ -2733,9 +2745,9 @@ declare namespace Eris {
     getAuditLogs(limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getBan(userID: string): Promise<{ reason?: string; user: User }>;
     getBans(): Promise<{ reason?: string; user: User }[]>;
-    getCommand(commandID: string): Promise<ApplicationCommand>;
+    getCommand<T extends boolean>(commandID: string, withLocalizations?: T): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>>;
     getCommandPermissions(): Promise<GuildApplicationCommandPermissions[]>;
-    getCommands(): Promise<ApplicationCommand[]>;
+    getCommands<T extends boolean>(withLocalizations?: T): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>[]>;
     getDiscovery(): Promise<DiscoveryMetadata>;
     /** @deprecated */
     getEmbed(): Promise<Widget>;
