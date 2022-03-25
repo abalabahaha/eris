@@ -226,8 +226,8 @@ declare namespace Eris {
     application_id: string;
     guild_id?: string;
     name: string;
-    name_localizations?: W extends true ? Record<string, string> | null : never;
-    description_localizations?: W extends true ? T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? Record<string, string> | null : never : never;
+    nameLocalizations?: W extends true ? Record<string, string> | null : never;
+    descriptionLocalizations?: W extends true ? T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? Record<string, string> | null : never : never;
     // I think never is the best we can do
     description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : never;
     options?: ApplicationCommandOptions[];
