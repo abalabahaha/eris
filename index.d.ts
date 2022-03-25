@@ -146,11 +146,11 @@ declare namespace Eris {
   type ApplicationCommandOptionWithAutocomplete = Extract<ApplicationCommandOptionWithValue, { type: ApplicationCommandOptionTypeWithAutocomplete }>;
   type ApplicationCommandOptionWithMinMax = Extract<ApplicationCommandOptionWithValue, { type: ApplicationCommandOptionTypeWithMinMax }>;
 
-  interface ApplicationCommandOptionBase<T extends ApplicationCommandOptionTypeWithValue> {
+  interface ApplicationCommandOptionBase<T extends ApplicationCommandOptionType> {
     type: T;
     name: string;
     description: string;
-    required?: boolean;
+    required?: T extends Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND" | "SUB_COMMAND_GROUP"] ? never : boolean;
   }
 
   interface ApplicationCommandOptionAutocomplete {
@@ -171,17 +171,11 @@ declare namespace Eris {
     max_value?: number;
   }
 
-  interface ApplicationCommandOptionSubCommand {
-    type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"];
-    name: string;
-    description: string;
+  interface ApplicationCommandOptionSubCommand extends ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"]> {
     options?: ApplicationCommandOptionWithValue[];
   }
 
-  interface ApplicationCommandOptionSubCommandGroup {
-    type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"];
-    name: string;
-    description: string;
+  interface ApplicationCommandOptionSubCommandGroup extends ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"]> {
     options?: (ApplicationCommandOptionSubCommand | ApplicationCommandOptionWithValue)[];
   }
 
