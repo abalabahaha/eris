@@ -268,6 +268,7 @@ declare namespace Eris {
     nsfw?: boolean;
     parentID?: string;
     permissionOverwrites?: Overwrite[];
+    position?: number;
     rateLimitPerUser?: number;
     reason?: string;
     topic?: string;
@@ -2870,7 +2871,7 @@ declare namespace Eris {
     token: string;
     type: number;
     version: number;
-    from(data: BaseData): AnyInteraction;
+    static from(data: BaseData): AnyInteraction;
   }
 
   export class PingInteraction extends Interaction {
