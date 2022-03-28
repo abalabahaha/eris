@@ -1807,8 +1807,8 @@ declare namespace Eris {
       sendMessagesInThreads:   274877906944n;
       startEmbeddedActivities: 549755813888n;
       moderateMembers:         1099511627776n;
-      allGuild:                1127362330814n;
-      allText:                 518349388881n;
+      allGuild:                1110182461630n;
+      allText:                 535529258065n;
       allVoice:                554385278737n;
       all:                     2199023255551n;
     };
