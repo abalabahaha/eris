@@ -1807,10 +1807,10 @@ declare namespace Eris {
       sendMessagesInThreads:   274877906944n;
       startEmbeddedActivities: 549755813888n;
       moderateMembers:         1099511627776n;
-      allGuild:                1101592527038n;
+      allGuild:                1127362330814n;
       allText:                 518349388881n;
       allVoice:                554385278737n;
-      all:                     1228360646655n;
+      all:                     2199023255551n;
     };
     PremiumTiers: {
       NONE:   0;
