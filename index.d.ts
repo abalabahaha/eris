@@ -220,7 +220,7 @@ declare namespace Eris {
     description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : never;
     options?: ApplicationCommandOptions[];
     type: T;
-    defaultPermission?: boolean;
+    default_permission?: boolean;
   }
 
   type AnyApplicationCommand = ChatInputApplicationCommand | MessageApplicationCommand | UserApplicationCommand;
