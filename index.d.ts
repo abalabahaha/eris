@@ -23,7 +23,8 @@ declare namespace Eris {
   type ApplicationCommandOptionTypeWithAutocomplete = Constants["ApplicationCommandOptionTypes"][keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">];
   type ApplicationCommandOptionTypeWithMinMax = Constants["ApplicationCommandOptionTypes"][keyof Pick<Constants["ApplicationCommandOptionTypes"], "INTEGER" | "NUMBER">];
 
-  type ApplicationCommandOption = ApplicationCommandOptionSubCommand | ApplicationCommandOptionSubCommandGroup | ApplicationCommandOptionWithValue;
+  type ApplicationCommandOption = ApplicationCommandOptionWithOptions | ApplicationCommandOptionWithValue;
+  type ApplicationCommandOptionWithOptions = ApplicationCommandOptionSubCommand | ApplicationCommandOptionSubCommandGroup;
   type ApplicationCommandOptionWithValue = ApplicationCommandOptionString | ApplicationCommandOptionInteger | ApplicationCommandOptionBoolean | ApplicationCommandOptionUser | ApplicationCommandOptionChannel | ApplicationCommandOptionRole | ApplicationCommandOptionMentionable | ApplicationCommandOptionNumber;
   type ApplicationCommandOptionWithChoices = Extract<ApplicationCommandOptionWithValue, { type: ApplicationCommandOptionTypeWithChoices }>;
   type ApplicationCommandOptionWithAutocomplete = Extract<ApplicationCommandOptionWithValue, { type: ApplicationCommandOptionTypeWithAutocomplete }>;
