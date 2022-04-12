@@ -101,19 +101,19 @@ declare namespace Eris {
 
   // Interaction
   type AnyInteraction = PingInteraction | CommandInteraction | ComponentInteraction;
-type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
-type InteractionDataOption = InteractionDataOptionSubCommand | InteractionDataOptionSubCommandGroup | InteractionDataOptionWithValue;
-type InteractionDataOptionBoolean = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"], boolean>;
-type InteractionDataOptionChannel = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["CHANNEL"], string>;
-type InteractionDataOptionInteger = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["INTEGER"], number>;
-type InteractionDataOptionMentionable = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"], string>;
-type InteractionDataOptionNumber = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["NUMBER"], number>;
-type InteractionDataOptionRole = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["ROLE"], string>;
-type InteractionDataOptionString = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["STRING"], string>;
-type InteractionDataOptionUser = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["USER"], string>;
-type InteractionDataOptionWithValue = InteractionDataOptionString | InteractionDataOptionInteger | InteractionDataOptionBoolean | InteractionDataOptionUser | InteractionDataOptionChannel | InteractionDataOptionRole | InteractionDataOptionMentionable | InteractionDataOptionNumber;
-type InteractionResponse = InteractionResponseAutocomplete | InteractionResponseDeferred | InteractionResponseMessage;
-type InteractionType = Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
+  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
+  type InteractionDataOption = InteractionDataOptionSubCommand | InteractionDataOptionSubCommandGroup | InteractionDataOptionWithValue;
+  type InteractionDataOptionBoolean = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"], boolean>;
+  type InteractionDataOptionChannel = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["CHANNEL"], string>;
+  type InteractionDataOptionInteger = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["INTEGER"], number>;
+  type InteractionDataOptionMentionable = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"], string>;
+  type InteractionDataOptionNumber = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["NUMBER"], number>;
+  type InteractionDataOptionRole = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["ROLE"], string>;
+  type InteractionDataOptionString = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["STRING"], string>;
+  type InteractionDataOptionUser = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["USER"], string>;
+  type InteractionDataOptionWithValue = InteractionDataOptionString | InteractionDataOptionInteger | InteractionDataOptionBoolean | InteractionDataOptionUser | InteractionDataOptionChannel | InteractionDataOptionRole | InteractionDataOptionMentionable | InteractionDataOptionNumber;
+  type InteractionResponse = InteractionResponseAutocomplete | InteractionResponseDeferred | InteractionResponseMessage;
+  type InteractionType = Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
 
   // Invite
   type InviteTargetTypes = Constants["InviteTargetTypes"][keyof Constants["InviteTargetTypes"]];
@@ -176,8 +176,6 @@ type InteractionType = Constants["InteractionTypes"][keyof Constants["Interactio
   }
 
   // Application Command
-
-
   interface ApplicationCommandBase<T extends ApplicationCommandType = ApplicationCommandType> {
     id: string;
     application_id: string;
@@ -186,12 +184,9 @@ type InteractionType = Constants["InteractionTypes"][keyof Constants["Interactio
     type: T;
     defaultPermission?: boolean;
   }
-
-
   interface ApplicationCommandOptionAutocomplete {
     autocomplete?: boolean;
   }
-
   interface ApplicationCommandOptionBase<T extends ApplicationCommandOptionType> {
     type: T;
     name: string;
@@ -205,23 +200,17 @@ type InteractionType = Constants["InteractionTypes"][keyof Constants["Interactio
       T extends Constants["ApplicationCommandOptionTypes"]["INTEGER" | "NUMBER"] ? number :
         string | number;
   }
-
   interface ApplicationCommandOptionChoices<T extends ApplicationCommandOptionTypeWithChoices = ApplicationCommandOptionTypeWithChoices> { choices?: ApplicationCommandOptionChoice<T>[] }
-
   interface ApplicationCommandOptionMinMax {
     min_value?: number;
     max_value?: number;
   }
-
   interface ApplicationCommandOptionSubCommand extends ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"]> {
     options?: ApplicationCommandOptionWithValue[];
   }
-
   interface ApplicationCommandOptionSubCommandGroup extends ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"]> {
     options?: (ApplicationCommandOptionSubCommand | ApplicationCommandOptionWithValue)[];
   }
-
-
   interface ApplicationCommandBase<T extends ApplicationCommandType = ApplicationCommandType> {
     id: string;
     application_id: string;
@@ -230,13 +219,11 @@ type InteractionType = Constants["InteractionTypes"][keyof Constants["Interactio
     type: T;
     defaultPermission?: boolean;
   }
-
   interface ApplicationCommandPermissions {
     id: string;
     type: Constants["ApplicationCommandPermissionTypes"][keyof Constants["ApplicationCommandPermissionTypes"]];
     permission: boolean;
   }
-
   interface GuildApplicationCommandPermissions {
     id: string;
     application_id: string;
@@ -970,28 +957,23 @@ type InteractionType = Constants["InteractionTypes"][keyof Constants["Interactio
     value: V;
     focused: T extends ApplicationCommandOptionWithAutocomplete ? boolean | undefined : never;
   }
-
   interface InteractionDataOptionSubCommand extends InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"]> {
      options?: InteractionDataOptionWithValue[];
   }
-
   interface InteractionDataOptionSubCommandGroup extends InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"]> {
     // technically these can have zero options, but it will then not show in the client so it's effectively not possible
     options: (InteractionDataOptionSubCommand | InteractionDataOptionWithValue)[];
   }
-  
   interface InteractionResponseAutocomplete {
     type: Constants["InteractionResponseTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE_RESULT"];
     data: ApplicationCommandOptionChoice[];
   }
-
   interface InteractionResponseDeferred {
     type: Constants["InteractionResponseTypes"]["DEFERRED_UPDATE_MESSAGE" | "DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE"];
     data?: {
       flags?: number;
     };
   }
-
   interface InteractionResponseMessage {
     type: Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE"];
     data: InteractionContent;
