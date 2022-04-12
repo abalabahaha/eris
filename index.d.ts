@@ -974,7 +974,7 @@ type InteractionType = Constants["InteractionTypes"][keyof Constants["Interactio
   interface InteractionDataOptionSubCommand extends InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"]> {
      options?: InteractionDataOptionWithValue[];
   }
-  
+
   interface InteractionDataOptionSubCommandGroup extends InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"]> {
     // technically these can have zero options, but it will then not show in the client so it's effectively not possible
     options: (InteractionDataOptionSubCommand | InteractionDataOptionWithValue)[];
