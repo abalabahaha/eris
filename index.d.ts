@@ -16,41 +16,37 @@ declare namespace Eris {
   // TYPES
 
   // Application Command
-  type ApplicationCommandType = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
-  type ApplicationCommandOptionType = Constants["ApplicationCommandOptionTypes"][keyof Constants["ApplicationCommandOptionTypes"]];
-  type ApplicationCommandOptionTypeWithValue = Constants["ApplicationCommandOptionTypes"][Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">];
-  type ApplicationCommandOptionTypeWithChoices = Constants["ApplicationCommandOptionTypes"][keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">];
-  type ApplicationCommandOptionTypeWithAutocomplete = Constants["ApplicationCommandOptionTypes"][keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">];
-  type ApplicationCommandOptionTypeWithMinMax = Constants["ApplicationCommandOptionTypes"][keyof Pick<Constants["ApplicationCommandOptionTypes"], "INTEGER" | "NUMBER">];
-
+  type AnyApplicationCommand = ChatInputApplicationCommand | MessageApplicationCommand | UserApplicationCommand;
   type ApplicationCommandOption = ApplicationCommandOptionWithOptions | ApplicationCommandOptionWithValue;
-  type ApplicationCommandOptionWithOptions = ApplicationCommandOptionSubCommand | ApplicationCommandOptionSubCommandGroup;
-  type ApplicationCommandOptionWithValue = ApplicationCommandOptionString | ApplicationCommandOptionInteger | ApplicationCommandOptionBoolean | ApplicationCommandOptionUser | ApplicationCommandOptionChannel | ApplicationCommandOptionRole | ApplicationCommandOptionMentionable | ApplicationCommandOptionNumber;
-  type ApplicationCommandOptionWithChoices = Extract<ApplicationCommandOptionWithValue, { type: ApplicationCommandOptionTypeWithChoices }>;
-  type ApplicationCommandOptionWithAutocomplete = Extract<ApplicationCommandOptionWithValue, { type: ApplicationCommandOptionTypeWithAutocomplete }>;
-  type ApplicationCommandOptionWithMinMax = Extract<ApplicationCommandOptionWithValue, { type: ApplicationCommandOptionTypeWithMinMax }>;
-
-  type ApplicationCommandOptionString = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["STRING"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["STRING"]>);
-  type ApplicationCommandOptionInteger = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["INTEGER"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]> | ApplicationCommandOptionMinMax);
   type ApplicationCommandOptionBoolean = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
-  type ApplicationCommandOptionUser = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["USER"]>;
   type ApplicationCommandOptionChannel = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["CHANNEL"]> & { channel_types?: number[] };
-  type ApplicationCommandOptionRole = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["ROLE"]>;
+  type ApplicationCommandOptionInteger = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["INTEGER"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]> | ApplicationCommandOptionMinMax);
   type ApplicationCommandOptionMentionable = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"]>;
   type ApplicationCommandOptionNumber = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["NUMBER"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]> | ApplicationCommandOptionMinMax);
-
-  type AnyApplicationCommand = ChatInputApplicationCommand | MessageApplicationCommand | UserApplicationCommand;
-  type ChatInputApplicationCommand = ApplicationCommand<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]>;
-  type UserApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["USER"]>, "description" | "options">;
-  type MessageApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["MESSAGE"]>, "description" | "options">;
-
-  type ApplicationCommandStructureConversion<T extends ApplicationCommandStructure> = T extends ChatInputApplicationCommandStructure ?
-    ChatInputApplicationCommand : T extends MessageApplicationCommandStructure ?
-      MessageApplicationCommand : T extends UserApplicationCommandStructure ?
-        UserApplicationCommand : never; 
+  type ApplicationCommandOptionRole = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["ROLE"]>;
+  type ApplicationCommandOptionString = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["STRING"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["STRING"]>);
+  type ApplicationCommandOptionType = Constants["ApplicationCommandOptionTypes"][keyof Constants["ApplicationCommandOptionTypes"]];
+  type ApplicationCommandOptionTypeWithAutocomplete = Constants["ApplicationCommandOptionTypes"][keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">];
+  type ApplicationCommandOptionTypeWithChoices = Constants["ApplicationCommandOptionTypes"][keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">];
+  type ApplicationCommandOptionTypeWithMinMax = Constants["ApplicationCommandOptionTypes"][keyof Pick<Constants["ApplicationCommandOptionTypes"], "INTEGER" | "NUMBER">];
+  type ApplicationCommandOptionTypeWithValue = Constants["ApplicationCommandOptionTypes"][Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">];
+  type ApplicationCommandOptionUser = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["USER"]>;
+  type ApplicationCommandOptionWithAutocomplete = Extract<ApplicationCommandOptionWithValue, { type: ApplicationCommandOptionTypeWithAutocomplete }>;
+  type ApplicationCommandOptionWithChoices = Extract<ApplicationCommandOptionWithValue, { type: ApplicationCommandOptionTypeWithChoices }>;
+  type ApplicationCommandOptionWithMinMax = Extract<ApplicationCommandOptionWithValue, { type: ApplicationCommandOptionTypeWithMinMax }>;
+  type ApplicationCommandOptionWithOptions = ApplicationCommandOptionSubCommand | ApplicationCommandOptionSubCommandGroup;
+  type ApplicationCommandOptionWithValue = ApplicationCommandOptionString | ApplicationCommandOptionInteger | ApplicationCommandOptionBoolean | ApplicationCommandOptionUser | ApplicationCommandOptionChannel | ApplicationCommandOptionRole | ApplicationCommandOptionMentionable | ApplicationCommandOptionNumber;
   type ApplicationCommandStructure = ChatInputApplicationCommandStructure | MessageApplicationCommandStructure | UserApplicationCommandStructure;
+  type ApplicationCommandStructureConversion<T extends ApplicationCommandStructure> = T extends ChatInputApplicationCommandStructure ?
+      ChatInputApplicationCommand : T extends MessageApplicationCommandStructure ?
+        MessageApplicationCommand : T extends UserApplicationCommandStructure ?
+          UserApplicationCommand : never; 
+  type ApplicationCommandType = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
+  type ChatInputApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]> & { description: string; options: ApplicationCommandOption[]; };
   type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand, "id" | "application_id" | "guild_id">;
+  type MessageApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["MESSAGE"]>;
   type MessageApplicationCommandStructure = Omit<MessageApplicationCommand, "id" | "application_id" | "guild_id">;
+  type UserApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["USER"]>;
   type UserApplicationCommandStructure = Omit<UserApplicationCommand, "id" | "application_id" | "guild_id">;
 
   // Cache
@@ -105,23 +101,19 @@ declare namespace Eris {
 
   // Interaction
   type AnyInteraction = PingInteraction | CommandInteraction | ComponentInteraction;
-  type InteractionType = Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
-  type InteractionDataOption = InteractionDataOptionSubCommand | InteractionDataOptionSubCommandGroup | InteractionDataOptionWithValue;
-  type InteractionDataOptionWithValue = InteractionDataOptionString | InteractionDataOptionInteger | InteractionDataOptionBoolean | InteractionDataOptionUser | InteractionDataOptionChannel | InteractionDataOptionRole | InteractionDataOptionMentionable | InteractionDataOptionNumber;
-  type InteractionDataOptionString = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["STRING"], string>;
-  type InteractionDataOptionInteger = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["INTEGER"], number>;
-  type InteractionDataOptionBoolean = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"], boolean>;
-  type InteractionDataOptionUser = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["USER"], string>;
-  type InteractionDataOptionChannel = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["CHANNEL"], string>;
-  type InteractionDataOptionRole = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["ROLE"], string>;
-  type InteractionDataOptionMentionable = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"], string>;
-  type InteractionDataOptionNumber = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["NUMBER"], number>;
-
-  type InteractionResponse = InteractionResponseAutocomplete | InteractionResponseDeferred | InteractionResponseMessage;
-
-  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
-
-  type InteractionEditContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components">;
+type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
+type InteractionDataOption = InteractionDataOptionSubCommand | InteractionDataOptionSubCommandGroup | InteractionDataOptionWithValue;
+type InteractionDataOptionBoolean = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"], boolean>;
+type InteractionDataOptionChannel = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["CHANNEL"], string>;
+type InteractionDataOptionInteger = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["INTEGER"], number>;
+type InteractionDataOptionMentionable = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"], string>;
+type InteractionDataOptionNumber = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["NUMBER"], number>;
+type InteractionDataOptionRole = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["ROLE"], string>;
+type InteractionDataOptionString = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["STRING"], string>;
+type InteractionDataOptionUser = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["USER"], string>;
+type InteractionDataOptionWithValue = InteractionDataOptionString | InteractionDataOptionInteger | InteractionDataOptionBoolean | InteractionDataOptionUser | InteractionDataOptionChannel | InteractionDataOptionRole | InteractionDataOptionMentionable | InteractionDataOptionNumber;
+type InteractionResponse = InteractionResponseAutocomplete | InteractionResponseDeferred | InteractionResponseMessage;
+type InteractionType = Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
 
   // Invite
   type InviteTargetTypes = Constants["InviteTargetTypes"][keyof Constants["InviteTargetTypes"]];
@@ -184,18 +176,28 @@ declare namespace Eris {
   }
 
   // Application Command
+
+
+  interface ApplicationCommandBase<T extends ApplicationCommandType = ApplicationCommandType> {
+    id: string;
+    application_id: string;
+    guild_id?: string;
+    name: string;
+    type: T;
+    defaultPermission?: boolean;
+  }
+
+
+  interface ApplicationCommandOptionAutocomplete {
+    autocomplete?: boolean;
+  }
+
   interface ApplicationCommandOptionBase<T extends ApplicationCommandOptionType> {
     type: T;
     name: string;
     description: string;
     required?: T extends Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND" | "SUB_COMMAND_GROUP"] ? never : boolean;
   }
-
-  interface ApplicationCommandOptionAutocomplete {
-    autocomplete?: boolean;
-  }
-
-  interface ApplicationCommandOptionChoices<T extends ApplicationCommandOptionTypeWithChoices = ApplicationCommandOptionTypeWithChoices> { choices?: ApplicationCommandOptionChoice<T>[] }
   interface ApplicationCommandOptionChoice<T extends ApplicationCommandOptionTypeWithChoices = ApplicationCommandOptionTypeWithChoices> {
     name: string;
     value:
@@ -203,6 +205,8 @@ declare namespace Eris {
       T extends Constants["ApplicationCommandOptionTypes"]["INTEGER" | "NUMBER"] ? number :
         string | number;
   }
+
+  interface ApplicationCommandOptionChoices<T extends ApplicationCommandOptionTypeWithChoices = ApplicationCommandOptionTypeWithChoices> { choices?: ApplicationCommandOptionChoice<T>[] }
 
   interface ApplicationCommandOptionMinMax {
     min_value?: number;
@@ -218,14 +222,11 @@ declare namespace Eris {
   }
 
 
-  interface ApplicationCommand<T extends ApplicationCommandType = ApplicationCommandType> {
+  interface ApplicationCommandBase<T extends ApplicationCommandType = ApplicationCommandType> {
     id: string;
     application_id: string;
     guild_id?: string;
     name: string;
-    // I think never is the best we can do
-    description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : never;
-    options?: ApplicationCommandOption[];
     type: T;
     defaultPermission?: boolean;
   }
@@ -963,23 +964,22 @@ declare namespace Eris {
   }
 
   // Interaction
-
-  interface InteractionDataOptionSubCommand extends InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"]> {
-     options?: InteractionDataOptionWithValue[];
-  }
-  interface InteractionDataOptionSubCommandGroup extends InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"]> {
-    // technically these can have zero options, but it will then not show in the client so it's effectively not possible
-    options: (InteractionDataOptionSubCommand | InteractionDataOptionWithValue)[];
-  }
   interface InteractionDataOptionBase<T extends ApplicationCommandOptionType, V = unknown> {
     type: T;
     name: string;
     value: V;
     focused: T extends ApplicationCommandOptionWithAutocomplete ? boolean | undefined : never;
   }
-  
-  
 
+  interface InteractionDataOptionSubCommand extends InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"]> {
+     options?: InteractionDataOptionWithValue[];
+  }
+  
+  interface InteractionDataOptionSubCommandGroup extends InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"]> {
+    // technically these can have zero options, but it will then not show in the client so it's effectively not possible
+    options: (InteractionDataOptionSubCommand | InteractionDataOptionWithValue)[];
+  }
+  
   interface InteractionResponseAutocomplete {
     type: Constants["InteractionResponseTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE_RESULT"];
     data: ApplicationCommandOptionChoice[];
@@ -2115,8 +2115,8 @@ declare namespace Eris {
     addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
     banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     bulkEditCommandPermissions(guildID: string, permissions: { id: string; permissions: ApplicationCommandPermissions[] }[]): Promise<GuildApplicationCommandPermissions[]>;
-    bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
-    bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
+    bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand[]>;
+    bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand[]>;
     closeVoiceConnection(guildID: string): void;
     connect(): Promise<void>;
     createChannel(guildID: string, name: string): Promise<TextChannel>;
@@ -2231,7 +2231,7 @@ declare namespace Eris {
     createCommand<T extends ApplicationCommandStructure>(command: T): Promise<ApplicationCommandStructureConversion<T>>;
     createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
-    createGuildCommand(guildID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
+    createGuildCommand(guildID: string, command: ApplicationCommandStructure): Promise<AnyApplicationCommand>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
@@ -2280,10 +2280,10 @@ declare namespace Eris {
       reason?: string
     ): Promise<void>;
     editChannelPosition(channelID: string, position: number, options?: EditChannelPositionOptions): Promise<void>;
-    editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
+    editCommand(commandID: string, command: ApplicationCommandStructure): Promise<AnyApplicationCommand>;
     editCommandPermissions(guildID: string, commandID: string, permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
-    editGuildCommand(guildID: string, commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
+    editGuildCommand(guildID: string, commandID: string, command: ApplicationCommandStructure): Promise<AnyApplicationCommand>;
     editGuildDiscovery(guildID: string, options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editGuildEmoji(
       guildID: string,
@@ -2347,9 +2347,9 @@ declare namespace Eris {
     getChannel(channelID: string): AnyChannel;
     getChannelInvites(channelID: string): Promise<Invite[]>;
     getChannelWebhooks(channelID: string): Promise<Webhook[]>;
-    getCommand<T extends ApplicationCommand>(commandID: string): Promise<T>;
+    getCommand<T extends AnyApplicationCommand>(commandID: string): Promise<T>;
     getCommandPermissions(guildID: string, commandID: string): Promise<GuildApplicationCommandPermissions>;
-    getCommands(): Promise<ApplicationCommand[]>;
+    getCommands(): Promise<AnyApplicationCommand[]>;
     getDiscoveryCategories(): Promise<DiscoveryCategory[]>;
     getDMChannel(userID: string): Promise<PrivateChannel>;
     getEmojiGuild(emojiID: string): Promise<Guild>;
@@ -2359,9 +2359,9 @@ declare namespace Eris {
     getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getGuildBan(guildID: string, userID: string): Promise<{ reason?: string; user: User }>;
     getGuildBans(guildID: string): Promise<{ reason?: string; user: User }[]>;
-    getGuildCommand(guildID: string, commandID: string): Promise<ApplicationCommand>;
+    getGuildCommand(guildID: string, commandID: string): Promise<AnyApplicationCommand>;
     getGuildCommandPermissions(guildID: string): Promise<GuildApplicationCommandPermissions[]>;
-    getGuildCommands(guildID: string): Promise<ApplicationCommand[]>;
+    getGuildCommands(guildID: string): Promise<AnyApplicationCommand[]>;
     getGuildDiscovery(guildID: string): Promise<DiscoveryMetadata>;
     /** @deprecated */
     getGuildEmbed(guildID: string): Promise<Widget>;
@@ -2670,7 +2670,7 @@ declare namespace Eris {
     addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     banMember(userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
-    bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
+    bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand[]>;
     createChannel(name: string): Promise<TextChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_TEXT"], options?: CreateChannelOptions): Promise<TextChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_VOICE"], options?: CreateChannelOptions): Promise<VoiceChannel>;
@@ -2711,7 +2711,7 @@ declare namespace Eris {
     dynamicIconURL(format?: ImageFormat, size?: number): string | null;
     dynamicSplashURL(format?: ImageFormat, size?: number): string | null;
     edit(options: GuildOptions, reason?: string): Promise<Guild>;
-    editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
+    editCommand(commandID: string, command: ApplicationCommandStructure): Promise<AnyApplicationCommand>;
     editCommandPermissions(permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions[]>;
     editDiscovery(options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
@@ -2734,9 +2734,9 @@ declare namespace Eris {
     getAuditLogs(limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getBan(userID: string): Promise<{ reason?: string; user: User }>;
     getBans(): Promise<{ reason?: string; user: User }[]>;
-    getCommand<T extends ApplicationCommand>(commandID: string): Promise<T>;
+    getCommand<T extends AnyApplicationCommand>(commandID: string): Promise<T>;
     getCommandPermissions(): Promise<GuildApplicationCommandPermissions[]>;
-    getCommands(): Promise<ApplicationCommand[]>;
+    getCommands(): Promise<AnyApplicationCommand[]>;
     getDiscovery(): Promise<DiscoveryMetadata>;
     /** @deprecated */
     getEmbed(): Promise<Widget>;
