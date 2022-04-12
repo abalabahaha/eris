@@ -40,9 +40,9 @@ declare namespace Eris {
   type ApplicationCommandOptionNumber = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["NUMBER"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]> | ApplicationCommandOptionMinMax);
 
   type AnyApplicationCommand = ChatInputApplicationCommand | MessageApplicationCommand | UserApplicationCommand;
-  type ChatInputApplicationCommand = ApplicationCommand<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]>;
-  type UserApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["USER"]>, "description" | "options">;
-  type MessageApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["MESSAGE"]>, "description" | "options">;
+  type ChatInputApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]> & { description: string; options: ApplicationCommandOption[]; };
+  type MessageApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["MESSAGE"]>;
+  type UserApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["USER"]>;
 
   type ApplicationCommandStructureConversion<T extends ApplicationCommandStructure> = T extends ChatInputApplicationCommandStructure ?
     ChatInputApplicationCommand : T extends MessageApplicationCommandStructure ?
@@ -218,14 +218,11 @@ declare namespace Eris {
   }
 
 
-  interface ApplicationCommand<T extends ApplicationCommandType = ApplicationCommandType> {
+  interface ApplicationCommandBase<T extends ApplicationCommandType = ApplicationCommandType> {
     id: string;
     application_id: string;
     guild_id?: string;
     name: string;
-    // I think never is the best we can do
-    description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : never;
-    options?: ApplicationCommandOption[];
     type: T;
     defaultPermission?: boolean;
   }
