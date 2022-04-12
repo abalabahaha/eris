@@ -29,39 +29,6 @@ declare namespace Eris {
   type ApplicationCommandOptionWithAutocomplete = Extract<ApplicationCommandOptionWithValue, { type: ApplicationCommandOptionTypeWithAutocomplete }>;
   type ApplicationCommandOptionWithMinMax = Extract<ApplicationCommandOptionWithValue, { type: ApplicationCommandOptionTypeWithMinMax }>;
 
-  interface ApplicationCommandOptionBase<T extends ApplicationCommandOptionType> {
-    type: T;
-    name: string;
-    description: string;
-    required?: T extends Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND" | "SUB_COMMAND_GROUP"] ? never : boolean;
-  }
-
-  interface ApplicationCommandOptionAutocomplete {
-    autocomplete?: boolean;
-  }
-
-  interface ApplicationCommandOptionChoices<T extends ApplicationCommandOptionTypeWithChoices = ApplicationCommandOptionTypeWithChoices> { choices?: ApplicationCommandOptionChoice<T>[] }
-  interface ApplicationCommandOptionChoice<T extends ApplicationCommandOptionTypeWithChoices = ApplicationCommandOptionTypeWithChoices> {
-    name: string;
-    value:
-    T extends Constants["ApplicationCommandOptionTypes"]["STRING"] ? string :
-      T extends Constants["ApplicationCommandOptionTypes"]["INTEGER" | "NUMBER"] ? number :
-        string | number;
-  }
-
-  interface ApplicationCommandOptionMinMax {
-    min_value?: number;
-    max_value?: number;
-  }
-
-  interface ApplicationCommandOptionSubCommand extends ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"]> {
-    options?: ApplicationCommandOptionWithValue[];
-  }
-
-  interface ApplicationCommandOptionSubCommandGroup extends ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"]> {
-    options?: (ApplicationCommandOptionSubCommand | ApplicationCommandOptionWithValue)[];
-  }
-
   type ApplicationCommandOptionString = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["STRING"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["STRING"]>);
   type ApplicationCommandOptionInteger = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["INTEGER"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["INTEGER"]> | ApplicationCommandOptionMinMax);
   type ApplicationCommandOptionBoolean = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
@@ -70,19 +37,6 @@ declare namespace Eris {
   type ApplicationCommandOptionRole = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["ROLE"]>;
   type ApplicationCommandOptionMentionable = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"]>;
   type ApplicationCommandOptionNumber = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["NUMBER"]> & (ApplicationCommandOptionAutocomplete | ApplicationCommandOptionChoices<Constants["ApplicationCommandOptionTypes"]["NUMBER"]> | ApplicationCommandOptionMinMax);
-
-
-  interface ApplicationCommand<T extends ApplicationCommandType = ApplicationCommandType> {
-    id: string;
-    application_id: string;
-    guild_id?: string;
-    name: string;
-    // I think never is the best we can do
-    description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : never;
-    options?: ApplicationCommandOption[];
-    type: T;
-    defaultPermission?: boolean;
-  }
 
   type AnyApplicationCommand = ChatInputApplicationCommand | MessageApplicationCommand | UserApplicationCommand;
   type ChatInputApplicationCommand = ApplicationCommand<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]>;
@@ -97,18 +51,6 @@ declare namespace Eris {
   type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand, "id" | "application_id" | "guild_id">;
   type MessageApplicationCommandStructure = Omit<MessageApplicationCommand, "id" | "application_id" | "guild_id">;
   type UserApplicationCommandStructure = Omit<UserApplicationCommand, "id" | "application_id" | "guild_id">;
-  interface ApplicationCommandPermissions {
-    id: string;
-    type: Constants["ApplicationCommandPermissionTypes"][keyof Constants["ApplicationCommandPermissionTypes"]];
-    permission: boolean;
-  }
-
-  interface GuildApplicationCommandPermissions {
-    id: string;
-    application_id: string;
-    guild_id: string;
-    permissions?: ApplicationCommandPermissions[];
-  }
 
   // Cache
   interface Uncached { id: string }
