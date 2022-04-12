@@ -83,49 +83,45 @@ declare namespace Eris {
   type InteractionType = Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
   type InteractionDataOption = InteractionDataOptionSubCommand | InteractionDataOptionSubCommandGroup | InteractionDataOptionWithValue;
   type InteractionDataOptionWithValue = InteractionDataOptionString | InteractionDataOptionInteger | InteractionDataOptionBoolean | InteractionDataOptionUser | InteractionDataOptionChannel | InteractionDataOptionRole | InteractionDataOptionMentionable | InteractionDataOptionNumber;
-  interface InteractionDataOptionSubCommand {
-    name: string;
-    type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"];
-    options?: InteractionDataOptionWithValue[];
+  interface InteractionDataOptionSubCommand extends InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"]> {
+     options?: InteractionDataOptionWithValue[];
   }
-  interface InteractionDataOptionSubCommandGroup {
-    name: string;
-    type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"];
-    // technically these can have zero options, but it will then not show in the client
+  interface InteractionDataOptionSubCommandGroup extends InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"]> {
+    // technically these can have zero options, but it will then not show in the client so it's effectively not possible
     options: (InteractionDataOptionSubCommand | InteractionDataOptionWithValue)[];
   }
-  interface InteractionDataOptionGeneric<T extends ApplicationCommandOptionTypeWithValue = ApplicationCommandOptionTypeWithValue, V = unknown> {
-    name: string;
+  interface InteractionDataOptionBase<T extends ApplicationCommandOptionType, V = unknown> {
     type: T;
+    name: string;
     value: V;
-    focused?: boolean;
+    focused: T extends ApplicationCommandOptionWithAutocomplete ? boolean | undefined : never;
   }
-  type InteractionDataOptionString = InteractionDataOptionGeneric<Constants["ApplicationCommandOptionTypes"]["STRING"], string>;
-  type InteractionDataOptionInteger = InteractionDataOptionGeneric<Constants["ApplicationCommandOptionTypes"]["INTEGER"], number>;
-  type InteractionDataOptionBoolean = InteractionDataOptionGeneric<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"], boolean>;
-  type InteractionDataOptionUser = InteractionDataOptionGeneric<Constants["ApplicationCommandOptionTypes"]["USER"], string>;
-  type InteractionDataOptionChannel = InteractionDataOptionGeneric<Constants["ApplicationCommandOptionTypes"]["CHANNEL"], string>;
-  type InteractionDataOptionRole = InteractionDataOptionGeneric<Constants["ApplicationCommandOptionTypes"]["ROLE"], string>;
-  type InteractionDataOptionMentionable = InteractionDataOptionGeneric<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"], string>;
-  type InteractionDataOptionNumber = InteractionDataOptionGeneric<Constants["ApplicationCommandOptionTypes"]["NUMBER"], number>;
+  type InteractionDataOptionString = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["STRING"], string>;
+  type InteractionDataOptionInteger = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["INTEGER"], number>;
+  type InteractionDataOptionBoolean = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"], boolean>;
+  type InteractionDataOptionUser = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["USER"], string>;
+  type InteractionDataOptionChannel = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["CHANNEL"], string>;
+  type InteractionDataOptionRole = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["ROLE"], string>;
+  type InteractionDataOptionMentionable = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["MENTIONABLE"], string>;
+  type InteractionDataOptionNumber = InteractionDataOptionBase<Constants["ApplicationCommandOptionTypes"]["NUMBER"], number>;
 
-  type InteractionResponse = InteractionMessageResponse | InteractionDeferredResponse | InteractionAutocompleteResponse;
+  type InteractionResponse = InteractionResponseAutocomplete | InteractionResponseDeferred | InteractionResponseMessage;
 
-  interface InteractionMessageResponse {
-    type: Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE"];
-    data: InteractionContent;
+  interface InteractionResponseAutocomplete {
+    type: Constants["InteractionResponseTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE_RESULT"];
+    data: ApplicationCommandOptionChoice[];
   }
 
-  interface InteractionDeferredResponse {
+  interface InteractionResponseDeferred {
     type: Constants["InteractionResponseTypes"]["DEFERRED_UPDATE_MESSAGE" | "DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE"];
     data?: {
       flags?: number;
     };
   }
 
-  interface InteractionAutocompleteResponse {
-    type: Constants["InteractionResponseTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE_RESULT"];
-    data: ApplicationCommandOptionChoice[];
+  interface InteractionResponseMessage {
+    type: Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE"];
+    data: InteractionContent;
   }
 
   type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
@@ -206,7 +202,7 @@ declare namespace Eris {
   type UserApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["USER"]>, "description" | "options">;
   type MessageApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["MESSAGE"]>, "description" | "options">;
 
-  type StructureToReal<T extends ApplicationCommandStructure> = T extends ChatInputApplicationCommandStructure ?
+  type ApplicationCommandStructureConversion<T extends ApplicationCommandStructure> = T extends ChatInputApplicationCommandStructure ?
     ChatInputApplicationCommand : T extends MessageApplicationCommandStructure ?
       MessageApplicationCommand : T extends UserApplicationCommandStructure ?
         UserApplicationCommand : never; 
@@ -2210,7 +2206,7 @@ declare namespace Eris {
       options: { name: string; avatar?: string | null },
       reason?: string
     ): Promise<Webhook>;
-    createCommand<T extends ApplicationCommandStructure>(command: T): Promise<StructureToReal<T>>;
+    createCommand<T extends ApplicationCommandStructure>(command: T): Promise<ApplicationCommandStructureConversion<T>>;
     createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
     createGuildCommand(guildID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
@@ -2675,7 +2671,7 @@ declare namespace Eris {
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE"], reason?: string, options?: CreateChannelOptions | string): Promise<StageChannel>;
     /** @deprecated */
     createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
-    createCommand<T extends ApplicationCommandStructure>(command: T): Promise<StructureToReal<T>>;
+    createCommand<T extends ApplicationCommandStructure>(command: T): Promise<ApplicationCommandStructureConversion<T>>;
     createEmoji(options: { image: string; name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     createRole(options: RoleOptions | Role, reason?: string): Promise<Role>;
     createSticker(options: CreateStickerOptions, reason?: string): Promise<Sticker>;
@@ -2911,20 +2907,27 @@ declare namespace Eris {
     getOriginalMessage(): Promise<Message>
   }
 
-  interface ComponentInteractionButtonData {
+  interface InteractionComponentButtonData {
     component_type: Constants["ComponentTypes"]["BUTTON"];
     custom_id: string;
   }
 
-  interface ComponentInteractionSelectMenuData {
+  interface InteractionComponentSelectMenuData {
     component_type: Constants["ComponentTypes"]["SELECT_MENU"];
     custom_id: string;
     values: string[];
   }
 
+  interface InteractionDataOptionsGeneric<T extends ApplicationCommandOptionTypeWithValue = ApplicationCommandOptionTypeWithValue, V = unknown> {
+    focused?: boolean;
+    name: string;
+    type: T;
+    value: V;
+  }
+
   export class ComponentInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
     channel: T;
-    data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData;
+    data: InteractionComponentButtonData | InteractionComponentSelectMenuData;
     guildID?: string;
     member?: Member;
     message: Message;
