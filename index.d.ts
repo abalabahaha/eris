@@ -18,7 +18,6 @@ declare namespace Eris {
   // Application Command
   type AnyApplicationCommand = ChatInputApplicationCommand | MessageApplicationCommand | UserApplicationCommand;
   type ApplicationCommandOptions = ApplicationCommandOptionsWithOptions | ApplicationCommandOptionsWithValue;
-  
   type ApplicationCommandOptionsBoolean = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionsTypes"]["BOOLEAN"]>;
   type ApplicationCommandOptionsChannel = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionsTypes"]["CHANNEL"]> & { channel_types?: number[] };
   type ApplicationCommandOptionsInteger = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionsTypes"]["INTEGER"]> & (ApplicationCommandOptionsAutocomplete | ApplicationCommandOptionsChoices<Constants["ApplicationCommandOptionsTypes"]["INTEGER"]> | ApplicationCommandOptionsMinMax);
@@ -26,20 +25,17 @@ declare namespace Eris {
   type ApplicationCommandOptionsNumber = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionsTypes"]["NUMBER"]> & (ApplicationCommandOptionsAutocomplete | ApplicationCommandOptionsChoices<Constants["ApplicationCommandOptionsTypes"]["NUMBER"]> | ApplicationCommandOptionsMinMax);
   type ApplicationCommandOptionsRole = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionsTypes"]["ROLE"]>;
   type ApplicationCommandOptionsString = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionsTypes"]["STRING"]> & (ApplicationCommandOptionsAutocomplete | ApplicationCommandOptionsChoices<Constants["ApplicationCommandOptionsTypes"]["STRING"]>);
-  type ApplicationCommandOptionsUser = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionsTypes"]["USER"]>;
-  
-  type ApplicationCommandOptionsWithOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup;
-  type ApplicationCommandOptionsWithValue = ApplicationCommandOptionsString | ApplicationCommandOptionsInteger | ApplicationCommandOptionsBoolean | ApplicationCommandOptionsUser | ApplicationCommandOptionsChannel | ApplicationCommandOptionsRole | ApplicationCommandOptionsMentionable | ApplicationCommandOptionsNumber;
   type ApplicationCommandOptionsTypes = Constants["ApplicationCommandOptionsTypes"][keyof Constants["ApplicationCommandOptionsTypes"]];
   type ApplicationCommandOptionsTypesWithAutocomplete = Constants["ApplicationCommandOptionsTypes"][keyof Pick<Constants["ApplicationCommandOptionsTypes"], "STRING" | "INTEGER" | "NUMBER">];
   type ApplicationCommandOptionsTypesWithChoices = Constants["ApplicationCommandOptionsTypes"][keyof Pick<Constants["ApplicationCommandOptionsTypes"], "STRING" | "INTEGER" | "NUMBER">];
-  
+  type ApplicationCommandOptionsUser = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionsTypes"]["USER"]>;
+  type ApplicationCommandOptionsWithOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup;
+  type ApplicationCommandOptionsWithValue = ApplicationCommandOptionsString | ApplicationCommandOptionsInteger | ApplicationCommandOptionsBoolean | ApplicationCommandOptionsUser | ApplicationCommandOptionsChannel | ApplicationCommandOptionsRole | ApplicationCommandOptionsMentionable | ApplicationCommandOptionsNumber;
   type ApplicationCommandStructure = ChatInputApplicationCommandStructure | MessageApplicationCommandStructure | UserApplicationCommandStructure;
   type ApplicationCommandStructureConversion<T extends ApplicationCommandStructure> = T extends ChatInputApplicationCommandStructure ?
       ChatInputApplicationCommand : T extends MessageApplicationCommandStructure ?
         MessageApplicationCommand : T extends UserApplicationCommandStructure ?
           UserApplicationCommand : never; 
-  
   type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
   type ChatInputApplicationCommand = ApplicationCommandOptionsBase<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]> & { description: string; options: ApplicationCommandOptions[]; };
   type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand, "id" | "application_id" | "guild_id">;
