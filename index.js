@@ -27,6 +27,7 @@ Eris.Guild = require("./lib/structures/Guild");
 Eris.GuildChannel = require("./lib/structures/GuildChannel");
 Eris.GuildIntegration = require("./lib/structures/GuildIntegration");
 Eris.GuildPreview = require("./lib/structures/GuildPreview");
+Eris.GuildScheduledEvent = require("./lib/structures/GuildScheduledEvent");
 Eris.GuildTemplate = require("./lib/structures/GuildTemplate");
 Eris.Interaction = require("./lib/structures/Interaction");
 Eris.Invite = require("./lib/structures/Invite");
@@ -60,6 +61,5 @@ Eris.VoiceChannel = require("./lib/structures/VoiceChannel");
 Eris.VoiceConnection = require("./lib/voice/VoiceConnection");
 Eris.VoiceConnectionManager = require("./lib/voice/VoiceConnectionManager");
 Eris.VoiceState = require("./lib/structures/VoiceState");
-Eris.GuildEvent = require("./lib/structures/GuildEvent");
 
 module.exports = Eris;
