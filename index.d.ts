@@ -206,14 +206,6 @@ declare namespace Eris {
   interface ApplicationCommandOptionsSubCommandGroup extends ApplicationCommandOptionBase<Constants["ApplicationCommandOptionsTypes"]["SUB_COMMAND_GROUP"]> {
     options?: (ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsWithValue)[];
   }
-  interface ApplicationCommandOptionsBase<T extends ApplicationCommandTypes = ApplicationCommandTypes> {
-    id: string;
-    application_id: string;
-    guild_id?: string;
-    name: string;
-    type: T;
-    defaultPermission?: boolean;
-  }
   interface ApplicationCommandPermissions {
     id: string;
     type: Constants["ApplicationCommandPermissionTypes"][keyof Constants["ApplicationCommandPermissionTypes"]];
