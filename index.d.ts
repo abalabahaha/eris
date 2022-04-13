@@ -33,11 +33,11 @@ declare namespace Eris {
   type ApplicationCommandOptionsWithValue = ApplicationCommandOptionsString | ApplicationCommandOptionsInteger | ApplicationCommandOptionsBoolean | ApplicationCommandOptionsUser | ApplicationCommandOptionsChannel | ApplicationCommandOptionsRole | ApplicationCommandOptionsMentionable | ApplicationCommandOptionsNumber;
   type ApplicationCommandStructure = ChatInputApplicationCommandStructure | MessageApplicationCommandStructure | UserApplicationCommandStructure;
   type ApplicationCommandStructureConversion<T extends ApplicationCommandStructure> = T extends ChatInputApplicationCommandStructure ?
-      ChatInputApplicationCommand : T extends MessageApplicationCommandStructure ?
-        MessageApplicationCommand : T extends UserApplicationCommandStructure ?
-          UserApplicationCommand : never; 
+    ChatInputApplicationCommand : T extends MessageApplicationCommandStructure ?
+      MessageApplicationCommand : T extends UserApplicationCommandStructure ?
+        UserApplicationCommand : never;
   type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
-  type ChatInputApplicationCommand = ApplicationCommandOptionsBase<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]> & { description: string; options: ApplicationCommandOptions[]; };
+  type ChatInputApplicationCommand = ApplicationCommandOptionsBase<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]> & { description: string; options: ApplicationCommandOptions[] };
   type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand, "id" | "application_id" | "guild_id">;
   type MessageApplicationCommand = ApplicationCommandOptionsBase<Constants["ApplicationCommandTypes"]["MESSAGE"]>;
   type MessageApplicationCommandStructure = Omit<MessageApplicationCommand, "id" | "application_id" | "guild_id">;
@@ -947,7 +947,7 @@ declare namespace Eris {
     focused: T extends ApplicationCommandOptionsTypesWithAutocomplete ? boolean | undefined : never;
   }
   interface InteractionDataOptionsSubCommand extends InteractionDataOptionsBase<Constants["ApplicationCommandOptionsTypes"]["SUB_COMMAND"]> {
-     options?: InteractionDataOptionsWithValue[];
+    options?: InteractionDataOptionsWithValue[];
   }
   interface InteractionDataOptionsSubCommandGroup extends InteractionDataOptionsBase<Constants["ApplicationCommandOptionsTypes"]["SUB_COMMAND_GROUP"]> {
     // technically these can have zero options, but it will then not show in the client so it's effectively not possible
