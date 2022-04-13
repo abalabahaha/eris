@@ -56,6 +56,7 @@ declare namespace Eris {
   type GuildTextableChannel = TextChannel | NewsChannel;
   type GuildTextableWithThread = GuildTextableChannel | AnyThreadChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
+  type PossiblyUncachedSpeakableChannel = VoiceChannel | StageChannel | Uncached;
   type PossiblyUncachedTextable = Textable | Uncached;
   type PossiblyUncachedTextableChannel = TextableChannel | Uncached;
   type TextableChannel = (GuildTextable & GuildTextableChannel) | (ThreadTextable & AnyThreadChannel) | (Textable & PrivateChannel);
@@ -86,12 +87,13 @@ declare namespace Eris {
   // Guild
   type DefaultNotifications = Constants["DefaultMessageNotificationLevels"][keyof Constants["DefaultMessageNotificationLevels"]];
   type ExplicitContentFilter = Constants["ExplicitContentFilterLevels"][keyof Constants["ExplicitContentFilterLevels"]];
+  type GuildFeatures = Constants["GuildFeatures"][number];
   type GuildScheduledEventEntityTypes = Constants["GuildScheduledEventEntityTypes"][keyof Constants["GuildScheduledEventEntityTypes"]];
   type GuildScheduledEventPrivacyLevel = Constants["GuildScheduledEventPrivacyLevel"][keyof Constants["GuildScheduledEventPrivacyLevel"]];
   type GuildScheduledEventStatus = Constants["GuildScheduledEventStatus"][keyof Constants["GuildScheduledEventStatus"]];
-  type GuildFeatures = Constants["GuildFeatures"][number];
   type NSFWLevel = Constants["GuildNSFWLevels"][keyof Constants["GuildNSFWLevels"]];
   type PossiblyUncachedGuild = Guild | Uncached;
+  type PossiblyUncachedGuildScheduledEvent = GuildScheduledEvent | Uncached;
   type PremiumTier = Constants["PremiumTiers"][keyof Constants["PremiumTiers"]];
   type VerificationLevel = Constants["VerificationLevels"][keyof Constants["VerificationLevels"]];
   type SystemChannelFlags = Constants["SystemChannelFlags"][keyof Constants["SystemChannelFlags"]];
@@ -615,6 +617,19 @@ declare namespace Eris {
     topic?: string | null;
     type: GuildChannelTypes;
   }
+  interface OldGuildScheduledEvent {
+    channel: PossiblyUncachedSpeakableChannel | null;
+    description?: string;
+    entityID?: string;
+    enitityMetadata?: GuildScheduledEventMetadata;
+    entityType: GuildScheduledEventEntityTypes;
+    image?: string;
+    name: string;
+    privacyLevel: GuildScheduledEventPrivacyLevel;
+    scheduledEndTime: number | null;
+    scheduledStartTime: number;
+    status: GuildScheduledEventStatus;
+  }
   interface OldGuildTextChannel extends OldGuildChannel {
     nsfw: boolean;
     rateLimitPerUser: number;
@@ -712,6 +727,11 @@ declare namespace Eris {
     guildRoleCreate: [guild: Guild, role: Role];
     guildRoleDelete: [guild: Guild, role: Role];
     guildRoleUpdate: [guild: Guild, role: Role, oldRole: OldRole];
+    guildScheduledEventCreate: [event: GuildScheduledEvent];
+    guildScheduledEventDelete: [event: GuildScheduledEvent];
+    guildScheduledEventUpdate: [event: GuildScheduledEvent, oldEvent: OldGuildScheduledEvent | null];
+    guildScheduledEventUserAdd: [event: PossiblyUncachedGuildScheduledEvent, user: User | Uncached];
+    guildScheduledEventUserRemove: [event: PossiblyUncachedGuildScheduledEvent, user: User | Uncached];
     guildStickersUpdate: [guild: PossiblyUncachedGuild, stickers: Sticker[], oldStickers: Sticker[] | null];
     guildUnavailable: [guild: UnavailableGuild];
     guildUpdate: [guild: Guild, oldGuild: OldGuild];
@@ -755,11 +775,6 @@ declare namespace Eris {
     voiceStateUpdate: [member: Member, oldState: OldVoiceState];
     warn: [message: string, id?: number];
     webhooksUpdate: [data: WebhookData];
-    guildScheduledEventCreate: [event: GuildScheduledEvent];
-    guildScheduledEventUpdate: [event: GuildScheduledEvent, oldEvent: GuildScheduledEventOptions | null];
-    guildScheduledEventDelete: [event: GuildScheduledEvent];
-    guildScheduledEventUserAdd: [event: GuildScheduledEvent | string, user: User | string];
-    guildScheduledEventUserRemove: [event: GuildScheduledEvent | string, user: User | string];
   }
   interface ClientEvents extends EventListeners {
     shardDisconnect: [err: Error | undefined, id: number];
@@ -868,6 +883,15 @@ declare namespace Eris {
     limit?: number;
     userID?: string;
   }
+  interface GetGuildScheduledEventOptions {
+    withUserCount?: boolean;
+  }
+  interface GetGuildScheduledEventUsersOptions {
+    after?: string;
+    before?: string;
+    limit?: number;
+    withMember?: boolean;
+  }
   interface GetPruneOptions {
     days?: number;
     includeRoles?: string[];
@@ -907,6 +931,34 @@ declare namespace Eris {
     systemChannelFlags?: number;
     systemChannelID?: string;
     verificationLevel?: VerificationLevel;
+  }
+  interface GuildScheduledEventMetadata {
+    location?: string;
+  }
+  interface GuildScheduledEventEditOptions<T extends GuildScheduledEventEntityTypes = GuildScheduledEventEntityTypes> {
+    channelID: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? null | undefined : string | undefined;
+    description?: string | null;
+    entityMetadata: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? Required<GuildScheduledEventMetadata> : GuildScheduledEventMetadata | null | undefined;
+    entityType?: T;
+    image?: string;
+    name?: string;
+    privacyLevel?: GuildScheduledEventPrivacyLevel;
+    scheduledEndTime: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? Date : Date | undefined
+    scheduledStartTime?: Date;
+    status?: GuildScheduledEventStatus;
+  }
+  interface GuildScheduledEventOptions<T extends GuildScheduledEventEntityTypes = GuildScheduledEventEntityTypes> extends Omit<GuildScheduledEventEditOptions<T>, "status"> {
+    channelID: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? undefined : string;
+    entityMetadata: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? Required<GuildScheduledEventMetadata> : GuildScheduledEventMetadata | undefined;
+    entityType: T;
+    name: string;
+    privacyLevel: GuildScheduledEventPrivacyLevel;
+    scheduledStartTime: Date;
+  }
+  interface GuildScheduledEventUser {
+    guildScheduledEventID: string;
+    user: User;
+    member?: Member;
   }
   interface GuildTemplateOptions {
     name?: string;
@@ -1453,22 +1505,6 @@ declare namespace Eris {
     team_id: string;
     user: PartialUser;
   }
-  interface GuildScheduledEventMetadata {
-    location?: string;
-  }
-  interface GuildScheduledEventOptions {
-    name: string;
-    channelID: string;
-    entityMetadata: GuildScheduledEventMetadata;
-    privacyLevel: GuildScheduledEventPrivacyLevel;
-    scheduledStartTime: Date;
-    scheduledEndTime: Date;
-    description: string;
-    entityType: GuildScheduledEventEntityTypes;
-  }
-  interface GuildScheduledEventEditOptions extends GuildScheduledEventOptions {
-    status: GuildScheduledEventStatus;
-  }
   interface Constants {
     GATEWAY_VERSION: 9;
     REST_VERSION: 9;
@@ -1953,10 +1989,9 @@ declare namespace Eris {
       CANCELED: 4;
     };
     GuildScheduledEventEntityTypes: {
-      NONE: 0;
       STAGE_INSTANCE: 1;
       VOICE: 2;
-      LOCATION: 3;
+      EXTERNAL: 3;
     };
     GuildScheduledEventPrivacyLevel: {
       PUBLIC: 1;
@@ -2274,7 +2309,7 @@ declare namespace Eris {
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
     createGuildCommand(guildID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
-    createGuildScheduledEvent(guildID: string, event: GuildScheduledEventOptions): Promise<GuildScheduledEvent>;
+    createGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, event: GuildScheduledEventOptions<T>): Promise<GuildScheduledEvent<T>>;
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
@@ -2334,7 +2369,7 @@ declare namespace Eris {
       options: { name?: string; roles?: string[] },
       reason?: string
     ): Promise<Emoji>;
-    editGuildScheduledEvent(event: GuildScheduledEventEditOptions, eventID: string): Promise<GuildScheduledEvent>;
+    editGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, eventID: string, event: GuildScheduledEventEditOptions<T>, reason: string): Promise<GuildScheduledEvent<T>>;
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
     editGuildSticker(guildID: string, stickerID: string, options?: EditStickerOptions, reason?: string): Promise<Sticker>;
@@ -2412,6 +2447,8 @@ declare namespace Eris {
     getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
     getGuildInvites(guildID: string): Promise<Invite[]>;
     getGuildPreview(guildID: string): Promise<GuildPreview>;
+    getGuildScheduledEvents(guildID: string, options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent[]>
+    getGuildScheduledEventUsers(guildID: string, eventID: string, options?: GetGuildScheduledEventUsersOptions): Promise<GuildScheduledEventUser[]>;
     getGuildTemplate(code: string): Promise<GuildTemplate>;
     getGuildTemplates(guildID: string): Promise<GuildTemplate[]>;
     getGuildVanity(guildID: string): Promise<GuildVanity>;
@@ -2438,7 +2475,7 @@ declare namespace Eris {
     getRESTGuildChannels(guildID: string): Promise<AnyGuildChannel[]>;
     getRESTGuildEmoji(guildID: string, emojiID: string): Promise<Emoji>;
     getRESTGuildEmojis(guildID: string): Promise<Emoji[]>;
-    getRESTGuildScheduledEvent(guildID: string, eventID: string): Promise<GuildScheduledEvent>;
+    getRESTGuildScheduledEvent(guildID: string, eventID: string, options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent>;
     getRESTGuildMember(guildID: string, memberID: string): Promise<Member>;
     getRESTGuildMembers(guildID: string, options?: GetRESTGuildMembersOptions): Promise<Member[]>;
     /** @deprecated */
@@ -2498,8 +2535,6 @@ declare namespace Eris {
     leaveGuild(guildID: string): Promise<void>;
     leaveThread(channelID: string, userID?: string): Promise<void>;
     leaveVoiceChannel(channelID: string): void;
-    listGuildScheduledEvents(guildID: string, withUserCount: boolean): Promise<Array<GuildScheduledEvent>>;
-    listGuildScheduledEventUsers(guildID: string, eventID: string): void;
     off<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
     off(event: string, listener: (...args: any[]) => void): this;
     once<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
@@ -2753,6 +2788,7 @@ declare namespace Eris {
     deleteEmoji(emojiID: string, reason?: string): Promise<void>;
     deleteIntegration(integrationID: string): Promise<void>;
     deleteRole(roleID: string): Promise<void>;
+    deleteScheduledEvent(eventID: string): Promise<void>;
     deleteSticker(stickerID: string, reason?: string): Promise<void>;
     deleteTemplate(code: string): Promise<GuildTemplate>;
     dynamicBannerURL(format?: ImageFormat, size?: number): string | null;
@@ -2769,6 +2805,7 @@ declare namespace Eris {
     /** @deprecated */
     editNickname(nick: string): Promise<void>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
+    editScheduledEvent<T extends GuildScheduledEventEntityTypes>(eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>
     editSticker(stickerID: string, options?: EditStickerOptions, reason?: string): Promise<Sticker>;
     editTemplate(code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
     editVanity(code: string | null): Promise<GuildVanity>;
@@ -2795,14 +2832,16 @@ declare namespace Eris {
     getRESTChannels(): Promise<AnyGuildChannel[]>;
     getRESTEmoji(emojiID: string): Promise<Emoji>;
     getRESTEmojis(): Promise<Emoji[]>;
-    getRESTEvent(eventID: string): Promise<GuildScheduledEvent>;
     getRESTMember(memberID: string): Promise<Member>;
     getRESTMembers(options?: GetRESTGuildMembersOptions): Promise<Member[]>;
     /** @deprecated */
     getRESTMembers(limit?: number, after?: string): Promise<Member[]>;
     getRESTRoles(): Promise<Role[]>;
+    getRESTScheduledEvent(eventID: string): Promise<GuildScheduledEvent>;
     getRESTSticker(stickerID: string): Promise<Sticker>;
     getRESTStickers(): Promise<Sticker[]>;
+    getScheduledEvents(options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent[]>;
+    getScheduledEventUsers(eventID: string, options?: GetGuildScheduledEventUsersOptions): Promise<GuildScheduledEventUser[]>;
     getTemplates(): Promise<GuildTemplate[]>;
     getVanity(): Promise<GuildVanity>;
     getVoiceRegions(): Promise<VoiceRegion[]>;
@@ -2868,20 +2907,21 @@ declare namespace Eris {
     permissionsOf(memberID: string | Member | MemberRoles): Permission;
   }
 
-  export class GuildScheduledEvent extends Base {
-    channelID: string;
+  export class GuildScheduledEvent<T extends GuildScheduledEventEntityTypes = GuildScheduledEventEntityTypes> extends Base {
+    channelID: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? null : PossiblyUncachedSpeakableChannel;
+    creator?: User;
     description?: string;
     entityID: string;
-    entityMetadata: GuildScheduledEventMetadata;
-    entityType: GuildScheduledEventEntityTypes;
-    guildID: string;
+    entityMetadata: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? Required<GuildScheduledEventMetadata> : null;
+    entityType: T;
+    guild: PossiblyUncachedGuild;
     id: string;
+    image?: string;
     name: string;
     privacyLevel: GuildScheduledEventPrivacyLevel;
-    scheduledEndTime: number;
+    scheduledEndTime: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? number : number | null;
     scheduledStartTime: number;
     status: GuildScheduledEventStatus;
-    creator?: User;
     userCount?: number;
     delete(): Promise<void>;
     edit(event: GuildScheduledEventEditOptions): Promise<GuildScheduledEvent>;
