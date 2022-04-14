@@ -18,17 +18,23 @@ declare namespace Eris {
   // Application Command
   type AnyApplicationCommand = ChatInputApplicationCommand | MessageApplicationCommand | UserApplicationCommand;
   type ApplicationCommandOptions = ApplicationCommandOptionsWithOptions | ApplicationCommandOptionsWithValue;
-  type ApplicationCommandOptionsBoolean = ApplicationCommandOption<"BOOLEAN">;
-  type ApplicationCommandOptionsChannel = ApplicationCommandOption<"CHANNEL"> & { channel_types?: number[] };
-  type ApplicationCommandOptionsInteger = ApplicationCommandOption<"INTEGER"> & (ApplicationCommandOptionsAutocomplete | ApplicationCommandOptionsChoices<Constants["ApplicationCommandOptionsTypes"]["INTEGER"]> | ApplicationCommandOptionsMinMax);
-  type ApplicationCommandOptionsMentionable = ApplicationCommandOption<"MENTIONABLE">;
-  type ApplicationCommandOptionsNumber = ApplicationCommandOption<"NUMBER"> & (ApplicationCommandOptionsAutocomplete | ApplicationCommandOptionsChoices<Constants["ApplicationCommandOptionsTypes"]["NUMBER"]> | ApplicationCommandOptionsMinMax);
-  type ApplicationCommandOptionsRole = ApplicationCommandOption<"ROLE">;
-  type ApplicationCommandOptionsString = ApplicationCommandOption<"STRING"> & (ApplicationCommandOptionsAutocomplete | ApplicationCommandOptionsChoices<Constants["ApplicationCommandOptionsTypes"]["STRING"]>);
   type ApplicationCommandOptionsTypes = Constants["ApplicationCommandOptionsTypes"][keyof Constants["ApplicationCommandOptionsTypes"]];
   type ApplicationCommandOptionsTypesWithAutocomplete = Constants["ApplicationCommandOptionsTypes"][keyof Pick<Constants["ApplicationCommandOptionsTypes"], "STRING" | "INTEGER" | "NUMBER">];
   type ApplicationCommandOptionsTypesWithChoices = Constants["ApplicationCommandOptionsTypes"][keyof Pick<Constants["ApplicationCommandOptionsTypes"], "STRING" | "INTEGER" | "NUMBER">];
+  type ApplicationCommandOption<T extends keyof Constants["ApplicationCommandOptionsTypes"]> = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionsTypes"][T]>;
+  type ApplicationCommandOptionAutocomplete<T extends "INTEGER" | "NUMBER" | "STRING"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsAutocomplete);
+  type ApplicationCommandOptionChoices<T extends "INTEGER" | "NUMBER" | "STRING"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsChoices<Constants["ApplicationCommandOptionsTypes"][T]>);
+  type ApplicationCommandOptionMinMax<T extends "INTEGER" | "NUMBER"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsMinMax)
+
+  type ApplicationCommandOptionsBoolean = ApplicationCommandOption<"BOOLEAN">;
+  type ApplicationCommandOptionsChannel = ApplicationCommandOption<"CHANNEL"> & { channel_types?: number[] };
+  type ApplicationCommandOptionsInteger = ApplicationCommandOptionAutocomplete<"INTEGER"> | ApplicationCommandOptionChoices<"INTEGER"> | ApplicationCommandOptionMinMax<"INTEGER">;
+  type ApplicationCommandOptionsMentionable = ApplicationCommandOption<"MENTIONABLE">;
+  type ApplicationCommandOptionsNumber = ApplicationCommandOptionAutocomplete<"NUMBER"> | ApplicationCommandOptionChoices<"NUMBER"> | ApplicationCommandOptionMinMax<"NUMBER">;
+  type ApplicationCommandOptionsRole = ApplicationCommandOption<"ROLE">;
+  type ApplicationCommandOptionsString = ApplicationCommandOptionAutocomplete<"STRING"> | ApplicationCommandOptionChoices<"STRING">
   type ApplicationCommandOptionsUser = ApplicationCommandOption<"USER">;
+
   type ApplicationCommandOptionsWithOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup;
   type ApplicationCommandOptionsWithValue = ApplicationCommandOptionsString | ApplicationCommandOptionsInteger | ApplicationCommandOptionsBoolean | ApplicationCommandOptionsUser | ApplicationCommandOptionsChannel | ApplicationCommandOptionsRole | ApplicationCommandOptionsMentionable | ApplicationCommandOptionsNumber;
   type ApplicationCommandStructure = ChatInputApplicationCommandStructure | MessageApplicationCommandStructure | UserApplicationCommandStructure;
@@ -43,8 +49,6 @@ declare namespace Eris {
   type MessageApplicationCommandStructure = Omit<MessageApplicationCommand, "id" | "application_id" | "guild_id">;
   type UserApplicationCommand = ApplicationCommandOptionsBase<Constants["ApplicationCommandTypes"]["USER"]>;
   type UserApplicationCommandStructure = Omit<UserApplicationCommand, "id" | "application_id" | "guild_id">;
-
-  type ApplicationCommandOption<T extends keyof Constants["ApplicationCommandOptionsTypes"]> = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionsTypes"][T]>;
 
   // Cache
   interface Uncached { id: string }
