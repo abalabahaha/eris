@@ -222,7 +222,7 @@ declare namespace Eris {
     application_id: string;
     guild_id: string;
     id: string;
-    permissions?: ApplicationCommandPermissions[];
+    permissions: ApplicationCommandPermissions[];
   }
 
   // Channel
@@ -685,7 +685,7 @@ declare namespace Eris {
     guildUnavailable: [guild: UnavailableGuild];
     guildUpdate: [guild: Guild, oldGuild: OldGuild];
     hello: [trace: string[], id: number];
-    interactionCreate: [interaction: CommandInteraction | ComponentInteraction | AutocompleteInteraction];
+    interactionCreate: [interaction: AutocompleteInteraction | CommandInteraction | ComponentInteraction];
     inviteCreate: [guild: Guild, invite: Invite];
     inviteDelete: [guild: Guild, invite: Invite];
     messageCreate: [message: Message<PossiblyUncachedTextableChannel>];
@@ -2876,20 +2876,7 @@ declare namespace Eris {
 
   export class CommandInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
     channel: T;
-    data: {
-      id: string;
-      name: string;
-      type: ApplicationCommandTypes;
-      target_id?: string;
-      resolved?: {
-        users?: Collection<User>;
-        members?: Collection<Omit<Member, "deaf" | "mute">>;
-        roles?: Collection<Role>;
-        channels?: Collection<PartialChannel>;
-        messages?: Collection<Message>;
-      };
-      options?: InteractionDataOptions[];
-    };
+    data: CommandInteractionData;
     guildID?: string;
     member?: Member;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
@@ -2904,6 +2891,21 @@ declare namespace Eris {
     editOriginalMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
     getOriginalMessage(): Promise<Message>
   }
+
+  interface CommandInteractionData {
+      id: string;
+      name: string;
+      type: ApplicationCommandTypes;
+      target_id?: string;
+      resolved?: {
+        users?: Collection<User>;
+        members?: Collection<Omit<Member, "deaf" | "mute">>;
+        roles?: Collection<Role>;
+        channels?: Collection<PartialChannel>;
+        messages?: Collection<Message>;
+      };
+      options?: InteractionDataOptions[];
+    }
 
   interface InteractionComponentButtonData {
     component_type: Constants["ComponentTypes"]["BUTTON"];
@@ -2938,13 +2940,7 @@ declare namespace Eris {
   }
   export class AutocompleteInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
     channel: T;
-    data: {
-      id: string;
-      name: string;
-      type: Constants["ApplicationCommandTypes"]["CHAT_INPUT"];
-      target_id?: string;
-      options: InteractionDataOptions[];
-    };
+    data: AutocompleteInteractionData;
     guildID?: string;
     member?: Member;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE"];
@@ -2952,6 +2948,14 @@ declare namespace Eris {
     acknowledge(choices: ApplicationCommandOptionsChoice[]): Promise<void>;
     result(choices: ApplicationCommandOptionsChoice[]): Promise<void>;
   }
+
+  interface AutocompleteInteractionData {
+      id: string;
+      name: string;
+      type: Constants["ApplicationCommandTypes"]["CHAT_INPUT"];
+      target_id?: string;
+      options: InteractionDataOptions[];
+    }
 
   // If CT (count) is "withMetadata", it will not have count properties
   export class Invite<CT extends "withMetadata" | "withCount" | "withoutCount" = "withMetadata", CH extends InviteChannel = InviteChannel> extends Base {
