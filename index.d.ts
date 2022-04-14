@@ -101,7 +101,8 @@ declare namespace Eris {
   type GuildIntegrationExpireBehavior = Constants["GuildIntegrationExpireBehavior"][keyof Constants["GuildIntegrationExpireBehavior"]];
 
   // Interaction
-  type AnyInteraction = PingInteraction | CommandInteraction | ComponentInteraction;
+  type AnyInteraction = AnyInteractionGateway | PingInteraction;
+  type AnyInteractionGateway = AutocompleteInteraction | CommandInteraction | ComponentInteraction;
   type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
   type InteractionDataOptions = InteractionDataOptionsSubCommand | InteractionDataOptionsSubCommandGroup | InteractionDataOptionsWithValue;
   type InteractionDataOptionsBoolean = InteractionDataOptionsBase<Constants["ApplicationCommandOptionsTypes"]["BOOLEAN"], boolean>;
@@ -685,7 +686,7 @@ declare namespace Eris {
     guildUnavailable: [guild: UnavailableGuild];
     guildUpdate: [guild: Guild, oldGuild: OldGuild];
     hello: [trace: string[], id: number];
-    interactionCreate: [interaction: AutocompleteInteraction | CommandInteraction | ComponentInteraction];
+    interactionCreate: [interaction: AnyInteractionGateway];
     inviteCreate: [guild: Guild, invite: Invite];
     inviteDelete: [guild: Guild, invite: Invite];
     messageCreate: [message: Message<PossiblyUncachedTextableChannel>];
