@@ -43,11 +43,11 @@ declare namespace Eris {
       MessageApplicationCommand : T extends UserApplicationCommandStructure ?
         UserApplicationCommand : never;
   type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
-  type ChatInputApplicationCommand = ApplicationCommandOptionsBase<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]> & { description: string; options: ApplicationCommandOptions[] };
+  type ChatInputApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]> & { description: string; options: ApplicationCommandOptions[] };
   type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand, "id" | "application_id" | "guild_id">;
-  type MessageApplicationCommand = ApplicationCommandOptionsBase<Constants["ApplicationCommandTypes"]["MESSAGE"]>;
+  type MessageApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["MESSAGE"]>;
   type MessageApplicationCommandStructure = Omit<MessageApplicationCommand, "id" | "application_id" | "guild_id">;
-  type UserApplicationCommand = ApplicationCommandOptionsBase<Constants["ApplicationCommandTypes"]["USER"]>;
+  type UserApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["USER"]>;
   type UserApplicationCommandStructure = Omit<UserApplicationCommand, "id" | "application_id" | "guild_id">;
 
   // Cache
@@ -177,7 +177,7 @@ declare namespace Eris {
   }
 
   // Application Command
-  interface ApplicationCommandOptionsBase<T extends ApplicationCommandTypes = ApplicationCommandTypes> {
+  interface ApplicationCommandBase<T extends ApplicationCommandTypes = ApplicationCommandTypes> {
     id: string;
     application_id: string;
     guild_id?: string;
