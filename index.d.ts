@@ -972,6 +972,9 @@ declare namespace Eris {
     data: InteractionContent;
     type: Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE"];
   }
+  interface InteractionResponsePong {
+    type: Constants["InteractionResponseTypes"]["PONG"];
+  }
 
   // Invite
   interface CreateChannelInviteOptions extends CreateInviteOptions {
