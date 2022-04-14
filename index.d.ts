@@ -200,7 +200,7 @@ declare namespace Eris {
     value:
     T extends Constants["ApplicationCommandOptionsTypes"]["STRING"] ? string :
       T extends Constants["ApplicationCommandOptionsTypes"]["INTEGER" | "NUMBER"] ? number :
-        string | number;
+        unknown;
   }
   interface ApplicationCommandOptionsChoices<T extends ApplicationCommandOptionsTypesWithChoices = ApplicationCommandOptionsTypesWithChoices> { choices?: ApplicationCommandOptionsChoice<T>[] }
   interface ApplicationCommandOptionsMinMax {
