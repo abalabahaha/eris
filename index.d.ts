@@ -529,6 +529,7 @@ declare namespace Eris {
   interface EmbedVideo {
     height?: number;
     url?: string;
+    proxy_url?: string;
     width?: number;
   }
 
