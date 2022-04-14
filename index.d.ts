@@ -43,12 +43,12 @@ declare namespace Eris {
       MessageApplicationCommand : T extends UserApplicationCommandStructure ?
         UserApplicationCommand : never;
   type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
-  type ChatInputApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]> & { description: string; options: ApplicationCommandOptions[] };
+  type ChatInputApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]> & { options?: ApplicationCommandOptions[] };
   type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand, "id" | "application_id" | "guild_id">;
   type MessageApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["MESSAGE"]>;
-  type MessageApplicationCommandStructure = Omit<MessageApplicationCommand, "id" | "application_id" | "guild_id">;
+  type MessageApplicationCommandStructure = Omit<MessageApplicationCommand, "id" | "application_id" | "guild_id" | "description">;
   type UserApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["USER"]>;
-  type UserApplicationCommandStructure = Omit<UserApplicationCommand, "id" | "application_id" | "guild_id">;
+  type UserApplicationCommandStructure = Omit<UserApplicationCommand, "id" | "application_id" | "guild_id" | "description">;
 
   // Cache
   interface Uncached { id: string }
@@ -184,6 +184,7 @@ declare namespace Eris {
     name: string;
     type: T;
     defaultPermission?: boolean;
+    description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "";
   }
   interface ApplicationCommandOptionsAutocomplete {
     autocomplete?: boolean;
