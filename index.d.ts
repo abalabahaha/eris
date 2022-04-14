@@ -177,25 +177,23 @@ declare namespace Eris {
   }
 
   // Application Command
-  interface ApplicationCommandBase<T extends ApplicationCommandTypes = ApplicationCommandTypes> {
-    id: string;
-    application_id: string;
-    guild_id?: string;
-    name: string;
-    type: T;
+  interface ApplicationCommandBase<T extends ApplicationCommandTypes = ApplicationCommandTypes> {application_id: string;
     defaultPermission?: boolean;
     description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "";
+    guild_id?: string;
+    id: string;
+    name: string;
     options?: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ?  ApplicationCommandOptions[] : never;
+    type: T;
     version: string;
   }
   interface ApplicationCommandOptionsAutocomplete {
     autocomplete?: boolean;
   }
-  interface ApplicationCommandOptionBase<T extends ApplicationCommandOptionsTypes> {
-    type: T;
+  interface ApplicationCommandOptionBase<T extends ApplicationCommandOptionsTypes> {description: string;
     name: string;
-    description: string;
     required?: T extends Constants["ApplicationCommandOptionsTypes"]["SUB_COMMAND" | "SUB_COMMAND_GROUP"] ? never : boolean;
+    type: T;
   }
   interface ApplicationCommandOptionsChoice<T extends ApplicationCommandOptionsTypesWithChoices = ApplicationCommandOptionsTypesWithChoices> {
     name: string;
@@ -206,8 +204,8 @@ declare namespace Eris {
   }
   interface ApplicationCommandOptionsChoices<T extends ApplicationCommandOptionsTypesWithChoices = ApplicationCommandOptionsTypesWithChoices> { choices?: ApplicationCommandOptionsChoice<T>[] }
   interface ApplicationCommandOptionsMinMax {
-    min_value?: number;
     max_value?: number;
+    min_value?: number;
   }
   interface ApplicationCommandOptionsSubCommand extends ApplicationCommandOptionBase<Constants["ApplicationCommandOptionsTypes"]["SUB_COMMAND"]> {
     options?: ApplicationCommandOptionsWithValue[];
@@ -217,13 +215,13 @@ declare namespace Eris {
   }
   interface ApplicationCommandPermissions {
     id: string;
-    type: Constants["ApplicationCommandPermissionTypes"][keyof Constants["ApplicationCommandPermissionTypes"]];
     permission: boolean;
+    type: Constants["ApplicationCommandPermissionTypes"][keyof Constants["ApplicationCommandPermissionTypes"]];
   }
   interface GuildApplicationCommandPermissions {
-    id: string;
     application_id: string;
     guild_id: string;
+    id: string;
     permissions?: ApplicationCommandPermissions[];
   }
 
@@ -948,10 +946,10 @@ declare namespace Eris {
 
   // Interaction
   interface InteractionDataOptionsBase<T extends ApplicationCommandOptionsTypes, V = unknown> {
-    type: T;
-    name: string;
-    value: V;
     focused: T extends ApplicationCommandOptionsTypesWithAutocomplete ? boolean | undefined : never;
+    name: string;
+    type: T;
+    value: V;
   }
   interface InteractionDataOptionsSubCommand extends InteractionDataOptionsBase<Constants["ApplicationCommandOptionsTypes"]["SUB_COMMAND"]> {
     options?: InteractionDataOptionsWithValue[];
@@ -961,18 +959,18 @@ declare namespace Eris {
     options: (InteractionDataOptionsSubCommand | InteractionDataOptionsWithValue)[];
   }
   interface InteractionResponseAutocomplete {
-    type: Constants["InteractionResponseTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE_RESULT"];
     data: ApplicationCommandOptionsChoice[];
+    type: Constants["InteractionResponseTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE_RESULT"];
   }
   interface InteractionResponseDeferred {
-    type: Constants["InteractionResponseTypes"]["DEFERRED_UPDATE_MESSAGE" | "DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE"];
     data?: {
       flags?: number;
     };
+    type: Constants["InteractionResponseTypes"]["DEFERRED_UPDATE_MESSAGE" | "DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE"];
   }
   interface InteractionResponseMessage {
-    type: Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE"];
     data: InteractionContent;
+    type: Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE"];
   }
 
   // Invite
