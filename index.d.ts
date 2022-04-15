@@ -619,9 +619,9 @@ declare namespace Eris {
   }
   interface OldGuildScheduledEvent {
     channel: PossiblyUncachedSpeakableChannel | null;
-    description?: string;
-    entityID?: string;
-    enitityMetadata?: GuildScheduledEventMetadata;
+    description?: string | null;
+    entityID: string | null;
+    enitityMetadata: GuildScheduledEventMetadata | null;
     entityType: GuildScheduledEventEntityTypes;
     image?: string;
     name: string;
@@ -2909,7 +2909,7 @@ declare namespace Eris {
     channelID: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? null : PossiblyUncachedSpeakableChannel;
     creator?: User;
     description?: string;
-    entityID: string;
+    entityID: string | null;
     entityMetadata: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? Required<GuildScheduledEventMetadata> : null;
     entityType: T;
     guild: PossiblyUncachedGuild;
@@ -2922,8 +2922,8 @@ declare namespace Eris {
     status: GuildScheduledEventStatus;
     userCount?: number;
     delete(): Promise<void>;
-    edit(event: GuildScheduledEventEditOptions): Promise<GuildScheduledEvent>;
-    listUsers(): void;
+    edit(event: GuildScheduledEventEditOptions, reason?: string): Promise<GuildScheduledEvent>;
+    getUsers(options?: GetGuildScheduledEventUsersOptions): Promise<GuildScheduledEventUser[]>;
   }
 
   export class GuildIntegration extends Base {
