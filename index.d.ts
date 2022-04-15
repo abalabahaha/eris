@@ -2309,7 +2309,7 @@ declare namespace Eris {
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
     createGuildCommand(guildID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
-    createGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, event: GuildScheduledEventOptions<T>): Promise<GuildScheduledEvent<T>>;
+    createGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, event: GuildScheduledEventOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
@@ -2369,7 +2369,7 @@ declare namespace Eris {
       options: { name?: string; roles?: string[] },
       reason?: string
     ): Promise<Emoji>;
-    editGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, eventID: string, event: GuildScheduledEventEditOptions<T>, reason: string): Promise<GuildScheduledEvent<T>>;
+    editGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
     editGuildSticker(guildID: string, stickerID: string, options?: EditStickerOptions, reason?: string): Promise<Sticker>;
@@ -2778,7 +2778,7 @@ declare namespace Eris {
     createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
     createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     createEmoji(options: { image: string; name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
-    createScheduledEvent(event: GuildScheduledEventOptions): Promise<GuildScheduledEvent>;
+    createScheduledEvent<T extends GuildScheduledEventEntityTypes>(event: GuildScheduledEventOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     createRole(options: RoleOptions | Role, reason?: string): Promise<Role>;
     createSticker(options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createTemplate(name: string, description?: string | null): Promise<GuildTemplate>;
@@ -2852,8 +2852,6 @@ declare namespace Eris {
     kickMember(userID: string, reason?: string): Promise<void>;
     leave(): Promise<void>;
     leaveVoiceChannel(): void;
-    listEvents(withUserCount: boolean): Promise<Array<GuildScheduledEvent>>;
-    listEventUsers(eventID: string): void;
     permissionsOf(memberID: string | Member | MemberRoles): Permission;
     pruneMembers(options?: PruneMemberOptions): Promise<number>;
     removeMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
