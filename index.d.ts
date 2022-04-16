@@ -104,15 +104,16 @@ declare namespace Eris {
   type AnyInteraction = AnyInteractionGateway | PingInteraction;
   type AnyInteractionGateway = AutocompleteInteraction | CommandInteraction | ComponentInteraction;
   type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
+  type InteractionDataOption<T extends keyof Constants["ApplicationCommandOptionsTypes"], V = unknown> = InteractionDataOptionsBase<Constants["ApplicationCommandOptionsTypes"][T], V>;
   type InteractionDataOptions = InteractionDataOptionsSubCommand | InteractionDataOptionsSubCommandGroup | InteractionDataOptionsWithValue;
-  type InteractionDataOptionsBoolean = InteractionDataOptionsBase<Constants["ApplicationCommandOptionsTypes"]["BOOLEAN"], boolean>;
-  type InteractionDataOptionsChannel = InteractionDataOptionsBase<Constants["ApplicationCommandOptionsTypes"]["CHANNEL"], string>;
-  type InteractionDataOptionsInteger = InteractionDataOptionsBase<Constants["ApplicationCommandOptionsTypes"]["INTEGER"], number>;
-  type InteractionDataOptionsMentionable = InteractionDataOptionsBase<Constants["ApplicationCommandOptionsTypes"]["MENTIONABLE"], string>;
-  type InteractionDataOptionsNumber = InteractionDataOptionsBase<Constants["ApplicationCommandOptionsTypes"]["NUMBER"], number>;
-  type InteractionDataOptionsRole = InteractionDataOptionsBase<Constants["ApplicationCommandOptionsTypes"]["ROLE"], string>;
-  type InteractionDataOptionsString = InteractionDataOptionsBase<Constants["ApplicationCommandOptionsTypes"]["STRING"], string>;
-  type InteractionDataOptionsUser = InteractionDataOptionsBase<Constants["ApplicationCommandOptionsTypes"]["USER"], string>;
+  type InteractionDataOptionsBoolean = InteractionDataOption<"BOOLEAN", boolean>;
+  type InteractionDataOptionsChannel = InteractionDataOption<"CHANNEL", string>;
+  type InteractionDataOptionsInteger = InteractionDataOption<"INTEGER", number>;
+  type InteractionDataOptionsMentionable = InteractionDataOption<"MENTIONABLE", string>;
+  type InteractionDataOptionsNumber = InteractionDataOption<"NUMBER", number>;
+  type InteractionDataOptionsRole = InteractionDataOption<"ROLE", string>;
+  type InteractionDataOptionsString = InteractionDataOption<"STRING", string>;
+  type InteractionDataOptionsUser = InteractionDataOption<"USER", string>;
   type InteractionDataOptionsWithValue = InteractionDataOptionsString | InteractionDataOptionsInteger | InteractionDataOptionsBoolean | InteractionDataOptionsUser | InteractionDataOptionsChannel | InteractionDataOptionsRole | InteractionDataOptionsMentionable | InteractionDataOptionsNumber;
   type InteractionResponse = InteractionResponseAutocomplete | InteractionResponseDeferred | InteractionResponseMessage;
   type InteractionTypes = Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
@@ -947,7 +948,7 @@ declare namespace Eris {
 
   // Interaction
   interface InteractionDataOptionsBase<T extends ApplicationCommandOptionsTypes, V = unknown> {
-    focused: T extends ApplicationCommandOptionsTypesWithAutocomplete ? boolean | undefined : never;
+    focused?: T extends ApplicationCommandOptionsTypesWithAutocomplete ? boolean : never;
     name: string;
     type: T;
     value: V;
