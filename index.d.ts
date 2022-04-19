@@ -948,6 +948,13 @@ declare namespace Eris {
   }
 
   // Interaction
+  interface AutocompleteInteractionData {
+    id: string;
+    name: string;
+    type: Constants["ApplicationCommandTypes"]["CHAT_INPUT"];
+    target_id?: string;
+    options: InteractionDataOptions[];
+  }
   interface CommandInteractionData {
     id: string;
     name: string;
@@ -2950,14 +2957,6 @@ declare namespace Eris {
     acknowledge(choices: ApplicationCommandOptionsChoice[]): Promise<void>;
     result(choices: ApplicationCommandOptionsChoice[]): Promise<void>;
   }
-
-  interface AutocompleteInteractionData {
-      id: string;
-      name: string;
-      type: Constants["ApplicationCommandTypes"]["CHAT_INPUT"];
-      target_id?: string;
-      options: InteractionDataOptions[];
-    }
 
   // If CT (count) is "withMetadata", it will not have count properties
   export class Invite<CT extends "withMetadata" | "withCount" | "withoutCount" = "withMetadata", CH extends InviteChannel = InviteChannel> extends Base {
