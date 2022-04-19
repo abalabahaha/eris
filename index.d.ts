@@ -2895,19 +2895,21 @@ declare namespace Eris {
   }
 
   interface CommandInteractionData {
-      id: string;
-      name: string;
-      type: ApplicationCommandTypes;
-      target_id?: string;
-      resolved?: {
-        users?: Collection<User>;
-        members?: Collection<Omit<Member, "deaf" | "mute">>;
-        roles?: Collection<Role>;
-        channels?: Collection<PartialChannel>;
-        messages?: Collection<Message>;
-      };
-      options?: InteractionDataOptions[];
-    }
+    id: string;
+    name: string;
+    type: ApplicationCommandTypes;
+    target_id?: string;
+    resolved?: CommandInteractionResolvedData;
+    options?: InteractionDataOptions[];
+  }
+
+  interface CommandInteractionResolvedData {
+    users?: Collection<User>;
+    members?: Collection<Omit<Member, "deaf" | "mute">>;
+    roles?: Collection<Role>;
+    channels?: Collection<PartialChannel>;
+    messages?: Collection<Message>;
+  }
 
   interface InteractionComponentButtonData {
     component_type: Constants["ComponentTypes"]["BUTTON"];
