@@ -189,13 +189,14 @@ declare namespace Eris {
     type: T;
     version: string;
   }
-  interface ApplicationCommandOptionsAutocomplete {
-    autocomplete?: boolean;
-  }
-  interface ApplicationCommandOptionBase<T extends ApplicationCommandOptionsTypes> {description: string;
+  interface ApplicationCommandOptionBase<T extends ApplicationCommandOptionsTypes> {
+    description: string;
     name: string;
     required?: T extends Constants["ApplicationCommandOptionsTypes"]["SUB_COMMAND" | "SUB_COMMAND_GROUP"] ? never : boolean;
     type: T;
+  }
+  interface ApplicationCommandOptionsAutocomplete {
+    autocomplete?: boolean;
   }
   interface ApplicationCommandOptionsChoice<T extends ApplicationCommandOptionsTypesWithChoices = ApplicationCommandOptionsTypesWithChoices> {
     name: string;
@@ -947,6 +948,30 @@ declare namespace Eris {
   }
 
   // Interaction
+  interface CommandInteractionData {
+    id: string;
+    name: string;
+    type: ApplicationCommandTypes;
+    target_id?: string;
+    resolved?: CommandInteractionResolvedData;
+    options?: InteractionDataOptions[];
+  }
+  interface CommandInteractionResolvedData {
+    users?: Collection<User>;
+    members?: Collection<Omit<Member, "deaf" | "mute">>;
+    roles?: Collection<Role>;
+    channels?: Collection<PartialChannel>;
+    messages?: Collection<Message>;
+  }
+  interface InteractionComponentButtonData {
+    component_type: Constants["ComponentTypes"]["BUTTON"];
+    custom_id: string;
+  }
+  interface InteractionComponentSelectMenuData {
+    component_type: Constants["ComponentTypes"]["SELECT_MENU"];
+    custom_id: string;
+    values: string[];
+  }
   interface InteractionDataOptionsBase<T extends ApplicationCommandOptionsTypes, V = unknown> {
     focused?: T extends ApplicationCommandOptionsTypesWithAutocomplete ? boolean : never;
     name: string;
@@ -2894,34 +2919,6 @@ declare namespace Eris {
     getOriginalMessage(): Promise<Message>
   }
 
-  interface CommandInteractionData {
-    id: string;
-    name: string;
-    type: ApplicationCommandTypes;
-    target_id?: string;
-    resolved?: CommandInteractionResolvedData;
-    options?: InteractionDataOptions[];
-  }
-
-  interface CommandInteractionResolvedData {
-    users?: Collection<User>;
-    members?: Collection<Omit<Member, "deaf" | "mute">>;
-    roles?: Collection<Role>;
-    channels?: Collection<PartialChannel>;
-    messages?: Collection<Message>;
-  }
-
-  interface InteractionComponentButtonData {
-    component_type: Constants["ComponentTypes"]["BUTTON"];
-    custom_id: string;
-  }
-
-  interface InteractionComponentSelectMenuData {
-    component_type: Constants["ComponentTypes"]["SELECT_MENU"];
-    custom_id: string;
-    values: string[];
-  }
-
   export class ComponentInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
     channel: T;
     data: InteractionComponentButtonData | InteractionComponentSelectMenuData;
@@ -2942,6 +2939,7 @@ declare namespace Eris {
     editParent(content: InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     getOriginalMessage(): Promise<Message>
   }
+
   export class AutocompleteInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
     channel: T;
     data: AutocompleteInteractionData;
