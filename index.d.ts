@@ -965,7 +965,7 @@ declare namespace Eris {
   }
   interface CommandInteractionResolvedData {
     users?: Collection<User>;
-    members?: Collection<Omit<Member, "deaf" | "mute">>;
+    members?: Collection<Member>;
     roles?: Collection<Role>;
     channels?: Collection<PartialChannel>;
     messages?: Collection<Message>;
