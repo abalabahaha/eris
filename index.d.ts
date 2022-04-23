@@ -63,7 +63,7 @@ declare namespace Eris {
   type ChannelTypes = GuildChannelTypes | PrivateChannelTypes;
   type GuildChannelTypes = Exclude<Constants["ChannelTypes"][keyof Constants["ChannelTypes"]], PrivateChannelTypes>;
   type TextChannelTypes = GuildTextChannelTypes | PrivateChannelTypes;
-  type GuildTextChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_TEXT" | "GUILD_NEWS">];
+  type GuildTextChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_TEXT" | "GUILD_NEWS" | "GUILD_VOICE">];
   type GuildThreadChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_NEWS_THREAD" | "GUILD_PRIVATE_THREAD" | "GUILD_PUBLIC_THREAD">];
   type GuildPublicThreadChannelTypes = Exclude<GuildThreadChannelTypes, Constants["ChannelTypes"]["GUILD_PRIVATE_THREAD"]>;
   type GuildVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE" | "GUILD_STAGE">];
@@ -3382,13 +3382,22 @@ declare namespace Eris {
     on(event: string, listener: (...args: any[]) => void): this;
   }
 
-  export class StageChannel extends VoiceChannel {
+  export class StageChannel extends GuildChannel implements Invitable {
+    bitrate: number;
+    rtcRegion: string | null;
     topic?: string;
     type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"];
+    userLimit: number;
+    videoQualityMode: VideoQualityMode;
+    voiceMembers: Collection<Member>;
     createInstance(options: StageInstanceOptions): Promise<StageInstance>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", VoiceChannel>>;
     deleteInstance(): Promise<void>;
     editInstance(options: StageInstanceOptions): Promise<StageInstance>;
     getInstance(): Promise<StageInstance>;
+    getInvites(): Promise<(Invite<"withMetadata", VoiceChannel>)[]>;
+    join(options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
+    leave(): void;
   }
 
   export class StageInstance extends Base {
@@ -3543,15 +3552,15 @@ declare namespace Eris {
     removeRelationship(): Promise<void>;
   }
 
-  export class VoiceChannel extends GuildChannel implements Invitable {
+  export class VoiceChannel extends TextChannel {
     bitrate: number;
     rtcRegion: string | null;
-    type: GuildVoiceChannelTypes;
+    type: Constants["ChannelTypes"]["GUILD_VOICE"];
     userLimit: number;
     videoQualityMode: VideoQualityMode;
     voiceMembers: Collection<Member>;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", VoiceChannel>>;
-    getInvites(): Promise<(Invite<"withMetadata", VoiceChannel>)[]>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
+    getInvites(): Promise<(Invite<"withMetadata", this>)[]>;
     join(options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
     leave(): void;
   }
