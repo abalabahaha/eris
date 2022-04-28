@@ -358,7 +358,9 @@ declare namespace Eris {
     getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
     /** @deprecated */
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
+    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
+    getPins(): Promise<Message<this>[]>;
+    pinMessage(messageID: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     sendTyping(): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
@@ -2382,13 +2384,12 @@ declare namespace Eris {
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
     createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionOptions, file?: FileContent | FileContent[]): Promise<void>;
-    createMessage(channelID: string, content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
-    createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
-    createRole(guildID: string, options?: Role, reason?: string): Promise<Role>;
+    createMessage<T extends TextableChannel = TextableChannel>(channelID: string, content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<T>>;
+    createRole(guildID: string, options?: RoleOptions | Role, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     createThreadWithoutMessage(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
-    crosspostMessage(channelID: string, messageID: string): Promise<Message>;
+    crosspostMessage<T extends TextableChannel = TextableChannel>(channelID: string, messageID: string): Promise<Message<T>>;
     deleteChannel(channelID: string, reason?: string): Promise<void>;
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
     deleteCommand(commandID: string): Promise<void>;
@@ -2448,7 +2449,7 @@ declare namespace Eris {
     editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
     editGuildWelcomeScreen(guildID: string, options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editGuildWidget(guildID: string, options: Widget): Promise<Widget>;
-    editMessage(channelID: string, messageID: string, content: MessageContentEdit): Promise<Message>;
+    editMessage<T extends TextableChannel = TextableChannel>(channelID: string, messageID: string, content: MessageContentEdit): Promise<Message<T>>;
     /** @deprecated */
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
@@ -2470,12 +2471,12 @@ declare namespace Eris {
       token?: string,
       reason?: string
     ): Promise<Webhook>;
-    editWebhookMessage(
+    editWebhookMessage<T extends GuildTextableChannel = GuildTextableChannel>(
       webhookID: string,
       token: string,
       messageID: string,
       options: WebhookPayloadEdit
-    ): Promise<Message<GuildTextableChannel>>;
+    ): Promise<Message<T>>;
     emit<K extends keyof ClientEvents>(event: K, ...args: ClientEvents[K]): boolean;
     emit(event: string, ...args: any[]): boolean;
     enableSelfMFATOTP(
@@ -2483,8 +2484,8 @@ declare namespace Eris {
       code: string
     ): Promise<{ backup_codes: { code: string; consumed: boolean }[]; token: string }>;
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string }): Promise<void>;
-    executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string; wait: true }): Promise<Message<GuildTextableChannel>>;
-    executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message<GuildTextableChannel>>;
+    executeSlackWebhook<T extends GuildTextableChannel = GuildTextableChannel>(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string; wait: true }): Promise<Message<T>>;
+    executeWebhook<T extends GuildTextableChannel = GuildTextableChannel>(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message<T>>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
     followChannel(channelID: string, webhookChannelID: string): Promise<ChannelFollow>;
     getActiveGuildThreads(guildID: string): Promise<ListedGuildThreads>;
@@ -2529,16 +2530,16 @@ declare namespace Eris {
     getInvite(inviteID: string, withCounts?: false): Promise<Invite<"withoutCount">>;
     getInvite(inviteID: string, withCounts: true): Promise<Invite<"withCount">>;
     getJoinedPrivateArchivedThreads(channelID: string, options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
-    getMessage(channelID: string, messageID: string): Promise<Message>;
+    getMessage<T extends TextableChannel = TextableChannel>(channelID: string, messageID: string): Promise<Message<T>>;
     getMessageReaction(channelID: string, messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
     getMessageReaction(channelID: string, messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
-    getMessages(channelID: string, options?: GetMessagesOptions): Promise<Message[]>;
+    getMessages<T extends TextableChannel = TextableChannel>(channelID: string, options?: GetMessagesOptions): Promise<Message<T>[]>;
     /** @deprecated */
-    getMessages(channelID: string, limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
+    getMessages<T extends TextableChannel = TextableChannel>(channelID: string, limit?: number, before?: string, after?: string, around?: string): Promise<Message<T>[]>;
     getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getOAuthApplication(appID?: string): Promise<OAuthApplicationInfo>;
-    getPins(channelID: string): Promise<Message[]>;
+    getPins<T extends TextableChannel = TextableChannel>(channelID: string): Promise<Message<T>[]>;
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
     getRESTChannel(channelID: string): Promise<AnyChannel>;
     getRESTGuild(guildID: string, withCounts?: boolean): Promise<Guild>;
@@ -2598,7 +2599,7 @@ declare namespace Eris {
     getUserProfile(userID: string): Promise<UserProfile>;
     getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
-    getWebhookMessage(webhookID: string, token: string, messageID: string): Promise<Message<GuildTextableChannel>>;
+    getWebhookMessage<T extends GuildTextableChannel = GuildTextableChannel>(webhookID: string, token: string, messageID: string): Promise<Message<T>>;
     joinThread(channelID: string, userID?: string): Promise<void>;
     joinVoiceChannel(channelID: string, options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
     kickGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
@@ -3119,23 +3120,23 @@ declare namespace Eris {
         members?: Collection<Omit<Member, "user" | "deaf" | "mute">>;
         roles?: Collection<Role>;
         channels?: Collection<PartialChannel>;
-        messages?: Collection<Message>;
+        messages?: Collection<Message<T>>;
       };
       options?: InteractionDataOptions[];
     };
-    guildID?: string;
-    member?: Member;
+    guildID: T extends GuildTextableWithThread ? string : undefined;
+    member: T extends GuildTextableWithThread ? Member : null;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
     user?: User;
     acknowledge(flags?: number): Promise<void>;
-    createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message<T>>;
     createMessage(content: string | InteractionContent , file?: FileContent | FileContent[]): Promise<void>;
     defer(flags?: number): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
-    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
-    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
-    getOriginalMessage(): Promise<Message>
+    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
+    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
+    getOriginalMessage(): Promise<Message<T>>
   }
 
   interface ComponentInteractionButtonData {
@@ -3153,22 +3154,22 @@ declare namespace Eris {
     appPermissions?: Permission;
     channel: T;
     data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData;
-    guildID?: string;
-    member?: Member;
-    message: Message;
+    guildID: T extends GuildTextableWithThread ? string : undefined;
+    member: T extends GuildTextableWithThread ? Member : null;
+    message: Message<T>;
     type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
     user?: User;
     acknowledge(): Promise<void>;
-    createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message<T>>;
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
-    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
-    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
+    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
     editParent(content: InteractionContentEdit, file?: FileContent | FileContent[]): Promise<void>;
-    getOriginalMessage(): Promise<Message>
+    getOriginalMessage(): Promise<Message<T>>
   }
   export class AutocompleteInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
     appPermissions?: Permission;
@@ -3191,22 +3192,22 @@ declare namespace Eris {
     appPermissions?: Permission;
     channel?: T;
     data?: unknown;
-    guildID?: string;
-    member?: Member;
-    message?: Message;
+    guildID: T extends GuildTextableWithThread ? string : undefined;
+    member: T extends GuildTextableWithThread ? Member : null;
+    message?: Message<T>;
     type: number;
     user?: User;
     acknowledge(data: InteractionOptions): Promise<void>;
-    createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message<T>>;
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
-    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
-    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
+    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
     editParent(content: InteractionContentEdit, file?: FileContent | FileContent[]): Promise<void>;
-    getOriginalMessage(): Promise<Message>
+    getOriginalMessage(): Promise<Message<T>>
     pong(): Promise<void>;
     result(choices: ApplicationCommandOptionChoice[]): Promise<void>;
   }
