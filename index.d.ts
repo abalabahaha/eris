@@ -3127,7 +3127,7 @@ declare namespace Eris {
     guildID: T extends GuildTextableWithThread ? string : never;
     member: T extends GuildTextableWithThread ? Member : never;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
-    user?: User;
+    user: T extends GuildTextableWithThread ? never : User;
     acknowledge(flags?: number): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message<T>>;
     createMessage(content: string | InteractionContent , file?: FileContent | FileContent[]): Promise<void>;
@@ -3158,7 +3158,7 @@ declare namespace Eris {
     member: T extends GuildTextableWithThread ? Member : never;
     message: Message<T>;
     type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
-    user?: User;
+    user: T extends GuildTextableWithThread ? never : User;
     acknowledge(): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message<T>>;
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
@@ -3184,7 +3184,7 @@ declare namespace Eris {
     guildID: T extends GuildTextableWithThread ? string : never;
     member: T extends GuildTextableWithThread ? Member : never;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE"];
-    user?: User;
+    user: T extends GuildTextableWithThread ? never : User;
     acknowledge(choices: ApplicationCommandOptionChoice[]): Promise<void>;
     result(choices: ApplicationCommandOptionChoice[]): Promise<void>;
   }
@@ -3196,7 +3196,7 @@ declare namespace Eris {
     member: T extends GuildTextableWithThread ? Member : never;
     message?: Message<T>;
     type: number;
-    user?: User;
+    user: T extends GuildTextableWithThread ? never : User;
     acknowledge(data: InteractionOptions): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message<T>>;
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
