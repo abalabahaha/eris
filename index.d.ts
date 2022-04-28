@@ -3124,8 +3124,8 @@ declare namespace Eris {
       };
       options?: InteractionDataOptions[];
     };
-    guildID: T extends GuildTextableWithThread ? string : undefined;
-    member: T extends GuildTextableWithThread ? Member : null;
+    guildID: T extends GuildTextableWithThread ? string : never;
+    member: T extends GuildTextableWithThread ? Member : never;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
     user?: User;
     acknowledge(flags?: number): Promise<void>;
@@ -3154,8 +3154,8 @@ declare namespace Eris {
     appPermissions?: Permission;
     channel: T;
     data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData;
-    guildID: T extends GuildTextableWithThread ? string : undefined;
-    member: T extends GuildTextableWithThread ? Member : null;
+    guildID: T extends GuildTextableWithThread ? string : never;
+    member: T extends GuildTextableWithThread ? Member : never;
     message: Message<T>;
     type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
     user?: User;
@@ -3181,8 +3181,8 @@ declare namespace Eris {
       target_id?: string;
       options: InteractionDataOptions[];
     };
-    guildID?: string;
-    member?: Member;
+    guildID: T extends GuildTextableWithThread ? string : never;
+    member: T extends GuildTextableWithThread ? Member : never;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE"];
     user?: User;
     acknowledge(choices: ApplicationCommandOptionChoice[]): Promise<void>;
@@ -3192,8 +3192,8 @@ declare namespace Eris {
     appPermissions?: Permission;
     channel?: T;
     data?: unknown;
-    guildID: T extends GuildTextableWithThread ? string : undefined;
-    member: T extends GuildTextableWithThread ? Member : null;
+    guildID: T extends GuildTextableWithThread ? string : never;
+    member: T extends GuildTextableWithThread ? Member : never;
     message?: Message<T>;
     type: number;
     user?: User;
@@ -3295,7 +3295,7 @@ declare namespace Eris {
     editedTimestamp?: number;
     embeds: Embed[];
     flags: number;
-    guildID: T extends GuildTextableWithThread ? string : undefined;
+    guildID: T extends GuildTextableWithThread ? string : never;
     id: string;
     interaction: MessageInteraction | null;
     jumpLink: string;
