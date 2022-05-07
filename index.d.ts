@@ -1474,8 +1474,8 @@ declare namespace Eris {
       NUMBER:            10;
     };
     ApplicationCommandPermissionTypes: {
-      ROLE: 1;
-      USER: 2;
+      ROLE:    1;
+      USER:    2;
       CHANNEL: 3;
     };
     ApplicationCommandTypes: {
