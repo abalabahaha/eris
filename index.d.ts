@@ -16,13 +16,13 @@ declare namespace Eris {
   // TYPES
 
   // Application Commands
-  type AnyApplicationCommand<W extends boolean> = ChatInputApplicationCommand<W> | MessageApplicationCommand<W> | UserApplicationCommand<W>;
+  type AnyApplicationCommand<W extends boolean = false> = ChatInputApplicationCommand<W> | MessageApplicationCommand<W> | UserApplicationCommand<W>;
   type ApplicationCommandStructure = ChatInputApplicationCommandStructure | MessageApplicationCommandStructure | UserApplicationCommandStructure;
-  type ChatInputApplicationCommand<W extends boolean> = ApplicationCommand<Constants["ApplicationCommandTypes"]["CHAT_INPUT"], W>;
+  type ChatInputApplicationCommand<W extends boolean = false> = ApplicationCommand<Constants["ApplicationCommandTypes"]["CHAT_INPUT"], W>;
   type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand<false>, "id" | "application_id" | "guild_id" | "name_localizations" | "description_localizations"> & Partial<Record<"name_localizations" | "description_localizations", Record<string, string>>>;
-  type MessageApplicationCommand<W extends boolean> = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["MESSAGE"], W>, "description" | "options">;
+  type MessageApplicationCommand<W extends boolean = false> = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["MESSAGE"], W>, "description" | "options">;
   type MessageApplicationCommandStructure = Omit<MessageApplicationCommand<false>, "id" | "application_id" | "guild_id" | "name_localizations" | "description_localizations"> & Partial<Record<"name_localizations" | "description_localizations", Record<string, string>>>;
-  type UserApplicationCommand<W extends boolean> = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["USER"], W>, "description" | "options">;
+  type UserApplicationCommand<W extends boolean = false> = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["USER"], W>, "description" | "options">;
   type UserApplicationCommandStructure = Omit<UserApplicationCommand<false>, "id" | "application_id" | "guild_id" | "name_localizations" | "description_localizations"> & Partial<Record<"name_localizations" | "description_localizations", Record<string, string>>>;
   type ApplicationCommandOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup | ApplicationCommandOptionsWithValue;
   type ApplicationCommandOptionsBoolean = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
@@ -2362,9 +2362,9 @@ declare namespace Eris {
     getChannel(channelID: string): AnyChannel;
     getChannelInvites(channelID: string): Promise<Invite[]>;
     getChannelWebhooks(channelID: string): Promise<Webhook[]>;
-    getCommand<T extends boolean>(commandID: string, withLocalizations?: T): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>>;
+    getCommand<T extends boolean = false>(commandID: string, withLocalizations?: T): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>>;
     getCommandPermissions(guildID: string, commandID: string): Promise<GuildApplicationCommandPermissions>;
-    getCommands<T extends boolean>(withLocalizations?: T): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>[]>;
+    getCommands<T extends boolean = false>(withLocalizations?: T): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>[]>;
     getDiscoveryCategories(): Promise<DiscoveryCategory[]>;
     getDMChannel(userID: string): Promise<PrivateChannel>;
     getEmojiGuild(emojiID: string): Promise<Guild>;
@@ -2374,9 +2374,9 @@ declare namespace Eris {
     getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getGuildBan(guildID: string, userID: string): Promise<{ reason?: string; user: User }>;
     getGuildBans(guildID: string): Promise<{ reason?: string; user: User }[]>;
-    getGuildCommand<T extends boolean>(guildID: string, commandID: string, withLocalizations?: T): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>>;
+    getGuildCommand<T extends boolean = false>(guildID: string, commandID: string, withLocalizations?: T): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>>;
     getGuildCommandPermissions(guildID: string): Promise<GuildApplicationCommandPermissions[]>;
-    getGuildCommands<T extends boolean>(guildID: string): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>[]>;
+    getGuildCommands<T extends boolean = false>(guildID: string): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>[]>;
     getGuildDiscovery(guildID: string): Promise<DiscoveryMetadata>;
     /** @deprecated */
     getGuildEmbed(guildID: string): Promise<Widget>;
@@ -2749,9 +2749,9 @@ declare namespace Eris {
     getAuditLogs(limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getBan(userID: string): Promise<{ reason?: string; user: User }>;
     getBans(): Promise<{ reason?: string; user: User }[]>;
-    getCommand<T extends boolean>(commandID: string, withLocalizations?: T): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>>;
+    getCommand<T extends boolean = false>(commandID: string, withLocalizations?: T): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>>;
     getCommandPermissions(): Promise<GuildApplicationCommandPermissions[]>;
-    getCommands<T extends boolean>(withLocalizations?: T): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>[]>;
+    getCommands<T extends boolean = false>(withLocalizations?: T): Promise<ApplicationCommand<(Constants["ApplicationCommandTypes"])[keyof Constants["ApplicationCommandTypes"]], T>[]>;
     getDiscovery(): Promise<DiscoveryMetadata>;
     /** @deprecated */
     getEmbed(): Promise<Widget>;
