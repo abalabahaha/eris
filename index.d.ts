@@ -176,8 +176,9 @@ declare namespace Eris {
   interface ApplicationCommand<T extends ApplicationCommandTypes = ApplicationCommandTypes, W extends boolean = false> {
     application_id: string;
     defaultPermission?: boolean;
-    // @TODO revisit this and either go one way for camelCase/snake_case
     description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : never;
+    nameLocalizations?: W extends true ? Record<string, string> | null : never;
+    // @TODO revisit this and go one way or the other for camelCase/snake_case
     guild_id?: string;
     id: string;
     name: string;
