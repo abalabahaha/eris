@@ -2372,7 +2372,7 @@ declare namespace Eris {
     getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getGuildBan(guildID: string, userID: string): Promise<{ reason?: string; user: User }>;
     getGuildBans(guildID: string): Promise<{ reason?: string; user: User }[]>;
-    getGuildCommand(guildID: string, commandID: string): Promise<AnyApplicationCommand>;
+    getGuildCommand<T extends AnyApplicationCommand>(guildID: string, commandID: string): Promise<T>;
     getGuildCommandPermissions(guildID: string): Promise<GuildApplicationCommandPermissions[]>;
     getGuildCommands(guildID: string): Promise<AnyApplicationCommand[]>;
     getGuildDiscovery(guildID: string): Promise<DiscoveryMetadata>;
