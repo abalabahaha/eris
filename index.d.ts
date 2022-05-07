@@ -175,7 +175,8 @@ declare namespace Eris {
   // Application Commands
   interface ApplicationCommand<T extends ApplicationCommandTypes = ApplicationCommandTypes> {
     application_id: string;
-    defaultPermission?: boolean;
+    defaultMemberPermissions?: string;
+    DMPermission?: boolean;
     description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : never;
     guild_id?: string;
     id: string;
@@ -682,6 +683,7 @@ declare namespace Eris {
     selfVideo: boolean;
   }
   interface EventListeners {
+    applicationCommandPermissionsUpdate: [applicationCommandPermissions: GuildApplicationCommandPermissions]
     callCreate: [call: Call];
     callDelete: [call: Call];
     callRing: [call: Call];
@@ -1474,6 +1476,7 @@ declare namespace Eris {
     ApplicationCommandPermissionTypes: {
       ROLE: 1;
       USER: 2;
+      CHANNEL: 3;
     };
     ApplicationCommandTypes: {
       CHAT_INPUT: 1;
@@ -2117,7 +2120,6 @@ declare namespace Eris {
     addRelationship(userID: string, block?: boolean): Promise<void>;
     addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
     banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
-    bulkEditCommandPermissions(guildID: string, permissions: { id: string; permissions: ApplicationCommandPermissions[] }[]): Promise<GuildApplicationCommandPermissions[]>;
     bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
     bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
     closeVoiceConnection(guildID: string): void;
@@ -2234,7 +2236,7 @@ declare namespace Eris {
     createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
-    createGuildCommand(guildID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
+    createGuildCommand(guildID: string, command: Omit<ApplicationCommandStructure, 'DMPermission'>): Promise<Omit<ApplicationCommand, 'DMPermission'>>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
