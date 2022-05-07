@@ -16,14 +16,14 @@ declare namespace Eris {
   // TYPES
 
   // Application Commands
-  type AnyApplicationCommand = ChatInputApplicationCommand | MessageApplicationCommand | UserApplicationCommand;
+  type AnyApplicationCommand<W extends boolean> = ChatInputApplicationCommand<W> | MessageApplicationCommand<W> | UserApplicationCommand<W>;
   type ApplicationCommandStructure = ChatInputApplicationCommandStructure | MessageApplicationCommandStructure | UserApplicationCommandStructure;
-  type ChatInputApplicationCommand = ApplicationCommand<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]>;
-  type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand, "id" | "application_id" | "guild_id">;
-  type MessageApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["MESSAGE"]>, "description" | "options">;
-  type MessageApplicationCommandStructure = Omit<MessageApplicationCommand, "id" | "application_id" | "guild_id">;
-  type UserApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["USER"]>, "description" | "options">;
-  type UserApplicationCommandStructure = Omit<UserApplicationCommand, "id" | "application_id" | "guild_id">;
+  type ChatInputApplicationCommand<W extends boolean> = ApplicationCommand<Constants["ApplicationCommandTypes"]["CHAT_INPUT"], W>;
+  type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand<false>, "id" | "application_id" | "guild_id" | "name_localizations" | "description_localizations"> & Partial<Record<"name_localizations" | "description_localizations", Record<string, string>>>;
+  type MessageApplicationCommand<W extends boolean> = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["MESSAGE"], W>, "description" | "options">;
+  type MessageApplicationCommandStructure = Omit<MessageApplicationCommand<false>, "id" | "application_id" | "guild_id" | "name_localizations" | "description_localizations"> & Partial<Record<"name_localizations" | "description_localizations", Record<string, string>>>;
+  type UserApplicationCommand<W extends boolean> = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["USER"], W>, "description" | "options">;
+  type UserApplicationCommandStructure = Omit<UserApplicationCommand<false>, "id" | "application_id" | "guild_id" | "name_localizations" | "description_localizations"> & Partial<Record<"name_localizations" | "description_localizations", Record<string, string>>>;
   type ApplicationCommandOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup | ApplicationCommandOptionsWithValue;
   type ApplicationCommandOptionsBoolean = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
   type ApplicationCommandOptionsChannel = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["CHANNEL"]>;
@@ -173,25 +173,31 @@ declare namespace Eris {
   }
 
   // Application Commands
-  interface ApplicationCommand<T extends ApplicationCommandTypes = ApplicationCommandTypes> {
+  interface ApplicationCommand<T extends ApplicationCommandTypes = ApplicationCommandTypes, W extends boolean = false> {
     application_id: string;
     defaultPermission?: boolean;
+    // @TODO revisit this and either go one way for camelCase/snake_case
     description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : never;
     guild_id?: string;
     id: string;
     name: string;
+    nameLocalizations?: W extends true ? Record<string, string> | null : never;
     options?: ApplicationCommandOptions[];
     type: T;
   }
   interface ApplicationCommandOptionsSubCommand {
     description: string;
+    description_localizations?: Record<string, string>;
     name: string;
+    name_localizations?: Record<string, string>;
     options?: ApplicationCommandOptionsWithValue[];
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"];
   }
   interface ApplicationCommandOptionsSubCommandGroup {
     description: string;
+    description_localizations?: Record<string, string>;
     name: string;
+    name_localizations?: Record<string, string>;
     options?: (ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsWithValue)[];
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"];
   }
@@ -209,7 +215,9 @@ declare namespace Eris {
     autocomplete?: boolean;
     choices?: ApplicationCommandOptionChoice<T>[];
     description: string;
+    description_localizations?: Record<string, string>;
     name: string;
+    name_localizations?: Record<string, string>;
     required?: boolean;
     type: T;
   }
@@ -217,16 +225,20 @@ declare namespace Eris {
     autocomplete?: boolean;
     choices?: ApplicationCommandOptionChoice<T>[];
     description: string;
+    description_localizations?: Record<string, string>;
     max_value?: number;
     min_value?: number;
     name: string;
+    name_localizations?: Record<string, string>;
     required?: boolean;
     type: T;
   }
   interface ApplicationCommandOption<T extends Constants["ApplicationCommandOptionTypes"][Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">]> {
     channel_types: T extends Constants["ApplicationCommandOptionTypes"]["CHANNEL"] ? ChannelTypes | undefined : never;
     description: string;
+    description_localizations?: Record<string, string>;
     name: string;
+    name_localizations?: Record<string, string>;
     required?: boolean;
     type: T;
   }
