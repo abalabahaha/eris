@@ -177,7 +177,7 @@ declare namespace Eris {
     application_id: string;
     defaultPermission?: boolean;
     description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : never;
-    nameLocalizations?: W extends true ? Record<string, string> | null : never;
+    descriptionLocalizations?: W extends true ? Record<string, string> | null : never;
     // @TODO revisit this and go one way or the other for camelCase/snake_case
     guild_id?: string;
     id: string;
