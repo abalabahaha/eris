@@ -2897,7 +2897,7 @@ declare namespace Eris {
     applicationID: string;
     id: string;
     token: string;
-    type: number;
+    type: InteractionTypes;
     version: number;
     static from(data: BaseData): AnyInteraction;
   }
