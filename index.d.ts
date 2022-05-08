@@ -1376,7 +1376,6 @@ declare namespace Eris {
     callback(data?: any): void;
   }
 
-
   class Base implements SimpleJSON {
     createdAt: number;
     id: string;
@@ -1523,7 +1522,6 @@ declare namespace Eris {
      * @returns {CommandOptions}
      */
     addOptions(...options: CommandOptions[]): this
-
 
     /**
      * @description `choices` cannot be present when this is true
