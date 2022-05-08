@@ -11,7 +11,7 @@
       },
       "./index.js"
     ],
-    "./*": "./",
+    "./": "./",
     "./esm": "./esm.mjs"
   },
   "typings": "./index.d.ts",
