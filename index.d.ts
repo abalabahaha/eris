@@ -1406,7 +1406,7 @@ declare namespace Eris {
   }
   interface WebhookPayload {
     allowedMentions?: AllowedMentions;
-    attachments: PartialAttachment[];
+    attachments?: PartialAttachment[];
     auth?: boolean;
     avatarURL?: string;
     components?: ActionRow[];
