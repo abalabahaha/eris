@@ -176,7 +176,7 @@ declare namespace Eris {
   interface ApplicationCommand<T extends ApplicationCommandTypes = ApplicationCommandTypes> {
     application_id: string;
     defaultMemberPermissions?: string;
-    DMPermission?: boolean;
+    dmPermission?: boolean;
     description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : never;
     guild_id?: string;
     id: string;
@@ -2236,7 +2236,7 @@ declare namespace Eris {
     createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
-    createGuildCommand(guildID: string, command: Omit<ApplicationCommandStructure, 'DMPermission'>): Promise<Omit<ApplicationCommand, 'DMPermission'>>;
+    createGuildCommand(guildID: string, command: Omit<ApplicationCommandStructure, 'dmPermission'>): Promise<Omit<ApplicationCommand, 'dmPermission'>>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
