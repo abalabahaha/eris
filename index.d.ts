@@ -172,11 +172,6 @@ declare namespace Eris {
     toJSON(props?: string[]): JSONCache;
   }
 
-  interface InteractionModalContent {
-    title: string;
-    custom_id: string;
-    components: ModalContentActionRow[];
-  }
   // Application Commands
   interface ApplicationCommand<T extends ApplicationCommandTypes = ApplicationCommandTypes> {
     application_id: string;
@@ -999,6 +994,11 @@ declare namespace Eris {
     name: string;
     type: T;
     value: V;
+  }
+  interface InteractionModalContent {
+    title: string;
+    custom_id: string;
+    components: ModalContentActionRow[];
   }
   interface InteractionOptions {
     data?: InteractionCallbackData;
