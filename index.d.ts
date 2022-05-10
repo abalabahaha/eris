@@ -88,6 +88,8 @@ declare namespace Eris {
   type DefaultNotifications = Constants["DefaultMessageNotificationLevels"][keyof Constants["DefaultMessageNotificationLevels"]];
   type ExplicitContentFilter = Constants["ExplicitContentFilterLevels"][keyof Constants["ExplicitContentFilterLevels"]];
   type GuildFeatures = Constants["GuildFeatures"][number];
+  type GuildScheduledEventEditOptions<T extends GuildScheduledEventEntityTypes> = GuildScheduledEventEditOptionsExternal | GuildScheduledEventEditOptionsDiscord | GuildScheduledEventEditOptionsBase<T>;
+  type GuildScheduledEventOptions<T extends GuildScheduledEventEntityTypes> = GuildScheduledEventOptionsExternal | GuildScheduledEventOptionsDiscord | GuildScheduledEventOptionsBase<T>;
   type GuildScheduledEventEntityTypes = Constants["GuildScheduledEventEntityTypes"][keyof Constants["GuildScheduledEventEntityTypes"]];
   type GuildScheduledEventPrivacyLevel = Constants["GuildScheduledEventPrivacyLevel"][keyof Constants["GuildScheduledEventPrivacyLevel"]];
   type GuildScheduledEventStatus = Constants["GuildScheduledEventStatus"][keyof Constants["GuildScheduledEventStatus"]];
@@ -935,25 +937,43 @@ declare namespace Eris {
   interface GuildScheduledEventMetadata {
     location?: string;
   }
-  interface GuildScheduledEventEditOptions<T extends GuildScheduledEventEntityTypes = GuildScheduledEventEntityTypes> {
-    channelID: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? null | undefined : string | undefined;
+  interface GuildScheduledEventEditOptionsBase<T extends GuildScheduledEventEntityTypes = GuildScheduledEventEntityTypes> {
+    channelID?: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? null : string;
     description?: string | null;
-    entityMetadata: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? Required<GuildScheduledEventMetadata> : GuildScheduledEventMetadata | null | undefined;
+    entityMetadata?: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? Required<GuildScheduledEventMetadata> : GuildScheduledEventMetadata | null;
     entityType?: T;
     image?: string;
     name?: string;
     privacyLevel?: GuildScheduledEventPrivacyLevel;
-    scheduledEndTime: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? Date : Date | undefined
+    scheduledEndTime?: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? Date : Date | undefined;
     scheduledStartTime?: Date;
     status?: GuildScheduledEventStatus;
   }
-  interface GuildScheduledEventOptions<T extends GuildScheduledEventEntityTypes = GuildScheduledEventEntityTypes> extends Omit<GuildScheduledEventEditOptions<T>, "status"> {
-    channelID: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? undefined : string;
-    entityMetadata: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? Required<GuildScheduledEventMetadata> : GuildScheduledEventMetadata | undefined;
+  interface GuildScheduledEventEditOptionsDiscord extends GuildScheduledEventEditOptionsBase<Exclude<GuildScheduledEventEntityTypes, Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"]>> {
+    channelID: string;
+    entityMetadata: GuildScheduledEventMetadata
+  }
+  interface GuildScheduledEventEditOptionsExternal extends GuildScheduledEventEditOptionsBase<Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"]> {
+    channelID: null;
+    enitityMetadata: Required<GuildScheduledEventMetadata>;
+    scheduledEndTime: Date;
+  }
+  interface GuildScheduledEventOptionsBase<T extends GuildScheduledEventEntityTypes> extends Omit<GuildScheduledEventEditOptionsBase<T>, "entityMetadata" | "status"> {
+    channelID: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? never : string;
+    entityMetadata?: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? Required<GuildScheduledEventMetadata> : GuildScheduledEventMetadata | undefined;
     entityType: T;
     name: string;
     privacyLevel: GuildScheduledEventPrivacyLevel;
     scheduledStartTime: Date;
+  }
+  interface GuildScheduledEventOptionsDiscord extends GuildScheduledEventEditOptionsBase<Exclude<GuildScheduledEventEntityTypes, Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"]>> {
+    channelID: string;
+    entityMetadata: GuildScheduledEventMetadata;
+  }
+  interface GuildScheduledEventOptionsExternal extends GuildScheduledEventOptionsBase<Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"]> {
+    channelID: never;
+    enitityMetadata: Required<GuildScheduledEventMetadata>;
+    scheduledEndTime: Date;
   }
   interface GuildScheduledEventUser {
     guildScheduledEventID: string;
@@ -2922,7 +2942,7 @@ declare namespace Eris {
     status: GuildScheduledEventStatus;
     userCount?: number;
     delete(): Promise<void>;
-    edit(event: GuildScheduledEventEditOptions, reason?: string): Promise<GuildScheduledEvent>;
+    edit<U extends GuildScheduledEventEntityTypes>(event: GuildScheduledEventEditOptions<U>, reason?: string): Promise<GuildScheduledEvent<U>>;
     getUsers(options?: GetGuildScheduledEventUsersOptions): Promise<GuildScheduledEventUser[]>;
   }
 
