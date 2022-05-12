@@ -2236,7 +2236,7 @@ declare namespace Eris {
     createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
-    createGuildCommand(guildID: string, command: Omit<ApplicationCommandStructure, 'dmPermission'>): Promise<Omit<ApplicationCommand, 'dmPermission'>>;
+    createGuildCommand(guildID: string, command: Omit<ApplicationCommandStructure, "dmPermission">): Promise<Omit<ApplicationCommand, "dmPermission">>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
