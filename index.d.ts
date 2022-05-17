@@ -2384,12 +2384,12 @@ declare namespace Eris {
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
     createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionOptions, file?: FileContent | FileContent[]): Promise<void>;
-    createMessage<T extends TextableChannel = TextableChannel>(channelID: string, content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<T>>;
+    createMessage(channelID: string, content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
     createRole(guildID: string, options?: RoleOptions | Role, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     createThreadWithoutMessage(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
-    crosspostMessage<T extends TextableChannel = TextableChannel>(channelID: string, messageID: string): Promise<Message<T>>;
+    crosspostMessage(channelID: string, messageID: string): Promise<Message>;
     deleteChannel(channelID: string, reason?: string): Promise<void>;
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
     deleteCommand(commandID: string): Promise<void>;
@@ -2449,7 +2449,7 @@ declare namespace Eris {
     editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
     editGuildWelcomeScreen(guildID: string, options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editGuildWidget(guildID: string, options: Widget): Promise<Widget>;
-    editMessage<T extends TextableChannel = TextableChannel>(channelID: string, messageID: string, content: MessageContentEdit): Promise<Message<T>>;
+    editMessage(channelID: string, messageID: string, content: MessageContentEdit): Promise<Message>;
     /** @deprecated */
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
@@ -2471,12 +2471,12 @@ declare namespace Eris {
       token?: string,
       reason?: string
     ): Promise<Webhook>;
-    editWebhookMessage<T extends GuildTextableChannel = GuildTextableChannel>(
+    editWebhookMessage(
       webhookID: string,
       token: string,
       messageID: string,
       options: WebhookPayloadEdit
-    ): Promise<Message<T>>;
+    ): Promise<Message>;
     emit<K extends keyof ClientEvents>(event: K, ...args: ClientEvents[K]): boolean;
     emit(event: string, ...args: any[]): boolean;
     enableSelfMFATOTP(
@@ -2484,8 +2484,8 @@ declare namespace Eris {
       code: string
     ): Promise<{ backup_codes: { code: string; consumed: boolean }[]; token: string }>;
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string }): Promise<void>;
-    executeSlackWebhook<T extends GuildTextableChannel = GuildTextableChannel>(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string; wait: true }): Promise<Message<T>>;
-    executeWebhook<T extends GuildTextableChannel = GuildTextableChannel>(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message<T>>;
+    executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string; wait: true }): Promise<Message>;
+    executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
     followChannel(channelID: string, webhookChannelID: string): Promise<ChannelFollow>;
     getActiveGuildThreads(guildID: string): Promise<ListedGuildThreads>;
@@ -2530,16 +2530,16 @@ declare namespace Eris {
     getInvite(inviteID: string, withCounts?: false): Promise<Invite<"withoutCount">>;
     getInvite(inviteID: string, withCounts: true): Promise<Invite<"withCount">>;
     getJoinedPrivateArchivedThreads(channelID: string, options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
-    getMessage<T extends TextableChannel = TextableChannel>(channelID: string, messageID: string): Promise<Message<T>>;
+    getMessage(channelID: string, messageID: string): Promise<Message>;
     getMessageReaction(channelID: string, messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
     getMessageReaction(channelID: string, messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
-    getMessages<T extends TextableChannel = TextableChannel>(channelID: string, options?: GetMessagesOptions): Promise<Message<T>[]>;
+    getMessages(channelID: string, options?: GetMessagesOptions): Promise<Message[]>;
     /** @deprecated */
-    getMessages<T extends TextableChannel = TextableChannel>(channelID: string, limit?: number, before?: string, after?: string, around?: string): Promise<Message<T>[]>;
+    getMessages(channelID: string, limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
     getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getOAuthApplication(appID?: string): Promise<OAuthApplicationInfo>;
-    getPins<T extends TextableChannel = TextableChannel>(channelID: string): Promise<Message<T>[]>;
+    getPins(channelID: string): Promise<Message[]>;
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
     getRESTChannel(channelID: string): Promise<AnyChannel>;
     getRESTGuild(guildID: string, withCounts?: boolean): Promise<Guild>;
@@ -2599,7 +2599,7 @@ declare namespace Eris {
     getUserProfile(userID: string): Promise<UserProfile>;
     getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
-    getWebhookMessage<T extends GuildTextableChannel = GuildTextableChannel>(webhookID: string, token: string, messageID: string): Promise<Message<T>>;
+    getWebhookMessage(webhookID: string, token: string, messageID: string): Promise<Message>;
     joinThread(channelID: string, userID?: string): Promise<void>;
     joinVoiceChannel(channelID: string, options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
     kickGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
