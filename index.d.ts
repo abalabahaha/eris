@@ -44,11 +44,11 @@ declare namespace Eris {
         UserApplicationCommand : never;
   type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
   type ChatInputApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]>;
-  type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand, "id" | "application_id" | "guild_id" | "options">;
+  type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand, "id" | "application_id" | "guild_id" | "version">;
   type MessageApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["MESSAGE"]>;
-  type MessageApplicationCommandStructure = Omit<MessageApplicationCommand, "id" | "application_id" | "guild_id" | "description" | "options">;
+  type MessageApplicationCommandStructure = Omit<MessageApplicationCommand, "id" | "application_id" | "guild_id" | "description" | "options" | "version">;
   type UserApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["USER"]>;
-  type UserApplicationCommandStructure = Omit<UserApplicationCommand, "id" | "application_id" | "guild_id" | "description" | "options">;
+  type UserApplicationCommandStructure = Omit<UserApplicationCommand, "id" | "application_id" | "guild_id" | "description" | "options" | "version">;
 
   // Cache
   interface Uncached { id: string }
