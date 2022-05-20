@@ -105,7 +105,7 @@ declare namespace Eris {
   type AnyInteractionGateway = AutocompleteInteraction | CommandInteraction | ComponentInteraction;
   type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
   type InteractionDataOption<T extends keyof Constants["ApplicationCommandOptionTypes"], V = unknown> = InteractionDataOptionsBase<Constants["ApplicationCommandOptionTypes"][T], V>;
-  type InteractionDataOptions = InteractionDataOptionsSubCommand | InteractionDataOptionsSubCommandGroup | InteractionDataOptionsWithValue;
+  type InteractionDataOptions = InteractionDataOptionsWithOptions | InteractionDataOptionsWithValue;
   type InteractionDataOptionsBoolean = InteractionDataOption<"BOOLEAN", boolean>;
   type InteractionDataOptionsChannel = InteractionDataOption<"CHANNEL", string>;
   type InteractionDataOptionsInteger = InteractionDataOption<"INTEGER", number>;
@@ -114,6 +114,7 @@ declare namespace Eris {
   type InteractionDataOptionsRole = InteractionDataOption<"ROLE", string>;
   type InteractionDataOptionsString = InteractionDataOption<"STRING", string>;
   type InteractionDataOptionsUser = InteractionDataOption<"USER", string>;
+  type InteractionDataOptionsWithOptions = InteractionDataOptionsSubCommand | InteractionDataOptionsSubCommandGroup;
   type InteractionDataOptionsWithValue = InteractionDataOptionsString | InteractionDataOptionsInteger | InteractionDataOptionsBoolean | InteractionDataOptionsUser | InteractionDataOptionsChannel | InteractionDataOptionsRole | InteractionDataOptionsMentionable | InteractionDataOptionsNumber;
   type InteractionResponse = InteractionResponseAutocomplete | InteractionResponseDeferred | InteractionResponseMessage;
   type InteractionTypes = Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
