@@ -103,7 +103,7 @@ declare namespace Eris {
   // Interaction
   type AnyInteraction = AnyInteractionGateway | PingInteraction;
   type AnyInteractionGateway = AutocompleteInteraction | CommandInteraction | ComponentInteraction;
-  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
+  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags"> & { components?: ActionRow[]; };
   type InteractionDataOption<T extends keyof Constants["ApplicationCommandOptionTypes"], V = unknown> = InteractionDataOptionsBase<Constants["ApplicationCommandOptionTypes"][T], V>;
   type InteractionDataOptions = InteractionDataOptionsWithOptions | InteractionDataOptionsWithValue;
   type InteractionDataOptionsBoolean = InteractionDataOption<"BOOLEAN", boolean>;
@@ -166,7 +166,7 @@ declare namespace Eris {
   type StageInstancePrivacyLevel = Constants["StageInstancePrivacyLevel"][keyof Constants["StageInstancePrivacyLevel"]];
 
   // Webhook
-  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions" | "components">;
+  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions">;
   type WebhookTypes = Constants["WebhookTypes"][keyof Constants["WebhookTypes"]];
 
   // INTERFACES
@@ -182,7 +182,8 @@ declare namespace Eris {
   }
 
   // Application Command
-  interface ApplicationCommandBase<T extends ApplicationCommandTypes = ApplicationCommandTypes> {application_id: string;
+  interface ApplicationCommandBase<T extends ApplicationCommandTypes = ApplicationCommandTypes> {
+    application_id: string;
     defaultPermission?: boolean;
     description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "";
     guild_id?: string;
@@ -1418,7 +1419,6 @@ declare namespace Eris {
     allowedMentions?: AllowedMentions;
     auth?: boolean;
     avatarURL?: string;
-    components?: ActionRow[];
     content?: string;
     embed?: EmbedOptions;
     embeds?: EmbedOptions[];
