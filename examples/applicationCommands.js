@@ -10,8 +10,6 @@ const bot = new Eris("BOT TOKEN", {
 bot.on("ready", async () => { // When the bot is ready
     console.log("Ready!"); // Log "Ready!"
 
-    //Note: You should use guild commands to test, as they update instantly. Global commands can take up to an hour to update.
-
     const commands = await bot.getCommands();
 
     if(!commands.length) {
