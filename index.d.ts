@@ -644,7 +644,7 @@ declare namespace Eris {
     embeds: Embed[];
     flags: number;
     mentionedBy?: unknown;
-    mentions: string[];
+    mentions: User[];
     pinned: boolean;
     roleMentions: string[];
     tts: boolean;
