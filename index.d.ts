@@ -683,7 +683,7 @@ declare namespace Eris {
     selfVideo: boolean;
   }
   interface EventListeners {
-    applicationCommandPermissionsUpdate: [applicationCommandPermissions: GuildApplicationCommandPermissions]
+    applicationCommandPermissionsUpdate: [applicationCommandPermissions: GuildApplicationCommandPermissions];
     callCreate: [call: Call];
     callDelete: [call: Call];
     callRing: [call: Call];
