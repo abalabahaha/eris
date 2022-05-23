@@ -142,7 +142,9 @@ declare namespace Eris {
   type ActivityType = BotActivityType | Constants["ActivityTypes"]["CUSTOM"];
   type BotActivityType = Constants["ActivityTypes"][Exclude<keyof Constants["ActivityTypes"], "CUSTOM">];
   type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
-  type Status = "online" | "idle" | "dnd" | "offline";
+  type Status = "online" | "idle" | "dnd";
+  type SelfStatus = Status | "invisible";
+  type UserStatus = Status | "offline";
 
   // Selfbot
   type ConnectionVisibilityTypes = Constants["ConnectionVisibilityTypes"][keyof Constants["ConnectionVisibilityTypes"]];
@@ -533,6 +535,7 @@ declare namespace Eris {
   }
   interface EmbedVideo {
     height?: number;
+    proxy_url?: string;
     url?: string;
     width?: number;
   }
@@ -703,7 +706,7 @@ declare namespace Eris {
     callDelete: [call: Call];
     callRing: [call: Call];
     callUpdate: [call: Call, oldCall: OldCall];
-    channelCreate: [channel: AnyChannel];
+    channelCreate: [channel: AnyGuildChannel];
     channelDelete: [channel: AnyChannel];
     channelPinUpdate: [channel: TextableChannel, timestamp: number, oldTimestamp: number];
     channelRecipientAdd: [channel: GroupChannel, user: User];
@@ -1330,17 +1333,17 @@ declare namespace Eris {
     activities: Activity[] | null;
     afk: boolean;
     since: number | null;
-    status: Status;
+    status: SelfStatus;
   }
   interface ClientStatus {
-    desktop: Status;
-    mobile: Status;
-    web: Status;
+    desktop: UserStatus;
+    mobile: UserStatus;
+    web: UserStatus;
   }
   interface Presence {
     activities?: Activity[];
     clientStatus?: ClientStatus;
-    status?: Status;
+    status?: UserStatus;
   }
 
   // Role
@@ -2411,7 +2414,7 @@ declare namespace Eris {
     ): Promise<Connection>;
     editSelfSettings(data: UserSettings): Promise<UserSettings>;
     editStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
-    editStatus(status: Status, activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
+    editStatus(status: SelfStatus, activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
     editStatus(activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
     editUserNote(userID: string, note: string): Promise<void>;
     editWebhook(
@@ -3439,7 +3442,7 @@ declare namespace Eris {
     createGuild(_guild: Guild): Guild;
     disconnect(options?: { reconnect?: boolean | "auto" }, error?: Error): void;
     editAFK(afk: boolean): void;
-    editStatus(status: Status, activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
+    editStatus(status: SelfStatus, activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
     editStatus(activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
     // @ts-ignore: Method override
     emit(event: string, ...args: any[]): void;
