@@ -651,7 +651,7 @@ declare namespace Eris {
     avatar: string | null;
     nick: string | null;
     pending?: boolean;
-    premiumSince: number;
+    premiumSince?: number | null;
     roles: string[];
   }
   interface OldMessage {
@@ -3043,7 +3043,7 @@ declare namespace Eris {
     /** @deprecated */
     permission: Permission;
     permissions: Permission;
-    premiumSince: number;
+    premiumSince?: number | null;
     roles: string[];
     staticAvatarURL: string;
     status?: Status;
