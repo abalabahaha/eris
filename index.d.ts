@@ -182,7 +182,8 @@ declare namespace Eris {
   }
 
   // Application Command
-  interface ApplicationCommandBase<T extends ApplicationCommandTypes = ApplicationCommandTypes> {application_id: string;
+  interface ApplicationCommandBase<T extends ApplicationCommandTypes = ApplicationCommandTypes> {
+    application_id: string;
     defaultPermission?: boolean;
     description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "";
     guild_id?: string;
