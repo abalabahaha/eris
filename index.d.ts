@@ -609,7 +609,7 @@ declare namespace Eris {
     communicationDisabledUntil: number | null;
     nick: string | null;
     pending?: boolean;
-    premiumSince: number;
+    premiumSince?: number | null;
     roles: string[];
   }
   interface OldMessage {
@@ -3011,7 +3011,7 @@ declare namespace Eris {
     /** @deprecated */
     permission: Permission;
     permissions: Permission;
-    premiumSince: number;
+    premiumSince?: number | null;
     roles: string[];
     staticAvatarURL: string;
     status?: Status;
@@ -3111,7 +3111,7 @@ declare namespace Eris {
     deny: bigint;
     json: Record<keyof Constants["Permissions"], boolean>;
     constructor(allow: number | string | bigint, deny?: number | string | bigint);
-    has(permission: keyof Constants["Permissions"]): boolean;
+    has(permission: keyof Constants["Permissions"] | bigint): boolean;
   }
 
   export class PermissionOverwrite extends Permission {
