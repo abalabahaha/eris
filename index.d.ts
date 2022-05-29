@@ -633,7 +633,7 @@ declare namespace Eris {
     communicationDisabledUntil: number | null;
     nick: string | null;
     pending?: boolean;
-    premiumSince: number;
+    premiumSince?: number | null;
     roles: string[];
   }
   interface OldMessage {
@@ -686,7 +686,7 @@ declare namespace Eris {
     callDelete: [call: Call];
     callRing: [call: Call];
     callUpdate: [call: Call, oldCall: OldCall];
-    channelCreate: [channel: AnyChannel];
+    channelCreate: [channel: AnyGuildChannel];
     channelDelete: [channel: AnyChannel];
     channelPinUpdate: [channel: TextableChannel, timestamp: number, oldTimestamp: number];
     channelRecipientAdd: [channel: GroupChannel, user: User];
@@ -1811,10 +1811,10 @@ declare namespace Eris {
       sendMessagesInThreads:   274877906944n;
       startEmbeddedActivities: 549755813888n;
       moderateMembers:         1099511627776n;
-      allGuild:                1101592527038n;
-      allText:                 518349388881n;
+      allGuild:                1110182461630n;
+      allText:                 535529258065n;
       allVoice:                554385278737n;
-      all:                     1228360646655n;
+      all:                     2199023255551n;
     };
     PremiumTiers: {
       NONE:   0;
@@ -3048,7 +3048,7 @@ declare namespace Eris {
     /** @deprecated */
     permission: Permission;
     permissions: Permission;
-    premiumSince: number;
+    premiumSince?: number | null;
     roles: string[];
     staticAvatarURL: string;
     status?: Status;
@@ -3148,7 +3148,7 @@ declare namespace Eris {
     deny: bigint;
     json: Record<keyof Constants["Permissions"], boolean>;
     constructor(allow: number | string | bigint, deny?: number | string | bigint);
-    has(permission: keyof Constants["Permissions"]): boolean;
+    has(permission: keyof Constants["Permissions"] | bigint): boolean;
   }
 
   export class PermissionOverwrite extends Permission {
