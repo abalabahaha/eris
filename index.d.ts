@@ -1236,6 +1236,7 @@ declare namespace Eris {
       small_text?: string;
       [key: string]: unknown;
     };
+    buttons?: ActivityButton[];
     created_at: number;
     details?: string;
     emoji?: { animated?: boolean; id?: string; name: string };
@@ -1248,6 +1249,10 @@ declare namespace Eris {
     type: T;
     // the stuff attached to this object apparently varies even more than documented, so...
     [key: string]: unknown;
+  }
+  interface ActivityButton {
+    label: string;
+    url: string;
   }
   interface ActivityPartial<T extends ActivityType = BotActivityType> {
     name: string;
