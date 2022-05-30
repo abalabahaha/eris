@@ -3431,7 +3431,7 @@ declare namespace Eris {
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<PublicThreadChannel>;
     createThreadWithoutMessage(options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
-    createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
+    createWebhook(options: Omit<WebhookOptions, "channelID">, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
