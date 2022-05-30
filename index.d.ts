@@ -1132,7 +1132,7 @@ declare namespace Eris {
   }
   interface ButtonBase {
     disabled?: boolean;
-    emoji?: Partial<PartialEmoji>;
+    emoji?: PartialEmoji;
     label?: string;
     type: Constants["ComponentTypes"]["BUTTON"];
   }
