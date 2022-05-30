@@ -122,8 +122,7 @@ declare namespace Eris {
   type ButtonStyles = Constants["ButtonStyles"][keyof Constants["ButtonStyles"]];
   type Component = ActionRow | ActionRowComponents;
   type ImageFormat = Constants["ImageFormats"][number];
-  /** @deprecated */
-  type MessageActivityFlags = Constants["MessageActivityFlags"][keyof Constants["MessageActivityFlags"]];
+  type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
   type MessageContent = string | AdvancedMessageContent;
   type MessageContentEdit = string | AdvancedMessageContentEdit;
   type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
@@ -1164,7 +1163,7 @@ declare namespace Eris {
   }
   interface MessageActivity {
     party_id?: string;
-    type: MessageActivityFlags;
+    type: MessageActivityTypes;
   }
   interface MessageApplication {
     cover_image?: string;
@@ -1718,8 +1717,6 @@ declare namespace Eris {
       NONE:     0;
       ELEVATED: 1;
     };
-    /** @deprecated */
-    MessageActivityFlags: Constants["ActivityFlags"];
     MessageActivityTypes: {
       JOIN:         1;
       SPECTATE:     2;
