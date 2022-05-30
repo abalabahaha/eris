@@ -122,6 +122,7 @@ declare namespace Eris {
   type ButtonStyles = Constants["ButtonStyles"][keyof Constants["ButtonStyles"]];
   type Component = ActionRow | ActionRowComponents;
   type ImageFormat = Constants["ImageFormats"][number];
+  /** @deprecated */
   type MessageActivityFlags = Constants["MessageActivityFlags"][keyof Constants["MessageActivityFlags"]];
   type MessageContent = string | AdvancedMessageContent;
   type MessageContentEdit = string | AdvancedMessageContentEdit;
@@ -132,6 +133,7 @@ declare namespace Eris {
   type PermissionType = Constants["PermissionOverwriteTypes"][keyof Constants["PermissionOverwriteTypes"]];
 
   // Presence/Relationship
+  type ActivityFlags = Constants["ActivityFlags"][keyof Constants["ActivityFlags"]];
   type ActivityType = BotActivityType | Constants["ActivityTypes"]["CUSTOM"];
   type BotActivityType = Constants["ActivityTypes"][Exclude<keyof Constants["ActivityTypes"], "CUSTOM">];
   type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
@@ -1452,6 +1454,17 @@ declare namespace Eris {
   interface Constants {
     GATEWAY_VERSION: 9;
     REST_VERSION: 9;
+    ActivityFlags: {
+      INSTANCE:                    1;
+      JOIN:                        2;
+      SPECTATE:                    4;
+      JOIN_REQUEST:                8;
+      SYNC:                        16;
+      PLAY:                        32;
+      PARTY_PRIVACY_FRIENDS:       64;
+      PARTY_PRIVACY_VOICE_CHANNEL: 128;
+      EMBEDDED:                    256;
+    };
     ActivityTypes: {
       GAME:      0;
       STREAMING: 1;
@@ -1701,17 +1714,8 @@ declare namespace Eris {
       NONE:     0;
       ELEVATED: 1;
     };
-    MessageActivityFlags: {
-      INSTANCE:                    1;
-      JOIN:                        2;
-      SPECTATE:                    4;
-      JOIN_REQUEST:                8;
-      SYNC:                        16;
-      PLAY:                        32;
-      PARTY_PRIVACY_FRIENDS:       64;
-      PARTY_PRIVACY_VOICE_CHANNEL: 128;
-      EMBEDDED:                    256;
-    };
+    /** @deprecated */
+    MessageActivityFlags: Constants["ActivityFlags"];
     MessageActivityTypes: {
       JOIN:         1;
       SPECTATE:     2;
