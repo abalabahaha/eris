@@ -1065,6 +1065,8 @@ declare namespace Eris {
     discriminator: string;
     id: string;
     username: string;
+    public_flags?: number;
+    flags?: number;
   }
   interface RequestGuildMembersOptions extends Omit<FetchMembersOptions, "userIDs"> {
     nonce: string;
@@ -1433,7 +1435,7 @@ declare namespace Eris {
     [key: string]: unknown;
   }
   interface OAuthApplicationInfo {
-   bot_public: boolean;
+    bot_public: boolean;
     bot_require_code_grant: boolean;
     cover_image?: string;
     custom_install_url?: string;
@@ -1460,6 +1462,7 @@ declare namespace Eris {
     icon: string | null;
     id: string;
     members: OAuthTeamMember[];
+    name: string;
     owner_user_id: string;
   }
   interface OAuthTeamMember {
@@ -2018,7 +2021,7 @@ declare namespace Eris {
     connected_accounts: { id: string; name: string; type: string; verified: boolean }[];
     mutual_guilds: { id: string; nick?: string }[];
     premium_since?: number;
-    user: PartialUser & { flags: number };
+    user: PartialUser
   }
   interface UserSettings {
     afk_timeout: number;
