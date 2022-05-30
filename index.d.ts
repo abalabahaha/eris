@@ -1195,7 +1195,7 @@ declare namespace Eris {
     messageID: string;
     failIfNotExists?: boolean;
   }
-  interface Sticker extends StickerItems {
+  interface Sticker extends StickerItem {
     /** @deprecated */
     asset: "";
     available?: boolean;
@@ -1207,7 +1207,7 @@ declare namespace Eris {
     type: StickerTypes;
     user?: User;
   }
-  interface StickerItems {
+  interface StickerItem {
     id: string;
     name: string;
     format_type: StickerFormats;
@@ -3110,7 +3110,7 @@ declare namespace Eris {
     reactions: { [s: string]: { count: number; me: boolean } };
     referencedMessage?: Message | null;
     roleMentions: string[];
-    stickerItems?: StickerItems[];
+    stickerItems?: StickerItem[];
     /** @deprecated */
     stickers?: Sticker[];
     timestamp: number;
