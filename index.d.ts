@@ -1388,11 +1388,11 @@ declare namespace Eris {
     application_id: string | null;
     avatar: string | null;
     channel_id: string | null;
-    guild_id: string | null;
+    guild_id?: string | null;
     id: string;
     name: string;
     source_channel?: { id: string; name: string };
-    source_guild: { icon: string | null; id: string; name: string };
+    source_guild?: { icon: string | null; id: string; name: string };
     token?: string;
     type: WebhookTypes;
     url?: string;
