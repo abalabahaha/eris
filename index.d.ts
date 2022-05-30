@@ -2669,7 +2669,7 @@ declare namespace Eris {
     voiceStates: Collection<VoiceState>;
     welcomeScreen?: WelcomeScreen;
     widgetChannelID?: string | null;
-    widgetEnabled?: boolean | null;
+    widgetEnabled?: boolean;
     constructor(data: BaseData, client: Client);
     addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
