@@ -1238,7 +1238,7 @@ declare namespace Eris {
     emoji?: { animated?: boolean; id?: string; name: string };
     flags?: number;
     instance?: boolean;
-    party?: { id?: string; size?: [number, number] };
+    party?: { id?: string; size?: [currentSize: number, maxSize: number] };
     secrets?: { join?: string; spectate?: string; match?: string };
     state?: string;
     timestamps?: { end?: number; start: number };
