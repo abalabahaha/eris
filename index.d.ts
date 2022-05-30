@@ -1328,7 +1328,7 @@ declare namespace Eris {
     threads: T[];
   }
   interface PrivateThreadMetadata extends ThreadMetadata {
-    invitable?: boolean;
+    invitable: boolean;
   }
   interface ThreadMetadata {
     archiveTimestamp: number;
