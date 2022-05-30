@@ -3034,6 +3034,9 @@ declare namespace Eris {
     memberCount: CT extends "withMetadata" | "withoutCount" ? null : number;
     presenceCount: CT extends "withMetadata" | "withoutCount" ? null : number;
     stageInstance: CH extends StageChannel ? InviteStageInstance : null;
+    targetApplication?: OAuthApplicationInfo;
+    targetType?: InviteTargetTypes;
+    targetUser?: User;
     temporary: CT extends "withMetadata" ? boolean : null;
     uses: CT extends "withMetadata" ? number : null;
     constructor(data: BaseData, client: Client);
