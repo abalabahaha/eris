@@ -2394,8 +2394,7 @@ declare namespace Eris {
     getGuildWelcomeScreen(guildID: string): Promise<WelcomeScreen>;
     getGuildWidget(guildID: string): Promise<WidgetData>;
     getGuildWidgetSettings(guildID: string): Promise<Widget>;
-    getInvite(inviteID: string, withCounts?: false): Promise<Invite<"withoutCount">>;
-    getInvite(inviteID: string, withCounts: true): Promise<Invite<"withCount">>;
+    getInvite<C extends boolean = false, E extends boolean = false>(inviteID: string, withCounts?: C, withExpiration?: E): Promise<Invite<(C extends true ? "withCount" : "withoutCount") | (E extends true ? "withExpiration" : "withoutExpiration")>>;
     getJoinedPrivateArchivedThreads(channelID: string, options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getMessage(channelID: string, messageID: string): Promise<Message>;
     getMessageReaction(channelID: string, messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
@@ -3016,7 +3015,7 @@ declare namespace Eris {
   }
 
   // If CT (count) is "withMetadata", it will not have count properties
-  export class Invite<CT extends "withMetadata" | "withCount" | "withoutCount" = "withMetadata", CH extends InviteChannel = InviteChannel> extends Base {
+  export class Invite<CT extends "withMetadata" | "withCount" | "withoutCount" | "withExpiration" | "withoutExpiration" = "withMetadata", CH extends InviteChannel = InviteChannel> extends Base {
     channel: CH | null;
     code: string;
     // @ts-ignore: Property is only not null when invite metadata is supplied
@@ -3028,6 +3027,7 @@ declare namespace Eris {
         : CH extends Exclude<InviteChannel, InvitePartialChannel> // Invite without Metadata and not GroupChanel
           ? Guild // If the invite channel is not partial
           : Guild | undefined; // If the invite channel is partial
+    expiresAt?: CT extends "withMetadata" | "withoutExpiration" ? never : number;
     inviter?: User;
     maxAge: CT extends "withMetadata" ? number : null;
     maxUses: CT extends "withMetadata" ? number : null;
