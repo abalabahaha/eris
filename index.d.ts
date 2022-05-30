@@ -3033,6 +3033,7 @@ declare namespace Eris {
     maxUses: CT extends "withMetadata" ? number : null;
     memberCount: CT extends "withMetadata" | "withoutCount" ? null : number;
     presenceCount: CT extends "withMetadata" | "withoutCount" ? null : number;
+    /** @deprecated */
     stageInstance: CH extends StageChannel ? InviteStageInstance : null;
     targetApplication?: OAuthApplicationInfo;
     targetType?: InviteTargetTypes;
