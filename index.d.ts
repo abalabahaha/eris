@@ -1467,7 +1467,7 @@ declare namespace Eris {
   }
   interface OAuthTeamMember {
     membership_state: number;
-    permissions: string[];
+    permissions: ["*"];
     team_id: string;
     user: PartialUser;
   }
