@@ -69,6 +69,9 @@ declare namespace Eris {
   type GuildVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE" | "GUILD_STAGE_VOICE">];
   type PrivateChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "DM" | "GROUP_DM">];
 
+  // Client
+  type MembershipStates = Constants["MembershipState"][keyof Constants["MembershipState"]];
+
   // Command
   type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
   type CommandGeneratorFunction = (msg: Message, args: string[]) => GeneratorFunctionReturn;
@@ -1466,7 +1469,7 @@ declare namespace Eris {
     owner_user_id: string;
   }
   interface OAuthTeamMember {
-    membership_state: number;
+    membership_state: MembershipStates;
     permissions: ["*"];
     team_id: string;
     user: PartialUser;
@@ -1794,6 +1797,10 @@ declare namespace Eris {
       THREAD_STARTER_MESSAGE:                       21;
       GUILD_INVITE_REMINDER:                        22;
       CONTEXT_MENU_COMMAND:                         23;
+    };
+    MembershipState: {
+      INVITED: 1;
+      ACCEPTED: 2;
     };
     PermissionOverwriteTypes: {
       ROLE: 0;
