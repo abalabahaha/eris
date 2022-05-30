@@ -1399,7 +1399,7 @@ declare namespace Eris {
     user?: PartialUser;
   }
   interface WebhookOptions {
-    avatar?: string;
+    avatar?: string | null;
     channelID?: string;
     name?: string;
   }
