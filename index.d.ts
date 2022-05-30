@@ -466,6 +466,10 @@ declare namespace Eris {
     roleNames?: string[] | GenericCheckFunction<string[]>;
     userIDs?: string[] | GenericCheckFunction<string[]>;
   }
+  interface EditSelfOptions {
+    avatar?: string | null;
+    username?: string;
+  }
   interface Hooks {
     postCheck?: (msg: Message, args: string[], checksPassed: boolean) => void;
     postCommand?: (msg: Message, args: string[], sent?: Message) => void;
@@ -2312,7 +2316,7 @@ declare namespace Eris {
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
     editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
-    editSelf(options: { avatar?: string; username?: string }): Promise<ExtendedUser>;
+    editSelf(options: EditSelfOptions): Promise<ExtendedUser>;
     editSelfConnection(
       platform: string,
       id: string,
