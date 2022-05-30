@@ -2592,10 +2592,10 @@ declare namespace Eris {
   }
 
   export class ExtendedUser extends User {
-    email: string;
-    mfaEnabled: boolean;
-    premiumType: PremiumTypes;
-    verified: boolean;
+    email?: string | null;
+    mfaEnabled?: boolean;
+    premiumType?: PremiumTypes;
+    verified?: boolean;
   }
 
   export class GroupChannel extends PrivateChannel {
