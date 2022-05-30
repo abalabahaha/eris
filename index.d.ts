@@ -1433,19 +1433,28 @@ declare namespace Eris {
     [key: string]: unknown;
   }
   interface OAuthApplicationInfo {
-    bot_public: boolean;
+   bot_public: boolean;
     bot_require_code_grant: boolean;
+    cover_image?: string;
+    custom_install_url?: string;
     description: string;
-    icon?: string;
+    flags?: number;
+    guild_id?: string;
+    icon: string | null;
     id: string;
+    install_params?: OAuthInstallParams;
     name: string;
-    owner: {
-      avatar?: string;
-      discriminator: string;
-      id: string;
-      username: string;
-    };
+    owner?: PartialUser;
+    primary_sku_id?: string;
+    privacy_policy_url?: string;
+    rpc_origins?: string[];
+    slug?: string;
+    /** @deprecated */
+    summary: "";
+    tags?: string[];
     team: OAuthTeamInfo | null;
+    terms_of_service_url?: string;
+    verify_key: string;
   }
   interface OAuthTeamInfo {
     icon: string | null;
@@ -1458,6 +1467,10 @@ declare namespace Eris {
     permissions: string[];
     team_id: string;
     user: PartialUser;
+  }
+  interface OAuthInstallParams {
+    scopes: string[];
+    permissions: string;
   }
   interface Constants {
     GATEWAY_VERSION: 9;
@@ -1501,6 +1514,16 @@ declare namespace Eris {
       CHAT_INPUT: 1;
       USER:       2;
       MESSAGE:    3;
+    };
+    ApplicationFlags: {
+      GATEWAY_PRESENCE:                 4096;
+      GATEWAY_PRESENCE_LIMITED:         8192;
+      GATEWAY_GUILD_MEMBERS:            16384;
+      GATEWAY_GUILD_MEMBERS_LIMITED:    32768;
+      VERIFICATION_PENDING_GUILD_LIMIT: 65536;
+      EMBEDDED:                         131072;
+      GATEWAY_MESSAGE_CONTENT:          262144;
+      GATEWAY_MESSAGE_CONTENT_LIMITED:  524288;
     };
     AuditLogActions: {
       GUILD_UPDATE: 1;
