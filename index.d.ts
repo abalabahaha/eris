@@ -1071,16 +1071,6 @@ declare namespace Eris {
     public_flags?: number;
     flags?: number;
   }
-  interface RequestGuildMembersOptions extends Omit<FetchMembersOptions, "userIDs"> {
-    nonce: string;
-    user_ids?: string[];
-  }
-  interface RequestGuildMembersReturn {
-    members: Member[];
-    received: number;
-    res: (value?: unknown) => void;
-    timeout: NodeJS.Timer;
-  }
 
   // Message
   interface ActionRow {
@@ -3382,7 +3372,7 @@ declare namespace Eris {
     once<K extends keyof ShardEvents>(event: K, listener: (...args: ShardEvents[K]) => void): this;
     once(event: string, listener: (...args: any[]) => void): this;
     onPacket(packet: RawPacket): void;
-    requestGuildMembers(guildID: string, options?: RequestGuildMembersOptions): Promise<RequestGuildMembersReturn>;
+    requestGuildMembers(guildID: string, options?: FetchMembersOptions): Promise<Member[]>;
     requestGuildSync(guildID: string): void;
     reset(): void;
     restartGuildCreateTimeout(): void;
