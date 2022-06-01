@@ -972,7 +972,7 @@ declare namespace Eris {
     users?: Collection<User>;
     members?: Collection<Member>;
     roles?: Collection<Role>;
-    channels?: Collection<PartialChannel>;
+    channels?: Collection<AnyChannel>;
     messages?: Collection<Message>;
   }
   interface InteractionComponentButtonData {
