@@ -301,8 +301,8 @@ declare namespace Eris {
   }
 
   interface GuildPinnable extends Pinnable {
-	lastPinTimestamp: number | null;
-	topic?: string | null;
+    lastPinTimestamp: number | null;
+    topic?: string | null;
   }
 
   interface GuildTextable extends Textable {
