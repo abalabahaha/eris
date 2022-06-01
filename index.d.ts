@@ -295,14 +295,14 @@ declare namespace Eris {
   }
 
   interface Pinnable {
-	getPins(): Promise<Message[]>;
+    getPins(): Promise<Message[]>;
     pinMessage(messageID: string): Promise<void>;
-	unpinMessage(messageID: string): Promise<void>;
+    unpinMessage(messageID: string): Promise<void>;
   }
 
   interface GuildPinnable extends Pinnable {
 	lastPinTimestamp: number | null;
-	topic?: string | nullable;
+	topic?: string | null;
   }
 
   interface GuildTextable extends Textable {
