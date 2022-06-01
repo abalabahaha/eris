@@ -293,18 +293,10 @@ declare namespace Eris {
     before?: string;
     limit?: number;
   }
-
-  interface Pinnable {
-    getPins(): Promise<Message[]>;
-    pinMessage(messageID: string): Promise<void>;
-    unpinMessage(messageID: string): Promise<void>;
-  }
-
   interface GuildPinnable extends Pinnable {
     lastPinTimestamp: number | null;
     topic?: string | null;
   }
-
   interface GuildTextable extends Textable {
     rateLimitPerUser: number;
     createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
@@ -325,6 +317,11 @@ declare namespace Eris {
     topic?: string;
     type: number;
     user_limit?: number;
+  }
+  interface Pinnable {
+    getPins(): Promise<Message[]>;
+    pinMessage(messageID: string): Promise<void>;
+    unpinMessage(messageID: string): Promise<void>;
   }
   interface PurgeChannelOptions {
     after?: string;
