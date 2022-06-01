@@ -50,6 +50,7 @@ Eris.StageChannel = require("./lib/structures/StageChannel");
 Eris.StageInstance = require("./lib/structures/StageInstance");
 Eris.StoreChannel = require("./lib/structures/StoreChannel");
 Eris.TextChannel = require("./lib/structures/TextChannel");
+Eris.TextVoiceChannel = require("./lib/structures/TextVoiceChannel");
 Eris.ThreadChannel = require("./lib/structures/ThreadChannel");
 Eris.ThreadMember = require("./lib/structures/ThreadMember");
 Eris.UnavailableGuild = require("./lib/structures/UnavailableGuild");
