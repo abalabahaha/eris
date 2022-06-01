@@ -1501,6 +1501,7 @@ declare namespace Eris {
       ROLE:              8;
       MENTIONABLE:       9;
       NUMBER:            10;
+      ATTACHMENT:        11;
     };
     ApplicationCommandPermissionTypes: {
       ROLE: 1;
@@ -1512,6 +1513,9 @@ declare namespace Eris {
       MESSAGE:    3;
     };
     ApplicationFlags: {
+      EMBEDDED_RELEASED:                2;
+      MANAGED_EMOJI:                    4;
+      GROUP_DM_CREATE:                  16;
       GATEWAY_PRESENCE:                 4096;
       GATEWAY_PRESENCE_LIMITED:         8192;
       GATEWAY_GUILD_MEMBERS:            16384;
@@ -1520,6 +1524,7 @@ declare namespace Eris {
       EMBEDDED:                         131072;
       GATEWAY_MESSAGE_CONTENT:          262144;
       GATEWAY_MESSAGE_CONTENT_LIMITED:  524288;
+      EMBEDDED_FIRST_PARTY:             1048576;
     };
     AuditLogActions: {
       GUILD_UPDATE: 1;
@@ -1582,6 +1587,21 @@ declare namespace Eris {
       THREAD_DELETE: 112;
 
       APPLICATION_COMMAND_PERMISSION_UPDATE: 121;
+
+      AUTO_MODERATION_RULE_CREATE:   140;
+      AUTO_MODERATION_RULE_UPDATE:   141;
+      AUTO_MODERATION_RULE_DELETE:   142;
+      AUTO_MODERATION_BLOCK_MESSAGE: 143;
+
+      CREATOR_MONETIZATION_REQUEST_CREATED: 150;
+      CREATOR_MONETIZATION_TERMS_ACCEPTED:  151;
+
+      ROLE_PROMPT_CREATE: 160;
+      ROLE_PROMPT_UPDATE: 161;
+      ROLE_PROMPT_DELETE: 162;
+
+      GUILD_HOME_FEATURE_ITEM: 171;
+      GUILD_HOME_REMOVE_ITEM:  172;
     };
     ButtonStyles: {
       PRIMARY:   1;
@@ -1607,9 +1627,16 @@ declare namespace Eris {
       GUILD_STAGE:          13;
     };
     ComponentTypes: {
-      ACTION_ROW:  1;
-      BUTTON:      2;
-      SELECT_MENU: 3;
+      ACTION_ROW:         1;
+      BUTTON:             2;
+      /** @deprecated */
+      SELECT_MENU:        3;
+      STRING_SELECT:      3;
+      INPUT_TEXT:         4;
+      USER_SELECT:        5;
+      ROLE_SELECT:        6;
+      MENTIONABLE_SELECT: 7;
+      CHANNEL_SELECT:     8;
     };
     ConnectionVisibilityTypes: {
       NONE:     0;
@@ -1647,16 +1674,26 @@ declare namespace Eris {
       SYNC_CALL:             13;
     };
     GuildFeatures: [
+      "ANIMATED_BANNER",
       "ANIMATED_ICON",
       "BANNER",
       "COMMERCE",
       "COMMUNITY",
+      "CREATOR_MONETIZABLE",
+      "CREATOR_MONETIZABLE_DISABLED",
       "DISCOVERABLE",
       "DISCOVERABLE_DISABLED",
+      "ENABLED_DISCOVERABLE_BEFORE",
+      "EXPOSED_TO_ACTIVITIES_WTP_EXPERIMENT",
       "FEATURABLE",
+      "GUILD_HOME_TEST",
+      "HAS_DIRECTORY_ENTRY",
+      "HUB",
       "INVITE_SPLASH",
+      "LINKED_TO_HUB",
       "MEMBER_VERIFICATION_GATE_ENABLED",
       "MONETIZATION_ENABLED",
+      "MORE_EMOJI",
       "MORE_EMOJIS",
       "MORE_STICKERS",
       "NEWS",
@@ -1666,10 +1703,13 @@ declare namespace Eris {
       "PREVIOUSLY_DISCOVERABLE",
       "PRIVATE_THREADS",
       "ROLE_ICONS",
+      "ROLE_SUBSCRIPTIONS_AVAILABLE_FOR_PURCHASE",
       "ROLE_SUBSCRIPTIONS_ENABLED",
       "SEVEN_DAY_THREAD_ARCHIVE",
-      "THREE_DAY_THREAD_ARCHIVE",
+      "TEXT_IN_VOICE_ENABLED",
       "THREADS_ENABLED",
+      "THREADS_ENABLED_TESTING",
+      "THREE_DAY_THREAD_ARCHIVE",
       "TICKETED_EVENTS_ENABLED",
       "VANITY_URL",
       "VERIFIED",
@@ -1737,6 +1777,7 @@ declare namespace Eris {
       APPLICATION_COMMAND:              2;
       MESSAGE_COMPONENT:                3;
       APPLICATION_COMMAND_AUTOCOMPLETE: 4;
+      MODAL_SUBMIT:                     5;
     };
     InviteTargetTypes: {
       STREAM:               1;
@@ -1750,17 +1791,19 @@ declare namespace Eris {
       JOIN:         1;
       SPECTATE:     2;
       LISTEN:       3;
+      WATCH:        4;
       JOIN_REQUEST: 5;
     };
     MessageFlags: {
-      CROSSPOSTED:            1;
-      IS_CROSSPOST:           2;
-      SUPPRESS_EMBEDS:        4;
-      SOURCE_MESSAGE_DELETED: 8;
-      URGENT:                 16;
-      HAS_THREAD:             32;
-      EPHEMERAL:              64;
-      LOADING:                128;
+      CROSSPOSTED:                            1;
+      IS_CROSSPOST:                           2;
+      SUPPRESS_EMBEDS:                        4;
+      SOURCE_MESSAGE_DELETED:                 8;
+      URGENT:                                 16;
+      HAS_THREAD:                             32;
+      EPHEMERAL:                              64;
+      LOADING:                                128;
+      FAILED_TO_MENTION_SOME_ROLES_IN_THREAD: 256;
     };
     MessageTypes: {
       DEFAULT:                                      0;
@@ -1776,7 +1819,7 @@ declare namespace Eris {
       USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2:       10;
       USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3:       11;
       CHANNEL_FOLLOW_ADD:                           12;
-
+      GUILD_STREAM:                                 13;
       GUILD_DISCOVERY_DISQUALIFIED:                 14;
       GUILD_DISCOVERY_REQUALIFIED:                  15;
       GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING: 16;
@@ -1787,6 +1830,8 @@ declare namespace Eris {
       THREAD_STARTER_MESSAGE:                       21;
       GUILD_INVITE_REMINDER:                        22;
       CONTEXT_MENU_COMMAND:                         23;
+      AUTO_MODERATION_ACTION:                       24;
+      ROLE_SUBSCRIPTION_PURCHASE:                   25;
     };
     MembershipState: {
       INVITED: 1;
@@ -1880,10 +1925,12 @@ declare namespace Eris {
       GUILD:    2;
     };
     SystemChannelFlags: {
-      SUPPRESS_JOIN_NOTIFICATIONS:           1;
-      SUPPRESS_PREMIUM_SUBSCRIPTIONS:        2;
-      SUPPRESS_GUILD_REMINDER_NOTIFICATIONS: 4;
-      SUPPRESS_JOIN_NOTIFICATION_REPLIES:    8;
+      SUPPRESS_JOIN_NOTIFICATIONS:                              1;
+      SUPPRESS_PREMIUM_SUBSCRIPTIONS:                           2;
+      SUPPRESS_GUILD_REMINDER_NOTIFICATIONS:                    4;
+      SUPPRESS_JOIN_NOTIFICATION_REPLIES:                       8;
+      SUPPRESS_ROLE_SUBSCRIPTION_PURCHASE_NOTIFICATIONS:        16;
+      SUPPRESS_ROLE_SUBSCRIPTION_PURCHASE_NOTIFICATION_REPLIES: 32;
     };
     SystemJoinMessages: [
       "%user% joined the party.",
@@ -1900,6 +1947,10 @@ declare namespace Eris {
       "Good to see you, %user%.",
       "Yay you made it, %user%!"
     ];
+    TextComponentStyle: {
+      SMALL:     1,
+      PARAGRAPH: 2
+    };
     ThreadMemberFlags: {
       HAS_INTERACTED: 1;
       ALL_MESSAGES:   2;
@@ -1936,6 +1987,7 @@ declare namespace Eris {
       CERTIFIED_MODERATOR:          262144;
       DISCORD_CERTIFIED_MODERATOR:  262144;
       BOT_HTTP_INTERACTIONS:        524288;
+      SPAMMER:                      1048576;
     };
     VerificationLevels: {
       NONE:      0;
