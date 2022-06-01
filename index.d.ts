@@ -300,7 +300,7 @@ declare namespace Eris {
   interface GuildTextable extends Textable {
     lastPinTimestamp: number | null;
     rateLimitPerUser: number;
-    topic: string | null;
+    topic?: string | null;
     createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     getWebhooks(): Promise<Webhook[]>;
@@ -316,7 +316,7 @@ declare namespace Eris {
     parent_id?: number;
     permission_overwrites?: Overwrite[];
     rate_limit_per_user?: number;
-    topic?: string;
+    topic?: string | null;
     type: number;
     user_limit?: number;
   }
@@ -626,7 +626,7 @@ declare namespace Eris {
   interface OldGuildTextChannel extends OldGuildChannel {
     nsfw: boolean;
     rateLimitPerUser: number;
-    topic: string | null;
+    topic?: string | null;
     type: GuildTextChannelTypes;
   }
   interface OldGuildVoiceChannel extends OldGuildChannel {
