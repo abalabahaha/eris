@@ -969,11 +969,11 @@ declare namespace Eris {
     options?: InteractionDataOptions[];
   }
   interface CommandInteractionResolvedData {
-    users?: Collection<User>;
-    members?: Collection<Member>;
-    roles?: Collection<Role>;
     channels?: Collection<AnyChannel>;
+    members?: Collection<Member>;
     messages?: Collection<Message>;
+    roles?: Collection<Role>;
+    users?: Collection<User>;
   }
   interface InteractionComponentButtonData {
     component_type: Constants["ComponentTypes"]["BUTTON"];
