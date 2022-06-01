@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 import { Duplex, Readable as ReadableStream, Stream } from "stream";
 import { Agent as HTTPSAgent } from "https";
-import { IncomingMessage, ClientRequest } from "http";
+import { IncomingMessage, ClientRequest, IncomingHttpHeaders } from "http";
 import OpusScript = require("opusscript"); // Thanks TypeScript
 import { URL } from "url";
 import { Socket as DgramSocket } from "dgram";
@@ -2577,6 +2577,7 @@ declare namespace Eris {
 
   export class DiscordHTTPError extends Error {
     code: number;
+    headers: IncomingHttpHeaders;
     name: "DiscordHTTPError";
     req: ClientRequest;
     res: IncomingMessage;
@@ -2587,6 +2588,7 @@ declare namespace Eris {
 
   export class DiscordRESTError extends Error {
     code: number;
+    headers: IncomingHttpHeaders;
     name: string;
     req: ClientRequest;
     res: IncomingMessage;
