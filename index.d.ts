@@ -43,12 +43,12 @@ declare namespace Eris {
       MessageApplicationCommand : T extends UserApplicationCommandStructure ?
         UserApplicationCommand : never;
   type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
-  type ChatInputApplicationCommand<W extends boolean = false> = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["CHAT_INPUT"], W>;
-  type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand<false>, "id" | "application_id" | "guild_id" | "name_localizations" | "description_localizations"> & Partial<Record<"name_localizations" | "description_localizations", Record<string, string>>>;
-  type MessageApplicationCommand<W extends boolean = false> = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["MESSAGE"], W>;
-  type MessageApplicationCommandStructure = Omit<MessageApplicationCommand<false>, "id" | "application_id" | "guild_id"  | "name_localizations" | "description_localizations"> & Partial<Record<"name_localizations" | "description_localizations", Record<string, string>>>;
-  type UserApplicationCommand<W extends boolean = false> = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["USER"], W>;
-  type UserApplicationCommandStructure = Omit<UserApplicationCommand<false>, "id" | "application_id" | "guild_id" | "name_localizations" | "description_localizations"> & Partial<Record<"name_localizations" | "description_localizations", Record<string, string>>>;
+  type ChatInputApplicationCommand<W extends boolean = false> = ApplicationCommand<"CHAT_INPUT", W>;
+  type ChatInputApplicationCommandStructure = ApplicationCommandBase<"CHAT_INPUT">;
+  type MessageApplicationCommand<W extends boolean = false> = ApplicationCommand<"MESSAGE", W>;
+  type MessageApplicationCommandStructure = ApplicationCommandBase<"MESSAGE">;
+  type UserApplicationCommand<W extends boolean = false> = ApplicationCommand<"USER", W>;
+  type UserApplicationCommandStructure = ApplicationCommandBase<"USER">;
 
   // Cache
   interface Uncached { id: string }
@@ -182,18 +182,16 @@ declare namespace Eris {
   }
 
   // Application Command
-  interface ApplicationCommandBase<T extends ApplicationCommandTypes = ApplicationCommandTypes, W extends boolean = false> {
-    application_id: string;
-    defaultPermission?: boolean;
-    description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "";
-    descriptionLocalizations?: W extends true ? Record<string, string> | null : never;
-    guild_id?: string;
+  interface ApplicationCommandBase<T extends keyof Constants["ApplicationCommandTypes"] = keyof Constants["ApplicationCommandTypes"]> {
+    default_member_permissions?: string;
+    description: T extends "CHAT_INPUT" ? string : never;
+    description_localizations?: Record<string, string>;
+    dm_permission?: boolean;
     id: string;
     name: string;
-    nameLocalizations?: W extends true ? Record<string, string> | null : never;
-    options?: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ?  ApplicationCommandOptions[] : never;
+    name_localizations?: Record<string, string>;
+    options?: T extends "CHAT_INPUT" ?  ApplicationCommandOptions[] : never;
     type: T;
-    version: string;
   }
   interface ApplicationCommandOptionBase<T extends ApplicationCommandOptionsTypes> {
     description: string;
@@ -2305,7 +2303,7 @@ declare namespace Eris {
     editCommand(commandID: string, command: Omit<ApplicationCommandStructure, "type">): Promise<AnyApplicationCommand>;
     editCommandPermissions(guildID: string, commandID: string, permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
-    editGuildCommand(guildID: string, commandID: string, command: Omit<ApplicationCommandStructure, "type">): Promise<AnyApplicationCommand>;
+    editGuildCommand<T extends ApplicationCommandStructure>(guildID: string, commandID: string, command: Omit<T, "type">): Promise<ApplicationCommandStructureConversion<T>>;
     editGuildDiscovery(guildID: string, options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editGuildEmoji(
       guildID: string,
@@ -2733,7 +2731,7 @@ declare namespace Eris {
     dynamicIconURL(format?: ImageFormat, size?: number): string | null;
     dynamicSplashURL(format?: ImageFormat, size?: number): string | null;
     edit(options: GuildOptions, reason?: string): Promise<Guild>;
-    editCommand(commandID: string, command: Omit<ApplicationCommandStructure, "type">): Promise<AnyApplicationCommand>;
+    editCommand<T extends ApplicationCommandStructure>(commandID: string, command: Omit<T, "type">): Promise<ApplicationCommandStructureConversion<T>>;
     editCommandPermissions(permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions[]>;
     editDiscovery(options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
@@ -2901,24 +2899,34 @@ declare namespace Eris {
     toJSON(props?: string[]): JSONCache;
   }
 
-  export class Interaction extends Base {
-    acknowledged: boolean;
+  class ApplicationCommand<T extends keyof Constants["ApplicationCommandTypes"] = keyof Constants["ApplicationCommandTypes"], W extends boolean = false> extends Base {
     applicationID: string;
-    guildLocale?: string;
     id: string;
-    locale?: string;
-    token: string;
-    type: InteractionTypes;
-    version: number;
-    static from(data: BaseData): AnyInteraction;
+    type: T;
+    name: string;
+    nameLocalizations: W extends true ? Record<string, string> | null : Record<string, string> | null | undefined;
+    description: T extends "CHAT_INPUT" ? string : "";
+    // despite descriptions not being allowed for user & message, localizations are allowed
+    descriptionLocalizations: W extends true ? Record<string, string> | null : Record<string, string> | null | undefined;
+    options?: ApplicationCommandOptions[];
+    defaultMemberPermissions?: string | null;
+    dmPermission?: string | null;
+    version: string;
+    delete(): Promise<void>;
+    edit(options: Omit<T extends "CHAT_INPUT" ? ChatInputApplicationCommand : T extends "USER" ? UserApplicationCommand : T extends "MESSAGE" ? MessageApplicationCommand : never, "type">): Promise<this>;
   }
 
-  export class PingInteraction extends Interaction {
-    type: Constants["InteractionTypes"]["PING"];
-    guildLocale: never;
-    locale: never;
-    acknowledge(): Promise<void>;
-    pong(): Promise<void>;
+  export class AutocompleteInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+    channel: T;
+    data: AutocompleteInteractionData;
+    guildID?: string;
+    guildLocale?: string;
+    locale: string;
+    member?: Member;
+    type: Constants["InteractionTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE"];
+    user?: User;
+    acknowledge(choices: ApplicationCommandOptionsChoice[]): Promise<void>;
+    result(choices: ApplicationCommandOptionsChoice[]): Promise<void>;
   }
 
   export class CommandInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
@@ -2963,18 +2971,24 @@ declare namespace Eris {
     editParent(content: InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     getOriginalMessage(): Promise<Message>
   }
-
-  export class AutocompleteInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
-    channel: T;
-    data: AutocompleteInteractionData;
-    guildID?: string;
+  export class Interaction extends Base {
+    acknowledged: boolean;
+    applicationID: string;
     guildLocale?: string;
-    locale: string;
-    member?: Member;
-    type: Constants["InteractionTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE"];
-    user?: User;
-    acknowledge(choices: ApplicationCommandOptionsChoice[]): Promise<void>;
-    result(choices: ApplicationCommandOptionsChoice[]): Promise<void>;
+    id: string;
+    locale?: string;
+    token: string;
+    type: InteractionTypes;
+    version: number;
+    static from(data: BaseData): AnyInteraction;
+  }
+
+  export class PingInteraction extends Interaction {
+    type: Constants["InteractionTypes"]["PING"];
+    guildLocale: never;
+    locale: never;
+    acknowledge(): Promise<void>;
+    pong(): Promise<void>;
   }
 
   // If CT (count) is "withMetadata", it will not have count properties
