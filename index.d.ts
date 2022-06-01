@@ -52,8 +52,8 @@ declare namespace Eris {
   type AnyChannel = AnyGuildChannel | PrivateChannel;
   type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel | StoreChannel;
   type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
-  type AnyVoiceChannel = GuildVoiceChannel | StageChannel;
-  type GuildTextableChannel = TextChannel | NewsChannel | GuildVoiceChannel;
+  type AnyVoiceChannel = TextVoiceChannel | StageChannel;
+  type GuildTextableChannel = TextChannel | TextVoiceChannel | NewsChannel;
   type GuildTextableWithThread = GuildTextableChannel | AnyThreadChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
   type PossiblyUncachedTextable = Textable | Uncached;
@@ -66,8 +66,8 @@ declare namespace Eris {
   type GuildTextChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_TEXT" | "GUILD_NEWS">];
   type GuildThreadChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_NEWS_THREAD" | "GUILD_PRIVATE_THREAD" | "GUILD_PUBLIC_THREAD">];
   type GuildPublicThreadChannelTypes = Exclude<GuildThreadChannelTypes, Constants["ChannelTypes"]["GUILD_PRIVATE_THREAD"]>;
-  type GuildVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE" | "GUILD_STAGE">];
   type PrivateChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "DM" | "GROUP_DM">];
+  type TextVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE" | "GUILD_STAGE">];
 
   // Command
   type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
@@ -629,13 +629,6 @@ declare namespace Eris {
     topic: string | null;
     type: GuildTextChannelTypes;
   }
-  interface OldGuildVoiceChannel extends OldGuildChannel {
-    bitrate: number;
-    rtcRegion: string | null;
-    type: GuildVoiceChannelTypes;
-    userLimit: number;
-    videoQualityMode: VideoQualityMode;
-  }
   interface OldMember {
     avatar: string | null;
     communicationDisabledUntil: number | null;
@@ -673,6 +666,13 @@ declare namespace Eris {
     privacyLevel: StageInstancePrivacyLevel;
     topic: string;
   }
+  interface OldTextVoiceChannel extends OldGuildChannel {
+    bitrate: number;
+    rtcRegion: string | null;
+    type: TextVoiceChannelTypes;
+    userLimit: number;
+    videoQualityMode: VideoQualityMode;
+  }
   interface OldThread {
     name: string;
     rateLimitPerUser: number;
@@ -699,7 +699,7 @@ declare namespace Eris {
     channelPinUpdate: [channel: TextableChannel, timestamp: number, oldTimestamp: number];
     channelRecipientAdd: [channel: GroupChannel, user: User];
     channelRecipientRemove: [channel: GroupChannel, user: User];
-    channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldGuildVoiceChannel]
+    channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldTextVoiceChannel]
     | [channel: GroupChannel, oldChannel: OldGroupChannel];
     connect: [id: number];
     debug: [message: string, id?: number];
@@ -2890,7 +2890,7 @@ declare namespace Eris {
     toJSON(props?: string[]): JSONCache;
   }
 
-  export class GuildVoiceChannel extends VoiceChannel implements GuildTextable {
+  export class TextVoiceChannel extends VoiceChannel implements GuildTextable {
     lastMessageID: string;
     messages: Collection<Message<this>>;
     rateLimitPerUser: number;
@@ -3582,7 +3582,7 @@ declare namespace Eris {
   export class VoiceChannel extends GuildChannel implements Invitable {
     bitrate: number;
     rtcRegion: string | null;
-    type: GuildVoiceChannelTypes;
+    type: TextVoiceChannelTypes;
     userLimit: number;
     videoQualityMode: VideoQualityMode;
     voiceMembers: Collection<Member>;
