@@ -16,7 +16,7 @@ declare namespace Eris {
   // TYPES
 
   // Application Command
-  type AnyApplicationCommand = ChatInputApplicationCommand | MessageApplicationCommand | UserApplicationCommand;
+  type AnyApplicationCommand<W extends boolean = false> = ChatInputApplicationCommand<W> | MessageApplicationCommand<W> | UserApplicationCommand<W>;
   type ApplicationCommandOptions = ApplicationCommandOptionsWithOptions | ApplicationCommandOptionsWithValue;
   type ApplicationCommandOptionsTypes = Constants["ApplicationCommandOptionTypes"][keyof Constants["ApplicationCommandOptionTypes"]];
   type ApplicationCommandOptionsTypesWithAutocomplete = Constants["ApplicationCommandOptionTypes"][keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">];
@@ -43,12 +43,12 @@ declare namespace Eris {
       MessageApplicationCommand : T extends UserApplicationCommandStructure ?
         UserApplicationCommand : never;
   type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
-  type ChatInputApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]>;
-  type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand, "id" | "application_id" | "guild_id" | "version">;
-  type MessageApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["MESSAGE"]>;
-  type MessageApplicationCommandStructure = Omit<MessageApplicationCommand, "id" | "application_id" | "guild_id" | "description" | "options" | "version">;
-  type UserApplicationCommand = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["USER"]>;
-  type UserApplicationCommandStructure = Omit<UserApplicationCommand, "id" | "application_id" | "guild_id" | "description" | "options" | "version">;
+  type ChatInputApplicationCommand<W extends boolean = false> = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["CHAT_INPUT"], W>;
+  type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand<false>, "id" | "application_id" | "guild_id" | "name_localizations" | "description_localizations"> & Partial<Record<"name_localizations" | "description_localizations", Record<string, string>>>;
+  type MessageApplicationCommand<W extends boolean = false> = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["MESSAGE"], W>;
+  type MessageApplicationCommandStructure = Omit<MessageApplicationCommand<false>, "id" | "application_id" | "guild_id"  | "name_localizations" | "description_localizations"> & Partial<Record<"name_localizations" | "description_localizations", Record<string, string>>>;
+  type UserApplicationCommand<W extends boolean = false> = ApplicationCommandBase<Constants["ApplicationCommandTypes"]["USER"], W>;
+  type UserApplicationCommandStructure = Omit<UserApplicationCommand<false>, "id" | "application_id" | "guild_id" | "name_localizations" | "description_localizations"> & Partial<Record<"name_localizations" | "description_localizations", Record<string, string>>>;
 
   // Cache
   interface Uncached { id: string }
@@ -182,20 +182,24 @@ declare namespace Eris {
   }
 
   // Application Command
-  interface ApplicationCommandBase<T extends ApplicationCommandTypes = ApplicationCommandTypes> {
+  interface ApplicationCommandBase<T extends ApplicationCommandTypes = ApplicationCommandTypes, W extends boolean = false> {
     application_id: string;
     defaultPermission?: boolean;
     description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "";
+    descriptionLocalizations?: W extends true ? Record<string, string> | null : never;
     guild_id?: string;
     id: string;
     name: string;
+    nameLocalizations?: W extends true ? Record<string, string> | null : never;
     options?: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ?  ApplicationCommandOptions[] : never;
     type: T;
     version: string;
   }
   interface ApplicationCommandOptionBase<T extends ApplicationCommandOptionsTypes> {
     description: string;
+    description_localizations?: Record<string, string>;
     name: string;
+    name_localizations?: Record<string, string>;
     required?: T extends Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND" | "SUB_COMMAND_GROUP"] ? never : boolean;
     type: T;
   }
@@ -2133,8 +2137,8 @@ declare namespace Eris {
     addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
     banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     bulkEditCommandPermissions(guildID: string, permissions: { id: string; permissions: ApplicationCommandPermissions[] }[]): Promise<GuildApplicationCommandPermissions[]>;
-    bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand[]>;
-    bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand[]>;
+    bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand<true>[]>;
+    bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand<true>[]>;
     closeVoiceConnection(guildID: string): void;
     connect(): Promise<void>;
     createChannel(guildID: string, name: string): Promise<TextChannel>;
@@ -2365,9 +2369,9 @@ declare namespace Eris {
     getChannel(channelID: string): AnyChannel;
     getChannelInvites(channelID: string): Promise<Invite[]>;
     getChannelWebhooks(channelID: string): Promise<Webhook[]>;
-    getCommand<T extends AnyApplicationCommand>(commandID: string): Promise<T>;
+    getCommand<W extends boolean = false, T extends AnyApplicationCommand<W> = AnyApplicationCommand<W>>(commandID: string, withLocalizations?: W): Promise<T>;
     getCommandPermissions(guildID: string, commandID: string): Promise<GuildApplicationCommandPermissions>;
-    getCommands(): Promise<AnyApplicationCommand[]>;
+    getCommands<W extends boolean = false>(withLocalizations?: W): Promise<AnyApplicationCommand<W>[]>;
     getDiscoveryCategories(): Promise<DiscoveryCategory[]>;
     getDMChannel(userID: string): Promise<PrivateChannel>;
     getEmojiGuild(emojiID: string): Promise<Guild>;
@@ -2377,9 +2381,9 @@ declare namespace Eris {
     getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getGuildBan(guildID: string, userID: string): Promise<{ reason?: string; user: User }>;
     getGuildBans(guildID: string): Promise<{ reason?: string; user: User }[]>;
-    getGuildCommand<T extends AnyApplicationCommand>(guildID: string, commandID: string): Promise<T>;
+    getGuildCommand<W extends boolean = false, T extends AnyApplicationCommand<W> = AnyApplicationCommand<W>>(guildID: string, commandID: string, withLocalizations?: W): Promise<T>;
     getGuildCommandPermissions(guildID: string): Promise<GuildApplicationCommandPermissions[]>;
-    getGuildCommands(guildID: string): Promise<AnyApplicationCommand[]>;
+    getGuildCommands<W extends boolean = false>(guildID: string, withLocalizations?: W): Promise<AnyApplicationCommand<W>[]>;
     getGuildDiscovery(guildID: string): Promise<DiscoveryMetadata>;
     /** @deprecated */
     getGuildEmbed(guildID: string): Promise<Widget>;
@@ -2752,9 +2756,9 @@ declare namespace Eris {
     getAuditLogs(limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getBan(userID: string): Promise<{ reason?: string; user: User }>;
     getBans(): Promise<{ reason?: string; user: User }[]>;
-    getCommand<T extends AnyApplicationCommand>(commandID: string): Promise<T>;
+    getCommand<W extends boolean = false, T extends AnyApplicationCommand<W> = AnyApplicationCommand<W>>(commandID: string, withLocalizations?: W): Promise<T>;
     getCommandPermissions(): Promise<GuildApplicationCommandPermissions[]>;
-    getCommands(): Promise<AnyApplicationCommand[]>;
+    getCommands<W extends boolean = false>(): Promise<AnyApplicationCommand<W>[]>;
     getDiscovery(): Promise<DiscoveryMetadata>;
     /** @deprecated */
     getEmbed(): Promise<Widget>;
@@ -2900,7 +2904,9 @@ declare namespace Eris {
   export class Interaction extends Base {
     acknowledged: boolean;
     applicationID: string;
+    guildLocale?: string;
     id: string;
+    locale?: string;
     token: string;
     type: InteractionTypes;
     version: number;
@@ -2909,6 +2915,8 @@ declare namespace Eris {
 
   export class PingInteraction extends Interaction {
     type: Constants["InteractionTypes"]["PING"];
+    guildLocale: never;
+    locale: never;
     acknowledge(): Promise<void>;
     pong(): Promise<void>;
   }
@@ -2917,6 +2925,8 @@ declare namespace Eris {
     channel: T;
     data: CommandInteractionData;
     guildID?: string;
+    guildLocale?: string;
+    locale: string;
     member?: Member;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
     user?: User;
@@ -2935,6 +2945,8 @@ declare namespace Eris {
     channel: T;
     data: InteractionComponentButtonData | InteractionComponentSelectMenuData;
     guildID?: string;
+    guildLocale?: string;
+    locale: string;
     member?: Member;
     message: Message;
     type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
@@ -2956,6 +2968,8 @@ declare namespace Eris {
     channel: T;
     data: AutocompleteInteractionData;
     guildID?: string;
+    guildLocale?: string;
+    locale: string;
     member?: Member;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE"];
     user?: User;
