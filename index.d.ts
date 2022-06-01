@@ -302,7 +302,7 @@ declare namespace Eris {
 
   interface GuildPinnable extends Pinnable {
 	lastPinTimestamp: number | null;
-	topic?: string;
+	topic?: string | nullable;
   }
 
   interface GuildTextable extends Textable {
