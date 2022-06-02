@@ -183,12 +183,12 @@ declare namespace Eris {
 
   // Application Command
   interface ApplicationCommandBase<T extends keyof Constants["ApplicationCommandTypes"] = keyof Constants["ApplicationCommandTypes"]> {
-    default_member_permissions?: string;
+    defaultMemberPermissions?: string;
     description: T extends "CHAT_INPUT" ? string : never;
-    description_localizations?: Record<string, string>;
-    dm_permission?: boolean;
+    descriptionLocalizations?: Record<string, string>;
+    dmPermission?: boolean;
     name: string;
-    name_localizations?: Record<string, string>;
+    nameLocalizations?: Record<string, string>;
     options?: T extends "CHAT_INPUT" ?  ApplicationCommandOptions[] : never;
     type: ApplicationCommandTypes;
   }
@@ -2898,7 +2898,7 @@ declare namespace Eris {
     toJSON(props?: string[]): JSONCache;
   }
 
-  class ApplicationCommand<T extends keyof Constants["ApplicationCommandTypes"] = keyof Constants["ApplicationCommandTypes"], W extends boolean = false> extends Base {
+  export class ApplicationCommand<T extends keyof Constants["ApplicationCommandTypes"] = keyof Constants["ApplicationCommandTypes"], W extends boolean = false> extends Base {
     applicationID: string;
     id: string;
     type: T;
