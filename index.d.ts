@@ -187,7 +187,6 @@ declare namespace Eris {
     description: T extends "CHAT_INPUT" ? string : never;
     description_localizations?: Record<string, string>;
     dm_permission?: boolean;
-    id: string;
     name: string;
     name_localizations?: Record<string, string>;
     options?: T extends "CHAT_INPUT" ?  ApplicationCommandOptions[] : never;
