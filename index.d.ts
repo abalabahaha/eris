@@ -104,7 +104,7 @@ declare namespace Eris {
   type AnyInteraction = AnyInteractionGateway | PingInteraction;
   type AnyInteractionGateway = AutocompleteInteraction | CommandInteraction | ComponentInteraction;
   type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
-  type InteractionDataOption<T extends keyof Constants["ApplicationCommandOptionTypes"], V = unknown> = InteractionDataOptionsBase<Constants["ApplicationCommandOptionTypes"][T], V>;
+  type InteractionDataOption<T extends Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">, V = boolean | number | string> = InteractionDataOptionsBase<Constants["ApplicationCommandOptionTypes"][T], V>;
   type InteractionDataOptions = InteractionDataOptionsWithOptions | InteractionDataOptionsWithValue;
   type InteractionDataOptionsBoolean = InteractionDataOption<"BOOLEAN", boolean>;
   type InteractionDataOptionsChannel = InteractionDataOption<"CHANNEL", string>;
