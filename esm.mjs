@@ -49,6 +49,7 @@ export const {
   StageInstance,
   StoreChannel,
   TextChannel,
+  TextVoiceChannel,
   ThreadChannel,
   ThreadMember,
   UnavailableGuild,
