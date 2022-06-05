@@ -397,6 +397,7 @@ declare namespace Eris {
     rest?: RequestHandlerOptions;
     restMode?: boolean;
     seedVoiceConnections?: boolean;
+    shardConcurrency?: number | "auto";
     ws?: unknown;
   }
   interface CommandClientOptions {
@@ -642,7 +643,7 @@ declare namespace Eris {
     embeds: Embed[];
     flags: number;
     mentionedBy?: unknown;
-    mentions: string[];
+    mentions: User[];
     pinned: boolean;
     roleMentions: string[];
     tts: boolean;
@@ -823,6 +824,9 @@ declare namespace Eris {
     received: number;
     res: (value: Member[]) => void;
     timeout: NodeJS.Timeout;
+  }
+  interface ShardManagerOptions {
+    concurrency?: number | "auto";
   }
 
   // Guild
@@ -3378,10 +3382,10 @@ declare namespace Eris {
   }
 
   export class ShardManager extends Collection<Shard> implements SimpleJSON {
+    buckets: Map<number, number>;
     connectQueue: Shard[];
     connectTimeout: NodeJS.Timer | null;
-    lastConnect: number;
-    constructor(client: Client);
+    constructor(client: Client, options: ShardManagerOptions);
     connect(shard: Shard): void;
     spawn(id: number): void;
     tryConnect(): void;
