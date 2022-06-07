@@ -260,6 +260,12 @@ declare namespace Eris {
     channel_id: string;
     webhook_id: string;
   }
+  interface ChannelPosition {
+    id: string;
+    position: number;
+    lockPermissions?: boolean;
+    parentID?: string;
+  }
   interface CreateChannelOptions {
     bitrate?: number;
     nsfw?: boolean;
@@ -2302,6 +2308,7 @@ declare namespace Eris {
       reason?: string
     ): Promise<void>;
     editChannelPosition(channelID: string, position: number, options?: EditChannelPositionOptions): Promise<void>;
+    editChannelPositions(guildID: string, channelPositions: ChannelPosition[]): Promise<void>;
     editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     editCommandPermissions(guildID: string, commandID: string, permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
@@ -2736,6 +2743,7 @@ declare namespace Eris {
     dynamicIconURL(format?: ImageFormat, size?: number): string | null;
     dynamicSplashURL(format?: ImageFormat, size?: number): string | null;
     edit(options: GuildOptions, reason?: string): Promise<Guild>;
+    editChannelPositions(channelPositions: ChannelPosition[]): Promise<void>;
     editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     editCommandPermissions(permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions[]>;
     editDiscovery(options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
