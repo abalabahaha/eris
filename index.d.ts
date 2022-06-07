@@ -1902,9 +1902,9 @@ declare namespace Eris {
       startEmbeddedActivities: 549755813888n;
       moderateMembers:         1099511627776n;
       allGuild:                1110182461630n;
-      allText:                 518349388881n;
+      allText:                 535529258065n;
       allVoice:                554385278737n;
-      all:                     2181843386367n;
+      all:                     2199023255551n;
     };
     PremiumTiers: {
       NONE:   0;
