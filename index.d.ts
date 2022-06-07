@@ -261,6 +261,12 @@ declare namespace Eris {
     channel_id: string;
     webhook_id: string;
   }
+  interface ChannelPosition {
+    id: string;
+    position: number;
+    lockPermissions?: boolean;
+    parentID?: string;
+  }
   interface CreateChannelOptions {
     bitrate?: number;
     nsfw?: boolean;
@@ -874,6 +880,11 @@ declare namespace Eris {
     limit?: number;
     userID?: string;
   }
+  interface GetGuildBansOptions {
+    after?: string;
+    before?: string;
+    limit?: number;
+  }
   interface GetPruneOptions {
     days?: number;
     includeRoles?: string[];
@@ -893,6 +904,10 @@ declare namespace Eris {
     threads: AnyThreadChannel[];
     users: User[];
     webhooks: Webhook[];
+  }
+  interface GuildBan {
+    reason?: string;
+    user: User;
   }
   interface GuildOptions {
     afkChannelID?: string;
@@ -2252,7 +2267,8 @@ declare namespace Eris {
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
     createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionOptions, file?: FileContent | FileContent[]): Promise<void>;
     createMessage(channelID: string, content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
-    createRole(guildID: string, options?: RoleOptions | Role, reason?: string): Promise<Role>;
+    createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
+    createRole(guildID: string, options?: Role, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     createThreadWithoutMessage(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
@@ -2294,6 +2310,7 @@ declare namespace Eris {
       reason?: string
     ): Promise<void>;
     editChannelPosition(channelID: string, position: number, options?: EditChannelPositionOptions): Promise<void>;
+    editChannelPositions(guildID: string, channelPositions: ChannelPosition[]): Promise<void>;
     editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     editCommandPermissions(guildID: string, commandID: string, permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
@@ -2371,8 +2388,8 @@ declare namespace Eris {
     getGuildAuditLog(guildID: string, options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
     /** @deprecated */
     getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
-    getGuildBan(guildID: string, userID: string): Promise<{ reason?: string; user: User }>;
-    getGuildBans(guildID: string): Promise<{ reason?: string; user: User }[]>;
+    getGuildBan(guildID: string, userID: string): Promise<GuildBan>;
+    getGuildBans(guildID: string, options?: GetGuildBansOptions): Promise<GuildBan[]>;
     getGuildCommand(guildID: string, commandID: string): Promise<ApplicationCommand>;
     getGuildCommandPermissions(guildID: string): Promise<GuildApplicationCommandPermissions[]>;
     getGuildCommands(guildID: string): Promise<ApplicationCommand[]>;
@@ -2711,7 +2728,8 @@ declare namespace Eris {
     createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
     createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     createEmoji(options: { image: string; name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
-    createRole(options: RoleOptions | Role, reason?: string): Promise<Role>;
+    createRole(options: RoleOptions, reason?: string): Promise<Role>;
+    createRole(options: Role, reason?: string): Promise<Role>;
     createSticker(options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createTemplate(name: string, description?: string | null): Promise<GuildTemplate>;
     delete(): Promise<void>;
@@ -2727,6 +2745,7 @@ declare namespace Eris {
     dynamicIconURL(format?: ImageFormat, size?: number): string | null;
     dynamicSplashURL(format?: ImageFormat, size?: number): string | null;
     edit(options: GuildOptions, reason?: string): Promise<Guild>;
+    editChannelPositions(channelPositions: ChannelPosition[]): Promise<void>;
     editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     editCommandPermissions(permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions[]>;
     editDiscovery(options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
@@ -2748,8 +2767,8 @@ declare namespace Eris {
     getAuditLog(options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
     /** @deprecated */
     getAuditLogs(limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
-    getBan(userID: string): Promise<{ reason?: string; user: User }>;
-    getBans(): Promise<{ reason?: string; user: User }[]>;
+    getBan(userID: string): Promise<GuildBan>;
+    getBans(options?: GetGuildBansOptions): Promise<GuildBan[]>;
     getCommand(commandID: string): Promise<ApplicationCommand>;
     getCommandPermissions(): Promise<GuildApplicationCommandPermissions[]>;
     getCommands(): Promise<ApplicationCommand[]>;
