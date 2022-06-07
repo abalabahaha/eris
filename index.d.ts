@@ -866,7 +866,7 @@ declare namespace Eris {
   interface GetGuildBansOptions {
     after?: string;
     before?: string;
-    limit?: number; 
+    limit?: number;
   }
   interface GetPruneOptions {
     days?: number;
@@ -889,8 +889,8 @@ declare namespace Eris {
     webhooks: Webhook[];
   }
   interface GuildBan {
-      reason?: string;
-      user: User;
+    reason?: string;
+    user: User;
   }
   interface GuildOptions {
     afkChannelID?: string;
