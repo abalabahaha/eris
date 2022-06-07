@@ -872,6 +872,11 @@ declare namespace Eris {
     limit?: number;
     userID?: string;
   }
+  interface GetGuildBansOptions {
+    after?: string;
+    before?: string;
+    limit?: number;
+  }
   interface GetPruneOptions {
     days?: number;
     includeRoles?: string[];
@@ -891,6 +896,10 @@ declare namespace Eris {
     threads: AnyThreadChannel[];
     users: User[];
     webhooks: Webhook[];
+  }
+  interface GuildBan {
+    reason?: string;
+    user: User;
   }
   interface GuildOptions {
     afkChannelID?: string;
@@ -2370,8 +2379,8 @@ declare namespace Eris {
     getGuildAuditLog(guildID: string, options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
     /** @deprecated */
     getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
-    getGuildBan(guildID: string, userID: string): Promise<{ reason?: string; user: User }>;
-    getGuildBans(guildID: string): Promise<{ reason?: string; user: User }[]>;
+    getGuildBan(guildID: string, userID: string): Promise<GuildBan>;
+    getGuildBans(guildID: string, options?: GetGuildBansOptions): Promise<GuildBan[]>;
     getGuildCommand(guildID: string, commandID: string): Promise<ApplicationCommand>;
     getGuildCommandPermissions(guildID: string): Promise<GuildApplicationCommandPermissions[]>;
     getGuildCommands(guildID: string): Promise<ApplicationCommand[]>;
@@ -2748,8 +2757,8 @@ declare namespace Eris {
     getAuditLog(options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
     /** @deprecated */
     getAuditLogs(limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
-    getBan(userID: string): Promise<{ reason?: string; user: User }>;
-    getBans(): Promise<{ reason?: string; user: User }[]>;
+    getBan(userID: string): Promise<GuildBan>;
+    getBans(options?: GetGuildBansOptions): Promise<GuildBan[]>;
     getCommand(commandID: string): Promise<ApplicationCommand>;
     getCommandPermissions(): Promise<GuildApplicationCommandPermissions[]>;
     getCommands(): Promise<ApplicationCommand[]>;
