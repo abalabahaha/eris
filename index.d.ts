@@ -282,7 +282,7 @@ declare namespace Eris {
     topic?: string;
     userLimit?: number;
   }
-  interface EditChannelOptions extends Omit<CreateChannelOptions, "permissionOverwrites" | "reason"> {
+  interface EditChannelOptions extends Omit<CreateChannelOptions, "reason"> {
     archived?: boolean;
     autoArchiveDuration?: AutoArchiveDuration;
     defaultAutoArchiveDuration?: AutoArchiveDuration;
