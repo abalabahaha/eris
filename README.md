@@ -20,11 +20,19 @@ Ping Pong Example
 ```js
 const Eris = require("eris");
 
-var bot = new Eris("Bot TOKEN");
 // Replace TOKEN with your bot account's token
+const bot = new Eris("Bot TOKEN", {
+    intents: [
+        "guildMessages"
+    ]
+});
 
 bot.on("ready", () => { // When the bot is ready
     console.log("Ready!"); // Log "Ready!"
+});
+
+bot.on("error", (err) => {
+  console.error(err); // or your preferred logger
 });
 
 bot.on("messageCreate", (msg) => { // When a message is created
@@ -46,7 +54,7 @@ Useful Links
 ------------
 
 - [The website](https://abal.moe/Eris/) has more details and documentation.
-- [The Discord API channel (#js_eris)](https://abal.moe/Eris/invite) is the best place to get support/contact me.
+- [The official Eris server](https://abal.moe/Eris/invite) is the best place to get support.
 - [The GitHub repo](https://github.com/abalabahaha/eris) is where development primarily happens.
 - [The NPM package webpage](https://npmjs.com/package/eris) is, well, the webpage for the NPM package.
 
