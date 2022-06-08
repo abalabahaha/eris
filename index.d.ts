@@ -104,6 +104,7 @@ declare namespace Eris {
   type AnyInteraction = AnyInteractionGateway | PingInteraction;
   type AnyInteractionGateway = AutocompleteInteraction | CommandInteraction | ComponentInteraction;
   type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
+  type InteractionContentEdit = Omit<InteractionContent, "tts" | "flags">;
   type InteractionDataOption<T extends Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">, V = boolean | number | string> = InteractionDataOptionsBase<Constants["ApplicationCommandOptionTypes"][T], V>;
   type InteractionDataOptions = InteractionDataOptionsWithOptions | InteractionDataOptionsWithValue;
   type InteractionDataOptionsBoolean = InteractionDataOption<"BOOLEAN", boolean>;
@@ -2973,8 +2974,8 @@ declare namespace Eris {
     defer(flags?: number): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
-    editMessage(messageID: string, content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
-    editOriginalMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
     getOriginalMessage(): Promise<Message>
   }
 
@@ -2995,9 +2996,9 @@ declare namespace Eris {
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
-    editMessage(messageID: string, content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
-    editOriginalMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
-    editParent(content: InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
+    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editParent(content: InteractionContentEdit, file?: FileContent | FileContent[]): Promise<void>;
     getOriginalMessage(): Promise<Message>
   }
   export class Interaction extends Base {
