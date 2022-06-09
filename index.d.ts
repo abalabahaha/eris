@@ -2932,7 +2932,7 @@ declare namespace Eris {
   export class ApplicationCommand<T extends keyof Constants["ApplicationCommandTypes"] = keyof Constants["ApplicationCommandTypes"], W extends boolean = false> extends Base {
     applicationID: string;
     id: string;
-    type: T;
+    type: Constants["ApplicationCommandTypes"][T];
     name: string;
     nameLocalizations: W extends true ? Record<string, string> | null : Record<string, string> | null | undefined;
     description: T extends "CHAT_INPUT" ? string : "";
