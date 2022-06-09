@@ -2940,7 +2940,7 @@ declare namespace Eris {
     descriptionLocalizations: W extends true ? Record<string, string> | null : Record<string, string> | null | undefined;
     options?: ApplicationCommandOptions[];
     defaultMemberPermissions?: string | null;
-    dmPermission?: string | null;
+    dmPermission?: boolean;
     version: string;
     delete(): Promise<void>;
     edit(options: Omit<T extends "CHAT_INPUT" ? ChatInputApplicationCommand : T extends "USER" ? UserApplicationCommand : T extends "MESSAGE" ? MessageApplicationCommand : never, "type">): Promise<this>;
