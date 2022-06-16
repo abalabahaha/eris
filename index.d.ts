@@ -44,11 +44,8 @@ declare namespace Eris {
         UserApplicationCommand<W> : never;
   type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
   type ChatInputApplicationCommand<W extends boolean = false> = ApplicationCommand<"CHAT_INPUT", W>;
-  type ChatInputApplicationCommandStructure = ApplicationCommandBase<"CHAT_INPUT">;
   type MessageApplicationCommand<W extends boolean = false> = ApplicationCommand<"MESSAGE", W>;
-  type MessageApplicationCommandStructure = ApplicationCommandBase<"MESSAGE">;
   type UserApplicationCommand<W extends boolean = false> = ApplicationCommand<"USER", W>;
-  type UserApplicationCommandStructure = ApplicationCommandBase<"USER">;
 
   // Cache
   interface Uncached { id: string }
@@ -183,14 +180,11 @@ declare namespace Eris {
   }
 
   // Application Command
-  interface ApplicationCommandBase<T extends keyof Constants["ApplicationCommandTypes"] = keyof Constants["ApplicationCommandTypes"]> {
+  interface ApplicationCommandStructureBase<T extends keyof Constants["ApplicationCommandTypes"] = keyof Constants["ApplicationCommandTypes"]> {
     defaultMemberPermissions?: string;
-    description: T extends "CHAT_INPUT" ? string : never;
-    descriptionLocalizations?: Record<string, string>;
     dmPermission?: boolean;
     name: string;
     nameLocalizations?: Record<string, string>;
-    options?: T extends "CHAT_INPUT" ?  ApplicationCommandOptions[] : never;
     type: ApplicationCommandTypes;
   }
   interface ApplicationCommandOptionBase<T extends ApplicationCommandOptionsTypes> {
@@ -227,11 +221,23 @@ declare namespace Eris {
     permission: boolean;
     type: Constants["ApplicationCommandPermissionTypes"][keyof Constants["ApplicationCommandPermissionTypes"]];
   }
+  interface ChatInputApplicationCommandStructure extends ApplicationCommandStructureBase {
+    type: Constants["ApplicationCommandTypes"]["CHAT_INPUT"];
+    description: string;
+    descriptionLocalizations?: Record<string, string>;
+    options?: ApplicationCommandOptions[];
+  }
   interface GuildApplicationCommandPermissions {
     application_id: string;
     guild_id: string;
     id: string;
     permissions: ApplicationCommandPermissions[];
+  }
+  interface MessageApplicationCommandStructure extends ApplicationCommandStructureBase {
+    type: Constants["ApplicationCommandTypes"]["MESSAGE"];
+  }
+  interface UserApplicationCommandStructure extends ApplicationCommandStructureBase {
+    type: Constants["ApplicationCommandTypes"]["USER"];
   }
 
   // Channel
