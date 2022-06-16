@@ -45,7 +45,9 @@ declare namespace Eris {
   type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
   type ChatInputApplicationCommand<W extends boolean = false> = ApplicationCommand<"CHAT_INPUT", W>;
   type MessageApplicationCommand<W extends boolean = false> = ApplicationCommand<"MESSAGE", W>;
+  type MessageApplicationCommandStructure = ApplicationCommandStructureBase<"MESSAGE">;
   type UserApplicationCommand<W extends boolean = false> = ApplicationCommand<"USER", W>;
+  type UserApplicationCommandStructure = ApplicationCommandStructureBase<"USER">;
 
   // Cache
   interface Uncached { id: string }
@@ -185,7 +187,7 @@ declare namespace Eris {
     dmPermission?: boolean;
     name: string;
     nameLocalizations?: Record<string, string>;
-    type: ApplicationCommandTypes;
+    type: Constants["ApplicationCommandTypes"][T];
   }
   interface ApplicationCommandOptionBase<T extends ApplicationCommandOptionsTypes> {
     description: string;
@@ -221,8 +223,7 @@ declare namespace Eris {
     permission: boolean;
     type: Constants["ApplicationCommandPermissionTypes"][keyof Constants["ApplicationCommandPermissionTypes"]];
   }
-  interface ChatInputApplicationCommandStructure extends ApplicationCommandStructureBase {
-    type: Constants["ApplicationCommandTypes"]["CHAT_INPUT"];
+  interface ChatInputApplicationCommandStructure extends ApplicationCommandStructureBase<"CHAT_INPUT"> {
     description: string;
     descriptionLocalizations?: Record<string, string>;
     options?: ApplicationCommandOptions[];
@@ -232,12 +233,6 @@ declare namespace Eris {
     guild_id: string;
     id: string;
     permissions: ApplicationCommandPermissions[];
-  }
-  interface MessageApplicationCommandStructure extends ApplicationCommandStructureBase {
-    type: Constants["ApplicationCommandTypes"]["MESSAGE"];
-  }
-  interface UserApplicationCommandStructure extends ApplicationCommandStructureBase {
-    type: Constants["ApplicationCommandTypes"]["USER"];
   }
 
   // Channel
