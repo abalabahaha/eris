@@ -404,6 +404,7 @@ declare namespace Eris {
     restMode?: boolean;
     seedVoiceConnections?: boolean;
     shardConcurrency?: number | "auto";
+    shardIDs?: number[];
     ws?: unknown;
   }
   interface CommandClientOptions {
