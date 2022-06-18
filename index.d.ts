@@ -297,9 +297,9 @@ declare namespace Eris {
   }
 
   interface AutoModerationTriggerMetadata {
-    /** KEYWORD */
+    /** valid for KEYWORD */
     keyword_filter: string[];
-    /** KEYWORD_PRESET */
+    /** valid for KEYWORD_PRESET */
     presets: AutoModerationKeywordPresetType[];
   }
   // Channel
