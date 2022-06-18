@@ -50,6 +50,7 @@ declare namespace Eris {
   type AutoModerationEventType = Constants["AutoModerationEventTypes"][keyof Constants["AutoModerationEventTypes"]];
   type AutoModerationKeywordPresetType = Constants["AutoModerationKeywordPresetTypes"][keyof Constants["AutoModerationKeywordPresetTypes"]];
   type AutoModerationTriggerType = Constants["AutoModerationTriggerTypes"][keyof Constants["AutoModerationTriggerTypes"]];
+  type EditAutoModerationRuleOptions = Partial<CreateAutoModerationRuleOptions>;
 
   // Cache
   interface Uncached { id: string }
@@ -285,7 +286,7 @@ declare namespace Eris {
     trigger_metadata: AutoModerationTriggerMetadata;
     trigger_type: AutoModerationTriggerType;
   }
-  interface AutoModerationRuleStructure {
+  interface CreateAutoModerationRuleOptions {
     actions: AutoModerationAction[];
     enabled?: boolean;
     eventType: AutoModerationActionType;
@@ -2224,7 +2225,7 @@ declare namespace Eris {
     bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
     closeVoiceConnection(guildID: string): void;
     connect(): Promise<void>;
-    createAutoModerationRule(guildID: string, rule: AutoModerationRuleStructure): Promise<AutoModerationRule>;
+    createAutoModerationRule(guildID: string, rule: CreateAutoModerationRuleOptions): Promise<AutoModerationRule>;
     createChannel(guildID: string, name: string): Promise<TextChannel>;
     createChannel(
       guildID: string,
@@ -2374,7 +2375,7 @@ declare namespace Eris {
     disableSelfMFATOTP(code: string): Promise<{ token: string }>;
     disconnect(options: { reconnect?: boolean | "auto" }): void;
     editAFK(afk: boolean): void;
-    editAutoModerationRule(guildID: string, ruleID: string, options: Partial<AutoModerationRuleStructure>): Promise<AutoModerationRule>;
+    editAutoModerationRule(guildID: string, ruleID: string, options: EditAutoModerationRuleOptions): Promise<AutoModerationRule>;
     editChannel(
       channelID: string,
       options: EditChannelOptions,
@@ -2785,14 +2786,14 @@ declare namespace Eris {
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     banMember(userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
-    createAutoModerationRule(rule: AutoModerationRuleStructure): Promise<AutoModerationRule>;
+    createAutoModerationRule(rule: CreateAutoModerationRuleOptions): Promise<AutoModerationRule>;
     createChannel(name: string): Promise<TextChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_TEXT"], options?: CreateChannelOptions): Promise<TextChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_VOICE"], options?: CreateChannelOptions): Promise<TextVoiceChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_CATEGORY"], options?: CreateChannelOptions): Promise<CategoryChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_NEWS"], options?: CreateChannelOptions | string): Promise<NewsChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STORE"], options?: CreateChannelOptions | string): Promise<StoreChannel>;
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE"], options?: CreateChannelOptions | string): Promise<StageChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"], options?: CreateChannelOptions | string): Promise<StageChannel>;
     createChannel(name: string, type?: number, options?: CreateChannelOptions): Promise<unknown>;
     /** @deprecated */
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_TEXT"], reason?: string, options?: CreateChannelOptions | string): Promise<TextChannel>;
@@ -2828,7 +2829,7 @@ declare namespace Eris {
     dynamicIconURL(format?: ImageFormat, size?: number): string | null;
     dynamicSplashURL(format?: ImageFormat, size?: number): string | null;
     edit(options: GuildOptions, reason?: string): Promise<Guild>;
-    editAutoModerationRule(ruleID: string, options: Partial<AutoModerationRuleStructure>): Promise<AutoModerationRule>;
+    editAutoModerationRule(ruleID: string, options: EditAutoModerationRuleOptions): Promise<AutoModerationRule>;
     editChannelPositions(channelPositions: ChannelPosition[]): Promise<void>;
     editCommand(commandID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     editCommandPermissions(permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions[]>;
