@@ -679,7 +679,7 @@ declare namespace Eris {
     privacyLevel: StageInstancePrivacyLevel;
     topic: string;
   }
-  interface OldTextVoiceChannel extends OldGuildChannel {
+  interface OldVoiceChannel extends OldGuildChannel {
     bitrate: number;
     rtcRegion: string | null;
     type: GuildVoiceChannelTypes;
@@ -712,7 +712,7 @@ declare namespace Eris {
     channelPinUpdate: [channel: TextableChannel, timestamp: number, oldTimestamp: number];
     channelRecipientAdd: [channel: GroupChannel, user: User];
     channelRecipientRemove: [channel: GroupChannel, user: User];
-    channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldTextVoiceChannel]
+    channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldVoiceChannel]
     | [channel: GroupChannel, oldChannel: OldGroupChannel];
     connect: [id: number];
     debug: [message: string, id?: number];
