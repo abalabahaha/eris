@@ -3002,7 +3002,7 @@ declare namespace Eris {
     deleteOriginalMessage(): Promise<void>;
     editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
     editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
-    editParent(content: InteractionContentEdit, file?: FileContent | FileContent[]): Promise<void>;
+    editParent(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<void>;
     getOriginalMessage(): Promise<Message>
   }
   export class Interaction extends Base {
