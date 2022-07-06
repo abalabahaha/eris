@@ -4,12 +4,21 @@ env:
   node: true
 plugins:
   - "sort-class-members"
+  - "jsdoc"
 extends: "eslint:recommended"
 globals:
   BigInt: true
   window: true
 parserOptions:
   ecmaVersion: 2020
+settings:
+  jsdoc:
+    preferredTypes:
+      boolean: 'Boolean'
+      number: 'Number'
+      bigint: 'BigInt'
+      string: 'String'
+      object: 'Object'
 rules:
   array-bracket-spacing:
     - 2
@@ -88,3 +97,5 @@ rules:
         custom-inspect-method:
         - name: "[util.inspect.custom]"
           type: method
+  jsdoc/check-types:
+    - 2
