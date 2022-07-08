@@ -293,6 +293,7 @@ declare namespace Eris {
     exemptChannels?: string[];
     exemptRoles?: string[];
     name: string;
+    reason?: string;
     triggerMetadata?: AutoModerationTriggerMetadata;
     triggerType: AutoModerationTriggerType;
   }
@@ -2351,7 +2352,7 @@ declare namespace Eris {
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     createThreadWithoutMessage(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
-    deleteAutoModerationRule(guildID: string, ruleID: string): Promise<void>;
+    deleteAutoModerationRule(guildID: string, ruleID: string, reason?: string): Promise<void>;
     deleteChannel(channelID: string, reason?: string): Promise<void>;
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
     deleteCommand(commandID: string): Promise<void>;
@@ -2816,7 +2817,7 @@ declare namespace Eris {
     createSticker(options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createTemplate(name: string, description?: string | null): Promise<GuildTemplate>;
     delete(): Promise<void>;
-    deleteAutoModerationRule(ruleID: string): Promise<void>;
+    deleteAutoModerationRule(ruleID: string, reason?: string): Promise<void>;
     deleteCommand(commandID: string): Promise<void>;
     deleteDiscoverySubcategory(categoryID: string, reason?: string): Promise<void>;
     deleteEmoji(emojiID: string, reason?: string): Promise<void>;
