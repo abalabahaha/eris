@@ -106,3 +106,5 @@ rules:
     - 2
   jsdoc/check-tag-names:
     - 2
+  jsdoc/check-alignment:
+    - 2
