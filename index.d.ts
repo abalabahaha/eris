@@ -24,7 +24,7 @@ declare namespace Eris {
   type ApplicationCommandOption<T extends keyof Constants["ApplicationCommandOptionTypes"]> = ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"][T]>;
   type ApplicationCommandOptionAutocomplete<T extends "INTEGER" | "NUMBER" | "STRING"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsAutocomplete);
   type ApplicationCommandOptionChoices<T extends "INTEGER" | "NUMBER" | "STRING"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsChoices<Constants["ApplicationCommandOptionTypes"][T]>);
-  type ApplicationCommandOptionMinMax<T extends "INTEGER" | "NUMBER" | "STRING"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsMinMax)
+  type ApplicationCommandOptionMinMax<T extends "INTEGER" | "NUMBER" | "STRING"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsMinMax);
 
   type ApplicationCommandOptionsBoolean = ApplicationCommandOption<"BOOLEAN">;
   type ApplicationCommandOptionsChannel = ApplicationCommandOption<"CHANNEL"> & { channel_types?: number[] };
@@ -1015,7 +1015,7 @@ declare namespace Eris {
     focused?: T extends ApplicationCommandOptionsTypesWithAutocomplete ? boolean : never;
     name: string;
     type: T;
-    value: T extends Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND" | "SUB_COMMAND_GROUP"] ? never : V;  
+    value: T extends Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND" | "SUB_COMMAND_GROUP"] ? never : V;
   }
   interface InteractionDataOptionsSubCommand extends InteractionDataOptionsBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"]> {
     options?: InteractionDataOptionsWithValue[];
@@ -2932,16 +2932,16 @@ declare namespace Eris {
 
   export class ApplicationCommand<T extends keyof Constants["ApplicationCommandTypes"] = keyof Constants["ApplicationCommandTypes"], W extends boolean = false> extends Base {
     applicationID: string;
-    id: string;
-    type: Constants["ApplicationCommandTypes"][T];
-    name: string;
-    nameLocalizations: W extends true ? Record<string, string> | null : Record<string, string> | null | undefined;
+    defaultMemberPermissions?: string | null;
     description: T extends "CHAT_INPUT" ? string : "";
     // despite descriptions not being allowed for user & message, localizations are allowed
     descriptionLocalizations: W extends true ? Record<string, string> | null : Record<string, string> | null | undefined;
-    options?: ApplicationCommandOptions[];
-    defaultMemberPermissions?: string | null;
     dmPermission?: boolean;
+    id: string;
+    name: string;
+    nameLocalizations: W extends true ? Record<string, string> | null : Record<string, string> | null | undefined;
+    options?: ApplicationCommandOptions[];
+    type: Constants["ApplicationCommandTypes"][T];
     version: string;
     delete(): Promise<void>;
     edit(options: Omit<T extends "CHAT_INPUT" ? ChatInputApplicationCommandStructure : T extends "USER" ? UserApplicationCommandStructure : T extends "MESSAGE" ? MessageApplicationCommandStructure : never, "type">): Promise<this>;
@@ -3018,9 +3018,9 @@ declare namespace Eris {
   }
 
   export class PingInteraction extends Interaction {
-    type: Constants["InteractionTypes"]["PING"];
     guildLocale: never;
     locale: never;
+    type: Constants["InteractionTypes"]["PING"];
     acknowledge(): Promise<void>;
     pong(): Promise<void>;
   }
