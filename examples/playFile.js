@@ -1,11 +1,16 @@
 const Eris = require("eris");
 
-const bot = new Eris("BOT_TOKEN");
-// Replace BOT_TOKEN with your bot account's token
+// Replace TOKEN with your bot account's token
+const bot = new Eris("Bot TOKEN");
+
 const playCommand = "!play";
 
 bot.on("ready", () => { // When the bot is ready
     console.log("Ready!"); // Log "Ready!"
+});
+
+bot.on("error", (err) => {
+    console.error(err); // or your preferred logger
 });
 
 bot.on("messageCreate", (msg) => { // When a message is created

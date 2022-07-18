@@ -1,7 +1,7 @@
 const Eris = require("eris");
 
-// Replace BOT_TOKEN with your bot account's token
-const bot = new Eris.CommandClient("BOT_TOKEN", {}, {
+// Replace TOKEN with your bot account's token
+const bot = new Eris.CommandClient("Bot TOKEN", {}, {
     description: "A test bot made with Eris",
     owner: "somebody",
     prefix: "!"
@@ -9,6 +9,10 @@ const bot = new Eris.CommandClient("BOT_TOKEN", {}, {
 
 bot.on("ready", () => { // When the bot is ready
     console.log("Ready!"); // Log "Ready!"
+});
+
+bot.on("error", (err) => {
+    console.error(err); // or your preferred logger
 });
 
 bot.registerCommand("ping", "Pong!", { // Make a ping command

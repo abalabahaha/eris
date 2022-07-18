@@ -2,11 +2,14 @@
 env:
   es6: true
   node: true
+plugins:
+  - "sort-class-members"
 extends: "eslint:recommended"
 globals:
+  BigInt: true
   window: true
 parserOptions:
-  ecmaVersion: 2017
+  ecmaVersion: 2020
 rules:
   array-bracket-spacing:
     - 2
@@ -19,6 +22,7 @@ rules:
   comma-dangle:
     - 2
     - never
+  curly: 2
   eol-last:
     - 2
     - always
@@ -58,3 +62,29 @@ rules:
   semi:
     - 2
     - always
+  sort-class-members/sort-class-members:
+    - 2
+    - order:
+      - constructor
+      - update
+      - "[alphabetical-getters]"
+      - "[alphabetical-methods]"
+      - "[alphabetical-conventional-private-methods]"
+      - "[everything-else]"
+      - "[custom-inspect-method]"
+      - toString
+      - toJSON
+      groups:
+        alphabetical-getters:
+        - kind: get
+          sort: alphabetical
+        alphabetical-methods:
+        - type: method
+          sort: alphabetical
+        alphabetical-conventional-private-methods:
+        - name: "/_.+/"
+          type: method
+          sort: alphabetical
+        custom-inspect-method:
+        - name: "[util.inspect.custom]"
+          type: method
