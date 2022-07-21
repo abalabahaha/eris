@@ -91,6 +91,7 @@ declare namespace Eris {
   type DefaultNotifications = Constants["DefaultMessageNotificationLevels"][keyof Constants["DefaultMessageNotificationLevels"]];
   type ExplicitContentFilter = Constants["ExplicitContentFilterLevels"][keyof Constants["ExplicitContentFilterLevels"]];
   type GuildFeatures = Constants["GuildFeatures"][number];
+  type HubType = Constants["HubTypes"][keyof Constants["HubTypes"]];
   type NSFWLevel = Constants["GuildNSFWLevels"][keyof Constants["GuildNSFWLevels"]];
   type PossiblyUncachedGuild = Guild | Uncached;
   type PremiumTier = Constants["PremiumTiers"][keyof Constants["PremiumTiers"]];
@@ -1755,6 +1756,11 @@ declare namespace Eris {
       SAFE:           2;
       AGE_RESTRICTED: 3;
     };
+    HubTypes: {
+    DEFAULT:     0;
+    HIGH_SCHOOL: 1;
+    COLLEGE:     2;
+    };
     ImageFormats: [
       "jpg",
       "jpeg",
@@ -2747,6 +2753,7 @@ declare namespace Eris {
     emojis: Emoji[];
     explicitContentFilter: ExplicitContentFilter;
     features: GuildFeatures[];
+    hubType: HubType | null;
     icon: string | null;
     iconURL: string | null;
     id: string;
