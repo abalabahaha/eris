@@ -25,15 +25,16 @@ declare namespace Eris {
   type ApplicationCommandOptionAutocomplete<T extends "INTEGER" | "NUMBER" | "STRING"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsAutocomplete);
   type ApplicationCommandOptionChannelTypes<T extends "CHANNEL"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsChannelTypes);
   type ApplicationCommandOptionChoices<T extends "INTEGER" | "NUMBER" | "STRING"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsChoices<Constants["ApplicationCommandOptionTypes"][T]>);
-  type ApplicationCommandOptionMinMax<T extends "INTEGER" | "NUMBER" | "STRING"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsMinMax);
+  type ApplicationCommandOptionMinMaxValue<T extends "INTEGER" | "NUMBER"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsMinMaxValue);
+  type ApplicationCommandOptionMinMaxLength<T extends "STRING"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsMinMaxLength);
 
   type ApplicationCommandOptionsBoolean = ApplicationCommandOption<"BOOLEAN">;
   type ApplicationCommandOptionsChannel = ApplicationCommandOptionChannelTypes<"CHANNEL">;
-  type ApplicationCommandOptionsInteger = ApplicationCommandOptionAutocomplete<"INTEGER"> | ApplicationCommandOptionChoices<"INTEGER"> | ApplicationCommandOptionMinMax<"INTEGER">;
+  type ApplicationCommandOptionsInteger = ApplicationCommandOptionAutocomplete<"INTEGER"> | ApplicationCommandOptionChoices<"INTEGER"> | ApplicationCommandOptionMinMaxValue<"INTEGER">;
   type ApplicationCommandOptionsMentionable = ApplicationCommandOption<"MENTIONABLE">;
-  type ApplicationCommandOptionsNumber = ApplicationCommandOptionAutocomplete<"NUMBER"> | ApplicationCommandOptionChoices<"NUMBER"> | ApplicationCommandOptionMinMax<"NUMBER">;
+  type ApplicationCommandOptionsNumber = ApplicationCommandOptionAutocomplete<"NUMBER"> | ApplicationCommandOptionChoices<"NUMBER"> | ApplicationCommandOptionMinMaxValue<"NUMBER">;
   type ApplicationCommandOptionsRole = ApplicationCommandOption<"ROLE">;
-  type ApplicationCommandOptionsString = ApplicationCommandOptionAutocomplete<"STRING"> | ApplicationCommandOptionChoices<"STRING"> | ApplicationCommandOptionMinMax<"STRING">;
+  type ApplicationCommandOptionsString = ApplicationCommandOptionAutocomplete<"STRING"> | ApplicationCommandOptionChoices<"STRING"> | ApplicationCommandOptionMinMaxLength<"STRING">;
   type ApplicationCommandOptionsUser = ApplicationCommandOption<"USER">;
 
   type ApplicationCommandOptionsWithOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup;
@@ -213,9 +214,13 @@ declare namespace Eris {
     channel_types?: GuildChannelTypes[];
   }
   interface ApplicationCommandOptionsChoices<T extends ApplicationCommandOptionsTypesWithChoices = ApplicationCommandOptionsTypesWithChoices> { choices?: ApplicationCommandOptionsChoice<T>[] }
-  interface ApplicationCommandOptionsMinMax {
+  interface ApplicationCommandOptionsMinMaxValue {
     max_value?: number;
     min_value?: number;
+  }
+interface ApplicationCommandOptionsMinMaxLength {
+    max_length?: number;
+    min_length?: number;
   }
   interface ApplicationCommandOptionsSubCommand extends ApplicationCommandOptionBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"]> {
     options?: ApplicationCommandOptionsWithValue[];
