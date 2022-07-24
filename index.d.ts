@@ -25,9 +25,10 @@ declare namespace Eris {
   type ApplicationCommandOptionAutocomplete<T extends "INTEGER" | "NUMBER" | "STRING"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsAutocomplete);
   type ApplicationCommandOptionChoices<T extends "INTEGER" | "NUMBER" | "STRING"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsChoices<Constants["ApplicationCommandOptionTypes"][T]>);
   type ApplicationCommandOptionMinMax<T extends "INTEGER" | "NUMBER" | "STRING"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsMinMax);
+  type ApplicationCommandOptionChannelTypes<T extends "CHANNEL"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsChannelTypes);
 
   type ApplicationCommandOptionsBoolean = ApplicationCommandOption<"BOOLEAN">;
-  type ApplicationCommandOptionsChannel = ApplicationCommandOption<"CHANNEL"> & { channel_types?: number[] };
+  type ApplicationCommandOptionsChannel = ApplicationCommandOptionChannelTypes<"CHANNEL">;
   type ApplicationCommandOptionsInteger = ApplicationCommandOptionAutocomplete<"INTEGER"> | ApplicationCommandOptionChoices<"INTEGER"> | ApplicationCommandOptionMinMax<"INTEGER">;
   type ApplicationCommandOptionsMentionable = ApplicationCommandOption<"MENTIONABLE">;
   type ApplicationCommandOptionsNumber = ApplicationCommandOptionAutocomplete<"NUMBER"> | ApplicationCommandOptionChoices<"NUMBER"> | ApplicationCommandOptionMinMax<"NUMBER">;
@@ -206,6 +207,10 @@ declare namespace Eris {
     T extends Constants["ApplicationCommandOptionTypes"]["STRING"] ? string :
       T extends Constants["ApplicationCommandOptionTypes"]["INTEGER" | "NUMBER"] ? number :
         unknown;
+  }
+
+  interface ApplicationCommandOptionsChannelTypes {
+    channel_types?: GuildChannelTypes[];
   }
   interface ApplicationCommandOptionsChoices<T extends ApplicationCommandOptionsTypesWithChoices = ApplicationCommandOptionsTypesWithChoices> { choices?: ApplicationCommandOptionsChoice<T>[] }
   interface ApplicationCommandOptionsMinMax {
