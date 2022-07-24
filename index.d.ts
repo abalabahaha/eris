@@ -66,8 +66,9 @@ declare namespace Eris {
   type GuildTextChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_TEXT" | "GUILD_NEWS">];
   type GuildThreadChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_NEWS_THREAD" | "GUILD_PRIVATE_THREAD" | "GUILD_PUBLIC_THREAD">];
   type GuildPublicThreadChannelTypes = Exclude<GuildThreadChannelTypes, Constants["ChannelTypes"]["GUILD_PRIVATE_THREAD"]>;
+  type GuildVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE" | "GUILD_STAGE_VOICE">];
   type PrivateChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "DM" | "GROUP_DM">];
-  type TextVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE" | "GUILD_STAGE">];
+  type TextVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE">];
 
   // Command
   type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
@@ -377,33 +378,48 @@ declare namespace Eris {
     /** @deprecated */
     agent?: HTTPSAgent;
     allowedMentions?: AllowedMentions;
+    /** @deprecated */
     autoreconnect?: boolean;
+    /** @deprecated */
     compress?: boolean;
+    /** @deprecated */
     connectionTimeout?: number;
     defaultImageFormat?: string;
     defaultImageSize?: number;
-    disableEvents?: { [s: string]: boolean };
+    /** @deprecated */
+    disableEvents?: Record<string, boolean>;
+    /** @deprecated */
     firstShardID?: number;
+    gateway?: GatewayOptions;
+    /** @deprecated */
     getAllUsers?: boolean;
+    /** @deprecated */
     guildCreateTimeout?: number;
-    intents: number | (IntentStrings | number)[];
+    /** @deprecated */
+    intents?: number | (IntentStrings | number)[];
+    /** @deprecated */
     largeThreshold?: number;
+    /** @deprecated */
     lastShardID?: number;
     /** @deprecated */
     latencyThreshold?: number;
+    /** @deprecated */
     maxReconnectAttempts?: number;
+    /** @deprecated */
     maxResumeAttempts?: number;
+    /** @deprecated */
     maxShards?: number | "auto";
     messageLimit?: number;
     opusOnly?: boolean;
     /** @deprecated */
     ratelimiterOffset?: number;
+    /** @deprecated */
     reconnectDelay?: ReconnectDelayFunction;
     requestTimeout?: number;
     rest?: RequestHandlerOptions;
     restMode?: boolean;
+    /** @deprecated */
     seedVoiceConnections?: boolean;
-    shardConcurrency?: number | "auto";
     ws?: unknown;
   }
   interface CommandClientOptions {
@@ -798,6 +814,24 @@ declare namespace Eris {
   }
 
   // Gateway/REST
+  interface GatewayOptions {
+    autoreconnect?: boolean;
+    compress?: boolean;
+    connectionTimeout?: number;
+    disableEvents?: Record<string, boolean>;
+    firstShardID?: number;
+    getAllUsers?: boolean;
+    guildCreateTimeout?: number;
+    intents?: number | (IntentStrings | number)[];
+    largeThreshold?: number;
+    lastShardID?: number;
+    maxReconnectAttempts?: number;
+    maxResumeAttempts?: number;
+    maxConcurrency?: number | "auto";
+    maxShards?: number | "auto";
+    reconnectDelay?: ReconnectDelayFunction;
+    seedVoiceConnections?: boolean;
+  }
   interface HTTPResponse {
     code: number;
     message: string;
@@ -830,9 +864,6 @@ declare namespace Eris {
     received: number;
     res: (value: Member[]) => void;
     timeout: NodeJS.Timeout;
-  }
-  interface ShardManagerOptions {
-    concurrency?: number | "auto";
   }
 
   // Guild
@@ -3408,7 +3439,9 @@ declare namespace Eris {
     buckets: Map<number, number>;
     connectQueue: Shard[];
     connectTimeout: NodeJS.Timer | null;
-    constructor(client: Client, options: ShardManagerOptions);
+    lastConnect: number;
+    options: GatewayOptions;
+    constructor(client: Client, options?: GatewayOptions);
     connect(shard: Shard): void;
     spawn(id: number): void;
     tryConnect(): void;
@@ -3608,7 +3641,7 @@ declare namespace Eris {
   export class VoiceChannel extends GuildChannel implements Invitable {
     bitrate: number;
     rtcRegion: string | null;
-    type: TextVoiceChannelTypes;
+    type: GuildVoiceChannelTypes;
     userLimit: number;
     videoQualityMode: VideoQualityMode;
     voiceMembers: Collection<Member>;
