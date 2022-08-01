@@ -824,6 +824,7 @@ declare namespace Eris {
     route: string;
     short: boolean;
     url: string;
+    latency?: number;
   }
   interface RequestMembersPromise {
     members: Member;
