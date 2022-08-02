@@ -64,4 +64,6 @@ Eris.ActionRow = require('./lib/structures/components/ActionRow');
 Eris.MessageComponents = require('./lib/structures/components/MessageComponents');
 Eris.Button = require('./lib/structures/components/Button');
 Eris.SelectionMenu = require('./lib/structures/components/SelectionMenu');
+Eris.Interaction = require('./lib/structures/Interaction');
+Eris.CommandDataResolved = require('./lib/slashcommand/data/CommandDataResolved');
 module.exports = Eris;
