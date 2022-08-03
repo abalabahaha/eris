@@ -3170,7 +3170,7 @@ declare namespace Eris {
     crosspost(): Promise<T extends NewsChannel ? Message<NewsChannel> : never>;
     delete(reason?: string): Promise<void>;
     deleteWebhook(token: string): Promise<void>;
-    edit(content: MessageContent): Promise<Message<T>>;
+    edit(content: MessageContentEdit): Promise<Message<T>>;
     editWebhook(token: string, options: MessageWebhookContent): Promise<Message<T>>;
     getReaction(reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
