@@ -20,10 +20,6 @@ declare namespace Eris {
   type ApplicationCommandStructure = ChatInputApplicationCommandStructure | MessageApplicationCommandStructure | UserApplicationCommandStructure;
   type ChatInputApplicationCommand = ApplicationCommand<Constants["ApplicationCommandTypes"]["CHAT_INPUT"]>;
   type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand, "id" | "application_id" | "guild_id">;
-  type MessageApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["MESSAGE"]>, "description" | "options">;
-  type MessageApplicationCommandStructure = Omit<MessageApplicationCommand, "id" | "application_id" | "guild_id">;
-  type UserApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["USER"]>, "description" | "options">;
-  type UserApplicationCommandStructure = Omit<UserApplicationCommand, "id" | "application_id" | "guild_id">;
   type ApplicationCommandOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup | ApplicationCommandOptionsWithValue;
   type ApplicationCommandOptionsBoolean = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
   type ApplicationCommandOptionsChannel = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["CHANNEL"]>;
@@ -44,7 +40,11 @@ declare namespace Eris {
   type ApplicationCommandOptionsWithValue = ApplicationCommandOptionsString | ApplicationCommandOptionsInteger | ApplicationCommandOptionsBoolean | ApplicationCommandOptionsUser | ApplicationCommandOptionsChannel | ApplicationCommandOptionsRole | ApplicationCommandOptionsMentionable | ApplicationCommandOptionsNumber;
   type ApplicationCommandPermissionTypes = Constants["ApplicationCommandPermissionTypes"][keyof Constants["ApplicationCommandPermissionTypes"]];
   type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
+  type MessageApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["MESSAGE"]>, "description" | "options">;
+  type MessageApplicationCommandStructure = Omit<MessageApplicationCommand, "id" | "application_id" | "guild_id">;
   type ModalSubmitInteractionDataComponent = ModalSubmitInteractionDataTextInputComponent;
+  type UserApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["USER"]>, "description" | "options">;
+  type UserApplicationCommandStructure = Omit<UserApplicationCommand, "id" | "application_id" | "guild_id">;
 
   // Cache
   interface Uncached { id: string }
