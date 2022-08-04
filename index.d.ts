@@ -44,6 +44,7 @@ declare namespace Eris {
   type ApplicationCommandOptionsWithValue = ApplicationCommandOptionsString | ApplicationCommandOptionsInteger | ApplicationCommandOptionsBoolean | ApplicationCommandOptionsUser | ApplicationCommandOptionsChannel | ApplicationCommandOptionsRole | ApplicationCommandOptionsMentionable | ApplicationCommandOptionsNumber;
   type ApplicationCommandPermissionTypes = Constants["ApplicationCommandPermissionTypes"][keyof Constants["ApplicationCommandPermissionTypes"]];
   type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
+  type ModalSubmitInteractionDataComponent = ModalSubmitInteractionDataTextInputComponent;
 
   // Cache
   interface Uncached { id: string }
@@ -1405,15 +1406,17 @@ declare namespace Eris {
   }
 
   // Modals
-  interface ModalSubmitInteractionDataComponent {
-    custom_id: string;
-    type: Constants["ComponentTypes"]["TEXT_INPUT"];
-    value: string;
-  }
   interface ModalSubmitInteractionDataComponents {
     components: ModalSubmitInteractionDataComponent[];
     type: Constants["ComponentTypes"]["ACTION_ROW"];
   }
+
+  interface ModalSubmitInteractionDataTextInputComponent {
+    custom_id: string;
+    type: Constants["ComponentTypes"]["TEXT_INPUT"];
+    value: string;
+  }
+
   interface ModalSubmitInteractionData {
     custom_id: string;
     components: ModalSubmitInteractionDataComponents[];
