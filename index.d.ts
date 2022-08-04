@@ -728,7 +728,7 @@ declare namespace Eris {
     guildUnavailable: [guild: UnavailableGuild];
     guildUpdate: [guild: Guild, oldGuild: OldGuild];
     hello: [trace: string[], id: number];
-    interactionCreate: [interaction: PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction | UnknownInteraction];
+    interactionCreate: [interaction: PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction | ModalSubmitInteraction | UnknownInteraction];
     inviteCreate: [guild: Guild, invite: Invite];
     inviteDelete: [guild: Guild, invite: Invite];
     messageCreate: [message: Message<PossiblyUncachedTextableChannel>];
@@ -1019,6 +1019,11 @@ declare namespace Eris {
     type: T;
     value: V;
   }
+  interface InteractionModalContent {
+    title: string;
+    custom_id: string;
+    components: ModalContentActionRow[];
+  }
   interface InteractionOptions {
     data?: InteractionCallbackData;
     type: InteractionResponseTypes;
@@ -1101,6 +1106,10 @@ declare namespace Eris {
     components: ActionRowComponents[];
     type: Constants["ComponentTypes"]["ACTION_ROW"];
   }
+  interface ModalContentActionRow {
+    components: TextInput[];
+    type: Constants["ComponentTypes"]["ACTION_ROW"];
+  }
   interface ActiveMessages {
     args: string[];
     command: Command;
@@ -1168,6 +1177,17 @@ declare namespace Eris {
     emoji?: Partial<PartialEmoji>;
     label: string;
     value: string;
+  }
+  interface TextInput {
+    type: Constants["ComponentTypes"]["TEXT_INPUT"];
+    custom_id: string;
+    style: Constants["TextInputStyles"][keyof Constants["TextInputStyles"]];
+    label: string;
+    min_length?: number;
+    max_length?: number;
+    required?: boolean;
+    value?: string;
+    placeholder?: string;
   }
   interface GetMessageReactionOptions {
     after?: string;
@@ -1349,6 +1369,16 @@ declare namespace Eris {
     archived: boolean;
     autoArchiveDuration: AutoArchiveDuration;
     locked: boolean;
+  }
+
+  // Modals
+  interface ModalSubmitInteractionDataComponents {
+    components: (Pick<TextInput, "custom_id" | "type"> & { value: string })[];
+    type: Constants["ComponentTypes"]["ACTION_ROW"];
+  }
+  interface ModalSubmitInteractionData {
+    custom_id: string;
+    components: ModalSubmitInteractionDataComponents[];
   }
 
   // Voice
@@ -1593,6 +1623,7 @@ declare namespace Eris {
       ACTION_ROW:  1;
       BUTTON:      2;
       SELECT_MENU: 3;
+      TEXT_INPUT:  4;
     };
     ConnectionVisibilityTypes: {
       NONE:     0;
@@ -1709,12 +1740,14 @@ declare namespace Eris {
       DEFERRED_UPDATE_MESSAGE:                 6;
       UPDATE_MESSAGE:                          7;
       APPLICATION_COMMAND_AUTOCOMPLETE_RESULT: 8;
+      MODAL:                                   9;
     };
     InteractionTypes: {
       PING:                             1;
       APPLICATION_COMMAND:              2;
       MESSAGE_COMPONENT:                3;
       APPLICATION_COMMAND_AUTOCOMPLETE: 4;
+      MODAL_SUBMIT:                     5;
     };
     InviteTargetTypes: {
       STREAM:               1;
@@ -1890,6 +1923,10 @@ declare namespace Eris {
       ALL_MESSAGES:   2;
       ONLY_MENTIONS:  4;
       NO_MESSAGES:    8;
+    };
+    TextInputStyles: {
+      SHORT:     1;
+      PARAGRAPH: 2;
     };
     UserFlags: {
       NONE:                         0;
@@ -2979,6 +3016,7 @@ declare namespace Eris {
     acknowledge(flags?: number): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
     createMessage(content: string | InteractionContent , file?: FileContent | FileContent[]): Promise<void>;
+    createModal(content: InteractionModalContent): Promise<void>;
     defer(flags?: number): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
@@ -2998,27 +3036,6 @@ declare namespace Eris {
     values: string[];
   }
 
-  export class ComponentInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
-    appPermissions?: Permission;
-    channel: T;
-    data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData;
-    guildID?: string;
-    member?: Member;
-    message: Message;
-    type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
-    user?: User;
-    acknowledge(): Promise<void>;
-    createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
-    createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
-    defer(flags?: number): Promise<void>;
-    deferUpdate(): Promise<void>;
-    deleteMessage(messageID: string): Promise<void>;
-    deleteOriginalMessage(): Promise<void>;
-    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
-    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
-    editParent(content: InteractionContentEdit, file?: FileContent | FileContent[]): Promise<void>;
-    getOriginalMessage(): Promise<Message>
-  }
   export class AutocompleteInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
@@ -3035,6 +3052,47 @@ declare namespace Eris {
     user?: User;
     acknowledge(choices: ApplicationCommandOptionChoice[]): Promise<void>;
     result(choices: ApplicationCommandOptionChoice[]): Promise<void>;
+  }
+  export class ComponentInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+    appPermissions?: Permission;
+    channel: T;
+    data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData;
+    guildID?: string;
+    member?: Member;
+    message: Message;
+    type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
+    user?: User;
+    acknowledge(): Promise<void>;
+    createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
+    createModal(content: InteractionModalContent): Promise<void>;
+    defer(flags?: number): Promise<void>;
+    deferUpdate(): Promise<void>;
+    deleteMessage(messageID: string): Promise<void>;
+    deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editParent(content: InteractionContentEdit, file?: FileContent | FileContent[]): Promise<void>;
+    getOriginalMessage(): Promise<Message>
+  }
+  export class ModalSubmitInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+    channel: T;
+    data: ModalSubmitInteractionData;
+    guildID?: string;
+    member?: Member;
+    type: Constants["InteractionTypes"]["MODAL_SUBMIT"];
+    user?: User;
+    acknowledge(): Promise<void>;
+    createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
+    defer(flags?: number): Promise<void>;
+    deferUpdate(): Promise<void>;
+    deleteMessage(messageID: string): Promise<void>;
+    deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editParent(content: InteractionContentEdit, file?: FileContent | FileContent[]): Promise<void>;
+    getOriginalMessage(): Promise<Message>
   }
   export class UnknownInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
     appPermissions?: Permission;
