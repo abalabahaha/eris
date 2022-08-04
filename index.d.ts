@@ -1405,7 +1405,9 @@ declare namespace Eris {
   }
 
   // Modals
-  interface ModalSubmitInteractionDataComponent extends Pick<TextInput, "custom_id" | "type"> {
+  interface ModalSubmitInteractionDataComponent {
+    custom_id: string;
+    type: Constants["ComponentTypes"]["TEXT_INPUT"];
     value: string;
   }
   interface ModalSubmitInteractionDataComponents {
