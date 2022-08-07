@@ -3014,6 +3014,8 @@ declare namespace Eris {
     lastMessageID: string;
     messages: Collection<Message<this>>;
     rateLimitPerUser: number;
+    userLimit: number;
+    videoQualityMode: VideoQualityMode;
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
@@ -3712,8 +3714,6 @@ declare namespace Eris {
     bitrate: number;
     rtcRegion: string | null;
     type: GuildVoiceChannelTypes;
-    userLimit: number;
-    videoQualityMode: VideoQualityMode;
     voiceMembers: Collection<Member>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", VoiceChannel>>;
     getInvites(): Promise<(Invite<"withMetadata", VoiceChannel>)[]>;
