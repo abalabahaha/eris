@@ -50,7 +50,7 @@ declare namespace Eris {
 
   // Channel
   type AnyChannel = AnyGuildChannel | PrivateChannel;
-  type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel | StoreChannel;
+  type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel;
   type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
   type AnyVoiceChannel = TextVoiceChannel | StageChannel;
   type GuildTextableChannel = TextChannel | TextVoiceChannel | NewsChannel;
@@ -1580,7 +1580,6 @@ declare namespace Eris {
       GROUP_DM:             3;
       GUILD_CATEGORY:       4;
       GUILD_NEWS:           5;
-      GUILD_STORE:          6;
 
       GUILD_NEWS_THREAD:    10;
       GUILD_PUBLIC_THREAD:  11;
@@ -2174,12 +2173,6 @@ declare namespace Eris {
     createChannel(
       guildID: string,
       name: string,
-      type: Constants["ChannelTypes"]["GUILD_STORE"],
-      options?: CreateChannelOptions
-    ): Promise<StoreChannel>;
-    createChannel(
-      guildID: string,
-      name: string,
       type: Constants["ChannelTypes"]["GUILD_STAGE"],
       options?: CreateChannelOptions
     ): Promise<StageChannel>;
@@ -2221,14 +2214,6 @@ declare namespace Eris {
       reason?: string,
       options?: CreateChannelOptions | string
     ): Promise<NewsChannel>;
-    /** @deprecated */
-    createChannel(
-      guildID: string,
-      name: string,
-      type: Constants["ChannelTypes"]["GUILD_STORE"],
-      reason?: string,
-      options?: CreateChannelOptions | string
-    ): Promise<StoreChannel>;
     /** @deprecated */
     createChannel(
       guildID: string,
@@ -2707,8 +2692,7 @@ declare namespace Eris {
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_VOICE"], options?: CreateChannelOptions): Promise<TextVoiceChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_CATEGORY"], options?: CreateChannelOptions): Promise<CategoryChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_NEWS"], options?: CreateChannelOptions | string): Promise<NewsChannel>;
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STORE"], options?: CreateChannelOptions | string): Promise<StoreChannel>;
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE"], options?: CreateChannelOptions | string): Promise<StageChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"], options?: CreateChannelOptions | string): Promise<StageChannel>;
     createChannel(name: string, type?: number, options?: CreateChannelOptions): Promise<unknown>;
     /** @deprecated */
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_TEXT"], reason?: string, options?: CreateChannelOptions | string): Promise<TextChannel>;
@@ -2719,9 +2703,7 @@ declare namespace Eris {
     /** @deprecated */
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_NEWS"], reason?: string, options?: CreateChannelOptions | string): Promise<NewsChannel>;
     /** @deprecated */
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STORE"], reason?: string, options?: CreateChannelOptions | string): Promise<StoreChannel>;
-    /** @deprecated */
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE"], reason?: string, options?: CreateChannelOptions | string): Promise<StageChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"], reason?: string, options?: CreateChannelOptions | string): Promise<StageChannel>;
     /** @deprecated */
     createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
     createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand>;
@@ -3464,11 +3446,6 @@ declare namespace Eris {
     delete(): Promise<void>;
     edit(options: StageInstanceOptions): Promise<StageInstance>;
     update(data: BaseData): void;
-  }
-
-  export class StoreChannel extends GuildChannel {
-    type: Constants["ChannelTypes"]["GUILD_STORE"];
-    edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
   }
 
   export class TextChannel extends GuildChannel implements GuildTextable, Invitable, GuildPinnable {
