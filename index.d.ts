@@ -1757,9 +1757,9 @@ declare namespace Eris {
       AGE_RESTRICTED: 3;
     };
     HubTypes: {
-    DEFAULT:     0;
-    HIGH_SCHOOL: 1;
-    COLLEGE:     2;
+      DEFAULT:     0;
+      HIGH_SCHOOL: 1;
+      COLLEGE:     2;
     };
     ImageFormats: [
       "jpg",
@@ -1978,8 +1978,8 @@ declare namespace Eris {
       "Yay you made it, %user%!"
     ];
     TextComponentStyle: {
-      SMALL:     1,
-      PARAGRAPH: 2
+      SMALL:     1;
+      PARAGRAPH: 2;
     };
     ThreadMemberFlags: {
       HAS_INTERACTED: 1;
@@ -2100,7 +2100,7 @@ declare namespace Eris {
     connected_accounts: { id: string; name: string; type: string; verified: boolean }[];
     mutual_guilds: { id: string; nick?: string }[];
     premium_since?: number;
-    user: PartialUser
+    user: PartialUser;
   }
   interface UserSettings {
     afk_timeout: number;
@@ -3010,10 +3010,10 @@ declare namespace Eris {
   }
 
   export class TextVoiceChannel extends VoiceChannel implements GuildTextable {
-    type: Constants["ChannelTypes"]["GUILD_VOICE"];
     lastMessageID: string;
     messages: Collection<Message<this>>;
     rateLimitPerUser: number;
+    type: Constants["ChannelTypes"]["GUILD_VOICE"];
     userLimit: number;
     videoQualityMode: VideoQualityMode;
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
@@ -3166,6 +3166,7 @@ declare namespace Eris {
     code: string;
     // @ts-ignore: Property is only not null when invite metadata is supplied
     createdAt: CT extends "withMetadata" ? number : null;
+    expiresAt?: CT extends "withMetadata" | "withoutExpiration" ? never : number;
     guild: CT extends "withMetadata"
       ? Guild // Invite with Metadata always has guild prop
       : CH extends Extract<InviteChannel, GroupChannel> // Invite without Metadata
@@ -3173,7 +3174,6 @@ declare namespace Eris {
         : CH extends Exclude<InviteChannel, InvitePartialChannel> // Invite without Metadata and not GroupChanel
           ? Guild // If the invite channel is not partial
           : Guild | undefined; // If the invite channel is partial
-    expiresAt?: CT extends "withMetadata" | "withoutExpiration" ? never : number;
     inviter?: User;
     maxAge: CT extends "withMetadata" ? number : null;
     maxUses: CT extends "withMetadata" ? number : null;
@@ -3581,6 +3581,7 @@ declare namespace Eris {
     lastMessageID: string;
     lastPinTimestamp: number | null;
     messages: Collection<Message<this>>;
+    permissionOverwrites: Collection<PermissionOverwrite>;
     rateLimitPerUser: number;
     topic?: string | null;
     type: GuildTextChannelTypes;
