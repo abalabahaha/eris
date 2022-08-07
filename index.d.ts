@@ -2184,6 +2184,8 @@ declare namespace Eris {
 
   export class CategoryChannel extends GuildChannel {
     channels: Collection<Exclude<AnyGuildChannel, CategoryChannel>>;
+    permissionOverwrites: Collection<PermissionOverwrite>;
+    position: number;
     type: Constants["ChannelTypes"]["GUILD_CATEGORY"];
     edit(options: Omit<CreateChannelOptions, "permissionOverwrites" | "reason">, reason?: string): Promise<this>;
   }
@@ -2927,8 +2929,6 @@ declare namespace Eris {
     name: string;
     nsfw: boolean;
     parentID: string | null;
-    permissionOverwrites: Collection<PermissionOverwrite>;
-    position: number;
     type: GuildChannelTypes;
     constructor(data: BaseData, client: Client);
     delete(reason?: string): Promise<void>;
@@ -3572,6 +3572,8 @@ declare namespace Eris {
   }
 
   export class StoreChannel extends GuildChannel {
+    permissionOverwrites: Collection<PermissionOverwrite>;
+    position: number;
     type: Constants["ChannelTypes"]["GUILD_STORE"];
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
   }
@@ -3582,6 +3584,7 @@ declare namespace Eris {
     lastPinTimestamp: number | null;
     messages: Collection<Message<this>>;
     permissionOverwrites: Collection<PermissionOverwrite>;
+    position: number;
     rateLimitPerUser: number;
     topic?: string | null;
     type: GuildTextChannelTypes;
@@ -3713,6 +3716,8 @@ declare namespace Eris {
 
   export class VoiceChannel extends GuildChannel implements Invitable {
     bitrate: number;
+    permissionOverwrites: Collection<PermissionOverwrite>;
+    position: number;
     rtcRegion: string | null;
     type: GuildVoiceChannelTypes;
     voiceMembers: Collection<Member>;
