@@ -258,8 +258,8 @@ declare namespace Eris {
   // Channel
   export interface AddGroupRecipientOptions {
     accessToken: string;
-    userID: string;
     nick?: string;
+    userID: string;
   }
   interface ChannelFollow {
     channel_id: string;
