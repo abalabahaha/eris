@@ -256,6 +256,11 @@ declare namespace Eris {
   }
 
   // Channel
+  export interface AddGroupRecipientOptions {
+    userID: string;
+    accessToken: string;
+    nick?: string;
+  }
   interface ChannelFollow {
     channel_id: string;
     webhook_id: string;
@@ -276,6 +281,10 @@ declare namespace Eris {
     reason?: string;
     topic?: string;
     userLimit?: number;
+  }
+  export interface CreateGroupChannelOptions {
+    accessTokens: string[];
+    nicks?: Record<string, string>;
   }
   interface EditChannelOptions extends Omit<CreateChannelOptions, "reason"> {
     archived?: boolean;
@@ -2132,7 +2141,7 @@ declare namespace Eris {
     voiceConnections: VoiceConnectionManager;
     constructor(token: string, options?: ClientOptions);
     acceptInvite(inviteID: string): Promise<Invite<"withoutCount">>;
-    addGroupRecipient(groupID: string, userID: string): Promise<void>;
+    addGroupRecipient(groupID: string, options: AddGroupRecipientOptions): Promise<void>;
     addGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
     addMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
@@ -2256,7 +2265,7 @@ declare namespace Eris {
       reason?: string
     ): Promise<Webhook>;
     createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand>;
-    createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
+    createGroupChannel(options: CreateGroupChannelOptions): Promise<GroupChannel>;
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
     createGuildCommand(guildID: string, command: ApplicationCommandStructure): Promise<ApplicationCommand>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
@@ -2625,9 +2634,13 @@ declare namespace Eris {
     verified: boolean;
   }
 
-  export class GroupChannel extends PrivateChannel {
+  export class GroupChannel extends Channel {
+    applicationID: string;
     icon: string | null;
     iconURL: string | null;
+    lastMessageID: string;
+    managed: true;
+    messages: Collection<Message<this>>;
     name: string;
     ownerID: string;
     recipients: Collection<User>;
@@ -3240,7 +3253,7 @@ declare namespace Eris {
     lastMessageID: string;
     messages: Collection<Message<this>>;
     recipient: User;
-    type: PrivateChannelTypes;
+    type: Constants["ChannelTypes"]["DM"];
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
