@@ -1130,18 +1130,6 @@ declare namespace Eris {
     roles?: boolean | string[];
     users?: boolean | string[];
   }
-  interface Attachment {
-    content_type?: string;
-    description?: string;
-    ephemeral?: boolean;
-    filename: string;
-    height?: number;
-    id: string;
-    proxy_url: string;
-    size: number;
-    url: string;
-    width?: number;
-  }
   interface ButtonBase {
     disabled?: boolean;
     emoji?: Partial<PartialEmoji>;
@@ -2035,6 +2023,7 @@ declare namespace Eris {
 
   export class Attachment extends Base {
     contentType?: string;
+    description?: string;
     ephemeral?: boolean;
     filename: string;
     height?: number;
@@ -3147,7 +3136,7 @@ declare namespace Eris {
     activity?: MessageActivity;
     application?: MessageApplication;
     applicationID?: string;
-    attachments: Attachment[];
+    attachments: Collection<Attachment>;
     author: User;
     channel: T;
     channelMentions: string[];
