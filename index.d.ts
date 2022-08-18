@@ -3132,6 +3132,7 @@ declare namespace Eris {
     /** @deprecated */
     ban(deleteMessageDays?: number, reason?: string): Promise<void>;
     edit(options: MemberOptions, reason?: string): Promise<void>;
+    dynamicAvatarURL(format?: ImageFormat, size?: number): string;
     kick(reason?: string): Promise<void>;
     removeRole(roleID: string, reason?: string): Promise<void>;
     unban(reason?: string): Promise<void>;
