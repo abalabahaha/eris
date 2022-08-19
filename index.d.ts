@@ -267,6 +267,19 @@ declare namespace Eris {
     metadata?: AutoModerationActionMetadata;
     type: AutoModerationActionType;
   }
+  interface AutoModerationActionExecution {
+    guild_id: string;
+    action: AutoModerationAction;
+    rule_id: string;
+    rule_trigger_type: AutoModerationTriggerType;
+    user_id: string;
+    channel_id?: string;
+    message_id?: string;
+    alert_system_message_id?: string;
+    content?: string;
+    matched_keyword: string | null;
+    matched_content?: string | null;
+  }
   interface AutoModerationActionMetadata {
     /** valid for SEND_ALERT_MESSAGE */
     channel_id?: string;
@@ -743,6 +756,7 @@ declare namespace Eris {
     selfVideo: boolean;
   }
   interface EventListeners {
+    autoModerationActionExecution: [guild: Guild, action: AutoModerationAction];
     autoModerationRuleCreate: [guild: Guild, rule: AutoModerationRule];
     autoModerationRuleDelete: [guild: Guild, rule: AutoModerationRule];
     autoModerationRuleUpdate: [guild: Guild, rule: AutoModerationRule | null, newRule: AutoModerationRule];
