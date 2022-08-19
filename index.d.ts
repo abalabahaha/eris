@@ -756,7 +756,7 @@ declare namespace Eris {
     selfVideo: boolean;
   }
   interface EventListeners {
-    autoModerationActionExecution: [guild: Guild, action: AutoModerationAction];
+    autoModerationActionExecution: [guild: Guild, action: AutoModerationActionExecution];
     autoModerationRuleCreate: [guild: Guild, rule: AutoModerationRule];
     autoModerationRuleDelete: [guild: Guild, rule: AutoModerationRule];
     autoModerationRuleUpdate: [guild: Guild, rule: AutoModerationRule | null, newRule: AutoModerationRule];
