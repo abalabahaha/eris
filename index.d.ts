@@ -157,7 +157,7 @@ declare namespace Eris {
   type StageInstancePrivacyLevel = Constants["StageInstancePrivacyLevel"][keyof Constants["StageInstancePrivacyLevel"]];
 
   // Webhook
-  type MessageWebhookContent = Pick<WebhookPayload, "attachments" | "content" | "embeds" | "file" | "allowedMentions" | "components">;
+  type WebhookPayloadEdit = Pick<WebhookPayload, "attachments" | "content" | "embed" | "embeds" | "file" | "allowedMentions" | "components">;
   type WebhookTypes = Constants["WebhookTypes"][keyof Constants["WebhookTypes"]];
 
   // INTERFACES
@@ -277,7 +277,7 @@ declare namespace Eris {
     topic?: string;
     userLimit?: number;
   }
-  interface EditChannelOptions extends Omit<CreateChannelOptions, "permissionOverwrites" | "reason"> {
+  interface EditChannelOptions extends Omit<CreateChannelOptions, "reason"> {
     archived?: boolean;
     autoArchiveDuration?: AutoArchiveDuration;
     defaultAutoArchiveDuration?: AutoArchiveDuration;
@@ -386,7 +386,7 @@ declare namespace Eris {
     firstShardID?: number;
     getAllUsers?: boolean;
     guildCreateTimeout?: number;
-    intents: number | IntentStrings[];
+    intents: number | (IntentStrings | number)[];
     largeThreshold?: number;
     lastShardID?: number;
     /** @deprecated */
@@ -1157,7 +1157,6 @@ declare namespace Eris {
   interface PartialAttachment {
     description?: string;
     filename?: string;
-    /** When creating an attachment, the ID is the index number of the file you wish to add relevant attributes to. When editing the attachment, this is the normal attachment ID */
     id: string | number;
   }
   interface SelectMenu {
@@ -2362,7 +2361,7 @@ declare namespace Eris {
       webhookID: string,
       token: string,
       messageID: string,
-      options: MessageWebhookContent
+      options: WebhookPayloadEdit
     ): Promise<Message<GuildTextableChannel>>;
     emit<K extends keyof ClientEvents>(event: K, ...args: ClientEvents[K]): boolean;
     emit(event: string, ...args: any[]): boolean;
@@ -2964,6 +2963,7 @@ declare namespace Eris {
   }
 
   export class CommandInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+    appPermissions?: Permission;
     channel: T;
     data: {
       id: string;
@@ -3006,6 +3006,7 @@ declare namespace Eris {
   }
 
   export class ComponentInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+    appPermissions?: Permission;
     channel: T;
     data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData;
     guildID?: string;
@@ -3026,6 +3027,7 @@ declare namespace Eris {
     getOriginalMessage(): Promise<Message>
   }
   export class AutocompleteInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+    appPermissions?: Permission;
     channel: T;
     data: {
       id: string;
@@ -3042,6 +3044,7 @@ declare namespace Eris {
     result(choices: ApplicationCommandOptionChoice[]): Promise<void>;
   }
   export class UnknownInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+    appPermissions?: Permission;
     channel?: T;
     data?: unknown;
     guildID?: string;
@@ -3124,6 +3127,7 @@ declare namespace Eris {
     addRole(roleID: string, reason?: string): Promise<void>;
     ban(deleteMessageDays?: number, reason?: string): Promise<void>;
     edit(options: MemberOptions, reason?: string): Promise<void>;
+    dynamicAvatarURL(format?: ImageFormat, size?: number): string;
     kick(reason?: string): Promise<void>;
     removeRole(roleID: string, reason?: string): Promise<void>;
     unban(reason?: string): Promise<void>;
@@ -3175,7 +3179,7 @@ declare namespace Eris {
     delete(reason?: string): Promise<void>;
     deleteWebhook(token: string): Promise<void>;
     edit(content: MessageContent): Promise<Message<T>>;
-    editWebhook(token: string, options: MessageWebhookContent): Promise<Message<T>>;
+    editWebhook(token: string, options: WebhookPayloadEdit): Promise<Message<T>>;
     getReaction(reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
     getReaction(reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
