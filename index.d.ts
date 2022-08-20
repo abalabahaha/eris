@@ -157,7 +157,7 @@ declare namespace Eris {
   type StageInstancePrivacyLevel = Constants["StageInstancePrivacyLevel"][keyof Constants["StageInstancePrivacyLevel"]];
 
   // Webhook
-  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions" | "components">;
+  type WebhookPayloadEdit = Pick<WebhookPayload, "attachments" | "content" | "embeds" | "file" | "allowedMentions" | "components">;
   type WebhookTypes = Constants["WebhookTypes"][keyof Constants["WebhookTypes"]];
 
   // INTERFACES
@@ -1108,6 +1108,7 @@ declare namespace Eris {
   }
   interface AdvancedMessageContent {
     allowedMentions?: AllowedMentions;
+    attachments?: PartialAttachment[];
     components?: ActionRow[];
     content?: string;
     embed?: EmbedOptions;
@@ -1128,7 +1129,7 @@ declare namespace Eris {
     roles?: boolean | string[];
     users?: boolean | string[];
   }
-  interface Attachment {
+  interface Attachment extends PartialAttachment {
     content_type?: string;
     ephemeral?: boolean;
     filename: string;
@@ -1152,6 +1153,11 @@ declare namespace Eris {
     description?: string;
     name?: string;
     tags?: string;
+  }
+  interface PartialAttachment {
+    description?: string;
+    filename?: string;
+    id: string | number;
   }
   interface SelectMenu {
     custom_id: string;
@@ -1426,6 +1432,7 @@ declare namespace Eris {
   }
   interface WebhookPayload {
     allowedMentions?: AllowedMentions;
+    attachments?: PartialAttachment[];
     auth?: boolean;
     avatarURL?: string;
     components?: ActionRow[];
@@ -2354,7 +2361,7 @@ declare namespace Eris {
       webhookID: string,
       token: string,
       messageID: string,
-      options: MessageWebhookContent
+      options: WebhookPayloadEdit
     ): Promise<Message<GuildTextableChannel>>;
     emit<K extends keyof ClientEvents>(event: K, ...args: ClientEvents[K]): boolean;
     emit(event: string, ...args: any[]): boolean;
@@ -3172,7 +3179,7 @@ declare namespace Eris {
     delete(reason?: string): Promise<void>;
     deleteWebhook(token: string): Promise<void>;
     edit(content: MessageContent): Promise<Message<T>>;
-    editWebhook(token: string, options: MessageWebhookContent): Promise<Message<T>>;
+    editWebhook(token: string, options: WebhookPayloadEdit): Promise<Message<T>>;
     getReaction(reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
     getReaction(reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
