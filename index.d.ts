@@ -268,36 +268,36 @@ declare namespace Eris {
     type: AutoModerationActionType;
   }
   interface AutoModerationActionExecution {
-    guild_id: string;
     action: AutoModerationAction;
-    rule_id: string;
-    rule_trigger_type: AutoModerationTriggerType;
-    user_id: string;
-    channel_id?: string;
-    message_id?: string;
-    alert_system_message_id?: string;
+    alertSystemMessageID?: string;
+    channelID?: string;
     content?: string;
-    matched_keyword: string | null;
-    matched_content?: string | null;
+    guildID: string;
+    matchedContent?: string | null;
+    matchedKeyword: string | null;
+    messageID?: string;
+    ruleID: string;
+    ruleTriggerType: AutoModerationTriggerType;
+    userID: string;
   }
   interface AutoModerationActionMetadata {
     /** valid for SEND_ALERT_MESSAGE */
-    channel_id?: string;
+    channelID?: string;
     /** valid for TIMEOUT */
-    duration_seconds?: number;
+    durationSeconds?: number;
   }
   interface AutoModerationRule {
     actions: AutoModerationAction[];
-    creator_id: string;
+    creatorID: string;
     enabled: boolean;
-    event_type: AutoModerationEventType;
-    exempt_roles: string[];
-    exempt_users: string[];
-    guild_id: string;
+    eventType: AutoModerationEventType;
+    exemptRoles: string[];
+    exemptUsers: string[];
+    guildID: string;
     id: string;
     name: string;
-    trigger_metadata: AutoModerationTriggerMetadata;
-    trigger_type: AutoModerationTriggerType;
+    triggerMetadata: AutoModerationTriggerMetadata;
+    triggerType: AutoModerationTriggerType;
   }
   interface CreateAutoModerationRuleOptions {
     actions: AutoModerationAction[];
@@ -313,7 +313,7 @@ declare namespace Eris {
 
   interface AutoModerationTriggerMetadata {
     /** valid for KEYWORD */
-    keyword_filter: string[];
+    keywordFilter: string[];
     /** valid for KEYWORD_PRESET */
     presets: AutoModerationKeywordPresetType[];
   }
