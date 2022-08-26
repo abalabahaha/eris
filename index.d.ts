@@ -175,7 +175,7 @@ declare namespace Eris {
   // Application Commands
   interface ApplicationCommand<T extends ApplicationCommandTypes = ApplicationCommandTypes> {
     application_id: string;
-    defaultMemberPermissions?: string;
+    defaultMemberPermissions?: bigint | number | string | Permission;
     dmPermission?: boolean;
     description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : never;
     guild_id?: string;
