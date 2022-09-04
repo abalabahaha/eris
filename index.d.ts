@@ -49,6 +49,7 @@ declare namespace Eris {
   type PossiblyUncachedGuild = Guild | Uncached;
   type PremiumTier = 0 | 1 | 2 | 3;
   type VerificationLevel = 0 | 1 | 2 | 3 | 4;
+  type GuildWidgetStyles = "shield" | "banner1" | "banner2" | "banner3" | "banner4";
 
   // Message
   type AdvancedMessageContent = {
@@ -1280,6 +1281,13 @@ declare namespace Eris {
       RESUMED: 9;
       DISCONNECT: 13;
     };
+    GuildWidgetStyles: {
+      Shield:  "shield";
+      Banner1: "banner1";
+      Banner2: "banner2";
+      Banner3: "banner3";
+      Banner4: "banner4";
+    };
   }
 
   // Selfbot
@@ -1691,6 +1699,7 @@ declare namespace Eris {
     getGuildWebhooks(guildID: string): Promise<Webhook[]>;
     getGuildWelcomeScreen(guildID: string): Promise<WelcomeScreen>;
     getGuildWidget(guildID: string): Promise<Widget>;
+    getGuildWidgetImageURL(guildID: string, style?: GuildWidgetStyles): string;
     getInvite(inviteID: string, withCounts?: false): Promise<Invite<"withoutCount">>;
     getInvite(inviteID: string, withCounts: true): Promise<Invite<"withCount">>;
     getMessage(channelID: string, messageID: string): Promise<Message>;
@@ -2041,6 +2050,7 @@ declare namespace Eris {
     getWebhooks(): Promise<Webhook[]>;
     getWelcomeScreen(): Promise<WelcomeScreen>;
     getWidget(): Promise<Widget>;
+    getWidgetImageURL(style?: GuildWidgetStyles): string;
     kickMember(userID: string, reason?: string): Promise<void>;
     leave(): Promise<void>;
     leaveVoiceChannel(): void;
