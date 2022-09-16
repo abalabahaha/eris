@@ -49,7 +49,7 @@ declare namespace Eris {
   type PossiblyUncachedGuild = Guild | Uncached;
   type PremiumTier = 0 | 1 | 2 | 3;
   type VerificationLevel = 0 | 1 | 2 | 3 | 4;
-  type GuildWidgetStyles = "shield" | "banner1" | "banner2" | "banner3" | "banner4";
+  type GuildWidgetStyle = "shield" | "banner1" | "banner2" | "banner3" | "banner4";
 
   // Message
   type AdvancedMessageContent = {
