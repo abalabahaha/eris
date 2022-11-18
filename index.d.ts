@@ -2511,7 +2511,6 @@ declare namespace Eris {
     getGuildVanity(guildID: string): Promise<GuildVanity>;
     getGuildWebhooks(guildID: string): Promise<Webhook[]>;
     getGuildWelcomeScreen(guildID: string): Promise<WelcomeScreen>;
-    getGuildWidget(guildID: string): Promise<Widget>;
     getGuildWidgetImageURL(guildID: string, style?: GuildWidgetStyles): string;
     getGuildWidget(guildID: string): Promise<WidgetData>;
     getGuildWidgetSettings(guildID: string): Promise<Widget>;
