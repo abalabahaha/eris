@@ -2913,7 +2913,6 @@ declare namespace Eris {
 
     getWidget(): Promise<Widget>;
     getWidgetImageURL(style?: GuildWidgetStyles): string;
-
     getWidget(): Promise<WidgetData>;
     getWidgetSettings(): Promise<Widget>;
     kickMember(userID: string, reason?: string): Promise<void>;
