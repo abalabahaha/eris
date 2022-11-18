@@ -26,6 +26,7 @@ export const {
   GuildChannel,
   GuildIntegration,
   GuildPreview,
+  GuildScheduledEvent,
   GuildTemplate,
   Interaction,
   Invite,
