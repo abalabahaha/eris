@@ -2910,8 +2910,6 @@ declare namespace Eris {
     getVoiceRegions(): Promise<VoiceRegion[]>;
     getWebhooks(): Promise<Webhook[]>;
     getWelcomeScreen(): Promise<WelcomeScreen>;
-
-    getWidget(): Promise<Widget>;
     getWidgetImageURL(style?: GuildWidgetStyles): string;
     getWidget(): Promise<WidgetData>;
     getWidgetSettings(): Promise<Widget>;
