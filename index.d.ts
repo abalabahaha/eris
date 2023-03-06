@@ -868,6 +868,12 @@ declare namespace Eris {
   }
 
   // Guild
+  interface AddGuildMemberOptions {
+    nick?: string;
+    roles?: string[];
+    deaf?: boolean;
+    mute?: boolean;
+  }
   interface CreateGuildOptions {
     afkChannelID?: string;
     afkTimeout?: number;
@@ -2237,6 +2243,7 @@ declare namespace Eris {
     acceptInvite(inviteID: string): Promise<Invite<"withoutCount">>;
     addGroupRecipient(groupID: string, userID: string): Promise<void>;
     addGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
+    addGuildMember(guildID: string, userID: string, accessToken: string, options?: AddGuildMemberOptions): Promise<void>;
     addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
     addMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
@@ -2809,6 +2816,7 @@ declare namespace Eris {
     widgetEnabled?: boolean | null;
     constructor(data: BaseData, client: Client);
     addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
+    addMember(userID: string, accessToken: string, options?: AddGuildMemberOptions): Promise<void>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     banMember(userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
