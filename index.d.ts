@@ -593,14 +593,17 @@ declare namespace Eris {
   interface OldGuild {
     afkChannelID: string | null;
     afkTimeout: number;
+    autoRemoved: boolean | null;
     banner: string | null;
     defaultNotifications: DefaultNotifications;
     description: string | null;
     discoverySplash: string | null;
+    emojiCount: number | null;
     emojis: Omit<Emoji, "user" | "icon">[];
     explicitContentFilter: ExplicitContentFilter;
     features: GuildFeatures[];
     icon: string | null;
+    keywords: string[] | null;
     large: boolean;
     maxMembers?: number;
     maxVideoChannelUsers?: number;
@@ -610,9 +613,12 @@ declare namespace Eris {
     nsfw: boolean;
     nsfwLevel: NSFWLevel;
     ownerID: string;
+    premiumProgressBarEnabled: boolean;
     preferredLocale?: string;
     premiumSubscriptionCount?: number;
     premiumTier: PremiumTier;
+    primaryCategory?: DiscoveryCategory;
+    primaryCategoryID: number | null;
     publicUpdatesChannelID: string | null;
     rulesChannelID: string | null;
     splash: string | null;
@@ -621,6 +627,7 @@ declare namespace Eris {
     systemChannelID: string | null;
     vanityURL: string | null;
     verificationLevel: VerificationLevel;
+    welcomeScreen?: WelcomeScreen;
   }
   interface OldGuildChannel {
     bitrate?: number;
@@ -861,6 +868,12 @@ declare namespace Eris {
   }
 
   // Guild
+  interface AddGuildMemberOptions {
+    nick?: string;
+    roles?: string[];
+    deaf?: boolean;
+    mute?: boolean;
+  }
   interface CreateGuildOptions {
     afkChannelID?: string;
     afkTimeout?: number;
@@ -2230,6 +2243,7 @@ declare namespace Eris {
     acceptInvite(inviteID: string): Promise<Invite<"withoutCount">>;
     addGroupRecipient(groupID: string, userID: string): Promise<void>;
     addGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
+    addGuildMember(guildID: string, userID: string, accessToken: string, options?: AddGuildMemberOptions): Promise<void>;
     addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
     addMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
@@ -2802,6 +2816,7 @@ declare namespace Eris {
     widgetEnabled?: boolean | null;
     constructor(data: BaseData, client: Client);
     addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
+    addMember(userID: string, accessToken: string, options?: AddGuildMemberOptions): Promise<void>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     banMember(userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
@@ -3248,8 +3263,8 @@ declare namespace Eris {
     constructor(data: BaseData, guild?: Guild, client?: Client);
     addRole(roleID: string, reason?: string): Promise<void>;
     ban(deleteMessageDays?: number, reason?: string): Promise<void>;
-    edit(options: MemberOptions, reason?: string): Promise<void>;
     dynamicAvatarURL(format?: ImageFormat, size?: number): string;
+    edit(options: MemberOptions, reason?: string): Promise<void>;
     kick(reason?: string): Promise<void>;
     removeRole(roleID: string, reason?: string): Promise<void>;
     unban(reason?: string): Promise<void>;
@@ -3493,6 +3508,7 @@ declare namespace Eris {
     ready: boolean;
     reconnectInterval: number;
     requestMembersPromise: { [s: string]: RequestMembersPromise };
+    resumeURL: string | null;
     seq: number;
     sessionID: string | null;
     status: "connecting" | "disconnected" | "handshaking" | "identifying" | "ready" | "resuming";
