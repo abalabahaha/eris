@@ -618,7 +618,7 @@ declare namespace Eris {
     premiumSubscriptionCount?: number;
     premiumTier: PremiumTier;
     primaryCategory?: DiscoveryCategory;
-    primaryCategoryID: Number | null;
+    primaryCategoryID: number | null;
     publicUpdatesChannelID: string | null;
     rulesChannelID: string | null;
     splash: string | null;
@@ -3263,8 +3263,8 @@ declare namespace Eris {
     constructor(data: BaseData, guild?: Guild, client?: Client);
     addRole(roleID: string, reason?: string): Promise<void>;
     ban(deleteMessageDays?: number, reason?: string): Promise<void>;
-    edit(options: MemberOptions, reason?: string): Promise<void>;
     dynamicAvatarURL(format?: ImageFormat, size?: number): string;
+    edit(options: MemberOptions, reason?: string): Promise<void>;
     kick(reason?: string): Promise<void>;
     removeRole(roleID: string, reason?: string): Promise<void>;
     unban(reason?: string): Promise<void>;
