@@ -788,7 +788,7 @@ declare namespace Eris {
     threadMembersUpdate: [channel: AnyThreadChannel, addedMembers: ThreadMember[], removedMembers: (ThreadMember | Uncached)[]];
     threadMemberUpdate: [channel: AnyThreadChannel, member: ThreadMember, oldMember: OldThreadMember];
     threadUpdate: [channel: AnyThreadChannel, oldChannel: OldThread | null];
-    typingStart: [channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member]
+    typingStart: [channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member | null]
     | [channel: PrivateChannel | Uncached, user: User | Uncached, member: null];
     unavailableGuildCreate: [guild: UnavailableGuild];
     unknown: [packet: RawPacket, id?: number];
