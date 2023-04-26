@@ -22,6 +22,7 @@ Eris.Constants = require("./lib/Constants");
 Eris.DiscordHTTPError = require("./lib/errors/DiscordHTTPError");
 Eris.DiscordRESTError = require("./lib/errors/DiscordRESTError");
 Eris.ExtendedUser = require("./lib/structures/ExtendedUser");
+Eris.ForumChannel = require("./lib/structures/ForumChannel");
 Eris.GroupChannel = require("./lib/structures/GroupChannel");
 Eris.Guild = require("./lib/structures/Guild");
 Eris.GuildChannel = require("./lib/structures/GuildChannel");

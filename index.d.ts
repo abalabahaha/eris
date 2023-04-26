@@ -69,6 +69,8 @@ declare namespace Eris {
   type GuildPublicThreadChannelTypes = Exclude<GuildThreadChannelTypes, Constants["ChannelTypes"]["GUILD_PRIVATE_THREAD"]>;
   type PrivateChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "DM" | "GROUP_DM">];
   type TextVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE" | "GUILD_STAGE">];
+  type DefaultSortOrderTypes = Constants["DefaultSortOrderTypes"][keyof Constants["DefaultSortOrderTypes"]];
+  type DefaultForumLayoutTypes = Constants["DefaultForumLayoutTypes"][keyof Constants["DefaultForumLayoutTypes"]];
 
   // Command
   type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
@@ -1694,6 +1696,15 @@ declare namespace Eris {
     DefaultMessageNotificationLevels: {
       ALL_MESSAGES:  0;
       ONLY_MENTIONS: 1;
+    };
+    DefaultSortOrderTypes: {
+      LATEST_ACTIVITY: 0,
+      CREATION_DATE: 1
+    };
+    DefaultForumLayoutTypes: {
+      NOT_SET: 0,
+      LIST_VIEW: 1,
+      GALLERY_VIEW: 2
     };
     ExplicitContentFilterLevels: {
       DISABLED:              0;
