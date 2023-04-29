@@ -1933,12 +1933,13 @@ declare namespace Eris {
       moderateMembers:                  1099511627776n;
       viewCreatorMonetizationAnalytics: 2199023255552n;
       useSoundboard:                    4398046511104n;
-      useExternalSounds:                35184372088832n
+      createGuildExpressions:           8796093022208n;
+      useExternalSounds:                35184372088832n;
       sendVoiceMessages:                70368744177664n;
-      allGuild:                         3309205717182n;
+      allGuild:                         12105298739390n;
       allText:                          70904273435729n;
       allVoice:                         110505548056337n;
-      all:                              114349209288703n;
+      all:                              123145302310911n;
     };
     PremiumTiers: {
       NONE:   0;
