@@ -592,6 +592,14 @@ declare namespace Eris {
     ringing: string[];
     unavailable: boolean;
   }
+  interface OldForumChannel extends OldGuildChannel {
+    availableTags: ForumTag[],
+    defaultAutoArchiveDuration: AutoArchiveDuration,
+    defaultForumLayout: DefaultForumLayoutTypes,
+    defaultReactionEmoji: DefaultReactionEmoji,
+    defaultSortOrder: DefaultSortOrderTypes,
+    defaultThreadRateLimitPerUser: number,
+  }
   interface OldGroupChannel {
     name: string;
     ownerID: string;
@@ -738,7 +746,7 @@ declare namespace Eris {
     channelPinUpdate: [channel: TextableChannel, timestamp: number, oldTimestamp: number];
     channelRecipientAdd: [channel: GroupChannel, user: User];
     channelRecipientRemove: [channel: GroupChannel, user: User];
-    channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldTextVoiceChannel]
+    channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldTextVoiceChannel | OldForumChannel]
     | [channel: GroupChannel, oldChannel: OldGroupChannel];
     connect: [id: number];
     debug: [message: string, id?: number];
