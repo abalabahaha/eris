@@ -50,7 +50,7 @@ declare namespace Eris {
 
   // Channel
   type AnyChannel = AnyGuildChannel | PrivateChannel;
-  type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel | StoreChannel;
+  type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel | StoreChannel | ForumChannel;
   type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
   type AnyVoiceChannel = TextVoiceChannel | StageChannel;
   type GuildTextableChannel = TextChannel | TextVoiceChannel | NewsChannel;
@@ -157,6 +157,7 @@ declare namespace Eris {
 
   // Thread
   type AutoArchiveDuration = 60 | 1440 | 4320 | 10080;
+  type ChannelFlags = Constants["ChannelFlags"][keyof Constants["ChannelFlags"]];
 
   // User
   type PremiumTypes = Constants["PremiumTypes"][keyof Constants["PremiumTypes"]];
