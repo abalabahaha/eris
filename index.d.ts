@@ -69,8 +69,6 @@ declare namespace Eris {
   type GuildPublicThreadChannelTypes = Exclude<GuildThreadChannelTypes, Constants["ChannelTypes"]["GUILD_PRIVATE_THREAD"]>;
   type PrivateChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "DM" | "GROUP_DM">];
   type TextVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE" | "GUILD_STAGE">];
-  type DefaultSortOrderTypes = Constants["DefaultSortOrderTypes"][keyof Constants["DefaultSortOrderTypes"]];
-  type DefaultForumLayoutTypes = Constants["DefaultForumLayoutTypes"][keyof Constants["DefaultForumLayoutTypes"]];
 
   // Command
   type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
@@ -155,9 +153,11 @@ declare namespace Eris {
   type StickerTypes = Constants["StickerTypes"][keyof Constants["StickerTypes"]];
   type StickerFormats = Constants["StickerFormats"][keyof Constants["StickerFormats"]];
 
-  // Thread
+  // Thread/Forum
   type AutoArchiveDuration = 60 | 1440 | 4320 | 10080;
   type ChannelFlags = Constants["ChannelFlags"][keyof Constants["ChannelFlags"]];
+  type DefaultSortOrderTypes = Constants["DefaultSortOrderTypes"][keyof Constants["DefaultSortOrderTypes"]];
+  type DefaultForumLayoutTypes = Constants["DefaultForumLayoutTypes"][keyof Constants["DefaultForumLayoutTypes"]];
 
   // User
   type PremiumTypes = Constants["PremiumTypes"][keyof Constants["PremiumTypes"]];
@@ -1669,6 +1669,10 @@ declare namespace Eris {
       DANGER:    4;
       LINK:      5;
     };
+    ChannelFlags: {
+      PINNED: 1,
+      REQUIRE_TAG: 16
+    },
     ChannelTypes: {
       GUILD_TEXT:           0;
       DM:                   1;
@@ -2302,7 +2306,7 @@ declare namespace Eris {
     createChannel(
       guildID: string,
       name: string,
-      type: Constants["ChannelTypes"]["GUILD_STAGE"],
+      type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"],
       options?: CreateChannelOptions
     ): Promise<StageChannel>;
     createChannel(
@@ -2355,7 +2359,7 @@ declare namespace Eris {
     createChannel(
       guildID: string,
       name: string,
-      type: Constants["ChannelTypes"]["GUILD_STAGE"],
+      type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"],
       reason?: string,
       options?: CreateChannelOptions | string
     ): Promise<StageChannel>;
@@ -2836,9 +2840,9 @@ declare namespace Eris {
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_TEXT"], options?: CreateChannelOptions): Promise<TextChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_VOICE"], options?: CreateChannelOptions): Promise<TextVoiceChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_CATEGORY"], options?: CreateChannelOptions): Promise<CategoryChannel>;
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_NEWS"], options?: CreateChannelOptions | string): Promise<NewsChannel>;
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STORE"], options?: CreateChannelOptions | string): Promise<StoreChannel>;
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE"], options?: CreateChannelOptions | string): Promise<StageChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_NEWS"], options?: CreateChannelOptions): Promise<NewsChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STORE"], options?: CreateChannelOptions): Promise<StoreChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"], options?: CreateChannelOptions): Promise<StageChannel>;
     createChannel(name: string, type?: number, options?: CreateChannelOptions): Promise<unknown>;
     /** @deprecated */
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_TEXT"], reason?: string, options?: CreateChannelOptions | string): Promise<TextChannel>;
@@ -2851,7 +2855,7 @@ declare namespace Eris {
     /** @deprecated */
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STORE"], reason?: string, options?: CreateChannelOptions | string): Promise<StoreChannel>;
     /** @deprecated */
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE"], reason?: string, options?: CreateChannelOptions | string): Promise<StageChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"], reason?: string, options?: CreateChannelOptions | string): Promise<StageChannel>;
     /** @deprecated */
     createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
     createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand>;
