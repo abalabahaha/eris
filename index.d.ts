@@ -277,7 +277,11 @@ declare namespace Eris {
     parentID?: string;
   }
   interface CreateChannelOptions {
+    availableTags: ForumTag[];
     bitrate?: number;
+    defaultAutoArchiveDuration?: AutoArchiveDuration;
+    defaultReactionEmoji: DefaultReactionEmoji;
+    defaultSortOrder: DefaultSortOrderTypes;
     nsfw?: boolean;
     parentID?: string;
     permissionOverwrites?: Overwrite[];
@@ -290,7 +294,8 @@ declare namespace Eris {
   interface EditChannelOptions extends Omit<CreateChannelOptions, "reason"> {
     archived?: boolean;
     autoArchiveDuration?: AutoArchiveDuration;
-    defaultAutoArchiveDuration?: AutoArchiveDuration;
+    defaultForumLayout: DefaultForumLayoutTypes;
+    defaultRateLimitPerUser: number;
     icon?: string;
     invitable?: boolean;
     locked?: boolean;
@@ -1425,6 +1430,15 @@ declare namespace Eris {
   interface CreateThreadWithoutMessageOptions<T = AnyThreadChannel["type"]> extends CreateThreadOptions {
     invitable: T extends PrivateThreadChannel["type"] ? boolean : never;
     type: T;
+  }
+  interface ForumTag extends DefaultReactionEmoji {
+    id: string;
+    name: string;
+    moderated: boolean;
+  }
+  interface DefaultReactionEmoji {
+    emoji_id?: string;
+    emoji_name?: string;
   }
   interface GetArchivedThreadsOptions {
     before?: Date;
@@ -2770,6 +2784,10 @@ declare namespace Eris {
     mfaEnabled: boolean;
     premiumType: PremiumTypes;
     verified: boolean;
+  }
+
+  export class ForumChannel extends GuildChannel {
+    // wip
   }
 
   export class GroupChannel extends PrivateChannel {
