@@ -1688,6 +1688,7 @@ declare namespace Eris {
       GUILD_STAGE_VOICE:    13;
       /** @deprecated */
       GUILD_STAGE:          13;
+      GUILD_FORUM:          15;
     };
     ComponentTypes: {
       ACTION_ROW:  1;
@@ -2312,6 +2313,12 @@ declare namespace Eris {
     createChannel(
       guildID: string,
       name: string,
+      type: Constants["ChannelTypes"]["GUILD_FORUM"],
+      options?: CreateChannelOptions
+    ): Promise<ForumChannel>;
+    createChannel(
+      guildID: string,
+      name: string,
       type?: number,
       options?: CreateChannelOptions
     ): Promise<unknown>;
@@ -2363,6 +2370,14 @@ declare namespace Eris {
       reason?: string,
       options?: CreateChannelOptions | string
     ): Promise<StageChannel>;
+    /** @deprecated */
+    createChannel(
+      guildID: string,
+      name: string,
+      type: Constants["ChannelTypes"]["GUILD_FORUM"],
+      reason?: string,
+      options?: CreateChannelOptions | string
+    ): Promise<ForumChannel>;
     /** @deprecated */
     createChannel(
       guildID: string,
@@ -2843,6 +2858,7 @@ declare namespace Eris {
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_NEWS"], options?: CreateChannelOptions): Promise<NewsChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STORE"], options?: CreateChannelOptions): Promise<StoreChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"], options?: CreateChannelOptions): Promise<StageChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_FORUM"], options?: CreateChannelOptions): Promise<ForumChannel>;
     createChannel(name: string, type?: number, options?: CreateChannelOptions): Promise<unknown>;
     /** @deprecated */
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_TEXT"], reason?: string, options?: CreateChannelOptions | string): Promise<TextChannel>;
@@ -2856,6 +2872,8 @@ declare namespace Eris {
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STORE"], reason?: string, options?: CreateChannelOptions | string): Promise<StoreChannel>;
     /** @deprecated */
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"], reason?: string, options?: CreateChannelOptions | string): Promise<StageChannel>;
+    /** @deprecated */
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_FORUM"], reason?: string, options?: CreateChannelOptions | string): Promise<ForumChannel>;
     /** @deprecated */
     createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
     createCommand(command: ApplicationCommandStructure): Promise<ApplicationCommand>;
