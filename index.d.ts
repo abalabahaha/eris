@@ -1434,6 +1434,7 @@ declare namespace Eris {
   interface CreateThreadOptions {
     autoArchiveDuration: AutoArchiveDuration;
     name: string;
+    rateLimitPerUser: number;
   }
   interface CreateThreadWithoutMessageOptions<T = AnyThreadChannel["type"]> extends CreateThreadOptions {
     invitable: T extends PrivateThreadChannel["type"] ? boolean : never;
