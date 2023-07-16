@@ -3256,7 +3256,7 @@ declare namespace Eris {
     premiumSince?: number | null;
     roles: string[];
     staticAvatarURL: string;
-    status?: Status;
+    status?: UserStatus;
     user: User;
     username: string;
     voiceState: VoiceState;
