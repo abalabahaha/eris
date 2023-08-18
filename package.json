@@ -54,6 +54,7 @@
     "typescript": "^4.4.4"
   },
   "optionalDependencies": {
+    "color-convert": "^2.0.1",
     "opusscript": "^0.0.8",
     "tweetnacl": "^1.0.3"
   },
