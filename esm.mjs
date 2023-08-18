@@ -18,6 +18,7 @@ export const {
   CommandInteraction,
   ComponentInteraction,
   Constants,
+  ColorConvert,
   DiscordHTTPError,
   DiscordRESTError,
   ExtendedUser,
