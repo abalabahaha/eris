@@ -19,6 +19,7 @@ Eris.Collection = require("./lib/util/Collection");
 Eris.Command = require("./lib/command/Command");
 Eris.CommandClient = require("./lib/command/CommandClient");
 Eris.Constants = require("./lib/Constants");
+Eris.ColorConvert = require("./lib/util/ColorConvert");
 Eris.DiscordHTTPError = require("./lib/errors/DiscordHTTPError");
 Eris.DiscordRESTError = require("./lib/errors/DiscordRESTError");
 Eris.ExtendedUser = require("./lib/structures/ExtendedUser");
