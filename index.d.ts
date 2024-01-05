@@ -1067,15 +1067,10 @@ declare namespace Eris {
   interface WelcomeScreenOptions extends WelcomeScreen {
     enabled: boolean;
   }
-  interface Widget {
-    channel_id?: string;
+  interface Widget extends Omit<WidgetOptions, "channelID" | "reason"> {
+    channel_id: string | null;
     enabled: boolean;
   }
-  interface WidgetOptions extends Widget {
-    channelID?: string;
-    reason?: string;
-  }
-
   interface WidgetChannel {
     id: string;
     name: string;
@@ -1096,6 +1091,12 @@ declare namespace Eris {
     id: string;
     status: string;
     username: string;
+  }
+  interface WidgetOptions {
+    channelID?: string | null;
+    channel_id?: string | null;
+    enabled?: boolean;
+    reason?: string;
   }
 
   // Interaction
