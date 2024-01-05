@@ -1070,6 +1070,7 @@ declare namespace Eris {
   interface Widget {
     channel_id?: string;
     enabled: boolean;
+    reason?: string;
   }
   interface WidgetChannel {
     id: string;
