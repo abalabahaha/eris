@@ -528,8 +528,8 @@ declare namespace Eris {
     description?: string;
     fields?: EmbedField[];
     footer?: EmbedFooterOptions;
-    image?: EmbedImage;
-    thumbnail?: EmbedImage;
+    image?: EmbedImageOptions;
+    thumbnail?: EmbedImageOptions;
     timestamp?: Date | string;
     title?: string;
     url?: string;
