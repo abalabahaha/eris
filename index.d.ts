@@ -180,17 +180,6 @@ declare namespace Eris {
   }
 
   // Application Commands
-  interface ApplicationCommand<T extends ApplicationCommandTypes = ApplicationCommandTypes> {
-    application_id: string;
-    defaultMemberPermissions?: bigint | number | string | Permission;
-    dmPermission?: boolean;
-    description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : never;
-    guild_id?: string;
-    id: string;
-    name: string;
-    options?: ApplicationCommandOptions[];
-    type: T;
-  }
   interface ApplicationCommandOptionsSubCommand {
     description: string;
     name: string;
@@ -260,7 +249,7 @@ declare namespace Eris {
     application_id: string;
     guild_id: string;
     id: string;
-    permissions?: ApplicationCommandPermissions[];
+    permissions: ApplicationCommandPermissions[];
   }
 
   // Channel
@@ -2154,6 +2143,23 @@ declare namespace Eris {
     show_current_game: boolean;
     status: string;
     theme: string;
+  }
+
+  export class ApplicationCommand<T = ApplicationCommandTypes> extends Base {
+    applicationID: string;
+    defaultMemberPermissions: Permission;
+    description: T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "";
+    descriptionLocalizations?: T extends "CHAT_INPUT" ? Record<string, string> | null : null;
+    dmPermission?: boolean;
+    guild?: PossiblyUncachedGuild;
+    name: string;
+    nameLocalizations?: Record<string, string> | null;
+    nsfw?: boolean;
+    options?: ApplicationCommandOptions[];
+    type?: T;
+    version: string;
+    delete(): Promise<void>;
+    edit(options: Omit<T extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? ChatInputApplicationCommandStructure : T extends Constants["ApplicationCommandTypes"]["USER"] ? UserApplicationCommandStructure : T extends Constants["ApplicationCommandTypes"]["MESSAGE"] ? MessageApplicationCommandStructure : never, "type">): Promise<ApplicationCommand<T>>;
   }
 
   class Base implements SimpleJSON {
