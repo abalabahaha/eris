@@ -1067,8 +1067,8 @@ declare namespace Eris {
   interface WelcomeScreenOptions extends WelcomeScreen {
     enabled: boolean;
   }
-  interface Widget {
-    channel_id?: string;
+  interface Widget extends Omit<WidgetOptions, "channelID" | "reason"> {
+    channel_id: string | null;
     enabled: boolean;
   }
   interface WidgetChannel {
@@ -1091,6 +1091,12 @@ declare namespace Eris {
     id: string;
     status: string;
     username: string;
+  }
+  interface WidgetOptions {
+    channelID?: string | null;
+    channel_id?: string | null;
+    enabled?: boolean;
+    reason?: string;
   }
 
   // Interaction
@@ -2449,7 +2455,7 @@ declare namespace Eris {
     editGuildVanity(guildID: string, code: string | null): Promise<GuildVanity>;
     editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
     editGuildWelcomeScreen(guildID: string, options: WelcomeScreenOptions): Promise<WelcomeScreen>;
-    editGuildWidget(guildID: string, options: Widget): Promise<Widget>;
+    editGuildWidget(guildID: string, options: WidgetOptions): Promise<Widget>;
     editMessage(channelID: string, messageID: string, content: MessageContentEdit): Promise<Message>;
     /** @deprecated */
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
@@ -2886,7 +2892,7 @@ declare namespace Eris {
     editVanity(code: string | null): Promise<GuildVanity>;
     editVoiceState(options: VoiceStateOptions, userID?: string): Promise<void>;
     editWelcomeScreen(options: WelcomeScreenOptions): Promise<WelcomeScreen>;
-    editWidget(options: Widget): Promise<Widget>;
+    editWidget(options: WidgetOptions): Promise<Widget>;
     fetchAllMembers(timeout?: number): Promise<number>;
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
     getActiveThreads(): Promise<ListedGuildThreads>;
