@@ -4,6 +4,7 @@ const Eris = require("eris");
 const bot = new Eris("Bot TOKEN", {
     firstShardID: 0,
     lastShardID: 15,
+    shardIDs: [5, 9, 1, 4], // Overrides firstShardID and lastShardID above
     maxShards: 16,
     getAllUsers: false,
     intents: ["guilds", "guildMembers", "guildPresences"]
