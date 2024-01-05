@@ -856,6 +856,7 @@ declare namespace Eris {
     route: string;
     short: boolean;
     url: string;
+    latency: number;
   }
   interface RequestMembersPromise {
     members: Member;
@@ -3321,7 +3322,7 @@ declare namespace Eris {
     crosspost(): Promise<T extends NewsChannel ? Message<NewsChannel> : never>;
     delete(reason?: string): Promise<void>;
     deleteWebhook(token: string): Promise<void>;
-    edit(content: MessageContent): Promise<Message<T>>;
+    edit(content: MessageContentEdit): Promise<Message<T>>;
     editWebhook(token: string, options: WebhookPayloadEdit): Promise<Message<T>>;
     getReaction(reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
