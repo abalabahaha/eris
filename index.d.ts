@@ -2028,7 +2028,7 @@ declare namespace Eris {
     filename: string;
     height?: number;
     id: string;
-    proxyUrl: string;
+    proxyURL: string;
     size: number;
     url: string;
     width?: number;
