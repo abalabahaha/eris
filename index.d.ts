@@ -1934,12 +1934,13 @@ declare namespace Eris {
       viewCreatorMonetizationAnalytics: 2199023255552n;
       useSoundboard:                    4398046511104n;
       createGuildExpressions:           8796093022208n;
+      createEvents:                     17592186044416n;
       useExternalSounds:                35184372088832n;
       sendVoiceMessages:                70368744177664n;
-      allGuild:                         12105298739390n;
+      allGuild:                         29697484783806n;
       allText:                          70904273435729n;
       allVoice:                         110505548056337n;
-      all:                              123145302310911n;
+      all:                              140737488355327n;
     };
     PremiumTiers: {
       NONE:   0;
