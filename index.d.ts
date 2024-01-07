@@ -93,9 +93,9 @@ declare namespace Eris {
   type GuildScheduledEventEntityTypes = Constants["GuildScheduledEventEntityTypes"][keyof Constants["GuildScheduledEventEntityTypes"]];
   type GuildScheduledEventPrivacyLevel = Constants["GuildScheduledEventPrivacyLevel"][keyof Constants["GuildScheduledEventPrivacyLevel"]];
   type GuildScheduledEventStatus = Constants["GuildScheduledEventStatus"][keyof Constants["GuildScheduledEventStatus"]];
+  type GuildWidgetStyles = Constants["GuildWidgetStyles"][keyof Constants["GuildWidgetStyles"]];
   type NSFWLevel = Constants["GuildNSFWLevels"][keyof Constants["GuildNSFWLevels"]];
   type PossiblyUncachedGuild = Guild | Uncached;
-  type GuildWidgetStyle = "shield" | "banner1" | "banner2" | "banner3" | "banner4";
   type PossiblyUncachedGuildScheduledEvent = GuildScheduledEvent | Uncached;
   type PremiumTier = Constants["PremiumTiers"][keyof Constants["PremiumTiers"]];
   type VerificationLevel = Constants["VerificationLevels"][keyof Constants["VerificationLevels"]];
@@ -1783,6 +1783,13 @@ declare namespace Eris {
       SAFE:           2;
       AGE_RESTRICTED: 3;
     };
+    GuildWidgetStyles: {
+      Shield:  "shield";
+      Banner1: "banner1";
+      Banner2: "banner2";
+      Banner3: "banner3";
+      Banner4: "banner4";
+    };
     ImageFormats: [
       "jpg",
       "jpeg",
@@ -2083,13 +2090,6 @@ declare namespace Eris {
       INCOMING:         1;
       CHANNEL_FOLLOWER: 2;
       APPLICATION:      3;
-    };
-    GuildWidgetStyles: {
-      Shield:  "shield";
-      Banner1: "banner1";
-      Banner2: "banner2";
-      Banner3: "banner3";
-      Banner4: "banner4";
     };
   }
 
@@ -2546,8 +2546,8 @@ declare namespace Eris {
     getGuildVanity(guildID: string): Promise<GuildVanity>;
     getGuildWebhooks(guildID: string): Promise<Webhook[]>;
     getGuildWelcomeScreen(guildID: string): Promise<WelcomeScreen>;
-    getGuildWidgetImageURL(guildID: string, style?: GuildWidgetStyles): string;
     getGuildWidget(guildID: string): Promise<WidgetData>;
+    getGuildWidgetImageURL(guildID: string, style?: GuildWidgetStyles): string;
     getGuildWidgetSettings(guildID: string): Promise<Widget>;
     getInvite(inviteID: string, withCounts?: false): Promise<Invite<"withoutCount">>;
     getInvite(inviteID: string, withCounts: true): Promise<Invite<"withCount">>;
@@ -2947,8 +2947,8 @@ declare namespace Eris {
     getVoiceRegions(): Promise<VoiceRegion[]>;
     getWebhooks(): Promise<Webhook[]>;
     getWelcomeScreen(): Promise<WelcomeScreen>;
-    getWidgetImageURL(style?: GuildWidgetStyles): string;
     getWidget(): Promise<WidgetData>;
+    getWidgetImageURL(style?: GuildWidgetStyles): string;
     getWidgetSettings(): Promise<Widget>;
     kickMember(userID: string, reason?: string): Promise<void>;
     leave(): Promise<void>;
