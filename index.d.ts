@@ -175,6 +175,7 @@ declare namespace Eris {
   /** Generic T is `true` if editing Guild scoped commands, and `false` if not */
   interface ApplicationCommandEditOptions<T extends boolean, U = ApplicationCommandTypes> {
     defaultMemberPermissions?: bigint | number | string | Permission | null;
+    /** @deprecated */
     defaultPermission?: boolean;
     description?: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "" | void;
     descriptionLocalizations?: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? { [s: string]: string } | null : null;
@@ -2163,6 +2164,8 @@ declare namespace Eris {
   export class ApplicationCommand<T extends boolean, U = ApplicationCommandTypes> extends Base {
     applicationID: string;
     defaultMemberPermissions: Permission;
+    /** @deprecated */
+    defaultPermission?: boolean | null;
     description: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "";
     descriptionLocalizations?: U extends "CHAT_INPUT" ? Record<string, string> | null : null;
     dmPermission?: boolean;
