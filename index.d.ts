@@ -875,7 +875,7 @@ declare namespace Eris {
     deaf?: boolean;
     mute?: boolean;
   }
-  export interface BanMemberOptions {
+  interface BanMemberOptions {
     /** @deprecated */
     deleteMessageDays?: number;
     deleteMessageSeconds?: number;
