@@ -85,6 +85,7 @@ declare namespace Eris {
   type GuildScheduledEventEntityTypes = Constants["GuildScheduledEventEntityTypes"][keyof Constants["GuildScheduledEventEntityTypes"]];
   type GuildScheduledEventPrivacyLevel = Constants["GuildScheduledEventPrivacyLevel"][keyof Constants["GuildScheduledEventPrivacyLevel"]];
   type GuildScheduledEventStatus = Constants["GuildScheduledEventStatus"][keyof Constants["GuildScheduledEventStatus"]];
+  type GuildWidgetStyles = Constants["GuildWidgetStyles"][keyof Constants["GuildWidgetStyles"]];
   type NSFWLevel = Constants["GuildNSFWLevels"][keyof Constants["GuildNSFWLevels"]];
   type PossiblyUncachedGuild = Guild | Uncached;
   type PossiblyUncachedGuildScheduledEvent = GuildScheduledEvent | Uncached;
@@ -880,6 +881,12 @@ declare namespace Eris {
     roles?: string[];
     deaf?: boolean;
     mute?: boolean;
+  }
+  interface BanMemberOptions {
+    /** @deprecated */
+    deleteMessageDays?: number;
+    deleteMessageSeconds?: number;
+    reason?: string;
   }
   interface CreateGuildOptions {
     afkChannelID?: string;
@@ -1783,6 +1790,13 @@ declare namespace Eris {
       SAFE:           2;
       AGE_RESTRICTED: 3;
     };
+    GuildWidgetStyles: {
+      Shield:  "shield";
+      Banner1: "banner1";
+      Banner2: "banner2";
+      Banner3: "banner3";
+      Banner4: "banner4";
+    };
     ImageFormats: [
       "jpg",
       "jpeg",
@@ -2292,6 +2306,8 @@ declare namespace Eris {
     addMessageReaction(channelID: string, messageID: string, reaction: string, userID: string): Promise<void>;
     addRelationship(userID: string, block?: boolean): Promise<void>;
     addSelfPremiumSubscription(token: string, plan: string): Promise<void>;
+    banGuildMember(guildID: string, userID: string, options?: BanMemberOptions): Promise<void>;
+    /** @deprecated */
     banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     bulkEditCommands(commands: ApplicationCommandBulkEditOptions<false>[]): Promise<ApplicationCommand<false>[]>;
     bulkEditGuildCommands(guildID: string, commands: ApplicationCommandBulkEditOptions<true>[]): Promise<ApplicationCommand<true>[]>;
@@ -2557,6 +2573,7 @@ declare namespace Eris {
     getGuildWebhooks(guildID: string): Promise<Webhook[]>;
     getGuildWelcomeScreen(guildID: string): Promise<WelcomeScreen>;
     getGuildWidget(guildID: string): Promise<WidgetData>;
+    getGuildWidgetImageURL(guildID: string, style?: GuildWidgetStyles): string;
     getGuildWidgetSettings(guildID: string): Promise<Widget>;
     getInvite(inviteID: string, withCounts?: false): Promise<Invite<"withoutCount">>;
     getInvite(inviteID: string, withCounts: true): Promise<Invite<"withCount">>;
@@ -2857,6 +2874,8 @@ declare namespace Eris {
     addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addMember(userID: string, accessToken: string, options?: AddGuildMemberOptions): Promise<void>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
+    banMember(userID: string, options?: BanMemberOptions): Promise<void>;
+    /** @deprecated */
     banMember(userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     bulkEditCommands<T extends ApplicationCommandTypes>(commands: ApplicationCommandBulkEditOptions<true, T>[]): Promise<ApplicationCommand<true, T>[]>;
     createChannel(name: string): Promise<TextChannel>;
@@ -2955,6 +2974,7 @@ declare namespace Eris {
     getWebhooks(): Promise<Webhook[]>;
     getWelcomeScreen(): Promise<WelcomeScreen>;
     getWidget(): Promise<WidgetData>;
+    getWidgetImageURL(style?: GuildWidgetStyles): string;
     getWidgetSettings(): Promise<Widget>;
     kickMember(userID: string, reason?: string): Promise<void>;
     leave(): Promise<void>;
@@ -3301,6 +3321,8 @@ declare namespace Eris {
     voiceState: VoiceState;
     constructor(data: BaseData, guild?: Guild, client?: Client);
     addRole(roleID: string, reason?: string): Promise<void>;
+    ban(options?: BanMemberOptions): Promise<void>;
+    /** @deprecated */
     ban(deleteMessageDays?: number, reason?: string): Promise<void>;
     dynamicAvatarURL(format?: ImageFormat, size?: number): string;
     edit(options: MemberOptions, reason?: string): Promise<void>;
