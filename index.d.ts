@@ -648,7 +648,7 @@ declare namespace Eris {
     channel: PossiblyUncachedSpeakableChannel | null;
     description?: string | null;
     entityID: string | null;
-    enitityMetadata: GuildScheduledEventMetadata | null;
+    entityMetadata: GuildScheduledEventMetadata | null;
     entityType: GuildScheduledEventEntityTypes;
     image?: string;
     name: string;
@@ -1002,7 +1002,7 @@ declare namespace Eris {
   }
   interface GuildScheduledEventEditOptionsExternal extends GuildScheduledEventEditOptionsBase<Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"]> {
     channelID: null;
-    enitityMetadata: Required<GuildScheduledEventMetadata>;
+    entityMetadata: Required<GuildScheduledEventMetadata>;
     scheduledEndTime: Date;
   }
   interface GuildScheduledEventMetadata {
@@ -1022,7 +1022,7 @@ declare namespace Eris {
   }
   interface GuildScheduledEventOptionsExternal extends GuildScheduledEventOptionsBase<Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"]> {
     channelID: never;
-    enitityMetadata: Required<GuildScheduledEventMetadata>;
+    entityMetadata: Required<GuildScheduledEventMetadata>;
     scheduledEndTime: Date;
   }
   interface GuildScheduledEventUser {
