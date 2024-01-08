@@ -1915,10 +1915,12 @@ declare namespace Eris {
       viewAuditLog:                     128n;
       /** @deprecated */
       viewAuditLogs:                    128n;
-      voicePrioritySpeaker:             256n;
-      voiceStream:                      512n;
+      prioritySpeaker:                  256n;
       /** @deprecated */
+      voicePrioritySpeaker:             256n;
       stream:                           512n;
+      /** @deprecated */
+      voiceStream:                      512n;
       viewChannel:                      1024n;
       /** @deprecated */
       readMessages:                     1024n;
@@ -1933,16 +1935,31 @@ declare namespace Eris {
       /** @deprecated */
       externalEmojis:                   262144n;
       viewGuildInsights:                524288n;
+      connect:                          1048576n;
+      /** @deprecated */
       voiceConnect:                     1048576n;
+      speak:                            2097152n;
+      /** @deprecated */
       voiceSpeak:                       2097152n;
+      muteMembers:                      4194304n;
+      /** @deprecated */
       voiceMuteMembers:                 4194304n;
+      deafenMembers:                    8388608n;
+      /** @deprecated */
       voiceDeafenMembers:               8388608n;
+      moveMembers:                      16777216n;
+      /** @deprecated */
       voiceMoveMembers:                 16777216n;
+      useVAD:                           33554432n;
+      /** @deprecated */
       voiceUseVAD:                      33554432n;
+      /** @deprecated */
       changeNickname:                   67108864n;
       manageNicknames:                  134217728n;
       manageRoles:                      268435456n;
       manageWebhooks:                   536870912n;
+      manageGuildExpressions:           1073741824n;
+      /** @deprecated */
       manageExpressions:                1073741824n;
       /** @deprecated */
       manageEmojisAndStickers:          1073741824n;
@@ -1951,6 +1968,8 @@ declare namespace Eris {
       useApplicationCommands:           2147483648n;
       /** @deprecated */
       useSlashCommands:                 2147483648n;
+      requestToSpeak:                   4294967296n;
+      /** @deprecated */
       voiceRequestToSpeak:              4294967296n;
       manageEvents:                     8589934592n;
       manageThreads:                    17179869184n;
@@ -1958,6 +1977,8 @@ declare namespace Eris {
       createPrivateThreads:             68719476736n;
       useExternalStickers:              137438953472n;
       sendMessagesInThreads:            274877906944n;
+      useEmbeddedActivities:            549755813888n;
+      /** @deprecated */
       startEmbeddedActivities:          549755813888n;
       moderateMembers:                  1099511627776n;
       viewCreatorMonetizationAnalytics: 2199023255552n;
