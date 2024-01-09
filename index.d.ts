@@ -1912,63 +1912,92 @@ declare namespace Eris {
       USER: 1;
     };
     Permissions: {
-      createInstantInvite:     1n;
-      kickMembers:             2n;
-      banMembers:              4n;
-      administrator:           8n;
-      manageChannels:          16n;
-      manageGuild:             32n;
-      addReactions:            64n;
-      viewAuditLog:            128n;
+      createInstantInvite:              1n;
+      kickMembers:                      2n;
+      banMembers:                       4n;
+      administrator:                    8n;
+      manageChannels:                   16n;
+      manageGuild:                      32n;
+      addReactions:                     64n;
+      viewAuditLog:                     128n;
       /** @deprecated */
-      viewAuditLogs:           128n;
-      voicePrioritySpeaker:    256n;
-      voiceStream:             512n;
+      viewAuditLogs:                    128n;
+      prioritySpeaker:                  256n;
       /** @deprecated */
-      stream:                  512n;
-      viewChannel:             1024n;
+      voicePrioritySpeaker:             256n;
+      stream:                           512n;
       /** @deprecated */
-      readMessages:            1024n;
-      sendMessages:            2048n;
-      sendTTSMessages:         4096n;
-      manageMessages:          8192n;
-      embedLinks:              16384n;
-      attachFiles:             32768n;
-      readMessageHistory:      65536n;
-      mentionEveryone:         131072n;
-      useExternalEmojis:       262144n;
+      voiceStream:                      512n;
+      viewChannel:                      1024n;
       /** @deprecated */
-      externalEmojis:          262144n;
-      viewGuildInsights:       524288n;
-      voiceConnect:            1048576n;
-      voiceSpeak:              2097152n;
-      voiceMuteMembers:        4194304n;
-      voiceDeafenMembers:      8388608n;
-      voiceMoveMembers:        16777216n;
-      voiceUseVAD:             33554432n;
-      changeNickname:          67108864n;
-      manageNicknames:         134217728n;
-      manageRoles:             268435456n;
-      manageWebhooks:          536870912n;
-      manageEmojisAndStickers: 1073741824n;
+      readMessages:                     1024n;
+      sendMessages:                     2048n;
+      sendTTSMessages:                  4096n;
+      manageMessages:                   8192n;
+      embedLinks:                       16384n;
+      attachFiles:                      32768n;
+      readMessageHistory:               65536n;
+      mentionEveryone:                  131072n;
+      useExternalEmojis:                262144n;
       /** @deprecated */
-      manageEmojis:            1073741824n;
-      useApplicationCommands:  2147483648n;
+      externalEmojis:                   262144n;
+      viewGuildInsights:                524288n;
+      connect:                          1048576n;
       /** @deprecated */
-      useSlashCommands:        2147483648n;
-      voiceRequestToSpeak:     4294967296n;
-      manageEvents:            8589934592n;
-      manageThreads:           17179869184n;
-      createPublicThreads:     34359738368n;
-      createPrivateThreads:    68719476736n;
-      useExternalStickers:     137438953472n;
-      sendMessagesInThreads:   274877906944n;
-      startEmbeddedActivities: 549755813888n;
-      moderateMembers:         1099511627776n;
-      allGuild:                1110182461630n;
-      allText:                 535529258065n;
-      allVoice:                554385278737n;
-      all:                     2199023255551n;
+      voiceConnect:                     1048576n;
+      speak:                            2097152n;
+      /** @deprecated */
+      voiceSpeak:                       2097152n;
+      muteMembers:                      4194304n;
+      /** @deprecated */
+      voiceMuteMembers:                 4194304n;
+      deafenMembers:                    8388608n;
+      /** @deprecated */
+      voiceDeafenMembers:               8388608n;
+      moveMembers:                      16777216n;
+      /** @deprecated */
+      voiceMoveMembers:                 16777216n;
+      useVAD:                           33554432n;
+      /** @deprecated */
+      voiceUseVAD:                      33554432n;
+      /** @deprecated */
+      changeNickname:                   67108864n;
+      manageNicknames:                  134217728n;
+      manageRoles:                      268435456n;
+      manageWebhooks:                   536870912n;
+      manageGuildExpressions:           1073741824n;
+      /** @deprecated */
+      manageExpressions:                1073741824n;
+      /** @deprecated */
+      manageEmojisAndStickers:          1073741824n;
+      /** @deprecated */
+      manageEmojis:                     1073741824n;
+      useApplicationCommands:           2147483648n;
+      /** @deprecated */
+      useSlashCommands:                 2147483648n;
+      requestToSpeak:                   4294967296n;
+      /** @deprecated */
+      voiceRequestToSpeak:              4294967296n;
+      manageEvents:                     8589934592n;
+      manageThreads:                    17179869184n;
+      createPublicThreads:              34359738368n;
+      createPrivateThreads:             68719476736n;
+      useExternalStickers:              137438953472n;
+      sendMessagesInThreads:            274877906944n;
+      useEmbeddedActivities:            549755813888n;
+      /** @deprecated */
+      startEmbeddedActivities:          549755813888n;
+      moderateMembers:                  1099511627776n;
+      viewCreatorMonetizationAnalytics: 2199023255552n;
+      useSoundboard:                    4398046511104n;
+      createGuildExpressions:           8796093022208n;
+      createEvents:                     17592186044416n;
+      useExternalSounds:                35184372088832n;
+      sendVoiceMessages:                70368744177664n;
+      allGuild:                         29697484783806n;
+      allText:                          70904273435729n;
+      allVoice:                         110505548056337n;
+      all:                              140737488355327n;
     };
     PremiumTiers: {
       NONE:   0;
