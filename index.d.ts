@@ -676,7 +676,7 @@ declare namespace Eris {
   }
   interface OldMember {
     avatar: string | null;
-    communicationDisabledUntil: number | null;
+    communicationDisabledUntil?: number | null;
     nick: string | null;
     pending?: boolean;
     premiumSince?: number | null;
@@ -3221,7 +3221,7 @@ declare namespace Eris {
     bannerURL: string | null;
     bot: boolean;
     clientStatus?: ClientStatus;
-    communicationDisabledUntil: number | null;
+    communicationDisabledUntil?: number | null;
     createdAt: number;
     defaultAvatar: string;
     defaultAvatarURL: string;
