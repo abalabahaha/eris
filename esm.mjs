@@ -33,6 +33,7 @@ export const {
   Invite,
   Member,
   Message,
+  ModalSubmitInteraction,
   NewsChannel,
   NewsThreadChannel,
   Permission,
