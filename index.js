@@ -6,6 +6,7 @@ function Eris(token, options) {
     return new Client(token, options);
 }
 
+Eris.ApplicationCommand = require("./lib/structures/ApplicationCommand");
 Eris.AutocompleteInteraction = require("./lib/structures/AutocompleteInteraction");
 Eris.Base = require("./lib/structures/Base");
 Eris.Bucket = require("./lib/util/Bucket");
@@ -27,11 +28,13 @@ Eris.Guild = require("./lib/structures/Guild");
 Eris.GuildChannel = require("./lib/structures/GuildChannel");
 Eris.GuildIntegration = require("./lib/structures/GuildIntegration");
 Eris.GuildPreview = require("./lib/structures/GuildPreview");
+Eris.GuildScheduledEvent = require("./lib/structures/GuildScheduledEvent");
 Eris.GuildTemplate = require("./lib/structures/GuildTemplate");
 Eris.Interaction = require("./lib/structures/Interaction");
 Eris.Invite = require("./lib/structures/Invite");
 Eris.Member = require("./lib/structures/Member");
 Eris.Message = require("./lib/structures/Message");
+Eris.ModalSubmitInteraction = require("./lib/structures/ModalSubmitInteraction.js");
 Eris.NewsChannel = require("./lib/structures/NewsChannel");
 Eris.NewsThreadChannel = require("./lib/structures/NewsThreadChannel");
 Eris.Permission = require("./lib/structures/Permission");
