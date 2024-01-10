@@ -43,7 +43,7 @@ declare namespace Eris {
 
   // Channel
   type AnyChannel = AnyGuildChannel | PrivateChannel;
-  type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel | StoreChannel;
+  type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel;
   type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
   type AnyVoiceChannel = TextVoiceChannel | StageChannel;
   export type ChannelTypeConversion<T extends GuildChannelTypes> = 
@@ -51,9 +51,8 @@ declare namespace Eris {
       T extends Constants["ChannelTypes"]["GUILD_VOICE"] ? TextVoiceChannel :
         T extends Constants["ChannelTypes"]["GUILD_CATEGORY"] ? CategoryChannel :
           T extends Constants["ChannelTypes"]["GUILD_NEWS"] ? NewsChannel :
-            T extends Constants["ChannelTypes"]["GUILD_STORE"] ? StoreChannel :
-              T extends Constants["ChannelTypes"]["GUILD_STAGE_VOICE"] ? StageChannel :
-                never;
+            T extends Constants["ChannelTypes"]["GUILD_STAGE_VOICE"] ? StageChannel :
+              never;
   type GuildTextableChannel = TextChannel | TextVoiceChannel | NewsChannel;
   type GuildTextableWithThread = GuildTextableChannel | AnyThreadChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
@@ -1780,7 +1779,6 @@ declare namespace Eris {
       GROUP_DM:             3;
       GUILD_CATEGORY:       4;
       GUILD_NEWS:           5;
-      GUILD_STORE:          6;
 
       GUILD_NEWS_THREAD:    10;
       GUILD_PUBLIC_THREAD:  11;
@@ -3617,11 +3615,6 @@ declare namespace Eris {
     delete(): Promise<void>;
     edit(options: StageInstanceOptions): Promise<StageInstance>;
     update(data: BaseData): void;
-  }
-
-  export class StoreChannel extends GuildChannel {
-    type: Constants["ChannelTypes"]["GUILD_STORE"];
-    edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
   }
 
   export class TextChannel extends GuildChannel implements GuildTextable, Invitable, GuildPinnable {
