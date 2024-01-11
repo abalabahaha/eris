@@ -53,7 +53,7 @@ declare namespace Eris {
   type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel;
   type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
   type AnyVoiceChannel = TextVoiceChannel | StageChannel;
-  export type ChannelTypeConversion<T extends GuildChannelTypes> = 
+  export type ChannelTypeConversion<T extends GuildChannelTypes> =
     T extends Constants["ChannelTypes"]["GUILD_TEXT"] ? TextChannel :
       T extends Constants["ChannelTypes"]["GUILD_VOICE"] ? TextVoiceChannel :
         T extends Constants["ChannelTypes"]["GUILD_CATEGORY"] ? CategoryChannel :
@@ -68,7 +68,7 @@ declare namespace Eris {
   type PossiblyUncachedTextableChannel = TextableChannel | Uncached;
   type TextableChannel = (GuildTextable & GuildTextableChannel) | (ThreadTextable & AnyThreadChannel) | (Textable & PrivateChannel);
   type VideoQualityMode = Constants["VideoQualityModes"][keyof Constants["VideoQualityModes"]];
-  
+
   // Channel Types
   type ChannelTypes = GuildChannelTypes | PrivateChannelTypes;
   type GuildChannelTypes = Exclude<Constants["ChannelTypes"][keyof Constants["ChannelTypes"]], PrivateChannelTypes>;
