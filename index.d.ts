@@ -1541,7 +1541,7 @@ declare namespace Eris {
 
   // Modals
   interface ModalSubmitInteractionDataComponents {
-    components: ModalSubmitInteractionDataComponent[];
+    components: ModalSubmitInteractionDataComponents[];
     type: Constants["ComponentTypes"]["ACTION_ROW"];
   }
 
