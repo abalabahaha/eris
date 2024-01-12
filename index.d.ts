@@ -53,7 +53,7 @@ declare namespace Eris {
   type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel;
   type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
   type AnyVoiceChannel = TextVoiceChannel | StageChannel;
-  export type ChannelTypeConversion<T extends GuildChannelTypes> =
+  type ChannelTypeConversion<T extends GuildChannelTypes> =
     T extends Constants["ChannelTypes"]["GUILD_TEXT"] ? TextChannel :
       T extends Constants["ChannelTypes"]["GUILD_VOICE"] ? TextVoiceChannel :
         T extends Constants["ChannelTypes"]["GUILD_CATEGORY"] ? CategoryChannel :
