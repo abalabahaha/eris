@@ -214,6 +214,13 @@ declare namespace Eris {
   interface ApplicationCommandBulkEditOptions<T extends boolean, U = ApplicationCommandTypes> extends ApplicationCommandCreateOptions<T, U> {
     id?: string;
   }
+  interface ApplicationCommandOption<T extends Constants["ApplicationCommandOptionTypes"][Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">]> {
+    channel_types: T extends Constants["ApplicationCommandOptionTypes"]["CHANNEL"] ? ChannelTypes | undefined : never;
+    description: string;
+    name: string;
+    required?: boolean;
+    type: T;
+  }
   interface ApplicationCommandOptionChoice<T extends Constants["ApplicationCommandOptionTypes"][keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">] | unknown = unknown> {
     name: string;
     value: T extends Constants["ApplicationCommandOptionTypes"]["STRING"]
@@ -223,13 +230,6 @@ declare namespace Eris {
         : T extends Constants["ApplicationCommandOptionTypes"]["INTEGER"]
           ? number
           : number | string;
-  }
-  interface ApplicationCommandOption<T extends Constants["ApplicationCommandOptionTypes"][Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">]> {
-    channel_types: T extends Constants["ApplicationCommandOptionTypes"]["CHANNEL"] ? ChannelTypes | undefined : never;
-    description: string;
-    name: string;
-    required?: boolean;
-    type: T;
   }
   interface ApplicationCommandOptionsSubCommand {
     description: string;
