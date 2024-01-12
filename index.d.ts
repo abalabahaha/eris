@@ -42,6 +42,7 @@ declare namespace Eris {
   type ChatInputApplicationCommandStructure = Omit<ChatInputApplicationCommand, "id" | "application_id" | "guild_id">;
   type MessageApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["MESSAGE"]>, "description" | "options">;
   type MessageApplicationCommandStructure = Omit<MessageApplicationCommand, "id" | "application_id" | "guild_id">;
+  type ModalSubmitInteractionDataComponent = ModalSubmitInteractionDataTextInputComponent;
   type UserApplicationCommand = Omit<ApplicationCommand<Constants["ApplicationCommandTypes"]["USER"]>, "description" | "options">;
   type UserApplicationCommandStructure = Omit<UserApplicationCommand, "id" | "application_id" | "guild_id">;
 
@@ -1541,7 +1542,7 @@ declare namespace Eris {
 
   // Modals
   interface ModalSubmitInteractionDataComponents {
-    components: ModalSubmitInteractionDataComponents[];
+    components: ModalSubmitInteractionDataComponent[];
     type: Constants["ComponentTypes"]["ACTION_ROW"];
   }
 
