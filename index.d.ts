@@ -2488,8 +2488,7 @@ declare namespace Eris {
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
     createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionOptions, file?: FileContent | FileContent[]): Promise<void>;
     createMessage(channelID: string, content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
-    createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
-    createRole(guildID: string, options?: Role, reason?: string): Promise<Role>;
+    createRole(guildID: string, options?: Role | RoleOptions, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     createThreadWithoutMessage(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
@@ -3198,9 +3197,9 @@ declare namespace Eris {
     defer(flags?: number): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
-    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
-    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
-    getOriginalMessage(): Promise<Message>
+    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
+    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
+    getOriginalMessage(): Promise<Message<T>>
   }
 
   export class ComponentInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
@@ -3220,10 +3219,10 @@ declare namespace Eris {
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
-    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
-    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
+    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
     editParent(content: InteractionContentEdit, file?: FileContent | FileContent[]): Promise<void>;
-    getOriginalMessage(): Promise<Message>
+    getOriginalMessage(): Promise<Message<T>>
   }
 
   interface ComponentInteractionButtonData {
@@ -3253,10 +3252,10 @@ declare namespace Eris {
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
-    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
-    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
+    editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
     editParent(content: InteractionContentEdit, file?: FileContent | FileContent[]): Promise<void>;
-    getOriginalMessage(): Promise<Message>
+    getOriginalMessage(): Promise<Message<T>>
     pong(): Promise<void>;
     result(choices: ApplicationCommandOptionChoice[]): Promise<void>;
   }
@@ -3348,7 +3347,7 @@ declare namespace Eris {
     editedTimestamp?: number;
     embeds: Embed[];
     flags: number;
-    guildID: T extends GuildTextableWithThreads ? string : undefined;
+    guildID: T extends GuildTextableWithThreads ? string : void;
     id: string;
     interaction: MessageInteraction | null;
     jumpLink: string;
