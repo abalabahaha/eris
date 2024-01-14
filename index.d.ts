@@ -3347,7 +3347,7 @@ declare namespace Eris {
     editedTimestamp?: number;
     embeds: Embed[];
     flags: number;
-    guildID: T extends GuildTextableWithThreads ? string : void;
+    guildID: T extends GuildTextableWithThreads ? string : undefined;
     id: string;
     interaction: MessageInteraction | null;
     jumpLink: string;
