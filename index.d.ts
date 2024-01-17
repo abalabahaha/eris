@@ -1568,10 +1568,10 @@ declare namespace Eris {
   interface RoleTags {
     bot_id?: string;
     integration_id?: string;
-    premium_subscriber?: boolean;
+    premium_subscriber?: true;
     subscription_listing_id?: string;
-    available_for_purchase?: boolean;
-    guild_connections?: boolean;
+    available_for_purchase?: true;
+    guild_connections?: true;
   }
 
   // Thread
