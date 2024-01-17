@@ -155,8 +155,7 @@ declare namespace Eris {
 
   // Presence/Relationship
   type ActivityFlags = Constants["ActivityFlags"][keyof Constants["ActivityFlags"]];
-  type ActivityType = BotActivityType | Constants["ActivityTypes"]["CUSTOM"];
-  type BotActivityType = Constants["ActivityTypes"][Exclude<keyof Constants["ActivityTypes"], "CUSTOM">];
+  type ActivityType = Constants["ActivityTypes"];
   type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
   type SelfStatus = Status | "invisible";
   type Status = "online" | "idle" | "dnd";
@@ -1516,7 +1515,7 @@ declare namespace Eris {
     // the stuff attached to this object apparently varies even more than documented, so...
     [key: string]: unknown;
   }
-  interface ActivityPartial<T extends ActivityType = BotActivityType> {
+  interface ActivityPartial<T extends ActivityType> {
     name: string;
     type?: T;
     url?: string;
@@ -2661,8 +2660,8 @@ declare namespace Eris {
     ): Promise<Connection>;
     editSelfSettings(data: UserSettings): Promise<UserSettings>;
     editStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
-    editStatus(status: SelfStatus, activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
-    editStatus(activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
+    editStatus(status: SelfStatus, activities?: ActivityPartial<ActivityType>[] | ActivityPartial<ActivityType>): void;
+    editStatus(activities?: ActivityPartial<ActivityType>[] | ActivityPartial<ActivityType>): void;
     editUserNote(userID: string, note: string): Promise<void>;
     editWebhook(
       webhookID: string,
@@ -3703,8 +3702,8 @@ declare namespace Eris {
     createGuild(_guild: Guild): Guild;
     disconnect(options?: { reconnect?: boolean | "auto" }, error?: Error): void;
     editAFK(afk: boolean): void;
-    editStatus(status: SelfStatus, activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
-    editStatus(activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
+    editStatus(status: SelfStatus, activities?: ActivityPartial<ActivityType>[] | ActivityPartial<ActivityType>): void;
+    editStatus(activities?: ActivityPartial<ActivityType>[] | ActivityPartial<ActivityType>): void;
     // @ts-ignore: Method override
     emit(event: string, ...args: any[]): void;
     emit<K extends keyof ShardEvents>(event: K, ...args: ShardEvents[K]): boolean;
