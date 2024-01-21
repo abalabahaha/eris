@@ -694,7 +694,7 @@ declare namespace Eris {
     large: boolean;
     maxMembers?: number;
     maxVideoChannelUsers?: number;
-    mfaLevel: MFALevel;
+    mfaLevel: Pick<MFALevel, "level">;
     name: string;
     /** @deprecated */
     nsfw: boolean;
@@ -2996,7 +2996,7 @@ declare namespace Eris {
     maxVideoChannelUsers?: number;
     memberCount: number;
     members: Collection<Member>;
-    mfaLevel: MFALevel;
+    mfaLevel: Pick<MFALevel, "level">;
     name: string;
     /** @deprecated */
     nsfw: boolean;
