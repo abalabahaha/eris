@@ -110,6 +110,7 @@ declare namespace Eris {
   type GuildScheduledEventPrivacyLevel = Constants["GuildScheduledEventPrivacyLevel"][keyof Constants["GuildScheduledEventPrivacyLevel"]];
   type GuildScheduledEventStatus = Constants["GuildScheduledEventStatus"][keyof Constants["GuildScheduledEventStatus"]];
   type GuildWidgetStyles = Constants["GuildWidgetStyles"][keyof Constants["GuildWidgetStyles"]];
+  type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
   type NSFWLevel = Constants["GuildNSFWLevels"][keyof Constants["GuildNSFWLevels"]];
   type PossiblyUncachedGuild = Guild | Uncached;
   type PossiblyUncachedGuildScheduledEvent = GuildScheduledEvent | Uncached;
@@ -694,7 +695,7 @@ declare namespace Eris {
     large: boolean;
     maxMembers?: number;
     maxVideoChannelUsers?: number;
-    mfaLevel: Pick<MFALevel, "level">;
+    mfaLevel: MFALevel;
     name: string;
     /** @deprecated */
     nsfw: boolean;
@@ -1141,8 +1142,8 @@ declare namespace Eris {
     expireBehavior?: string;
     expireGracePeriod?: string;
   }
-  interface MFALevel {
-    level: Constants["MFALevels"][keyof Constants["MFALevels"]]
+  interface MFALevelResponse {
+    level: MFALevel
   }
   interface PruneMemberOptions extends GetPruneOptions {
     computePruneCount?: boolean;
@@ -2643,7 +2644,7 @@ declare namespace Eris {
     ): Promise<Emoji>;
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
-    editGuildMFALevel(guildID: string, level: Pick<MFALevel, "level">, reason?: string): Promise<MFALevel>;
+    editGuildMFALevel(guildID: string, level: MFALevel, reason?: string): Promise<MFALevelResponse>;
     editGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     editGuildSticker(guildID: string, stickerID: string, options?: EditStickerOptions, reason?: string): Promise<Sticker>;
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
@@ -2996,7 +2997,7 @@ declare namespace Eris {
     maxVideoChannelUsers?: number;
     memberCount: number;
     members: Collection<Member>;
-    mfaLevel: Pick<MFALevel, "level">;
+    mfaLevel: MFALevel;
     name: string;
     /** @deprecated */
     nsfw: boolean;
@@ -3070,7 +3071,7 @@ declare namespace Eris {
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
-    editMFALevel(level: Pick<MFALevel, "level">, reason?: string): Promise<MFALevel>;
+    editMFALevel(level: MFALevel, reason?: string): Promise<MFALevelResponse>;
     /** @deprecated */
     editNickname(nick: string): Promise<void>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
