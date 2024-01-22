@@ -1520,6 +1520,7 @@ declare namespace Eris {
   }
   interface ActivityPartial<T extends ActivityType> {
     name: string;
+    state?: string;
     type?: T;
     url?: string;
   }
