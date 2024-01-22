@@ -155,7 +155,7 @@ declare namespace Eris {
 
   // Presence/Relationship
   type ActivityFlags = Constants["ActivityFlags"][keyof Constants["ActivityFlags"]];
-  type ActivityType = Constants["ActivityTypes"];
+  type ActivityType = Constants["ActivityTypes"][keyof Constants["ActivityTypes"]];
   type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
   type SelfStatus = Status | "invisible";
   type Status = "online" | "idle" | "dnd";
