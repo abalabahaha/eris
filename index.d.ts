@@ -1143,7 +1143,7 @@ declare namespace Eris {
     expireGracePeriod?: string;
   }
   interface MFALevelResponse {
-    level: MFALevel
+    level: MFALevel;
   }
   interface PruneMemberOptions extends GetPruneOptions {
     computePruneCount?: boolean;
