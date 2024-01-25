@@ -1365,6 +1365,7 @@ declare namespace Eris {
   }
   interface Attachment extends PartialAttachment {
     content_type?: string;
+    duration_secs?: number;
     ephemeral?: boolean;
     filename: string;
     height?: number;
@@ -1372,6 +1373,7 @@ declare namespace Eris {
     proxy_url: string;
     size: number;
     url: string;
+    waveform?: string;
     width?: number;
   }
   interface ButtonBase {
@@ -1761,6 +1763,9 @@ declare namespace Eris {
       CHAT_INPUT: 1;
       USER:       2;
       MESSAGE:    3;
+    };
+    AttachmentFlags: {
+      IS_REMIX: 4;
     };
     AuditLogActions: {
       GUILD_UPDATE: 1;
