@@ -362,7 +362,7 @@ declare namespace Eris {
   interface CreateChannelOptions {
     availableTags: ForumTag[];
     bitrate?: number;
-    defaultAutoArchiveDuration?: AutoArchiveDuration;
+    defaultAutoArchiveDuration: AutoArchiveDuration;
     defaultReactionEmoji: DefaultReactionEmoji;
     defaultSortOrder: DefaultSortOrderTypes;
     nsfw?: boolean;
