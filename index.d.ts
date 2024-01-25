@@ -2632,6 +2632,7 @@ declare namespace Eris {
     createRole(guildID: string, options?: Role | RoleOptions, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
+    /** @deprecated */
     createThreadWithoutMessage(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
     deleteAutoModerationRule(guildID: string, ruleID: string, reason?: string): Promise<void>;
@@ -3899,6 +3900,7 @@ declare namespace Eris {
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<PublicThreadChannel>;
+    /** @deprecated */
     createThreadWithoutMessage(options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
     createWebhook(options: WebhookCreateOptions, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
