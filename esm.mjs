@@ -5,6 +5,7 @@ export default function(token, options) {
 }
 
 export const {
+  ApplicationCommand,
   AutocompleteInteraction,
   Base,
   Bucket,
@@ -33,6 +34,7 @@ export const {
   Invite,
   Member,
   Message,
+  ModalSubmitInteraction,
   NewsChannel,
   NewsThreadChannel,
   Permission,
@@ -49,7 +51,6 @@ export const {
   SharedStream,
   StageChannel,
   StageInstance,
-  StoreChannel,
   TextChannel,
   TextVoiceChannel,
   ThreadChannel,

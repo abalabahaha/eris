@@ -6,18 +6,19 @@ function Eris(token, options) {
     return new Client(token, options);
 }
 
+Eris.ApplicationCommand = require("./lib/structures/ApplicationCommand");
 Eris.AutocompleteInteraction = require("./lib/structures/AutocompleteInteraction");
 Eris.Base = require("./lib/structures/Base");
 Eris.Bucket = require("./lib/util/Bucket");
 Eris.Call = require("./lib/structures/Call");
 Eris.CategoryChannel = require("./lib/structures/CategoryChannel");
 Eris.Channel = require("./lib/structures/Channel");
-Eris.CommandInteraction = require("./lib/structures/CommandInteraction");
-Eris.ComponentInteraction = require("./lib/structures/ComponentInteraction");
 Eris.Client = Client;
 Eris.Collection = require("./lib/util/Collection");
 Eris.Command = require("./lib/command/Command");
 Eris.CommandClient = require("./lib/command/CommandClient");
+Eris.CommandInteraction = require("./lib/structures/CommandInteraction");
+Eris.ComponentInteraction = require("./lib/structures/ComponentInteraction");
 Eris.Constants = require("./lib/Constants");
 Eris.DiscordHTTPError = require("./lib/errors/DiscordHTTPError");
 Eris.DiscordRESTError = require("./lib/errors/DiscordRESTError");
@@ -34,6 +35,7 @@ Eris.Interaction = require("./lib/structures/Interaction");
 Eris.Invite = require("./lib/structures/Invite");
 Eris.Member = require("./lib/structures/Member");
 Eris.Message = require("./lib/structures/Message");
+Eris.ModalSubmitInteraction = require("./lib/structures/ModalSubmitInteraction.js");
 Eris.NewsChannel = require("./lib/structures/NewsChannel");
 Eris.NewsThreadChannel = require("./lib/structures/NewsThreadChannel");
 Eris.Permission = require("./lib/structures/Permission");
@@ -50,7 +52,6 @@ Eris.Shard = require("./lib/gateway/Shard");
 Eris.SharedStream = require("./lib/voice/SharedStream");
 Eris.StageChannel = require("./lib/structures/StageChannel");
 Eris.StageInstance = require("./lib/structures/StageInstance");
-Eris.StoreChannel = require("./lib/structures/StoreChannel");
 Eris.TextChannel = require("./lib/structures/TextChannel");
 Eris.TextVoiceChannel = require("./lib/structures/TextVoiceChannel");
 Eris.ThreadChannel = require("./lib/structures/ThreadChannel");
