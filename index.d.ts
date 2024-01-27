@@ -110,6 +110,7 @@ declare namespace Eris {
   type GuildScheduledEventPrivacyLevel = Constants["GuildScheduledEventPrivacyLevel"][keyof Constants["GuildScheduledEventPrivacyLevel"]];
   type GuildScheduledEventStatus = Constants["GuildScheduledEventStatus"][keyof Constants["GuildScheduledEventStatus"]];
   type GuildWidgetStyles = Constants["GuildWidgetStyles"][keyof Constants["GuildWidgetStyles"]];
+  type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
   type NSFWLevel = Constants["GuildNSFWLevels"][keyof Constants["GuildNSFWLevels"]];
   type OnboardingModes = Constants["GuildOnboardingModes"][keyof Constants["GuildOnboardingModes"]];
   type OnboardingPromptTypes = Constants["GuildOnboardingPromptTypes"][keyof Constants["GuildOnboardingPromptTypes"]];
@@ -149,7 +150,6 @@ declare namespace Eris {
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
   type MessageContent = string | AdvancedMessageContent;
   type MessageContentEdit = string | AdvancedMessageContentEdit;
-  type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
 
   // Permission
@@ -157,8 +157,7 @@ declare namespace Eris {
 
   // Presence/Relationship
   type ActivityFlags = Constants["ActivityFlags"][keyof Constants["ActivityFlags"]];
-  type ActivityType = BotActivityType | Constants["ActivityTypes"]["CUSTOM"];
-  type BotActivityType = Constants["ActivityTypes"][Exclude<keyof Constants["ActivityTypes"], "CUSTOM">];
+  type ActivityType = Constants["ActivityTypes"][keyof Constants["ActivityTypes"]];
   type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
   type SelfStatus = Status | "invisible";
   type Status = "online" | "idle" | "dnd";
@@ -1179,6 +1178,9 @@ declare namespace Eris {
     expireBehavior?: string;
     expireGracePeriod?: string;
   }
+  interface MFALevelResponse {
+    level: MFALevel;
+  }
   interface PruneMemberOptions extends GetPruneOptions {
     computePruneCount?: boolean;
     reason?: string;
@@ -1554,8 +1556,9 @@ declare namespace Eris {
     // the stuff attached to this object apparently varies even more than documented, so...
     [key: string]: unknown;
   }
-  interface ActivityPartial<T extends ActivityType = BotActivityType> {
+  interface ActivityPartial<T extends ActivityType> {
     name: string;
+    state?: string;
     type?: T;
     url?: string;
   }
@@ -2693,6 +2696,7 @@ declare namespace Eris {
     ): Promise<Emoji>;
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
+    editGuildMFALevel(guildID: string, level: MFALevel, reason?: string): Promise<MFALevelResponse>;
     editGuildOnboarding(guildID: string, options: GuildOnboardingOptions, reason?: string): Promise<GuildOnboarding>;
     editGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     editGuildSticker(guildID: string, stickerID: string, options?: EditStickerOptions, reason?: string): Promise<Sticker>;
@@ -2714,8 +2718,8 @@ declare namespace Eris {
     ): Promise<Connection>;
     editSelfSettings(data: UserSettings): Promise<UserSettings>;
     editStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
-    editStatus(status: SelfStatus, activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
-    editStatus(activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
+    editStatus(status: SelfStatus, activities?: ActivityPartial<ActivityType>[] | ActivityPartial<ActivityType>): void;
+    editStatus(activities?: ActivityPartial<ActivityType>[] | ActivityPartial<ActivityType>): void;
     editUserNote(userID: string, note: string): Promise<void>;
     editWebhook(
       webhookID: string,
@@ -3121,6 +3125,7 @@ declare namespace Eris {
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
+    editMFALevel(level: MFALevel, reason?: string): Promise<MFALevelResponse>;
     /** @deprecated */
     editNickname(nick: string): Promise<void>;
     editOnboarding(options: GuildOnboardingOptions, reason?: string): Promise<GuildOnboarding>;
@@ -3760,8 +3765,8 @@ declare namespace Eris {
     createGuild(_guild: Guild): Guild;
     disconnect(options?: { reconnect?: boolean | "auto" }, error?: Error): void;
     editAFK(afk: boolean): void;
-    editStatus(status: SelfStatus, activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
-    editStatus(activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
+    editStatus(status: SelfStatus, activities?: ActivityPartial<ActivityType>[] | ActivityPartial<ActivityType>): void;
+    editStatus(activities?: ActivityPartial<ActivityType>[] | ActivityPartial<ActivityType>): void;
     // @ts-ignore: Method override
     emit(event: string, ...args: any[]): void;
     emit<K extends keyof ShardEvents>(event: K, ...args: ShardEvents[K]): boolean;
