@@ -2615,7 +2615,7 @@ declare namespace Eris {
     ): Promise<Invite<"withoutCount">>;
     createChannelWebhook(
       channelID: string,
-      options: { name: string; avatar?: string | null },
+      options: WebhookCreateOptions,
       reason?: string
     ): Promise<Webhook>;
     createCommand<T extends ApplicationCommandTypes>(command: ApplicationCommandCreateOptions<false, T>): Promise<ApplicationCommand<false, T>>;
@@ -3011,14 +3011,14 @@ declare namespace Eris {
     topic?: string;
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     createThread(options: CreateForumThreadOptions): Promise<PublicThreadChannel>;
-    createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
+    createWebhook(options: WebhookCreateOptions, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
     getArchivedThreads(type: "private", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getArchivedThreads(type: "public", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel>>;
-    getInvites(): Promise<(Invite<"withMetadata", this>)[]>;
+    getInvites(): Promise<Invite<"withMetadata", this>[]>;
     getJoinedPrivateArchivedThreads(options: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getMessage(messageID: string): Promise<Message<this>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
@@ -3611,7 +3611,7 @@ declare namespace Eris {
     crosspostMessage(messageID: string): Promise<Message<this>>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
     follow(webhookChannelID: string): Promise<ChannelFollow>;
-    getInvites(): Promise<(Invite<"withMetadata", this>)[]>;
+    getInvites(): Promise<Invite<"withMetadata", this>[]>;
     getMessage(messageID: string): Promise<Message<this>>;
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
     /** @deprecated */
@@ -3909,7 +3909,7 @@ declare namespace Eris {
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
     getArchivedThreads(type: "private", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getArchivedThreads(type: "public", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel>>;
-    getInvites(): Promise<(Invite<"withMetadata", this>)[]>;
+    getInvites(): Promise<Invite<"withMetadata", this>[]>;
     getJoinedPrivateArchivedThreads(options: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getMessage(messageID: string): Promise<Message<this>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
@@ -4058,7 +4058,7 @@ declare namespace Eris {
     type: GuildVoiceChannelTypes;
     voiceMembers: Collection<Member>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", VoiceChannel>>;
-    getInvites(): Promise<(Invite<"withMetadata", VoiceChannel>)[]>;
+    getInvites(): Promise<Invite<"withMetadata", VoiceChannel>[]>;
     join(options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
     leave(): void;
   }
