@@ -3200,19 +3200,19 @@ declare namespace Eris {
     actionType: number;
     after: { [key: string]: unknown } | null;
     before: { [key: string]: unknown } | null;
-    channel?: AnyGuildChannel;
+    channel?: AnyGuildChannel | Uncached;
     count?: number;
     deleteMemberDays?: number;
-    guild: Guild;
+    guild: Guild | Uncached;
     id: string;
     member?: Member | Uncached;
     membersRemoved?: number;
-    message?: Message<GuildTextableChannel>;
+    message?: Message<GuildTextableChannel> | Uncached;
     reason: string | null;
     role?: Role | { id: string; name: string };
     target?: Guild | AnyGuildChannel | Member | Role | Invite | Emoji | Sticker | Message<GuildTextableChannel> | null;
     targetID: string;
-    user: User;
+    user: User | Uncached;
     constructor(data: BaseData, guild: Guild);
   }
 
@@ -3443,12 +3443,13 @@ declare namespace Eris {
         ? never // If the channel is GroupChannel, there is no guild
         : CH extends Exclude<InviteChannel, InvitePartialChannel> // Invite without Metadata and not GroupChanel
           ? Guild // If the invite channel is not partial
-          : Guild | undefined; // If the invite channel is partial
+          : Guild | Uncached | undefined; // If the invite channel is partial
     inviter?: User;
     maxAge: CT extends "withMetadata" ? number : null;
     maxUses: CT extends "withMetadata" ? number : null;
     memberCount: CT extends "withMetadata" | "withoutCount" ? null : number;
     presenceCount: CT extends "withMetadata" | "withoutCount" ? null : number;
+    /** @deprecated */
     stageInstance: CH extends StageChannel ? InviteStageInstance : null;
     temporary: CT extends "withMetadata" ? boolean : null;
     uses: CT extends "withMetadata" ? number : null;
