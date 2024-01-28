@@ -833,6 +833,7 @@ declare namespace Eris {
     error: [err: Error, id?: number];
     friendSuggestionCreate: [user: User, reasons: FriendSuggestionReasons];
     friendSuggestionDelete: [user: User];
+    guildAuditLogEntryCreate: [guildAuditLogEntry: GuildAuditLogEntry];
     guildAvailable: [guild: Guild];
     guildBanAdd: [guild: Guild, user: User];
     guildBanRemove: [guild: Guild, user: User];
@@ -3219,7 +3220,6 @@ declare namespace Eris {
   export class GuildChannel extends Channel {
     guild: Guild;
     name: string;
-    nsfw: boolean;
     parentID: string | null;
     permissionOverwrites: Collection<PermissionOverwrite>;
     position: number;
@@ -3870,6 +3870,7 @@ declare namespace Eris {
     lastMessageID: string;
     lastPinTimestamp: number | null;
     messages: Collection<Message<this>>;
+    nsfw: boolean;
     rateLimitPerUser: number;
     topic?: string | null;
     type: GuildTextChannelTypes;
