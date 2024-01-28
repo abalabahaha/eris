@@ -833,6 +833,7 @@ declare namespace Eris {
     error: [err: Error, id?: number];
     friendSuggestionCreate: [user: User, reasons: FriendSuggestionReasons];
     friendSuggestionDelete: [user: User];
+    guildAuditLogEntryCreate: [guildAuditLogEntry: GuildAuditLogEntry];
     guildAvailable: [guild: Guild];
     guildBanAdd: [guild: Guild, user: User];
     guildBanRemove: [guild: Guild, user: User];
