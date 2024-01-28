@@ -751,6 +751,7 @@ declare namespace Eris {
   }
   interface OldMember {
     avatar: string | null;
+    avatarDecorationData?: AvatarDecorationData | null;
     communicationDisabledUntil?: number | null;
     nick: string | null;
     pending?: boolean;
@@ -1332,6 +1333,10 @@ declare namespace Eris {
   }
 
   // Member/User
+  interface AvatarDecorationData {
+    asset: string;
+    sku_id: string;
+  }
   interface MemberOptions {
     channelID?: string | null;
     communicationDisabledUntil?: Date | null;
@@ -1351,6 +1356,7 @@ declare namespace Eris {
   interface PartialUser {
     accentColor?: number | null;
     avatar: string | null;
+    avatarDecorationData?: AvatarDecorationData | null;
     banner?: string | null;
     discriminator: string;
     id: string;
@@ -3454,6 +3460,8 @@ declare namespace Eris {
     accentColor?: number | null;
     activities?: Activity[];
     avatar: string | null;
+    avatarDecorationData?: AvatarDecorationData | null;
+    avatarDecorationURL: string | null;
     avatarURL: string;
     banner?: string | null;
     bannerURL: string | null;
@@ -3994,6 +4002,8 @@ declare namespace Eris {
   export class User extends Base {
     accentColor?: number | null;
     avatar: string | null;
+    avatarDecorationData?: AvatarDecorationData | null;
+    avatarDecorationURL: string | null;
     avatarURL: string;
     banner?: string | null;
     bannerURL: string | null;
