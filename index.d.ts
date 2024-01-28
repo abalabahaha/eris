@@ -3220,7 +3220,6 @@ declare namespace Eris {
   export class GuildChannel extends Channel {
     guild: Guild;
     name: string;
-    nsfw: boolean;
     parentID: string | null;
     permissionOverwrites: Collection<PermissionOverwrite>;
     position: number;
@@ -3871,6 +3870,7 @@ declare namespace Eris {
     lastMessageID: string;
     lastPinTimestamp: number | null;
     messages: Collection<Message<this>>;
+    nsfw: boolean;
     rateLimitPerUser: number;
     topic?: string | null;
     type: GuildTextChannelTypes;
