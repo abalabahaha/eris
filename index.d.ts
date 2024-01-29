@@ -112,6 +112,8 @@ declare namespace Eris {
   type GuildWidgetStyles = Constants["GuildWidgetStyles"][keyof Constants["GuildWidgetStyles"]];
   type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
   type NSFWLevel = Constants["GuildNSFWLevels"][keyof Constants["GuildNSFWLevels"]];
+  type OnboardingModes = Constants["GuildOnboardingModes"][keyof Constants["GuildOnboardingModes"]];
+  type OnboardingPromptTypes = Constants["GuildOnboardingPromptTypes"][keyof Constants["GuildOnboardingPromptTypes"]];
   type PossiblyUncachedGuild = Guild | Uncached;
   type PossiblyUncachedGuildScheduledEvent = GuildScheduledEvent | Uncached;
   type PremiumTier = Constants["PremiumTiers"][keyof Constants["PremiumTiers"]];
@@ -749,6 +751,7 @@ declare namespace Eris {
   }
   interface OldMember {
     avatar: string | null;
+    avatarDecorationData?: AvatarDecorationData | null;
     communicationDisabledUntil?: number | null;
     nick: string | null;
     pending?: boolean;
@@ -830,6 +833,7 @@ declare namespace Eris {
     error: [err: Error, id?: number];
     friendSuggestionCreate: [user: User, reasons: FriendSuggestionReasons];
     friendSuggestionDelete: [user: User];
+    guildAuditLogEntryCreate: [guildAuditLogEntry: GuildAuditLogEntry];
     guildAvailable: [guild: Guild];
     guildBanAdd: [guild: Guild, user: User];
     guildBanRemove: [guild: Guild, user: User];
@@ -1052,6 +1056,41 @@ declare namespace Eris {
   interface GuildBan {
     reason?: string;
     user: User;
+  }
+  interface GuildOnboarding {
+    default_channel_ids: string[];
+    enabled: boolean;
+    guild_id: string;
+    mode: OnboardingModes;
+    prompts: GuildOnboardingPrompt[];
+  }
+  interface GuildOnboardingOptions extends Omit<GuildOnboarding, "guild_id" | "prompt"> {
+    prompts: GuildOnboardingPromptOptions[];
+  }
+  interface GuildOnboardingPrompt {
+    id: string;
+    in_onboarding: boolean;
+    options: GuildOnboardingPromptOption[];
+    required: boolean;
+    single_select: boolean;
+    title: string;
+    type: OnboardingPromptTypes;
+  }
+  interface GuildOnboardingPromptOption {
+    channel_ids: string[];
+    description: string | null;
+    emoji?: PartialEmoji;
+    id: string;
+    role_ids: string[];
+    title: string;
+  }
+  interface GuildOnboardingPromptOptionOptions<T = boolean> extends Omit<GuildOnboardingPromptOption, "emoji"> {
+    emoji_animated: T extends true ? boolean : never;
+    emoji_id: T extends true ? string : never;
+    emoji_name: T extends true ? string : never;
+  }
+  interface GuildOnboardingPromptOptions extends Omit<GuildOnboardingPrompt, "options"> {
+    options: GuildOnboardingPromptOptionOptions[];
   }
   interface GuildOptions {
     afkChannelID?: string | null;
@@ -1295,10 +1334,15 @@ declare namespace Eris {
   }
 
   // Member/User
+  interface AvatarDecorationData {
+    asset: string;
+    sku_id: string;
+  }
   interface MemberOptions {
     channelID?: string | null;
     communicationDisabledUntil?: Date | null;
     deaf?: boolean;
+    flags?: number;
     mute?: boolean;
     nick?: string | null;
     roles?: string[];
@@ -1313,6 +1357,7 @@ declare namespace Eris {
   interface PartialUser {
     accentColor?: number | null;
     avatar: string | null;
+    avatarDecorationData?: AvatarDecorationData | null;
     banner?: string | null;
     discriminator: string;
     id: string;
@@ -1958,6 +2003,14 @@ declare namespace Eris {
       SAFE:           2;
       AGE_RESTRICTED: 3;
     };
+    GuildOnboardingModes: {
+      ONBOARDING_DEFAULT:  0;
+      ONBOARDING_ADVANCED: 1;
+    }
+    GuildOnboardingPromptTypes: {
+      MULTIPLE_CHOICE: 0;
+      DROPDOWN:        1;
+    }
     GuildScheduledEventEntityTypes: {
       STAGE_INSTANCE: 1;
       VOICE: 2;
@@ -2037,6 +2090,12 @@ declare namespace Eris {
       STREAM:               1;
       EMBEDDED_APPLICATION: 2;
     };
+    MemberFlags: {
+      DID_REJOIN:            1;
+      COMPLETED_ONBOARDING:  2;
+      BYPASSES_VERIFICATION: 4;
+      STARTED_ONBOARDING:    8;
+    }
     MessageActivityTypes: {
       JOIN:         1;
       SPECTATE:     2;
@@ -2651,6 +2710,7 @@ declare namespace Eris {
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
     editGuildMFALevel(guildID: string, level: MFALevel, reason?: string): Promise<MFALevelResponse>;
+    editGuildOnboarding(guildID: string, options: GuildOnboardingOptions, reason?: string): Promise<GuildOnboarding>;
     editGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     editGuildSticker(guildID: string, stickerID: string, options?: EditStickerOptions, reason?: string): Promise<Sticker>;
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
@@ -2726,6 +2786,7 @@ declare namespace Eris {
     getGuildEmbed(guildID: string): Promise<Widget>;
     getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
     getGuildInvites(guildID: string): Promise<Invite[]>;
+    getGuildOnboarding(guildID: string): Promise<GuildOnboarding>;
     getGuildPreview(guildID: string): Promise<GuildPreview>;
     getGuildScheduledEvents(guildID: string, options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent[]>
     getGuildScheduledEventUsers(guildID: string, eventID: string, options?: GetGuildScheduledEventUsersOptions): Promise<GuildScheduledEventUser[]>;
@@ -3080,6 +3141,7 @@ declare namespace Eris {
     editMFALevel(level: MFALevel, reason?: string): Promise<MFALevelResponse>;
     /** @deprecated */
     editNickname(nick: string): Promise<void>;
+    editOnboarding(options: GuildOnboardingOptions, reason?: string): Promise<GuildOnboarding>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     editScheduledEvent<T extends GuildScheduledEventEntityTypes>(eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>
     editSticker(stickerID: string, options?: EditStickerOptions, reason?: string): Promise<Sticker>;
@@ -3106,6 +3168,7 @@ declare namespace Eris {
     getEmbed(): Promise<Widget>;
     getIntegrations(): Promise<GuildIntegration>;
     getInvites(): Promise<Invite[]>;
+    getOnboarding(): Promise<GuildOnboarding>;
     getPruneCount(options?: GetPruneOptions): Promise<number>;
     getRESTChannels(): Promise<AnyGuildChannel[]>;
     getRESTEmoji(emojiID: string): Promise<Emoji>;
@@ -3144,26 +3207,25 @@ declare namespace Eris {
     actionType: number;
     after: { [key: string]: unknown } | null;
     before: { [key: string]: unknown } | null;
-    channel?: AnyGuildChannel;
+    channel?: AnyGuildChannel | Uncached;
     count?: number;
     deleteMemberDays?: number;
-    guild: Guild;
+    guild: Guild | Uncached;
     id: string;
     member?: Member | Uncached;
     membersRemoved?: number;
-    message?: Message<GuildTextableChannel>;
+    message?: Message<GuildTextableChannel> | Uncached;
     reason: string | null;
     role?: Role | { id: string; name: string };
     target?: Guild | AnyGuildChannel | Member | Role | Invite | Emoji | Sticker | Message<GuildTextableChannel> | null;
     targetID: string;
-    user: User;
+    user: User | Uncached;
     constructor(data: BaseData, guild: Guild);
   }
 
   export class GuildChannel extends Channel {
     guild: Guild;
     name: string;
-    nsfw: boolean;
     parentID: string | null;
     permissionOverwrites: Collection<PermissionOverwrite>;
     position: number;
@@ -3387,12 +3449,13 @@ declare namespace Eris {
         ? never // If the channel is GroupChannel, there is no guild
         : CH extends Exclude<InviteChannel, InvitePartialChannel> // Invite without Metadata and not GroupChanel
           ? Guild // If the invite channel is not partial
-          : Guild | undefined; // If the invite channel is partial
+          : Guild | Uncached | undefined; // If the invite channel is partial
     inviter?: User;
     maxAge: CT extends "withMetadata" ? number : null;
     maxUses: CT extends "withMetadata" ? number : null;
     memberCount: CT extends "withMetadata" | "withoutCount" ? null : number;
     presenceCount: CT extends "withMetadata" | "withoutCount" ? null : number;
+    /** @deprecated */
     stageInstance: CH extends StageChannel ? InviteStageInstance : null;
     temporary: CT extends "withMetadata" ? boolean : null;
     uses: CT extends "withMetadata" ? number : null;
@@ -3404,6 +3467,8 @@ declare namespace Eris {
     accentColor?: number | null;
     activities?: Activity[];
     avatar: string | null;
+    avatarDecorationData?: AvatarDecorationData | null;
+    avatarDecorationURL: string | null;
     avatarURL: string;
     banner?: string | null;
     bannerURL: string | null;
@@ -3414,6 +3479,7 @@ declare namespace Eris {
     defaultAvatar: string;
     defaultAvatarURL: string;
     discriminator: string;
+    flags: number;
     game: Activity | null;
     globalName: string | null;
     guild: Guild;
@@ -3810,6 +3876,7 @@ declare namespace Eris {
     lastMessageID: string;
     lastPinTimestamp: number | null;
     messages: Collection<Message<this>>;
+    nsfw: boolean;
     rateLimitPerUser: number;
     topic?: string | null;
     type: GuildTextChannelTypes;
@@ -3943,6 +4010,8 @@ declare namespace Eris {
   export class User extends Base {
     accentColor?: number | null;
     avatar: string | null;
+    avatarDecorationData?: AvatarDecorationData | null;
+    avatarDecorationURL: string | null;
     avatarURL: string;
     banner?: string | null;
     bannerURL: string | null;
