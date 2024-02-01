@@ -362,11 +362,13 @@ declare namespace Eris {
     position: number;
   }
   interface CreateChannelOptions {
-    availableTags: ForumTag[];
+    availableTags?: ForumTag[];
     bitrate?: number;
-    defaultAutoArchiveDuration: AutoArchiveDuration;
-    defaultReactionEmoji: DefaultReactionEmoji;
-    defaultSortOrder: DefaultSortOrderTypes;
+    defaultAutoArchiveDuration?: AutoArchiveDuration;
+    defaultForumLayout?: DefaultForumLayoutTypes;
+    defaultReactionEmoji?: DefaultReactionEmoji;
+    defaultSortOrder?: DefaultSortOrderTypes;
+    defaultThreadRateLimitPerUser?: number;
     nsfw?: boolean;
     parentID?: string;
     permissionOverwrites?: Overwrite[];
@@ -377,10 +379,16 @@ declare namespace Eris {
     userLimit?: number;
   }
   interface EditChannelOptions extends Omit<CreateChannelOptions, "reason"> {
+    appliedTags?: string[];
     archived?: boolean;
     autoArchiveDuration?: AutoArchiveDuration;
-    defaultForumLayout: DefaultForumLayoutTypes;
-    defaultRateLimitPerUser: number;
+    availableTags?: ForumTag[];
+    defaultAutoArchiveDuration?: AutoArchiveDuration;
+    defaultForumLayout?: DefaultForumLayoutTypes;
+    defaultReactionEmoji?: DefaultReactionEmoji;
+    defaultSortOrder?: DefaultSortOrderTypes;
+    defaultThreadRateLimitPerUser?: number;
+    flags?: number;
     icon?: string;
     invitable?: boolean;
     locked?: boolean;
@@ -682,12 +690,12 @@ declare namespace Eris {
     unavailable: boolean;
   }
   interface OldForumChannel extends OldGuildChannel {
-    availableTags: ForumTag[],
-    defaultAutoArchiveDuration: AutoArchiveDuration,
-    defaultForumLayout: DefaultForumLayoutTypes,
-    defaultReactionEmoji: DefaultReactionEmoji,
-    defaultSortOrder: DefaultSortOrderTypes,
-    defaultThreadRateLimitPerUser: number,
+    availableTags: ForumTag[];
+    defaultAutoArchiveDuration: AutoArchiveDuration;
+    defaultForumLayout: DefaultForumLayoutTypes;
+    defaultReactionEmoji: DefaultReactionEmoji;
+    defaultSortOrder: DefaultSortOrderTypes;
+    defaultThreadRateLimitPerUser: number;
   }
   interface OldGroupChannel {
     icon: string;
@@ -736,6 +744,7 @@ declare namespace Eris {
   }
   interface OldGuildChannel {
     bitrate?: number;
+    flags?: number;
     name: string;
     nsfw?: boolean;
     parentID: string | null;
@@ -841,7 +850,7 @@ declare namespace Eris {
     channelPinUpdate: [channel: TextableChannel, timestamp: number, oldTimestamp: number];
     channelRecipientAdd: [channel: GroupChannel, user: User];
     channelRecipientRemove: [channel: GroupChannel, user: User];
-    channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldVoiceChannel]
+    channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldForumChannel | OldGuildTextChannel | OldVoiceChannel]
     | [channel: GroupChannel, oldChannel: OldGroupChannel];
     connect: [id: number];
     debug: [message: string, id?: number];
@@ -1633,28 +1642,31 @@ declare namespace Eris {
     premium_subscriber?: true;
   }
 
-  // Thread
+  // MOVE THIS UNDER CHANNEL
+
+  // Forum/Thread
   interface CreateThreadOptions {
-    autoArchiveDuration: AutoArchiveDuration;
+    autoArchiveDuration?: AutoArchiveDuration;
     name: string;
-    rateLimitPerUser: number;
+    rateLimitPerUser?: number;
+    reason?: string;
   }
-  interface CreateForumThreadOptions extends CreateThreadOptions {
-    appliedTags: string[];
+  interface CreateForumThreadOptions extends CreateThreadWithoutMessageOptions {
+    appliedTags?: string[];
     message: Omit<AdvancedMessageContent, "messageReference" | "messageReferenceID" | "tts"> & FileContent[];
   }
   interface CreateThreadWithoutMessageOptions<T = AnyThreadChannel["type"]> extends CreateThreadOptions {
-    invitable: T extends PrivateThreadChannel["type"] ? boolean : never;
-    type: T;
+    invitable?: T extends PrivateThreadChannel["type"] ? boolean : never;
+    type?: T;
+  }
+  interface DefaultReactionEmoji {
+    emoji_id?: string;
+    emoji_name?: string;
   }
   interface ForumTag extends DefaultReactionEmoji {
     id: string;
     name: string;
     moderated: boolean;
-  }
-  interface DefaultReactionEmoji {
-    emoji_id?: string;
-    emoji_name?: string;
   }
   interface GetArchivedThreadsOptions {
     before?: Date;
@@ -2690,9 +2702,10 @@ declare namespace Eris {
     createMessage(channelID: string, content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
     createRole(guildID: string, options?: Role | RoleOptions, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
+    createThread(channelID: string, options: CreateForumThreadOptions, file?: FileContent | FileContent[]): Promise<NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel>;
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     /** @deprecated */
-    createThreadWithoutMessage(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
+    createThreadWithoutMessage(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
     deleteAutoModerationRule(guildID: string, ruleID: string, reason?: string): Promise<void>;
     deleteChannel(channelID: string, reason?: string): Promise<void>;
@@ -3066,38 +3079,15 @@ declare namespace Eris {
     defaultReactionEmoji: DefaultReactionEmoji;
     defaultSortOrder: DefaultSortOrderTypes;
     defaultThreadRateLimitPerUser: number;
-    flags: number;
     lastMessageID: string;
     rateLimitPerUser: number;
     topic?: string;
-    addMessageReaction(messageID: string, reaction: string): Promise<void>;
-    createThread(options: CreateForumThreadOptions): Promise<PublicThreadChannel>;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
+    createThread(options: CreateForumThreadOptions, file?: FileContent | FileContent[]): Promise<PublicThreadChannel>;
     createWebhook(options: WebhookCreateOptions, reason?: string): Promise<Webhook>;
-    deleteMessage(messageID: string, reason?: string): Promise<void>;
-    deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
-    edit(options: Omit<EditChannelOptions, "icon" | "ownerID">, reason?: string): Promise<this>;
-    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
-    getArchivedThreads(type: "private", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getArchivedThreads(type: "public", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel>>;
     getInvites(): Promise<Invite<"withMetadata", this>[]>;
-    getJoinedPrivateArchivedThreads(options: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
-    getMessage(messageID: string): Promise<Message<this>>;
-    getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
-    /** @deprecated */
-    getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
-    getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
-    /** @deprecated */
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
-    getPins(): Promise<Message<this>[]>;
     getWebhooks(): Promise<Webhook[]>;
-    pinMessage(messageID: string): Promise<void>;
-    purge(options: PurgeChannelOptions): Promise<number>;
-    removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
-    removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
-    removeMessageReactions(messageID: string): Promise<void>;
-    sendTyping(): Promise<void>;
-    unpinMessage(messageID: string): Promise<void>;
-    unsendMessage(messageID: string): Promise<void>;
   }
 
   export class GroupChannel extends PrivateChannel {
@@ -3306,6 +3296,7 @@ declare namespace Eris {
   export class GuildChannel extends Channel {
     guild: Guild;
     name: string;
+    flags?: number;
     parentID: string | null;
     permissionOverwrites: Collection<PermissionOverwrite>;
     position: number;
@@ -3966,9 +3957,10 @@ declare namespace Eris {
     addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
-    createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<PublicThreadChannel>;
+    createThread(options: CreateThreadWithoutMessageOptions): Promise<NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel>;
+    createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     /** @deprecated */
-    createThreadWithoutMessage(options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
+    createThreadWithoutMessage(options: CreateThreadWithoutMessageOptions): Promise<NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel>;
     createWebhook(options: WebhookCreateOptions, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
@@ -4032,7 +4024,6 @@ declare namespace Eris {
 
   export class ThreadChannel extends GuildChannel implements ThreadTextable {
     appliedTags: string[];
-    flags: number;
     lastMessageID: string;
     lastPinTimestamp?: number;
     member?: ThreadMember;
@@ -4043,6 +4034,7 @@ declare namespace Eris {
     ownerID: string;
     rateLimitPerUser: number;
     threadMetadata: ThreadMetadata;
+    totalMessages: number;
     type: GuildThreadChannelTypes;
     constructor(data: BaseData, client: Client, messageLimit?: number);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
