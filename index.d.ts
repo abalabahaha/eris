@@ -210,11 +210,11 @@ declare namespace Eris {
     nsfw?: boolean;
     options?: ApplicationCommandOptions[];
   }
-  /** Generic T is `true` if editing Guild scoped commands, and `false` if not */
+  /** Generic T is `true` if creating Guild scoped commands, and `false` if not */
   interface ApplicationCommandCreateOptions<T extends boolean, U = ApplicationCommandTypes> extends ApplicationCommandEditOptions<T, U> {
     description: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "" | void;
     name: string;
-    type?: T;
+    type?: U;
   }
   /** Generic T is `true` if editing Guild scoped commands, and `false` if not */
   interface ApplicationCommandBulkEditOptions<T extends boolean, U = ApplicationCommandTypes> extends ApplicationCommandCreateOptions<T, U> {
