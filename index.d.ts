@@ -1045,7 +1045,7 @@ declare namespace Eris {
     after?: string;
     before?: string;
     limit?: number;
-    withCounts: boolean;
+    withCounts?: boolean;
   }
   interface GuildAuditLog {
     entries: GuildAuditLogEntry[];
