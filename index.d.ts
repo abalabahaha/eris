@@ -173,8 +173,8 @@ declare namespace Eris {
   // Thread/Forum
   type AutoArchiveDuration = 60 | 1440 | 4320 | 10080;
   type ChannelFlags = Constants["ChannelFlags"][keyof Constants["ChannelFlags"]];
-  type DefaultForumLayoutTypes = Constants["DefaultForumLayoutTypes"][keyof Constants["DefaultForumLayoutTypes"]];
-  type DefaultSortOrderTypes = Constants["DefaultSortOrderTypes"][keyof Constants["DefaultSortOrderTypes"]];
+  type ForumLayoutTypes = Constants["ForumLayoutTypes"][keyof Constants["ForumLayoutTypes"]];
+  type SortOrderTypes = Constants["SortOrderTypes"][keyof Constants["SortOrderTypes"]];
 
   // User
   type PremiumTypes = Constants["PremiumTypes"][keyof Constants["PremiumTypes"]];
@@ -365,9 +365,9 @@ declare namespace Eris {
     availableTags?: ForumTag[];
     bitrate?: number;
     defaultAutoArchiveDuration?: AutoArchiveDuration;
-    defaultForumLayout?: DefaultForumLayoutTypes;
+    defaultForumLayout?: ForumLayoutTypes;
     defaultReactionEmoji?: DefaultReactionEmoji;
-    defaultSortOrder?: DefaultSortOrderTypes;
+    defaultSortOrder?: SortOrderTypes;
     defaultThreadRateLimitPerUser?: number;
     nsfw?: boolean;
     parentID?: string;
@@ -384,9 +384,9 @@ declare namespace Eris {
     autoArchiveDuration?: AutoArchiveDuration;
     availableTags?: ForumTag[];
     defaultAutoArchiveDuration?: AutoArchiveDuration;
-    defaultForumLayout?: DefaultForumLayoutTypes;
+    defaultForumLayout?: ForumLayoutTypes;
     defaultReactionEmoji?: DefaultReactionEmoji;
-    defaultSortOrder?: DefaultSortOrderTypes;
+    defaultSortOrder?: SortOrderTypes;
     defaultThreadRateLimitPerUser?: number;
     flags?: number;
     icon?: string;
@@ -692,9 +692,9 @@ declare namespace Eris {
   interface OldForumChannel extends OldGuildChannel {
     availableTags: ForumTag[];
     defaultAutoArchiveDuration: AutoArchiveDuration;
-    defaultForumLayout: DefaultForumLayoutTypes;
+    defaultForumLayout: ForumLayoutTypes;
     defaultReactionEmoji: DefaultReactionEmoji;
-    defaultSortOrder: DefaultSortOrderTypes;
+    defaultSortOrder: SortOrderTypes;
     defaultThreadRateLimitPerUser: number;
   }
   interface OldGroupChannel {
@@ -1972,7 +1972,7 @@ declare namespace Eris {
       NONE:     0;
       EVERYONE: 1;
     };
-    DefaultForumLayoutTypes: {
+    ForumLayoutTypes: {
       NOT_SET: 0,
       LIST_VIEW: 1,
       GALLERY_VIEW: 2
@@ -1981,7 +1981,7 @@ declare namespace Eris {
       ALL_MESSAGES:  0;
       ONLY_MENTIONS: 1;
     };
-    DefaultSortOrderTypes: {
+    SortOrderTypes: {
       LATEST_ACTIVITY: 0,
       CREATION_DATE: 1
     };
@@ -3075,9 +3075,9 @@ declare namespace Eris {
   export class ForumChannel extends GuildChannel {
     availableTags: ForumTag[];
     defaultAutoArchiveDuration: AutoArchiveDuration;
-    defaultForumLayout: DefaultForumLayoutTypes;
+    defaultForumLayout: ForumLayoutTypes;
     defaultReactionEmoji: DefaultReactionEmoji;
-    defaultSortOrder: DefaultSortOrderTypes;
+    defaultSortOrder: SortOrderTypes;
     defaultThreadRateLimitPerUser: number;
     lastMessageID: string;
     rateLimitPerUser: number;
