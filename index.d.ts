@@ -82,7 +82,7 @@ declare namespace Eris {
 
   // Client
   type MembershipStates = Constants["MembershipState"][keyof Constants["MembershipState"]];
-  type OAuthTeamMemberRoleTypes = Constants["OAuthTeamMemberRoleTypes"][keyof Constants["OAuthTeamMemberRoleTypes"]]
+  type OAuthTeamMemberRoleTypes = Constants["OAuthTeamMemberRoleTypes"][keyof Constants["OAuthTeamMemberRoleTypes"]];
 
   // Command
   type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
@@ -1046,6 +1046,7 @@ declare namespace Eris {
     after?: string;
     before?: string;
     limit?: number;
+    withCounts?: boolean;
   }
   interface GuildAuditLog {
     entries: GuildAuditLogEntry[];
@@ -1411,13 +1412,16 @@ declare namespace Eris {
   }
   interface Attachment extends PartialAttachment {
     content_type?: string;
+    duration_secs?: number;
     ephemeral?: boolean;
     filename: string;
+    flags?: number;
     height?: number;
     id: string;
     proxy_url: string;
     size: number;
     url: string;
+    waveform?: string;
     width?: number;
   }
   interface ButtonBase {
@@ -1812,6 +1816,9 @@ declare namespace Eris {
       USER:       2;
       MESSAGE:    3;
     };
+    AttachmentFlags: {
+      IS_REMIX: 4;
+    };
     AuditLogActions: {
       GUILD_UPDATE: 1;
 
@@ -2005,11 +2012,11 @@ declare namespace Eris {
     GuildOnboardingModes: {
       ONBOARDING_DEFAULT:  0;
       ONBOARDING_ADVANCED: 1;
-    }
+    };
     GuildOnboardingPromptTypes: {
       MULTIPLE_CHOICE: 0;
       DROPDOWN:        1;
-    }
+    };
     GuildScheduledEventEntityTypes: {
       STAGE_INSTANCE: 1;
       VOICE: 2;
@@ -2094,7 +2101,7 @@ declare namespace Eris {
       COMPLETED_ONBOARDING:  2;
       BYPASSES_VERIFICATION: 4;
       STARTED_ONBOARDING:    8;
-    }
+    };
     MessageActivityTypes: {
       JOIN:         1;
       SPECTATE:     2;
@@ -2163,7 +2170,7 @@ declare namespace Eris {
       DEVELOPER: "developer";
       OWNER:     "";
       READ_ONLY: "read_only";
-    }
+    };
     PermissionOverwriteTypes: {
       ROLE: 0;
       USER: 1;
