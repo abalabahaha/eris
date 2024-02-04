@@ -773,6 +773,7 @@ declare namespace Eris {
   }
   interface OldRole {
     color: number;
+    flags: number;
     hoist: boolean;
     icon: string | null;
     managed: boolean;
@@ -1595,6 +1596,7 @@ declare namespace Eris {
   }
   interface PartialRole {
     color?: number;
+    flags?: number;
     hoist?: boolean;
     id: string;
     mentionable?: boolean;
@@ -1615,6 +1617,9 @@ declare namespace Eris {
     bot_id?: string;
     integration_id?: string;
     premium_subscriber?: true;
+    subscription_listing_id?: string;
+    available_for_purchase?: true;
+    guild_connections?: true;
   }
 
   // Thread
@@ -2261,6 +2266,9 @@ declare namespace Eris {
       NONE:          0;
       NITRO_CLASSIC: 1;
       NITRO:         2;
+    };
+    RoleFlags: {
+      IN_PROMPT: 1
     };
     StageInstancePrivacyLevel: {
       PUBLIC: 1;
@@ -3706,6 +3714,7 @@ declare namespace Eris {
   export class Role extends Base {
     color: number;
     createdAt: number;
+    flags: number;
     guild: Guild;
     hoist: boolean;
     icon: string | null;
