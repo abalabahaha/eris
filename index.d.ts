@@ -3081,6 +3081,7 @@ declare namespace Eris {
     defaultThreadRateLimitPerUser: number;
     lastMessageID: string;
     rateLimitPerUser: number;
+    threads: PublicThreadChannel[];
     topic?: string;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
     createThread(options: CreateForumThreadOptions, file?: FileContent | FileContent[]): Promise<PublicThreadChannel>;
