@@ -4051,7 +4051,7 @@ declare namespace Eris {
     ownerID: string;
     rateLimitPerUser: number;
     threadMetadata: ThreadMetadata;
-    totalMessages: number;
+    totalMessageSent: number;
     type: GuildThreadChannelTypes;
     constructor(data: BaseData, client: Client, messageLimit?: number);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
