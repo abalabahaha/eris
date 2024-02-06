@@ -82,7 +82,7 @@ declare namespace Eris {
 
   // Client
   type MembershipStates = Constants["MembershipState"][keyof Constants["MembershipState"]];
-  type OAuthTeamMemberRoleTypes = Constants["OAuthTeamMemberRoleTypes"][keyof Constants["OAuthTeamMemberRoleTypes"]]
+  type OAuthTeamMemberRoleTypes = Constants["OAuthTeamMemberRoleTypes"][keyof Constants["OAuthTeamMemberRoleTypes"]];
 
   // Command
   type CommandGenerator = CommandGeneratorFunction | MessageContent | MessageContent[] | CommandGeneratorFunction[];
@@ -798,6 +798,7 @@ declare namespace Eris {
   }
   interface OldRole {
     color: number;
+    flags: number;
     hoist: boolean;
     icon: string | null;
     managed: boolean;
@@ -1070,6 +1071,7 @@ declare namespace Eris {
     after?: string;
     before?: string;
     limit?: number;
+    withCounts?: boolean;
   }
   interface GuildAuditLog {
     entries: GuildAuditLogEntry[];
@@ -1435,13 +1437,16 @@ declare namespace Eris {
   }
   interface Attachment extends PartialAttachment {
     content_type?: string;
+    duration_secs?: number;
     ephemeral?: boolean;
     filename: string;
+    flags?: number;
     height?: number;
     id: string;
     proxy_url: string;
     size: number;
     url: string;
+    waveform?: string;
     width?: number;
   }
   interface ButtonBase {
@@ -1620,6 +1625,7 @@ declare namespace Eris {
   }
   interface PartialRole {
     color?: number;
+    flags?: number;
     hoist?: boolean;
     id: string;
     mentionable?: boolean;
@@ -1640,6 +1646,9 @@ declare namespace Eris {
     bot_id?: string;
     integration_id?: string;
     premium_subscriber?: true;
+    subscription_listing_id?: string;
+    available_for_purchase?: true;
+    guild_connections?: true;
   }
 
   // MOVE THIS UNDER CHANNEL
@@ -1849,6 +1858,9 @@ declare namespace Eris {
       USER:       2;
       MESSAGE:    3;
     };
+    AttachmentFlags: {
+      IS_REMIX: 4;
+    };
     AuditLogActions: {
       GUILD_UPDATE: 1;
 
@@ -2056,11 +2068,11 @@ declare namespace Eris {
     GuildOnboardingModes: {
       ONBOARDING_DEFAULT:  0;
       ONBOARDING_ADVANCED: 1;
-    }
+    };
     GuildOnboardingPromptTypes: {
       MULTIPLE_CHOICE: 0;
       DROPDOWN:        1;
-    }
+    };
     GuildScheduledEventEntityTypes: {
       STAGE_INSTANCE: 1;
       VOICE: 2;
@@ -2145,7 +2157,7 @@ declare namespace Eris {
       COMPLETED_ONBOARDING:  2;
       BYPASSES_VERIFICATION: 4;
       STARTED_ONBOARDING:    8;
-    }
+    };
     MessageActivityTypes: {
       JOIN:         1;
       SPECTATE:     2;
@@ -2214,7 +2226,7 @@ declare namespace Eris {
       DEVELOPER: "developer";
       OWNER:     "";
       READ_ONLY: "read_only";
-    }
+    };
     PermissionOverwriteTypes: {
       ROLE: 0;
       USER: 1;
@@ -2317,6 +2329,9 @@ declare namespace Eris {
       NONE:          0;
       NITRO_CLASSIC: 1;
       NITRO:         2;
+    };
+    RoleFlags: {
+      IN_PROMPT: 1
     };
     StageInstancePrivacyLevel: {
       PUBLIC: 1;
@@ -3784,6 +3799,7 @@ declare namespace Eris {
   export class Role extends Base {
     color: number;
     createdAt: number;
+    flags: number;
     guild: Guild;
     hoist: boolean;
     icon: string | null;
