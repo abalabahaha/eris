@@ -82,6 +82,7 @@ declare namespace Eris {
   type TextVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE">];
 
   // Client
+  type ApplicationRoleConnectionMetadataTypes = Constants["RoleConnectionMetadataTypes"][keyof Constants["RoleConnectionMetadataTypes"]];
   type MembershipStates = Constants["MembershipState"][keyof Constants["MembershipState"]];
   type OAuthTeamMemberRoleTypes = Constants["OAuthTeamMemberRoleTypes"][keyof Constants["OAuthTeamMemberRoleTypes"]];
 
@@ -483,6 +484,14 @@ declare namespace Eris {
   }
 
   // Client
+  interface ApplicationRoleConnectionMetadata {
+    description: string;
+    description_localizations?: Record<string, string> | null;
+    key: string;
+    name: string;
+    name_localizations?: Record<string, string> | null;
+    type: ApplicationRoleConnectionMetadataTypes;
+  }
   interface ClientOptions {
     /** @deprecated */
     agent?: HTTPSAgent;
@@ -1294,12 +1303,10 @@ declare namespace Eris {
     roles?: Collection<Role>;
     users?: Collection<User>;
   }
-
   interface ComponentInteractionButtonData {
     component_type: Constants["ComponentTypes"]["BUTTON"];
     custom_id: string;
   }
-
   interface ComponentInteractionSelectMenuData {
     component_type: Constants["ComponentTypes"]["SELECT_MENU"];
     custom_id: string;
@@ -2333,6 +2340,16 @@ declare namespace Eris {
       NITRO_CLASSIC: 1;
       NITRO:         2;
     };
+    RoleConnectionMetadataTypes: {
+      INTEGER_LESS_THAN_OR_EQUAL:     1,
+      INTEGER_GREATER_THAN_OR_EQUAL:  2,
+      INTEGER_EQUAL:                  3,
+      INTEGER_NOT_EQUAL:              4,
+      DATETIME_LESS_THAN_OR_EQUAL:    5,
+      DATETIME_GREATER_THAN_OR_EQUAL: 6,
+      BOOLEAN_EQUAL:                  7,
+      BOOLEAN_NOT_EQUAL:              8
+    };
     RoleFlags: {
       IN_PROMPT: 1
     };
@@ -2457,6 +2474,7 @@ declare namespace Eris {
     name: string;
     owner: PartialUser;
     privacy_policy_url?: string;
+    role_connections_verification_url?: string;
     rpc_origins?: string[];
     /** @deprecated */
     summary: "";
@@ -2793,6 +2811,7 @@ declare namespace Eris {
     /** @deprecated */
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
+    editRoleConnectionMetadataRecords(data: ApplicationRoleConnectionMetadata): Promise<ApplicationRoleConnectionMetadata[]>
     editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
     editSelf(options: { avatar?: string; username?: string }): Promise<ExtendedUser>;
     editSelfConnection(
@@ -2901,6 +2920,7 @@ declare namespace Eris {
     getRESTGuildStickers(guildID: string): Promise<Sticker[]>;
     getRESTSticker(stickerID: string): Promise<Sticker>;
     getRESTUser(userID: string): Promise<User>;
+    getRoleConnectionMetadataRecords(): Promise<ApplicationRoleConnectionMetadata[]>;
     getSelf(): Promise<ExtendedUser>;
     getSelfBilling(): Promise<{
       payment_gateway?: string;
