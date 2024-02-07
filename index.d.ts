@@ -1662,7 +1662,7 @@ declare namespace Eris {
     rateLimitPerUser?: number;
     reason?: string;
   }
-  interface CreateForumThreadOptions extends Omit<CreateThreadWithoutMessageOptions, "type"> {
+  interface CreateForumThreadOptions extends CreateThreadOptions {
     appliedTags?: string[];
     message: Omit<AdvancedMessageContent, "messageReference" | "messageReferenceID" | "tts"> & FileContent[];
   }
@@ -2720,7 +2720,8 @@ declare namespace Eris {
     createMessage(channelID: string, content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
     createRole(guildID: string, options?: Role | RoleOptions, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
-    createThread(channelID: string, options: CreateForumThreadOptions, file?: FileContent | FileContent[]): Promise<NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel>;
+    createThread(channelID: string, options: CreateForumThreadOptions, file?: FileContent | FileContent[]): Promise<PublicThreadChannel>;
+    createThread(channelID: string, options: CreateThreadWithoutMessageOptions, file?: FileContent | FileContent[]): Promise<NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel>;
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     /** @deprecated */
     createThreadWithoutMessage(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel>;
