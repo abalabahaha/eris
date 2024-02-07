@@ -22,6 +22,7 @@ export const {
   DiscordHTTPError,
   DiscordRESTError,
   ExtendedUser,
+  ForumChannel,
   GroupChannel,
   Guild,
   GuildChannel,
