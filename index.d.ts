@@ -50,7 +50,7 @@ declare namespace Eris {
 
   // Channel
   type AnyChannel = AnyGuildChannel | PrivateChannel;
-  type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel;
+  type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel | ForumChannel;
   type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
   type AnyVoiceChannel = TextVoiceChannel | StageChannel;
   type ChannelTypeConversion<T extends GuildChannelTypes> =
@@ -59,7 +59,8 @@ declare namespace Eris {
         T extends Constants["ChannelTypes"]["GUILD_CATEGORY"] ? CategoryChannel :
           T extends Constants["ChannelTypes"]["GUILD_NEWS"] ? NewsChannel :
             T extends Constants["ChannelTypes"]["GUILD_STAGE_VOICE"] ? StageChannel :
-              never;
+              T extends Constants["ChannelTypes"]["GUILD_FORUM"] ? ForumChannel :
+                never;
   type GuildTextableChannel = TextChannel | TextVoiceChannel | NewsChannel;
   type GuildTextableWithThreads = GuildTextableChannel | AnyThreadChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
