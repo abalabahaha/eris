@@ -2720,7 +2720,7 @@ declare namespace Eris {
     createMessage(channelID: string, content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
     createRole(guildID: string, options?: Role | RoleOptions, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
-    createThread(channelID: string, options: CreateForumThreadOptions, file?: FileContent | FileContent[]): Promise<PublicThreadChannel>;
+    createThread(channelID: string, options: CreateForumThreadOptions, file?: FileContent | FileContent[]): Promise<PublicThreadChannel<true>>;
     createThread(channelID: string, options: CreateThreadWithoutMessageOptions, file?: FileContent | FileContent[]): Promise<NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel>;
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     /** @deprecated */
@@ -2830,7 +2830,7 @@ declare namespace Eris {
     followChannel(channelID: string, webhookChannelID: string): Promise<ChannelFollow>;
     getActiveGuildThreads(guildID: string): Promise<ListedGuildThreads>;
     getArchivedThreads(channelID: string, type: "private", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
-    getArchivedThreads(channelID: string, type: "public", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel>>;
+    getArchivedThreads(channelID: string, type: "public", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel<boolean>>>;
     getAutoModerationRule(guildID: string, ruleID: string): Promise<AutoModerationRule>;
     getAutoModerationRules(guildID: string): Promise<AutoModerationRule[]>;
     getBotGateway(): Promise<{ session_start_limit: { max_concurrency: number; remaining: number; reset_after: number; total: number }; shards: number; url: string }>;
@@ -3100,12 +3100,12 @@ declare namespace Eris {
     defaultThreadRateLimitPerUser: number;
     lastMessageID: string;
     rateLimitPerUser: number;
-    threads: PublicThreadChannel[];
+    threads: PublicThreadChannel<true>[];
     topic?: string;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
-    createThread(options: CreateForumThreadOptions, file?: FileContent | FileContent[]): Promise<PublicThreadChannel>;
+    createThread(options: CreateForumThreadOptions, file?: FileContent | FileContent[]): Promise<PublicThreadChannel<true>>;
     createWebhook(options: WebhookCreateOptions, reason?: string): Promise<Webhook>;
-    getArchivedThreads(type: "public", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel>>;
+    getArchivedThreads(options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel<true>>>;
     getInvites(): Promise<Invite<"withMetadata", this>[]>;
     getWebhooks(): Promise<Webhook[]>;
   }
@@ -3768,8 +3768,9 @@ declare namespace Eris {
     type: Constants["ChannelTypes"]["GUILD_PRIVATE_THREAD"];
   }
 
-  export class PublicThreadChannel extends ThreadChannel {
-    appliedTags?: string[];
+  /** Generic T is true if the PublicThreadChannel's parent channel is a Forum Channel */
+  export class PublicThreadChannel<T = false> extends ThreadChannel {
+    appliedTags: T extends true ? string[] : never;
     type: GuildPublicThreadChannelTypes;
     edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
   }
@@ -4053,6 +4054,7 @@ declare namespace Eris {
     messageCount: number;
     messages: Collection<Message<this>>;
     ownerID: string;
+    parentID: string;
     rateLimitPerUser: number;
     threadMetadata: ThreadMetadata;
     totalMessageSent: number;
