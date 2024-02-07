@@ -3767,6 +3767,7 @@ declare namespace Eris {
   }
 
   export class PublicThreadChannel extends ThreadChannel {
+    appliedTags?: string[];
     type: GuildPublicThreadChannelTypes;
     edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
   }
@@ -4042,7 +4043,6 @@ declare namespace Eris {
   }
 
   export class ThreadChannel extends GuildChannel implements ThreadTextable {
-    appliedTags?: string[];
     lastMessageID: string;
     lastPinTimestamp?: number;
     member?: ThreadMember;
