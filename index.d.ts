@@ -4042,7 +4042,7 @@ declare namespace Eris {
   }
 
   export class ThreadChannel extends GuildChannel implements ThreadTextable {
-    appliedTags: string[];
+    appliedTags?: string[];
     lastMessageID: string;
     lastPinTimestamp?: number;
     member?: ThreadMember;
