@@ -23,6 +23,7 @@ export const {
   DiscordRESTError,
   DMChannel,
   ExtendedUser,
+  ForumChannel,
   GroupChannel,
   Guild,
   GuildChannel,
