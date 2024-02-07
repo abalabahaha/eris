@@ -350,6 +350,7 @@ declare namespace Eris {
     /** valid for KEYWORD_PRESET */
     presets: AutoModerationKeywordPresetType[];
   }
+
   // Channel
   interface ChannelFollow {
     channel_id: string;
@@ -1651,8 +1652,6 @@ declare namespace Eris {
     guild_connections?: true;
   }
 
-  // MOVE THIS UNDER CHANNEL
-
   // Forum/Thread
   interface CreateThreadOptions {
     autoArchiveDuration?: AutoArchiveDuration;
@@ -1972,6 +1971,7 @@ declare namespace Eris {
       GUILD_STAGE_VOICE:    13;
       /** @deprecated */
       GUILD_STAGE:          13;
+
       GUILD_FORUM:          15;
     };
     ComponentTypes: {
