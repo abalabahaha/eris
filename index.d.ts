@@ -1662,7 +1662,7 @@ declare namespace Eris {
     rateLimitPerUser?: number;
     reason?: string;
   }
-  interface CreateForumThreadOptions extends CreateThreadWithoutMessageOptions {
+  interface CreateForumThreadOptions extends Omit<CreateThreadWithoutMessageOptions, "type"> {
     appliedTags?: string[];
     message: Omit<AdvancedMessageContent, "messageReference" | "messageReferenceID" | "tts"> & FileContent[];
   }
