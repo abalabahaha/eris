@@ -822,6 +822,8 @@ declare namespace Eris {
     videoQualityMode: VideoQualityMode;
   }
   interface OldThread {
+    appliedTags: string[];
+    autoArchiveDuration: number;
     name: string;
     rateLimitPerUser: number;
     threadMetadata: ThreadMetadata;
