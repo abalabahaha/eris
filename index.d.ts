@@ -1998,7 +1998,7 @@ declare namespace Eris {
     };
     SortOrderTypes: {
       LATEST_ACTIVITY: 0;
-      CREATION_DATE: ;
+      CREATION_DATE: 1;
     };
     ExplicitContentFilterLevels: {
       DISABLED:              0;
