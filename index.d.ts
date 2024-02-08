@@ -1957,9 +1957,9 @@ declare namespace Eris {
       LINK:      5;
     };
     ChannelFlags: {
-      PINNED: 1,
-      REQUIRE_TAG: 16
-    },
+      PINNED: 1;
+      REQUIRE_TAG: 16;
+    };
     ChannelTypes: {
       GUILD_TEXT:           0;
       DM:                   1;
@@ -1988,17 +1988,17 @@ declare namespace Eris {
       EVERYONE: 1;
     };
     ForumLayoutTypes: {
-      NOT_SET: 0,
-      LIST_VIEW: 1,
-      GALLERY_VIEW: 2
+      NOT_SET: 0;
+      LIST_VIEW: 1;
+      GALLERY_VIEW: 2;
     };
     DefaultMessageNotificationLevels: {
       ALL_MESSAGES:  0;
       ONLY_MENTIONS: 1;
     };
     SortOrderTypes: {
-      LATEST_ACTIVITY: 0,
-      CREATION_DATE: 1
+      LATEST_ACTIVITY: 0;
+      CREATION_DATE: ;
     };
     ExplicitContentFilterLevels: {
       DISABLED:              0;
@@ -2334,7 +2334,7 @@ declare namespace Eris {
       NITRO:         2;
     };
     RoleFlags: {
-      IN_PROMPT: 1
+      IN_PROMPT: 1;
     };
     StageInstancePrivacyLevel: {
       PUBLIC: 1;
@@ -3314,9 +3314,9 @@ declare namespace Eris {
   }
 
   export class GuildChannel extends Channel {
+    flags?: number;
     guild: Guild;
     name: string;
-    flags?: number;
     parentID: string | null;
     permissionOverwrites: Collection<PermissionOverwrite>;
     position: number;
