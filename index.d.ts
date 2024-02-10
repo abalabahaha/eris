@@ -1653,6 +1653,12 @@ declare namespace Eris {
     permissions?: bigint | number | string | Permission;
     unicodeEmoji?: string;
   }
+  interface RoleSubscriptionData {
+    is_renewal: boolean;
+    role_subscription_listing_id: string;
+    tier_name: string;
+    total_months_subscribed: number;
+  }
   interface RoleTags {
     bot_id?: string;
     integration_id?: string;
@@ -2067,7 +2073,8 @@ declare namespace Eris {
     GuildIntegrationTypes: [
       "twitch",
       "youtube",
-      "discord"
+      "discord",
+      "guild_subscription"
     ];
     GuildNSFWLevels: {
       DEFAULT:        0;
@@ -3651,6 +3658,7 @@ declare namespace Eris {
     reactions: { [s: string]: { count: number; me: boolean } };
     referencedMessage?: Message | null;
     roleMentions: string[];
+    roleSubscriptionData: RoleSubscriptionData;
     stickerItems?: StickerItems[];
     /** @deprecated */
     stickers?: Sticker[];
