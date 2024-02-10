@@ -224,7 +224,9 @@ declare namespace Eris {
   interface ApplicationCommandOption<T extends Constants["ApplicationCommandOptionTypes"][Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">]> {
     channel_types: T extends Constants["ApplicationCommandOptionTypes"]["CHANNEL"] ? ChannelTypes | undefined : never;
     description: string;
+    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
     name: string;
+    nameLocalizations?: Record<LocaleStrings, string> | null;
     required?: boolean;
     type: T;
   }
@@ -240,13 +242,17 @@ declare namespace Eris {
   }
   interface ApplicationCommandOptionsSubCommand {
     description: string;
+    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
     name: string;
+    nameLocalizations?: Record<LocaleStrings, string> | null;
     options?: ApplicationCommandOptionsWithValue[];
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"];
   }
   interface ApplicationCommandOptionsSubCommandGroup {
     description: string;
+    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
     name: string;
+    nameLocalizations?: Record<LocaleStrings, string> | null;
     options?: (ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsWithValue)[];
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"];
   }
@@ -254,7 +260,9 @@ declare namespace Eris {
     autocomplete?: boolean;
     choices?: ApplicationCommandOptionChoice<T>[];
     description: string;
+    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
     name: string;
+    nameLocalizations?: Record<LocaleStrings, string> | null;
     required?: boolean;
     type: T;
   }
@@ -262,9 +270,11 @@ declare namespace Eris {
     autocomplete?: boolean;
     choices?: ApplicationCommandOptionChoice<T>[];
     description: string;
+    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
     max_value?: number;
     min_value?: number;
     name: string;
+    nameLocalizations?: Record<LocaleStrings, string> | null;
     required?: boolean;
     type: T;
   }
