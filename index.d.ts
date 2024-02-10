@@ -3658,7 +3658,7 @@ declare namespace Eris {
     reactions: { [s: string]: { count: number; me: boolean } };
     referencedMessage?: Message | null;
     roleMentions: string[];
-    roleSubscriptionData: RoleSubscriptionData;
+    roleSubscriptionData?: RoleSubscriptionData;
     stickerItems?: StickerItems[];
     /** @deprecated */
     stickers?: Sticker[];
