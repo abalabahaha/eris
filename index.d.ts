@@ -143,6 +143,7 @@ declare namespace Eris {
   type InteractionDataOptionsWithValue = InteractionDataOptionsString | InteractionDataOptionsInteger | InteractionDataOptionsBoolean | InteractionDataOptionsUser | InteractionDataOptionsChannel | InteractionDataOptionsRole | InteractionDataOptionsMentionable | InteractionDataOptionsNumber;
   type InteractionResponseTypes = Constants["InteractionResponseTypes"][keyof Constants["InteractionResponseTypes"]];
   type InteractionTypes = Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
+  type LocaleStrings = Constants["Locales"][keyof Constants["Locales"]];
 
   // Invite
   type InviteTargetTypes = Constants["InviteTargetTypes"][keyof Constants["InviteTargetTypes"]];
@@ -212,10 +213,10 @@ declare namespace Eris {
     /** @deprecated */
     defaultPermission?: boolean;
     description?: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "" | void;
-    descriptionLocalizations?: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? { [s: string]: string } | null : null;
+    descriptionLocalizations?: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? Record<LocaleStrings, string> | null : null;
     dmPermission?: T extends true ? never : boolean | null;
     name?: string;
-    nameLocalizations?: { [s: string]: string } | null;
+    nameLocalizations?: Record<LocaleStrings, string> | null;
     nsfw?: boolean;
     options?: ApplicationCommandOptions[];
   }
@@ -232,7 +233,9 @@ declare namespace Eris {
   interface ApplicationCommandOption<T extends Constants["ApplicationCommandOptionTypes"][Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">]> {
     channel_types: T extends Constants["ApplicationCommandOptionTypes"]["CHANNEL"] ? ChannelTypes | undefined : never;
     description: string;
+    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
     name: string;
+    nameLocalizations?: Record<LocaleStrings, string> | null;
     required?: boolean;
     type: T;
   }
@@ -248,13 +251,17 @@ declare namespace Eris {
   }
   interface ApplicationCommandOptionsSubCommand {
     description: string;
+    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
     name: string;
+    nameLocalizations?: Record<LocaleStrings, string> | null;
     options?: ApplicationCommandOptionsWithValue[];
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND"];
   }
   interface ApplicationCommandOptionsSubCommandGroup {
     description: string;
+    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
     name: string;
+    nameLocalizations?: Record<LocaleStrings, string> | null;
     options?: (ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsWithValue)[];
     type: Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"];
   }
@@ -262,7 +269,9 @@ declare namespace Eris {
     autocomplete?: boolean;
     choices?: ApplicationCommandOptionChoice<T>[];
     description: string;
+    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
     name: string;
+    nameLocalizations?: Record<LocaleStrings, string> | null;
     required?: boolean;
     type: T;
   }
@@ -270,9 +279,11 @@ declare namespace Eris {
     autocomplete?: boolean;
     choices?: ApplicationCommandOptionChoice<T>[];
     description: string;
+    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
     max_value?: number;
     min_value?: number;
     name: string;
+    nameLocalizations?: Record<LocaleStrings, string> | null;
     required?: boolean;
     type: T;
   }
@@ -770,7 +781,7 @@ declare namespace Eris {
     nsfw: boolean;
     nsfwLevel: NSFWLevel;
     ownerID: string;
-    preferredLocale?: string;
+    preferredLocale?: LocaleStrings;
     premiumProgressBarEnabled: boolean;
     premiumSubscriptionCount?: number;
     premiumTier: PremiumTier;
@@ -1065,7 +1076,7 @@ declare namespace Eris {
     is_primary: boolean;
     name: {
       default: string;
-      localizations?: { [lang: string]: string };
+      localizations?: Record<LocaleStrings, string>;
     };
   }
   interface DiscoveryMetadata {
@@ -1177,7 +1188,7 @@ declare namespace Eris {
     icon?: string | null;
     name?: string;
     ownerID?: string;
-    preferredLocale?: string | null;
+    preferredLocale?: LocaleStrings | null;
     publicUpdatesChannelID?: string | null;
     rulesChannelID?: string | null;
     safetyAlertsChannelID?: string | null;
@@ -2197,6 +2208,39 @@ declare namespace Eris {
       STREAM:               1;
       EMBEDDED_APPLICATION: 2;
     };
+    Locales: {
+      BULGARIAN:            "bg";
+      CZECH:                "cs";
+      DANISH:               "da";
+      GERMAN:               "de";
+      GREEK:                "el";
+      ENGLISH_UK:           "en-GB";
+      ENGLISH_US:           "en-US";
+      SPANISH:              "es-ES";
+      FINNISH:              "fi";
+      FRENCH:               "fr";
+      HINDI:                "hi";
+      CROATIAN:             "hr";
+      HUNGARIAN:            "hu";
+      INDONESIAN:           "id";
+      ITALIAN:              "it";
+      JAPANESE:             "ja";
+      KOREAN:               "ko";
+      LITHUANIAN:           "lt";
+      DUTCH:                "nl";
+      NORWEGIAN:            "no";
+      POLISH:               "pl";
+      PORTUGUESE_BRAZILIAN: "pt-BR";
+      ROMANIAN_ROMANIA:     "ro";
+      RUSSIAN:              "ru";
+      SWEDISH:              "sv-SE";
+      THAI:                 "th";
+      TURKISH:              "tr";
+      UKRAINIAN:            "uk";
+      VIETNAMESE:           "vi";
+      CHINESE_CHINA:        "zh-CN";
+      CHINESE_TAIWAN:       "zh-TW";
+    };
     MemberFlags: {
       DID_REJOIN:            1;
       COMPLETED_ONBOARDING:  2;
@@ -2584,7 +2628,7 @@ declare namespace Eris {
     inline_attachment_media: boolean;
     inline_embed_media: boolean;
     guild_positions: string[];
-    locale: string;
+    locale: LocaleStrings;
     message_display_compact: boolean;
     render_embeds: boolean;
     render_reactions: boolean;
@@ -2602,11 +2646,11 @@ declare namespace Eris {
     /** @deprecated */
     defaultPermission?: boolean | null;
     description: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "";
-    descriptionLocalizations?: U extends "CHAT_INPUT" ? Record<string, string> | null : null;
+    descriptionLocalizations?: U extends "CHAT_INPUT" ? Record<LocaleStrings, string> | null : null;
     dmPermission?: boolean;
     guild: T extends true ? PossiblyUncachedGuild : never;
     name: string;
-    nameLocalizations?: Record<string, string> | null;
+    nameLocalizations?: Record<LocaleStrings, string> | null;
     nsfw?: boolean;
     options?: ApplicationCommandOptions[];
     type?: U;
@@ -3242,7 +3286,7 @@ declare namespace Eris {
     nsfw: boolean;
     nsfwLevel: NSFWLevel;
     ownerID: string;
-    preferredLocale: string;
+    preferredLocale: LocaleStrings;
     premiumProgressBarEnabled: boolean;
     premiumSubscriptionCount?: number;
     premiumTier: PremiumTier;
