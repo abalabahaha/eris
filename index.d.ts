@@ -1475,6 +1475,7 @@ declare namespace Eris {
     attachments?: PartialAttachment[];
     components?: ActionRow[];
     content?: string;
+    /** @deprecated */
     embed?: EmbedOptions;
     embeds?: EmbedOptions[];
     file?: FileContent | FileContent[];
@@ -1847,6 +1848,7 @@ declare namespace Eris {
     avatarURL?: string;
     components?: ActionRow[];
     content?: string;
+    /** @deprecated */
     embed?: EmbedOptions;
     embeds?: EmbedOptions[];
     file?: FileContent | FileContent[];
