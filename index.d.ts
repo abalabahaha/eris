@@ -1837,7 +1837,7 @@ declare namespace Eris {
   }
   interface WebhookEditOptions {
     avatar?: string | null;
-    channel_id?: string; // FIXME channel_id? Not channelID?
+    channelID?: string;
     name?: string;
   }
   interface WebhookPayload {
