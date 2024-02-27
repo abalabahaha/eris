@@ -3225,7 +3225,9 @@ declare namespace Eris {
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
     createThread(options: CreateForumThreadOptions, file?: FileContent | FileContent[]): Promise<PublicThreadChannel<true>>;
     createWebhook(options: WebhookCreateOptions, reason?: string): Promise<Webhook>;
+    deletePermission(overwriteID: string, reason?: string): Promise<void>;
     edit(options: EditForumChannelOptions, reason?: string): Promise<this>;
+    editPermission(overwriteID: string, allow: PermissionValueTypes, deny: PermissionValueTypes, type: PermissionType, reason?: string): Promise<PermissionOverwrite>;
     getArchivedThreads(options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel<true>>>;
     getInvites(): Promise<Invite<"withMetadata", this>[]>;
     getWebhooks(): Promise<Webhook[]>;
