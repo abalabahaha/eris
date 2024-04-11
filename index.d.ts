@@ -52,7 +52,7 @@ declare namespace Eris {
 
   // Channel
   type AnyChannel = AnyGuildChannel | AnyThreadChannel | DMChannel | GroupChannel;
-  type AnyGuildChannel = AnyGuildTextableChannel | AnyVoiceChannel | CategoryChannel | ForumChannel;
+  type AnyGuildChannel = AnyGuildTextableChannel | AnyVoiceChannel | CategoryChannel | ForumChannel | MediaChannel;
   type AnyGuildTextableChannel = TextChannel | VoiceChannel | NewsChannel;
   type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
   type AnyVoiceChannel = VoiceChannel | StageChannel;
@@ -63,6 +63,7 @@ declare namespace Eris {
           T extends Constants["ChannelTypes"]["GUILD_NEWS"] ? NewsChannel :
             T extends Constants["ChannelTypes"]["GUILD_STAGE_VOICE"] ? StageChannel :
               T extends Constants["ChannelTypes"]["GUILD_FORUM"] ? ForumChannel :
+                T extends Constants["ChannelTypes"]["GUILD_MEDIA"] ? MediaChannel :
                 never;
   type EditGuildChannelOptions = EditForumChannelOptions | EditMediaChannelOptions | EditGuildTextableChannelOptions;
   type EditGuildTextableChannelOptions = EditNewsChannelOptions | EditTextChannelOptions | EditThreadChannelOptions | EditVoiceChannelOptions;
@@ -2005,8 +2006,9 @@ declare namespace Eris {
       LINK:      5;
     };
     ChannelFlags: {
-      PINNED: 1;
-      REQUIRE_TAG: 16;
+      PINNED:                      1;
+      REQUIRE_TAG:                 16;
+      HIDE_MEDIA_DOWNLOAD_OPTIONS: 32768;
     };
     ChannelTypes: {
       GUILD_TEXT:           0;
@@ -2024,6 +2026,7 @@ declare namespace Eris {
       GUILD_STAGE:          13;
 
       GUILD_FORUM:          15;
+      GUILD_MEDIA:          16;
     };
     ComponentTypes: {
       ACTION_ROW:  1;
@@ -3204,30 +3207,8 @@ declare namespace Eris {
     verified: boolean;
   }
 
-  export class ForumChannel extends GuildChannel implements Invitable, Permissionable {
-    availableTags: ForumTag[];
-    defaultAutoArchiveDuration: AutoArchiveDuration;
+  export class ForumChannel extends MediaChannel {
     defaultForumLayout: ForumLayoutTypes;
-    defaultReactionEmoji: DefaultReactionEmoji;
-    defaultSortOrder: SortOrderTypes;
-    defaultThreadRateLimitPerUser: number;
-    edit(options: EditForumChannelOptions, reason?: string): Promise<this>;
-    lastMessageID: string | null;
-    nsfw: boolean;
-    permissionOverwrites: Collection<PermissionOverwrite>;
-    position: number;
-    rateLimitPerUser: number;
-    threads: PublicThreadChannel<true>[];
-    topic?: string;
-    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
-    createThread(options: CreateForumThreadOptions, file?: FileContent | FileContent[]): Promise<PublicThreadChannel<true>>;
-    createWebhook(options: WebhookCreateOptions, reason?: string): Promise<Webhook>;
-    deletePermission(overwriteID: string, reason?: string): Promise<void>;
-    edit(options: EditForumChannelOptions, reason?: string): Promise<this>;
-    editPermission(overwriteID: string, allow: PermissionValueTypes, deny: PermissionValueTypes, type: PermissionType, reason?: string): Promise<PermissionOverwrite>;
-    getArchivedThreads(options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel<true>>>;
-    getInvites(): Promise<Invite<"withMetadata", this>[]>;
-    getWebhooks(): Promise<Webhook[]>;
   }
   
   export class GroupChannel extends Channel {
@@ -3561,6 +3542,30 @@ declare namespace Eris {
     removeMessageReactions(messageID: string): Promise<void>;
     sendTyping(): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
+  }
+
+  export class MediaChannel extends GuildChannel implements Invitable, Permissionable {
+    availableTags: ForumTag[];
+    defaultAutoArchiveDuration: AutoArchiveDuration;
+    defaultReactionEmoji: DefaultReactionEmoji;
+    defaultSortOrder: SortOrderTypes;
+    defaultThreadRateLimitPerUser: number;
+    lastMessageID: string | null;
+    nsfw: boolean;
+    permissionOverwrites: Collection<PermissionOverwrite>;
+    position: number;
+    rateLimitPerUser: number;
+    threads: PublicThreadChannel<true>[];
+    topic?: string;
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
+    createThread(options: CreateForumThreadOptions, file?: FileContent | FileContent[]): Promise<PublicThreadChannel<true>>;
+    createWebhook(options: WebhookCreateOptions, reason?: string): Promise<Webhook>;
+    deletePermission(overwriteID: string, reason?: string): Promise<void>;
+    edit(options: EditForumChannelOptions, reason?: string): Promise<this>;
+    editPermission(overwriteID: string, allow: PermissionValueTypes, deny: PermissionValueTypes, type: PermissionType, reason?: string): Promise<PermissionOverwrite>;
+    getArchivedThreads(options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel<true>>>;
+    getInvites(): Promise<Invite<"withMetadata", this>[]>;
+    getWebhooks(): Promise<Webhook[]>;
   }
 
   //Interactions
