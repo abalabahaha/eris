@@ -1470,7 +1470,6 @@ declare namespace Eris {
     timeout: NodeJS.Timer;
   }
   interface AdvancedMessageContent extends AdvancedMessageContentEdit {
-    flags?: number;
     messageReference?: MessageReferenceReply;
     /** @deprecated */
     messageReferenceID?: string;
@@ -1478,6 +1477,7 @@ declare namespace Eris {
     tts?: boolean;
   }
   interface AdvancedMessageContentEdit {
+    flags?: number;
     allowedMentions?: AllowedMentions;
     attachments?: PartialAttachment[];
     components?: ActionRow[];
@@ -3203,7 +3203,7 @@ declare namespace Eris {
     type: Constants["ChannelTypes"]["DM"];
     constructor(data: BaseData, client: Client);
     addMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
-    createMessage(content: MessageContent, file: FileContent | FileContent[]): Promise<Message<this>>;
+    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     delete(): Promise<DMChannel>;
     deleteMessage(messageID: string): Promise<void>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
