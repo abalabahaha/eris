@@ -1463,7 +1463,6 @@ declare namespace Eris {
     timeout: NodeJS.Timer;
   }
   interface AdvancedMessageContent extends AdvancedMessageContentEdit {
-    flags?: number;
     messageReference?: MessageReferenceReply;
     /** @deprecated */
     messageReferenceID?: string;
@@ -1471,6 +1470,7 @@ declare namespace Eris {
     tts?: boolean;
   }
   interface AdvancedMessageContentEdit {
+    flags?: number;
     allowedMentions?: AllowedMentions;
     attachments?: PartialAttachment[];
     components?: ActionRow[];
