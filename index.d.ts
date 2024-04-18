@@ -129,7 +129,7 @@ declare namespace Eris {
   // Interaction
   type AnyInteraction = PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction;
   type InteractionCallbackData = InteractionAutocomplete | InteractionContent | InteractionModal;
-  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
+  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components" | "poll">;
   type InteractionContentEdit = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components">;
   type InteractionDataOptions = InteractionDataOptionsSubCommand | InteractionDataOptionsSubCommandGroup | InteractionDataOptionsWithValue;
   type InteractionDataOptionsBoolean = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"], boolean>;
@@ -1466,6 +1466,7 @@ declare namespace Eris {
     messageReference?: MessageReferenceReply;
     /** @deprecated */
     messageReferenceID?: string;
+    poll?: PollCreateOptions;
     stickerIDs?: string[];
     tts?: boolean;
   }
@@ -1573,6 +1574,34 @@ declare namespace Eris {
     description?: string;
     filename?: string;
     id: string | number;
+  }
+  interface Poll {
+    allow_multiselect: boolean;
+    answers: PollAnswer[];
+    expiry?: string | null;
+    layout_type: number;
+    question: PollMedia;
+    results?: PollResult;
+  }
+  interface PollAnswer {
+    answer_id: number;
+    poll_media: PollMedia;
+  }
+  interface PollCreateOptions extends Omit<Poll, "expiry" | "results"> {
+    duration: number;
+  }
+  interface PollMedia {
+    emoji?: Partial<PartialEmoji>;
+    text?: string;
+  }
+  interface PollResult {
+    answer_counts: PollAnswerCount[];
+    is_finalized: boolean;
+  }
+  interface PollAnswerCount {
+    count: number;
+    id: number;
+    me_voted: boolean;
   }
   interface SelectMenu {
     custom_id: string;
@@ -1853,6 +1882,7 @@ declare namespace Eris {
     embeds?: EmbedOptions[];
     file?: FileContent | FileContent[];
     flags?: number;
+    poll?: PollCreateOptions;
     threadID?: string;
     tts?: boolean;
     username?: string;
@@ -2398,10 +2428,11 @@ declare namespace Eris {
       createEvents:                     17592186044416n;
       useExternalSounds:                35184372088832n;
       sendVoiceMessages:                70368744177664n;
+      sendPolls:                        562949953421312n;
       allGuild:                         29697484783806n;
-      allText:                          70904273435729n;
-      allVoice:                         110505548056337n;
-      all:                              140737488355327n;
+      allText:                          633854226857041n;
+      allVoice:                         673455501477649n;
+      all:                              703687441776639n;
     };
     PremiumTiers: {
       NONE:   0;
@@ -3602,7 +3633,7 @@ declare namespace Eris {
     user?: User;
     acknowledge(flags?: number): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
-    createMessage(content: string | InteractionContent , file?: FileContent | FileContent[]): Promise<void>;
+    createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     createModal(content: InteractionModal): Promise<void>;
     defer(flags?: number): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
