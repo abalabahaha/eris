@@ -2902,7 +2902,7 @@ declare namespace Eris {
     /** @deprecated */
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
-    editRoleConnectionMetadataRecords(data: ApplicationRoleConnectionMetadata): Promise<ApplicationRoleConnectionMetadata[]>
+    editRoleConnectionMetadataRecords(data: ApplicationRoleConnectionMetadata[]): Promise<ApplicationRoleConnectionMetadata[]>
     editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
     editSelf(options: { avatar?: string; username?: string }): Promise<ExtendedUser>;
     editSelfConnection(
