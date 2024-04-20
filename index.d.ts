@@ -532,10 +532,10 @@ declare namespace Eris {
   // Client
   interface ApplicationRoleConnectionMetadata {
     description: string;
-    description_localizations?: Record<string, string> | null;
+    description_localizations?: Record<LocaleStrings, string>;
     key: string;
     name: string;
-    name_localizations?: Record<string, string> | null;
+    name_localizations?: Record<LocaleStrings, string>;
     type: ApplicationRoleConnectionMetadataTypes;
   }
   interface ClientOptions {
