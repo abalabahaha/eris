@@ -1539,6 +1539,10 @@ declare namespace Eris {
     before?: string;
     limit?: number;
   }
+  interface GetPollAnswerVotersOptions {
+    after?: string;
+    limit?: number;
+  }
   interface InteractionButton extends ButtonBase {
     custom_id: string;
     style: Exclude<ButtonStyles, Constants["ButtonStyles"]["LINK"]>;
@@ -3003,7 +3007,7 @@ declare namespace Eris {
     getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getOAuthApplication(appID?: string): Promise<OAuthApplicationInfo>;
     getPins(channelID: string): Promise<Message[]>;
-    getPollAnswerVoters(channelID: string, messageID: string, answerID: string, options?: GetRESTGuildMembersOptions): Promise<User[]>;
+    getPollAnswerVoters(channelID: string, messageID: string, answerID: string, options?: GetPollAnswerVotersOptions): Promise<User[]>;
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
     getRESTChannel(channelID: string): Promise<AnyChannel>;
     getRESTGuild(guildID: string, withCounts?: boolean): Promise<Guild>;
@@ -3592,7 +3596,7 @@ declare namespace Eris {
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
     /** @deprecated */
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
-    getPollAnswerVoters(messageID: string, answerID: string, options?: GetRESTGuildMembersOptions): Promise<User[]>;
+    getPollAnswerVoters(messageID: string, answerID: string, options?: GetPollAnswerVotersOptions): Promise<User[]>;
     purge(options: PurgeChannelOptions): Promise<number>;
     /** @deprecated */
     purge(limit: number, filter?: (message: Message<this>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
