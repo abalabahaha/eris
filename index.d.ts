@@ -841,6 +841,7 @@ declare namespace Eris {
     mentionedBy?: unknown;
     mentions: User[];
     pinned: boolean;
+    poll?: Poll;
     roleMentions: string[];
     tts: boolean;
   }
@@ -938,6 +939,8 @@ declare namespace Eris {
     messageCreate: [message: Message<PossiblyUncachedTextableChannel>];
     messageDelete: [message: PossiblyUncachedMessage];
     messageDeleteBulk: [messages: PossiblyUncachedMessage[]];
+    messagePollVoteAdd: [message: PossiblyUncachedMessage, user: User | Uncached, answerID: number];
+    messagePollVoteRemove: [message: PossiblyUncachedMessage, user: User | Uncached, answerID: number];
     messageReactionAdd: [message: PossiblyUncachedMessage, emoji: PartialEmoji, reactor: Member | Uncached];
     messageReactionRemove: [message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string];
     messageReactionRemoveAll: [message: PossiblyUncachedMessage];
@@ -1578,7 +1581,7 @@ declare namespace Eris {
   interface Poll {
     allow_multiselect: boolean;
     answers: PollAnswer[];
-    expiry?: string | null;
+    expiry: string | null;
     layout_type: number;
     question: PollMedia;
     results?: PollResult;
@@ -2940,6 +2943,7 @@ declare namespace Eris {
       secret: string,
       code: string
     ): Promise<{ backup_codes: { code: string; consumed: boolean }[]; token: string }>;
+    endPoll(channelID: string, messageID: string): Promise<Message<AnyGuildTextableChannel>>;
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string }): Promise<void>;
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string; wait: true }): Promise<Message<AnyGuildTextableChannel>>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message<AnyGuildTextableChannel>>;
@@ -2999,6 +3003,7 @@ declare namespace Eris {
     getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getOAuthApplication(appID?: string): Promise<OAuthApplicationInfo>;
     getPins(channelID: string): Promise<Message[]>;
+    getPollAnswerVoters(channelID: string, messageID: string, answerID: string, options?: GetRESTGuildMembersOptions): Promise<User[]>;
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
     getRESTChannel(channelID: string): Promise<AnyChannel>;
     getRESTGuild(guildID: string, withCounts?: boolean): Promise<Guild>;
@@ -3579,6 +3584,7 @@ declare namespace Eris {
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: EditGuildTextableChannelOptions, reason?: string): Promise<this>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
+    endPoll(messageID: string): Promise<Message<this>>;
     getMessage(messageID: string): Promise<Message<this>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
@@ -3586,6 +3592,7 @@ declare namespace Eris {
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
     /** @deprecated */
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
+    getPollAnswerVoters(messageID: string, answerID: string, options?: GetRESTGuildMembersOptions): Promise<User[]>;
     purge(options: PurgeChannelOptions): Promise<number>;
     /** @deprecated */
     purge(limit: number, filter?: (message: Message<this>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
@@ -3803,6 +3810,7 @@ declare namespace Eris {
     mentions: User[];
     messageReference: MessageReference | null;
     pinned: boolean;
+    poll?: Poll;
     prefix?: string;
     reactions: { [s: string]: { count: number; me: boolean } };
     referencedMessage?: Message | null;
