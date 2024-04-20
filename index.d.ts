@@ -158,6 +158,7 @@ declare namespace Eris {
   type MessageContent = string | AdvancedMessageContent;
   type MessageContentEdit = string | AdvancedMessageContentEdit;
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
+  type ReactionTypes = Constants["ReactionTypes"][keyof Constants["ReactionTypes"]];
 
   // Permission
   type PermissionType = Constants["PermissionOverwriteTypes"][keyof Constants["PermissionOverwriteTypes"]];
@@ -1534,6 +1535,7 @@ declare namespace Eris {
     /** @deprecated */
     before?: string;
     limit?: number;
+    type?: ReactionTypes;
   }
   interface InteractionButton extends ButtonBase {
     custom_id: string;
@@ -2416,6 +2418,10 @@ declare namespace Eris {
     };
     RoleFlags: {
       IN_PROMPT: 1;
+    };
+    ReactionTypes: {
+      NORMAL: 0;
+      BURST:  1;
     };
     StageInstancePrivacyLevel: {
       PUBLIC: 1;
