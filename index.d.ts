@@ -2018,7 +2018,7 @@ declare namespace Eris {
       LINK:      5;
     };
     ChannelFlags: {
-      PINNED: 1;
+      PINNED:      1;
       REQUIRE_TAG: 16;
     };
     ChannelTypes: {
@@ -2049,8 +2049,8 @@ declare namespace Eris {
       EVERYONE: 1;
     };
     ForumLayoutTypes: {
-      NOT_SET: 0;
-      LIST_VIEW: 1;
+      NOT_SET:      0;
+      LIST_VIEW:    1;
       GALLERY_VIEW: 2;
     };
     DefaultMessageNotificationLevels: {
@@ -2059,7 +2059,7 @@ declare namespace Eris {
     };
     SortOrderTypes: {
       LATEST_ACTIVITY: 0;
-      CREATION_DATE: 1;
+      CREATION_DATE:   1;
     };
     ExplicitContentFilterLevels: {
       DISABLED:              0;
@@ -2140,18 +2140,18 @@ declare namespace Eris {
     };
     GuildScheduledEventEntityTypes: {
       STAGE_INSTANCE: 1;
-      VOICE: 2;
-      EXTERNAL: 3;
+      VOICE:          2;
+      EXTERNAL:       3;
     };
     GuildScheduledEventPrivacyLevel: {
-      PUBLIC: 1;
+      PUBLIC:     1;
       GUILD_ONLY: 2;
     };
     GuildScheduledEventStatus: {
       SCHEDULED: 1;
-      ACTIVE:	2;
+      ACTIVE:	   2;
       COMPLETED: 3;
-      CANCELED: 4;
+      CANCELED:  4;
     };
     GuildWidgetStyles: {
       Shield:  "shield";
@@ -2442,7 +2442,7 @@ declare namespace Eris {
       IN_PROMPT: 1;
     };
     StageInstancePrivacyLevel: {
-      PUBLIC: 1;
+      PUBLIC:     1;
       GUILD_ONLY: 2;
     };
     StickerFormats: {
