@@ -1598,7 +1598,7 @@ declare namespace Eris {
     duration: number;
   }
   interface PollMedia {
-    emoji?: Partial<PartialEmoji>;
+    emoji?: PartialEmoji;
     text: string;
   }
   interface PollResult {
