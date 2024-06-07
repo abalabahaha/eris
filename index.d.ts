@@ -1599,7 +1599,7 @@ declare namespace Eris {
   }
   interface PollMedia {
     emoji?: Partial<PartialEmoji>;
-    text?: string;
+    text: string;
   }
   interface PollResult {
     answer_counts: PollAnswerCount[];
