@@ -3777,7 +3777,7 @@ declare namespace Eris {
     messageReference: MessageReference | null;
     pinned: boolean;
     prefix?: string;
-    reactions: { [s: string]: { burst_colors: string[], count: number, count_details: { burst: number, normal: number }, me: boolean, me_burst: boolean } };
+    reactions: { [s: string]: { burst_colors: string[], count: number, count_details: { burst: number, normal: number }, me: boolean, me_burst: boolean, type: number; } };
     referencedMessage?: Message | null;
     roleMentions: string[];
     stickerItems?: StickerItems[];
