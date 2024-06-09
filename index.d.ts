@@ -157,6 +157,7 @@ declare namespace Eris {
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
   type MessageContent = string | AdvancedMessageContent;
   type MessageContentEdit = string | AdvancedMessageContentEdit;
+  type PollLayoutTypes = Constants["PollLayoutTypes"][keyof Constants["PollLayoutTypes"]];
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
 
   // Permission
@@ -1586,7 +1587,7 @@ declare namespace Eris {
     allow_multiselect: boolean;
     answers: PollAnswer[];
     expiry: string | null;
-    layout_type: 1;
+    layout_type: PollLayoutTypes;
     question: Pick<PollMedia, "text">;
     results?: PollResult;
   }
@@ -2442,6 +2443,9 @@ declare namespace Eris {
       allText:                          633854226857041n;
       allVoice:                         673455501477649n;
       all:                              703687441776639n;
+    };
+    PollLayoutTypes: {
+      DEFAULT: 1;
     };
     PremiumTiers: {
       NONE:   0;
