@@ -12,6 +12,7 @@
       "./index.js"
     ],
     "./": "./",
+    "./*": "./*.js",
     "./esm": "./esm.mjs"
   },
   "typings": "./index.d.ts",
