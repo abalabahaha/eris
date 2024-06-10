@@ -1587,7 +1587,7 @@ declare namespace Eris {
   interface Poll {
     allow_multiselect: boolean;
     answers: PollAnswer[];
-    expiry: string | null;
+    expiry: number | null;
     layout_type: PollLayoutTypes;
     question: Pick<PollMedia, "text">;
     results?: PollResult;
