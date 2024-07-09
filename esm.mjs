@@ -5,6 +5,7 @@ export default function(token, options) {
 }
 
 export const {
+  ApplicationCommand,
   AutocompleteInteraction,
   Base,
   Bucket,
@@ -20,7 +21,9 @@ export const {
   Constants,
   DiscordHTTPError,
   DiscordRESTError,
+  DMChannel,
   ExtendedUser,
+  ForumChannel,
   GroupChannel,
   Guild,
   GuildChannel,
@@ -30,8 +33,10 @@ export const {
   GuildTemplate,
   Interaction,
   Invite,
+  MediaChannel,
   Member,
   Message,
+  ModalSubmitInteraction,
   NewsChannel,
   NewsThreadChannel,
   Permission,
@@ -48,9 +53,7 @@ export const {
   SharedStream,
   StageChannel,
   StageInstance,
-  StoreChannel,
   TextChannel,
-  TextVoiceChannel,
   ThreadChannel,
   ThreadMember,
   UnavailableGuild,
