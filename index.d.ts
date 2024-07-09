@@ -1744,6 +1744,11 @@ declare namespace Eris {
     before?: Date;
     limit?: number;
   }
+  interface GetThreadMembersOptions {
+    after?: string;
+    limit?: number;
+    withMember?: boolean;
+  }
   interface ListedChannelThreads<T extends ThreadChannel = AnyThreadChannel> extends ListedGuildThreads<T> {
     hasMore: boolean;
   }
@@ -3058,7 +3063,8 @@ declare namespace Eris {
     }[]>;
     getSelfSettings(): Promise<UserSettings>;
     getStageInstance(channelID: string): Promise<StageInstance>;
-    getThreadMembers(channelID: string): Promise<ThreadMember[]>;
+    getThreadMember(channelID: string, userID: string, withMember?: boolean): Promise<ThreadMember>;
+    getThreadMembers(channelID: string, options?: GetThreadMembersOptions): Promise<ThreadMember[]>;
     getUserProfile(userID: string): Promise<UserProfile>;
     getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
@@ -4147,7 +4153,7 @@ declare namespace Eris {
     constructor(data: BaseData, client: Client);
     edit(options: EditThreadChannelOptions, reason?: string): Promise<this>;
     getMember(userID: string, withMember?: boolean): Promise<ThreadMember>;
-    getMembers(): Promise<ThreadMember[]>;
+    getMembers(options?: GetThreadMembersOptions): Promise<ThreadMember[]>;
     getPins(): Promise<Message<this>[]>;
     join(userID?: string): Promise<void>;
     leave(userID?: string): Promise<void>;
