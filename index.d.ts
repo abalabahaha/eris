@@ -4234,6 +4234,7 @@ declare namespace Eris {
     receiveStreamOpus?: VoiceDataStream | null;
     receiveStreamPCM?: VoiceDataStream | null;
     reconnecting: boolean;
+    resuming: boolean;
     samplingRate: number;
     secret: Buffer;
     sendBuffer: Buffer;
