@@ -160,6 +160,7 @@ declare namespace Eris {
   type MessageContent = string | AdvancedMessageContent;
   type MessageContentEdit = string | AdvancedMessageContentEdit;
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
+  type ReactionTypes = Constants["ReactionTypes"][keyof Constants["ReactionTypes"]];
 
   // Permission
   type PermissionType = Constants["PermissionOverwriteTypes"][keyof Constants["PermissionOverwriteTypes"]];
@@ -950,8 +951,8 @@ declare namespace Eris {
     messageCreate: [message: Message<PossiblyUncachedTextableChannel>];
     messageDelete: [message: PossiblyUncachedMessage];
     messageDeleteBulk: [messages: PossiblyUncachedMessage[]];
-    messageReactionAdd: [message: PossiblyUncachedMessage, emoji: PartialEmoji, reactor: Member | Uncached];
-    messageReactionRemove: [message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string];
+    messageReactionAdd: [message: PossiblyUncachedMessage, emoji: PartialEmoji, reactor: Member | Uncached, burst: boolean];
+    messageReactionRemove: [message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string, burst: boolean];
     messageReactionRemoveAll: [message: PossiblyUncachedMessage];
     messageReactionRemoveEmoji: [message: PossiblyUncachedMessage, emoji: PartialEmoji];
     messageUpdate: [message: Message<PossiblyUncachedTextableChannel>, oldMessage: OldMessage | null];
@@ -1544,6 +1545,7 @@ declare namespace Eris {
     /** @deprecated */
     before?: string;
     limit?: number;
+    type?: ReactionTypes;
   }
   interface InteractionButton extends ButtonBase {
     custom_id: string;
@@ -1583,6 +1585,18 @@ declare namespace Eris {
     description?: string;
     filename?: string;
     id: string | number;
+  }
+  interface Reaction {
+    burst_colors: string[];
+    count: number;
+    count_details: ReactionCountDetails;
+    me: boolean;
+    me_burst: boolean;
+    type: ReactionTypes;
+  }
+  interface ReactionCountDetails {
+    burst: number;
+    normal: number;
   }
   interface SelectMenu {
     custom_id: string;
@@ -1745,6 +1759,11 @@ declare namespace Eris {
   interface GetArchivedThreadsOptions {
     before?: Date;
     limit?: number;
+  }
+  interface GetThreadMembersOptions {
+    after?: string;
+    limit?: number;
+    withMember?: boolean;
   }
   interface ListedChannelThreads<T extends ThreadChannel = AnyThreadChannel> extends ListedGuildThreads<T> {
     hasMore: boolean;
@@ -2453,6 +2472,10 @@ declare namespace Eris {
     RoleFlags: {
       IN_PROMPT: 1;
     };
+    ReactionTypes: {
+      NORMAL: 0;
+      BURST:  1;
+    };
     StageInstancePrivacyLevel: {
       PUBLIC:     1;
       GUILD_ONLY: 2;
@@ -3060,7 +3083,8 @@ declare namespace Eris {
     }[]>;
     getSelfSettings(): Promise<UserSettings>;
     getStageInstance(channelID: string): Promise<StageInstance>;
-    getThreadMembers(channelID: string): Promise<ThreadMember[]>;
+    getThreadMember(channelID: string, userID: string, withMember?: boolean): Promise<ThreadMember>;
+    getThreadMembers(channelID: string, options?: GetThreadMembersOptions): Promise<ThreadMember[]>;
     getUserProfile(userID: string): Promise<UserProfile>;
     getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
@@ -3812,7 +3836,7 @@ declare namespace Eris {
     messageReference: MessageReference | null;
     pinned: boolean;
     prefix?: string;
-    reactions: { [s: string]: { count: number; me: boolean } };
+    reactions: { [s: string]: Reaction };
     referencedMessage?: Message | null;
     roleMentions: string[];
     roleSubscriptionData?: RoleSubscriptionData;
@@ -4149,7 +4173,7 @@ declare namespace Eris {
     constructor(data: BaseData, client: Client);
     edit(options: EditThreadChannelOptions, reason?: string): Promise<this>;
     getMember(userID: string, withMember?: boolean): Promise<ThreadMember>;
-    getMembers(): Promise<ThreadMember[]>;
+    getMembers(options?: GetThreadMembersOptions): Promise<ThreadMember[]>;
     getPins(): Promise<Message<this>[]>;
     join(userID?: string): Promise<void>;
     leave(userID?: string): Promise<void>;
