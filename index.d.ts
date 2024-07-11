@@ -87,6 +87,7 @@ declare namespace Eris {
   type TextVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE">];
 
   // Client
+  type ApplicationRoleConnectionMetadataTypes = Constants["RoleConnectionMetadataTypes"][keyof Constants["RoleConnectionMetadataTypes"]];
   type MembershipStates = Constants["MembershipState"][keyof Constants["MembershipState"]];
   type OAuthTeamMemberRoleTypes = Constants["OAuthTeamMemberRoleTypes"][keyof Constants["OAuthTeamMemberRoleTypes"]];
 
@@ -531,6 +532,14 @@ declare namespace Eris {
   }
 
   // Client
+  interface ApplicationRoleConnectionMetadata {
+    description: string;
+    description_localizations?: Record<LocaleStrings, string>;
+    key: string;
+    name: string;
+    name_localizations?: Record<LocaleStrings, string>;
+    type: ApplicationRoleConnectionMetadataTypes;
+  }
   interface ClientOptions {
     /** @deprecated */
     agent?: HTTPSAgent;
@@ -1342,12 +1351,10 @@ declare namespace Eris {
     roles?: Collection<Role>;
     users?: Collection<User>;
   }
-
   interface ComponentInteractionButtonData {
     component_type: Constants["ComponentTypes"]["BUTTON"];
     custom_id: string;
   }
-
   interface ComponentInteractionSelectMenuData {
     component_type: Constants["ComponentTypes"]["SELECT_MENU"];
     custom_id: string;
@@ -1708,6 +1715,12 @@ declare namespace Eris {
     permissions?: bigint | number | string | Permission;
     unicodeEmoji?: string;
   }
+  interface RoleSubscriptionData {
+    is_renewal: boolean;
+    role_subscription_listing_id: string;
+    tier_name: string;
+    total_months_subscribed: number;
+  }
   interface RoleTags {
     bot_id?: string;
     integration_id?: string;
@@ -1744,6 +1757,11 @@ declare namespace Eris {
   interface GetArchivedThreadsOptions {
     before?: Date;
     limit?: number;
+  }
+  interface GetThreadMembersOptions {
+    after?: string;
+    limit?: number;
+    withMember?: boolean;
   }
   interface ListedChannelThreads<T extends ThreadChannel = AnyThreadChannel> extends ListedGuildThreads<T> {
     hasMore: boolean;
@@ -2053,8 +2071,8 @@ declare namespace Eris {
       EVERYONE: 1;
     };
     ForumLayoutTypes: {
-      NOT_SET: 0;
-      LIST_VIEW: 1;
+      NOT_SET:      0;
+      LIST_VIEW:    1;
       GALLERY_VIEW: 2;
     };
     DefaultMessageNotificationLevels: {
@@ -2063,7 +2081,7 @@ declare namespace Eris {
     };
     SortOrderTypes: {
       LATEST_ACTIVITY: 0;
-      CREATION_DATE: 1;
+      CREATION_DATE:   1;
     };
     ExplicitContentFilterLevels: {
       DISABLED:              0;
@@ -2093,14 +2111,20 @@ declare namespace Eris {
       SYNC_CALL:             13;
     };
     GuildFeatures: [
-      "AUTO_MODERATION",
+      "ANIMATED_BANNER",
       "ANIMATED_ICON",
+      "APPLICATION_COMMAND_PERMISSIONS_V2",
+      "AUTO_MODERATION",
       "BANNER",
       "COMMERCE",
       "COMMUNITY",
+      "CREATOR_MONETIZABLE_PROVISIONAL",
+      "CREATOR_STORE_PAGE",
+      "DEVELOPER_SUPPORT_SERVER",
       "DISCOVERABLE",
       "FEATURABLE",
       "INVITE_SPLASH",
+      "INVITES_DISABLED",
       "MEMBER_VERIFICATION_GATE_ENABLED",
       "MONETIZATION_ENABLED",
       "MORE_STICKERS",
@@ -2109,6 +2133,7 @@ declare namespace Eris {
       "PREVIEW_ENABLED",
       "PRIVATE_THREADS",
       "ROLE_ICONS",
+      "ROLE_SUBSCRIPTIONS_AVAILABLE_FOR_PURCHASE",
       "ROLE_SUBSCRIPTIONS_ENABLED",
       "SEVEN_DAY_THREAD_ARCHIVE",
       "THREE_DAY_THREAD_ARCHIVE",
@@ -2125,7 +2150,8 @@ declare namespace Eris {
     GuildIntegrationTypes: [
       "twitch",
       "youtube",
-      "discord"
+      "discord",
+      "guild_subscription"
     ];
     GuildNSFWLevels: {
       DEFAULT:        0;
@@ -2143,18 +2169,18 @@ declare namespace Eris {
     };
     GuildScheduledEventEntityTypes: {
       STAGE_INSTANCE: 1;
-      VOICE: 2;
-      EXTERNAL: 3;
+      VOICE:          2;
+      EXTERNAL:       3;
     };
     GuildScheduledEventPrivacyLevel: {
-      PUBLIC: 1;
+      PUBLIC:     1;
       GUILD_ONLY: 2;
     };
     GuildScheduledEventStatus: {
       SCHEDULED: 1;
-      ACTIVE:	2;
+      ACTIVE:	   2;
       COMPLETED: 3;
-      CANCELED: 4;
+      CANCELED:  4;
     };
     GuildWidgetStyles: {
       Shield:  "shield";
@@ -2431,6 +2457,16 @@ declare namespace Eris {
       NITRO_CLASSIC: 1;
       NITRO:         2;
     };
+    RoleConnectionMetadataTypes: {
+      INTEGER_LESS_THAN_OR_EQUAL:     1;
+      INTEGER_GREATER_THAN_OR_EQUAL:  2;
+      INTEGER_EQUAL:                  3;
+      INTEGER_NOT_EQUAL:              4;
+      DATETIME_LESS_THAN_OR_EQUAL:    5;
+      DATETIME_GREATER_THAN_OR_EQUAL: 6;
+      BOOLEAN_EQUAL:                  7;
+      BOOLEAN_NOT_EQUAL:              8;
+    };
     RoleFlags: {
       IN_PROMPT: 1;
     };
@@ -2439,7 +2475,7 @@ declare namespace Eris {
       BURST:  1;
     };
     StageInstancePrivacyLevel: {
-      PUBLIC: 1;
+      PUBLIC:     1;
       GUILD_ONLY: 2;
     };
     StickerFormats: {
@@ -2559,6 +2595,7 @@ declare namespace Eris {
     name: string;
     owner: PartialUser;
     privacy_policy_url?: string;
+    role_connections_verification_url?: string;
     rpc_origins?: string[];
     /** @deprecated */
     summary: "";
@@ -2898,6 +2935,7 @@ declare namespace Eris {
     /** @deprecated */
     editNickname(guildID: string, nick: string, reason?: string): Promise<void>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
+    editRoleConnectionMetadataRecords(data: ApplicationRoleConnectionMetadata[]): Promise<ApplicationRoleConnectionMetadata[]>
     editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
     editSelf(options: { avatar?: string; username?: string }): Promise<ExtendedUser>;
     editSelfConnection(
@@ -3006,6 +3044,7 @@ declare namespace Eris {
     getRESTGuildStickers(guildID: string): Promise<Sticker[]>;
     getRESTSticker(stickerID: string): Promise<Sticker>;
     getRESTUser(userID: string): Promise<User>;
+    getRoleConnectionMetadataRecords(): Promise<ApplicationRoleConnectionMetadata[]>;
     getSelf(): Promise<ExtendedUser>;
     getSelfBilling(): Promise<{
       payment_gateway?: string;
@@ -3042,7 +3081,8 @@ declare namespace Eris {
     }[]>;
     getSelfSettings(): Promise<UserSettings>;
     getStageInstance(channelID: string): Promise<StageInstance>;
-    getThreadMembers(channelID: string): Promise<ThreadMember[]>;
+    getThreadMember(channelID: string, userID: string, withMember?: boolean): Promise<ThreadMember>;
+    getThreadMembers(channelID: string, options?: GetThreadMembersOptions): Promise<ThreadMember[]>;
     getUserProfile(userID: string): Promise<UserProfile>;
     getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
@@ -3797,6 +3837,7 @@ declare namespace Eris {
     reactions: { [s: string]: Reaction };
     referencedMessage?: Message | null;
     roleMentions: string[];
+    roleSubscriptionData?: RoleSubscriptionData;
     stickerItems?: StickerItems[];
     /** @deprecated */
     stickers?: Sticker[];
@@ -4130,7 +4171,7 @@ declare namespace Eris {
     constructor(data: BaseData, client: Client);
     edit(options: EditThreadChannelOptions, reason?: string): Promise<this>;
     getMember(userID: string, withMember?: boolean): Promise<ThreadMember>;
-    getMembers(): Promise<ThreadMember[]>;
+    getMembers(options?: GetThreadMembersOptions): Promise<ThreadMember[]>;
     getPins(): Promise<Message<this>[]>;
     join(userID?: string): Promise<void>;
     leave(userID?: string): Promise<void>;
@@ -4252,6 +4293,7 @@ declare namespace Eris {
     receiveStreamOpus?: VoiceDataStream | null;
     receiveStreamPCM?: VoiceDataStream | null;
     reconnecting: boolean;
+    resuming: boolean;
     samplingRate: number;
     secret: Buffer;
     sendBuffer: Buffer;
