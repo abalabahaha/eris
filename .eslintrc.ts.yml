@@ -1,6 +1,6 @@
 ---
 extends:
-- "./.eslintrc.yml"
+- "./.eslintrc.yml.temp"
 - plugin:@typescript-eslint/eslint-recommended
 - plugin:@typescript-eslint/recommended
 rules:

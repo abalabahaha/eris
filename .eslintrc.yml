@@ -59,6 +59,9 @@ rules:
           after: false
         while:
           after: false
+  no-multiple-empty-lines:
+    - 2
+    - max: 1
   no-prototype-builtins: 0
   no-trailing-spaces: 2
   no-var: 2
