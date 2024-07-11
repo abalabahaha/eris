@@ -2798,7 +2798,7 @@ declare namespace Eris {
     editPermission(overwriteID: string, allow: PermissionValueTypes, deny: PermissionValueTypes, type: PermissionType, reason?: string): Promise<PermissionOverwrite>;
     edit(options: EditChannelOptionsBase, reason?: string): Promise<this>;
   }
-  
+
   export class Channel extends Base {
     mention: string;
     type: ChannelTypes;
@@ -3290,7 +3290,7 @@ declare namespace Eris {
   export class ForumChannel extends MediaChannel {
     defaultForumLayout: ForumLayoutTypes;
   }
-  
+
   export class GroupChannel extends Channel {
     applicationID: string;
     icon: string | null;
