@@ -1577,6 +1577,18 @@ declare namespace Eris {
     filename?: string;
     id: string | number;
   }
+  interface Reaction {
+    burst_colors: string[];
+    count: number;
+    count_details: ReactionCountDetails;
+    me: boolean;
+    me_burst: boolean;
+    type: ReactionTypes;
+  }
+  interface ReactionCountDetails {
+    burst: number;
+    normal: number;
+  }
   interface SelectMenu {
     custom_id: string;
     disabled?: boolean;
@@ -3782,7 +3794,7 @@ declare namespace Eris {
     messageReference: MessageReference | null;
     pinned: boolean;
     prefix?: string;
-    reactions: { [s: string]: { burst_colors: string[], count: number, count_details: { burst: number, normal: number }, me: boolean, me_burst: boolean, type: ReactionTypes; } };
+    reactions: { [s: string]: Reaction };
     referencedMessage?: Message | null;
     roleMentions: string[];
     stickerItems?: StickerItems[];
