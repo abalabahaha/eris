@@ -1,67 +1,122 @@
-import Eris from "./index.js";
+"use strict";
 
-export default function(token, options) {
-  return new Eris.Client(token, options);
+import Client from "./lib/Client.js";
+import AutocompleteInteraction from "./lib/structures/AutocompleteInteraction.js";
+import Base from "./lib/structures/Base.js";
+import Bucket from "./lib/util/Bucket.js";
+import Call from "./lib/structures/Call.js";
+import CategoryChannel from "./lib/structures/CategoryChannel.js";
+import Channel from "./lib/structures/Channel.js";
+import CommandInteraction from "./lib/structures/CommandInteraction.js";
+import ComponentInteraction from "./lib/structures/ComponentInteraction.js";
+import Collection from "./lib/util/Collection.js";
+import Command from "./lib/command/Command.js";
+import CommandClient from "./lib/command/CommandClient.js";
+import Constants from "./lib/Constants.js";
+import DiscordHTTPError from "./lib/errors/DiscordHTTPError.js";
+import DiscordRESTError from "./lib/errors/DiscordRESTError.js";
+import ExtendedUser from "./lib/structures/ExtendedUser.js";
+import GroupChannel from "./lib/structures/GroupChannel.js";
+import Guild from "./lib/structures/Guild.js";
+import GuildChannel from "./lib/structures/GuildChannel.js";
+import GuildIntegration from "./lib/structures/GuildIntegration.js";
+import GuildPreview from "./lib/structures/GuildPreview.js";
+import GuildScheduledEvent from "./lib/structures/GuildScheduledEvent.js";
+import GuildTemplate from "./lib/structures/GuildTemplate.js";
+import Interaction from "./lib/structures/Interaction.js";
+import Invite from "./lib/structures/Invite.js";
+import Member from "./lib/structures/Member.js";
+import Message from "./lib/structures/Message.js";
+import NewsChannel from "./lib/structures/NewsChannel.js";
+import NewsThreadChannel from "./lib/structures/NewsThreadChannel.js";
+import Permission from "./lib/structures/Permission.js";
+import PermissionOverwrite from "./lib/structures/PermissionOverwrite.js";
+import PingInteraction from "./lib/structures/PingInteraction.js";
+import PrivateChannel from "./lib/structures/PrivateChannel.js";
+import PrivateThreadChannel from "./lib/structures/PrivateThreadChannel.js";
+import PublicThreadChannel from "./lib/structures/PublicThreadChannel.js";
+import Relationship from "./lib/structures/Relationship.js";
+import RequestHandler from "./lib/rest/RequestHandler.js";
+import Role from "./lib/structures/Role.js";
+import SequentialBucket from "./lib/util/SequentialBucket.js";
+import Shard from "./lib/gateway/Shard.js";
+import SharedStream from "./lib/voice/SharedStream.js";
+import StageChannel from "./lib/structures/StageChannel.js";
+import StageInstance from "./lib/structures/StageInstance.js";
+import StoreChannel from "./lib/structures/StoreChannel.js";
+import TextChannel from "./lib/structures/TextChannel.js";
+import TextVoiceChannel from "./lib/structures/TextVoiceChannel.js";
+import ThreadChannel from "./lib/structures/ThreadChannel.js";
+import ThreadMember from "./lib/structures/ThreadMember.js";
+import UnavailableGuild from "./lib/structures/UnavailableGuild.js";
+import UnknownInteraction from "./lib/structures/UnknownInteraction.js";
+import User from "./lib/structures/User.js";
+import VoiceChannel from "./lib/structures/VoiceChannel.js";
+import VoiceConnection from "./lib/voice/VoiceConnection.js";
+import VoiceConnectionManager from "./lib/voice/VoiceConnectionManager.js";
+import VoiceState from "./lib/structures/VoiceState.js";
+
+import { version } from "./package.json";
+
+function Eris(token, options) {
+    return new Client(token, options);
 }
 
-export const {
-  ApplicationCommand,
-  AutocompleteInteraction,
-  Base,
-  Bucket,
-  Call,
-  CategoryChannel,
-  Channel,
-  Client,
-  Collection,
-  Command,
-  CommandClient,
-  CommandInteraction,
-  ComponentInteraction,
-  Constants,
-  DiscordHTTPError,
-  DiscordRESTError,
-  DMChannel,
-  ExtendedUser,
-  ForumChannel,
-  GroupChannel,
-  Guild,
-  GuildChannel,
-  GuildIntegration,
-  GuildPreview,
-  GuildScheduledEvent,
-  GuildTemplate,
-  Interaction,
-  Invite,
-  MediaChannel,
-  Member,
-  Message,
-  ModalSubmitInteraction,
-  NewsChannel,
-  NewsThreadChannel,
-  Permission,
-  PermissionOverwrite,
-  PingInteraction,
-  PrivateChannel,
-  PrivateThreadChannel,
-  PublicThreadChannel,
-  Relationship,
-  RequestHandler,
-  Role,
-  SequentialBucket,
-  Shard,
-  SharedStream,
-  StageChannel,
-  StageInstance,
-  TextChannel,
-  ThreadChannel,
-  ThreadMember,
-  UnavailableGuild,
-  UnknownInteraction,
-  User,
-  VERSION,
-  VoiceChannel,
-  VoiceConnection,
-  VoiceConnectionManager,
-  VoiceState
-} = Eris;
+Eris.AutocompleteInteraction = AutocompleteInteraction;
+Eris.Base = Base;
+Eris.Bucket = Bucket;
+Eris.Call = Call;
+Eris.CategoryChannel = CategoryChannel;
+Eris.Channel = Channel;
+Eris.CommandInteraction = CommandInteraction;
+Eris.ComponentInteraction = ComponentInteraction;
+Eris.Client = Client;
+Eris.Collection = Collection;
+Eris.Command = Command;
+Eris.CommandClient = CommandClient;
+Eris.Constants = Constants;
+Eris.DiscordHTTPError = DiscordHTTPError;
+Eris.DiscordRESTError = DiscordRESTError;
+Eris.ExtendedUser = ExtendedUser;
+Eris.GroupChannel = GroupChannel;
+Eris.Guild = Guild;
+Eris.GuildChannel = GuildChannel;
+Eris.GuildIntegration = GuildIntegration;
+Eris.GuildPreview = GuildPreview;
+Eris.GuildScheduledEvent = GuildScheduledEvent;
+Eris.GuildTemplate = GuildTemplate;
+Eris.Interaction = Interaction;
+Eris.Invite = Invite;
+Eris.Member = Member;
+Eris.Message = Message;
+Eris.NewsChannel = NewsChannel;
+Eris.NewsThreadChannel = NewsThreadChannel;
+Eris.Permission = Permission;
+Eris.PermissionOverwrite = PermissionOverwrite;
+Eris.PingInteraction = PingInteraction;
+Eris.PrivateChannel = PrivateChannel;
+Eris.PrivateThreadChannel = PrivateThreadChannel;
+Eris.PublicThreadChannel = PublicThreadChannel;
+Eris.Relationship = Relationship;
+Eris.RequestHandler = RequestHandler;
+Eris.Role = Role;
+Eris.SequentialBucket = SequentialBucket;
+Eris.Shard = Shard;
+Eris.SharedStream = SharedStream;
+Eris.StageChannel = StageChannel;
+Eris.StageInstance = StageInstance;
+Eris.StoreChannel = StoreChannel;
+Eris.TextChannel = TextChannel;
+Eris.TextVoiceChannel = TextVoiceChannel;
+Eris.ThreadChannel = ThreadChannel;
+Eris.ThreadMember = ThreadMember;
+Eris.UnavailableGuild = UnavailableGuild;
+Eris.UnknownInteraction = UnknownInteraction;
+Eris.User = User;
+Eris.VERSION = version;
+Eris.VoiceChannel = VoiceChannel;
+Eris.VoiceConnection = VoiceConnection;
+Eris.VoiceConnectionManager = VoiceConnectionManager;
+Eris.VoiceState = VoiceState;
+
+export default Eris;
