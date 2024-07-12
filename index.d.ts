@@ -159,6 +159,7 @@ declare namespace Eris {
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
   type MessageContent = string | AdvancedMessageContent;
   type MessageContentEdit = string | AdvancedMessageContentEdit;
+  type MessageReferenceTypes = Constants["MessageReferenceTypes"][keyof Constants["MessageReferenceTypes"]];
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
   type ReactionTypes = Constants["ReactionTypes"][keyof Constants["ReactionTypes"]];
 
@@ -1472,7 +1473,7 @@ declare namespace Eris {
     timeout: NodeJS.Timer;
   }
   interface AdvancedMessageContent extends AdvancedMessageContentEdit {
-    messageReference?: MessageReferenceReply;
+    messageReference?: MessageReferenceForward | MessageReferenceReply;
     /** @deprecated */
     messageReferenceID?: string;
     stickerIDs?: string[];
@@ -1574,10 +1575,20 @@ declare namespace Eris {
     channelID?: string;
     guildID?: string;
     messageID?: string;
+    type: MessageReferenceTypes;
+  }
+  interface MessageReferenceForward extends MessageReferenceBase {
+    channelID: string;
+    messageID: string;
+    type: MessageReferenceTypes;
   }
   interface MessageReferenceReply extends MessageReferenceBase {
     messageID: string;
     failIfNotExists?: boolean;
+  }
+  interface MessageSnapshot {
+    guildID?: string;
+    message: Pick<Message, "attachments" | "content" | "edited_timestamp" | "embeds" | "flags" | "id" | "timestamp">
   }
   interface PartialAttachment {
     description?: string;
@@ -2343,6 +2354,10 @@ declare namespace Eris {
 
       STAGE_TOPIC:                                  31;
       GUILD_APPLICATION_PREMIUM_SUBSCRIPTION:       32;
+    };
+    MessageReferenceTypes: {
+      DEFAULT: 0;
+      FORWARD: 1;
     };
     MFALevels: {
       NONE:     0;
@@ -3832,6 +3847,7 @@ declare namespace Eris {
     mentionEveryone: boolean;
     mentions: User[];
     messageReference: MessageReference | null;
+    messageSnapshots?: MessageSnapshot[];
     pinned: boolean;
     prefix?: string;
     reactions: { [s: string]: Reaction };
