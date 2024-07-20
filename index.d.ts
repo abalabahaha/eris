@@ -161,6 +161,7 @@ declare namespace Eris {
   type MessageContentEdit = string | AdvancedMessageContentEdit;
   type PollLayoutTypes = Constants["PollLayoutTypes"][keyof Constants["PollLayoutTypes"]];
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
+  type ReactionTypes = Constants["ReactionTypes"][keyof Constants["ReactionTypes"]];
 
   // Permission
   type PermissionType = Constants["PermissionOverwriteTypes"][keyof Constants["PermissionOverwriteTypes"]];
@@ -952,8 +953,8 @@ declare namespace Eris {
     messageDeleteBulk: [messages: PossiblyUncachedMessage[]];
     messagePollVoteAdd: [message: PossiblyUncachedMessage, user: User | Uncached, answerID: number];
     messagePollVoteRemove: [message: PossiblyUncachedMessage, user: User | Uncached, answerID: number];
-    messageReactionAdd: [message: PossiblyUncachedMessage, emoji: PartialEmoji, reactor: Member | Uncached];
-    messageReactionRemove: [message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string];
+    messageReactionAdd: [message: PossiblyUncachedMessage, emoji: PartialEmoji, reactor: Member | Uncached, burst: boolean];
+    messageReactionRemove: [message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string, burst: boolean];
     messageReactionRemoveAll: [message: PossiblyUncachedMessage];
     messageReactionRemoveEmoji: [message: PossiblyUncachedMessage, emoji: PartialEmoji];
     messageUpdate: [message: Message<PossiblyUncachedTextableChannel>, oldMessage: OldMessage | null];
@@ -981,6 +982,7 @@ declare namespace Eris {
     userUpdate: [user: User, oldUser: PartialUser | null];
     voiceChannelJoin: [member: Member, channel: AnyVoiceChannel];
     voiceChannelLeave: [member: Member, channel: AnyVoiceChannel];
+    voiceChannelStatusUpdate: [channel: AnyVoiceChannel, oldChannel: VoiceStatus];
     voiceChannelSwitch: [member: Member, newChannel: AnyVoiceChannel, oldChannel: AnyVoiceChannel];
     voiceStateUpdate: [member: Member, oldState: OldVoiceState];
     warn: [message: string, id?: number];
@@ -1547,6 +1549,7 @@ declare namespace Eris {
     /** @deprecated */
     before?: string;
     limit?: number;
+    type?: ReactionTypes;
   }
   interface GetPollAnswerVotersOptions {
     after?: string;
@@ -1618,6 +1621,18 @@ declare namespace Eris {
     count: number;
     id: number;
     me_voted: boolean;
+  }
+  interface Reaction {
+    burst_colors: string[];
+    count: number;
+    count_details: ReactionCountDetails;
+    me: boolean;
+    me_burst: boolean;
+    type: ReactionTypes;
+  }
+  interface ReactionCountDetails {
+    burst: number;
+    normal: number;
   }
   interface SelectMenu {
     custom_id: string;
@@ -1781,6 +1796,11 @@ declare namespace Eris {
     before?: Date;
     limit?: number;
   }
+  interface GetThreadMembersOptions {
+    after?: string;
+    limit?: number;
+    withMember?: boolean;
+  }
   interface ListedChannelThreads<T extends ThreadChannel = AnyThreadChannel> extends ListedGuildThreads<T> {
     hasMore: boolean;
   }
@@ -1857,6 +1877,9 @@ declare namespace Eris {
     channelID: string;
     requestToSpeakTimestamp?: Date | null;
     suppress?: boolean;
+  }
+  interface VoiceStatus {
+    status: string;
   }
   interface VoiceStreamCurrent {
     buffer: Buffer | null;
@@ -2029,6 +2052,9 @@ declare namespace Eris {
       AUTO_MODERATION_RULE_UPDATE:   141;
       AUTO_MODERATION_RULE_DELETE:   142;
       AUTO_MODERATION_BLOCK_MESSAGE: 143;
+
+      VOICE_CHANNEL_STATUS_UPDATE: 192;
+      VOICE_CHANNEL_STATUS_DELETE: 193;
     };
     AutoModerationActionTypes: {
       BLOCK_MESSAGE:      1;
@@ -2462,11 +2488,12 @@ declare namespace Eris {
       createEvents:                     17592186044416n;
       useExternalSounds:                35184372088832n;
       sendVoiceMessages:                70368744177664n;
+      setVoiceChannelStatus:            281474976710656n;
       sendPolls:                        562949953421312n;
       allGuild:                         29697484783806n;
       allText:                          633854226857041n;
-      allVoice:                         673455501477649n;
-      all:                              703687441776639n;
+      allVoice:                         954930478188305n;
+      all:                              985162418487295n;
     };
     PollLayoutTypes: {
       DEFAULT: 1;
@@ -2494,6 +2521,10 @@ declare namespace Eris {
     };
     RoleFlags: {
       IN_PROMPT: 1;
+    };
+    ReactionTypes: {
+      NORMAL: 0;
+      BURST:  1;
     };
     StageInstancePrivacyLevel: {
       PUBLIC:     1;
@@ -3104,7 +3135,8 @@ declare namespace Eris {
     }[]>;
     getSelfSettings(): Promise<UserSettings>;
     getStageInstance(channelID: string): Promise<StageInstance>;
-    getThreadMembers(channelID: string): Promise<ThreadMember[]>;
+    getThreadMember(channelID: string, userID: string, withMember?: boolean): Promise<ThreadMember>;
+    getThreadMembers(channelID: string, options?: GetThreadMembersOptions): Promise<ThreadMember[]>;
     getUserProfile(userID: string): Promise<UserProfile>;
     getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
@@ -3141,6 +3173,7 @@ declare namespace Eris {
     searchGuildMembers(guildID: string, query: string, limit?: number): Promise<Member[]>;
     searchGuildMessages(guildID: string, query: SearchOptions): Promise<SearchResults>;
     sendChannelTyping(channelID: string): Promise<void>;
+    setVoiceChannelStatus(channelID: string, status: string, reason?: string): Promise<void>;
     syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     syncGuildTemplate(guildID: string, code: string): Promise<GuildTemplate>;
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
@@ -3493,6 +3526,7 @@ declare namespace Eris {
     message?: Message<AnyGuildTextableChannel> | Uncached;
     reason: string | null;
     role?: Role | { id: string; name: string };
+    status?: string;
     target?: Guild | AnyGuildChannel | Member | Role | Invite | Emoji | Sticker | Message<AnyGuildTextableChannel> | null;
     targetID: string;
     user: User | Uncached;
@@ -3859,7 +3893,7 @@ declare namespace Eris {
     pinned: boolean;
     poll?: Poll;
     prefix?: string;
-    reactions: { [s: string]: { count: number; me: boolean } };
+    reactions: { [s: string]: Reaction };
     referencedMessage?: Message | null;
     roleMentions: string[];
     roleSubscriptionData?: RoleSubscriptionData;
@@ -4196,7 +4230,7 @@ declare namespace Eris {
     constructor(data: BaseData, client: Client);
     edit(options: EditThreadChannelOptions, reason?: string): Promise<this>;
     getMember(userID: string, withMember?: boolean): Promise<ThreadMember>;
-    getMembers(): Promise<ThreadMember[]>;
+    getMembers(options?: GetThreadMembersOptions): Promise<ThreadMember[]>;
     getPins(): Promise<Message<this>[]>;
     join(userID?: string): Promise<void>;
     leave(userID?: string): Promise<void>;
@@ -4279,6 +4313,7 @@ declare namespace Eris {
     permissionOverwrites: Collection<PermissionOverwrite>;
     position: number;
     rtcRegion: string | null;
+    status?: string;
     type: GuildVoiceChannelTypes;
     userLimit: number;
     videoQualityMode: VideoQualityMode;
@@ -4290,6 +4325,7 @@ declare namespace Eris {
     getInvites(): Promise<Invite<"withMetadata", this>[]>;
     join(options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
     leave(): void;
+    setStatus(status: string, reason?: string): Promise<void>;
   }
 
   export class VoiceConnection extends EventEmitter implements SimpleJSON {
