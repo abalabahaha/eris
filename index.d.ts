@@ -131,7 +131,7 @@ declare namespace Eris {
   // Interaction
   type AnyInteraction = PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction;
   type InteractionCallbackData = InteractionAutocomplete | InteractionContent | InteractionModal;
-  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
+  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components" | "poll">;
   type InteractionContentEdit = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components">;
   type InteractionDataOptions = InteractionDataOptionsSubCommand | InteractionDataOptionsSubCommandGroup | InteractionDataOptionsWithValue;
   type InteractionDataOptionsBoolean = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"], boolean>;
@@ -159,7 +159,9 @@ declare namespace Eris {
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
   type MessageContent = string | AdvancedMessageContent;
   type MessageContentEdit = string | AdvancedMessageContentEdit;
+  type PollLayoutTypes = Constants["PollLayoutTypes"][keyof Constants["PollLayoutTypes"]];
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
+  type ReactionTypes = Constants["ReactionTypes"][keyof Constants["ReactionTypes"]];
 
   // Permission
   type PermissionType = Constants["PermissionOverwriteTypes"][keyof Constants["PermissionOverwriteTypes"]];
@@ -851,6 +853,7 @@ declare namespace Eris {
     mentionedBy?: unknown;
     mentions: User[];
     pinned: boolean;
+    poll?: Poll;
     roleMentions: string[];
     tts: boolean;
   }
@@ -948,8 +951,10 @@ declare namespace Eris {
     messageCreate: [message: Message<PossiblyUncachedTextableChannel>];
     messageDelete: [message: PossiblyUncachedMessage];
     messageDeleteBulk: [messages: PossiblyUncachedMessage[]];
-    messageReactionAdd: [message: PossiblyUncachedMessage, emoji: PartialEmoji, reactor: Member | Uncached];
-    messageReactionRemove: [message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string];
+    messagePollVoteAdd: [message: PossiblyUncachedMessage, user: User | Uncached, answerID: number];
+    messagePollVoteRemove: [message: PossiblyUncachedMessage, user: User | Uncached, answerID: number];
+    messageReactionAdd: [message: PossiblyUncachedMessage, emoji: PartialEmoji, reactor: Member | Uncached, burst: boolean];
+    messageReactionRemove: [message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string, burst: boolean];
     messageReactionRemoveAll: [message: PossiblyUncachedMessage];
     messageReactionRemoveEmoji: [message: PossiblyUncachedMessage, emoji: PartialEmoji];
     messageUpdate: [message: Message<PossiblyUncachedTextableChannel>, oldMessage: OldMessage | null];
@@ -977,6 +982,7 @@ declare namespace Eris {
     userUpdate: [user: User, oldUser: PartialUser | null];
     voiceChannelJoin: [member: Member, channel: AnyVoiceChannel];
     voiceChannelLeave: [member: Member, channel: AnyVoiceChannel];
+    voiceChannelStatusUpdate: [channel: AnyVoiceChannel, oldChannel: VoiceStatus];
     voiceChannelSwitch: [member: Member, newChannel: AnyVoiceChannel, oldChannel: AnyVoiceChannel];
     voiceStateUpdate: [member: Member, oldState: OldVoiceState];
     warn: [message: string, id?: number];
@@ -1474,6 +1480,7 @@ declare namespace Eris {
     messageReference?: MessageReferenceReply;
     /** @deprecated */
     messageReferenceID?: string;
+    poll?: PollCreateOptions;
     stickerIDs?: string[];
     tts?: boolean;
   }
@@ -1542,6 +1549,11 @@ declare namespace Eris {
     /** @deprecated */
     before?: string;
     limit?: number;
+    type?: ReactionTypes;
+  }
+  interface GetPollAnswerVotersOptions {
+    after?: string;
+    limit?: number;
   }
   interface InteractionButton extends ButtonBase {
     custom_id: string;
@@ -1581,6 +1593,46 @@ declare namespace Eris {
     description?: string;
     filename?: string;
     id: string | number;
+  }
+  interface Poll {
+    allow_multiselect: boolean;
+    answers: PollAnswer[];
+    expiry: number | null;
+    layout_type: PollLayoutTypes;
+    question: Pick<PollMedia, "text">;
+    results?: PollResult;
+  }
+  interface PollAnswer {
+    answer_id: number;
+    poll_media: PollMedia;
+  }
+  interface PollCreateOptions extends Omit<Poll, "expiry" | "results"> {
+    duration: number;
+  }
+  interface PollMedia {
+    emoji?: PartialEmoji;
+    text: string;
+  }
+  interface PollResult {
+    answer_counts: PollAnswerCount[];
+    is_finalized: boolean;
+  }
+  interface PollAnswerCount {
+    count: number;
+    id: number;
+    me_voted: boolean;
+  }
+  interface Reaction {
+    burst_colors: string[];
+    count: number;
+    count_details: ReactionCountDetails;
+    me: boolean;
+    me_burst: boolean;
+    type: ReactionTypes;
+  }
+  interface ReactionCountDetails {
+    burst: number;
+    normal: number;
   }
   interface SelectMenu {
     custom_id: string;
@@ -1826,6 +1878,9 @@ declare namespace Eris {
     requestToSpeakTimestamp?: Date | null;
     suppress?: boolean;
   }
+  interface VoiceStatus {
+    status: string;
+  }
   interface VoiceStreamCurrent {
     buffer: Buffer | null;
     bufferingTicks: number;
@@ -1872,6 +1927,7 @@ declare namespace Eris {
     embeds?: EmbedOptions[];
     file?: FileContent | FileContent[];
     flags?: number;
+    poll?: PollCreateOptions;
     threadID?: string;
     tts?: boolean;
     username?: string;
@@ -1996,6 +2052,9 @@ declare namespace Eris {
       AUTO_MODERATION_RULE_UPDATE:   141;
       AUTO_MODERATION_RULE_DELETE:   142;
       AUTO_MODERATION_BLOCK_MESSAGE: 143;
+
+      VOICE_CHANNEL_STATUS_UPDATE: 192;
+      VOICE_CHANNEL_STATUS_DELETE: 193;
     };
     AutoModerationActionTypes: {
       BLOCK_MESSAGE:      1;
@@ -2208,9 +2267,11 @@ declare namespace Eris {
       guildScheduledEvents:        65536;
       autoModerationConfiguration: 1048576;
       autoModerationExecution:     2097152;
-      allNonPrivileged:            3243773;
+      guildMessagePolls:           16777216;
+      directMessagePolls:          33554432;
+      allNonPrivileged:            53575421;
       allPrivileged:               33026;
-      all:                         3276799;
+      all:                         53608447;
     };
     InteractionResponseTypes: {
       PONG:                                    1;
@@ -2427,10 +2488,15 @@ declare namespace Eris {
       createEvents:                     17592186044416n;
       useExternalSounds:                35184372088832n;
       sendVoiceMessages:                70368744177664n;
+      setVoiceChannelStatus:            281474976710656n;
+      sendPolls:                        562949953421312n;
       allGuild:                         29697484783806n;
-      allText:                          70904273435729n;
-      allVoice:                         110505548056337n;
-      all:                              140737488355327n;
+      allText:                          633854226857041n;
+      allVoice:                         954930478188305n;
+      all:                              985162418487295n;
+    };
+    PollLayoutTypes: {
+      DEFAULT: 1;
     };
     PremiumTiers: {
       NONE:   0;
@@ -2455,6 +2521,10 @@ declare namespace Eris {
     };
     RoleFlags: {
       IN_PROMPT: 1;
+    };
+    ReactionTypes: {
+      NORMAL: 0;
+      BURST:  1;
     };
     StageInstancePrivacyLevel: {
       PUBLIC:     1;
@@ -2948,6 +3018,7 @@ declare namespace Eris {
       secret: string,
       code: string
     ): Promise<{ backup_codes: { code: string; consumed: boolean }[]; token: string }>;
+    endPoll(channelID: string, messageID: string): Promise<Message<AnyGuildTextableChannel>>;
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string }): Promise<void>;
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string; wait: true }): Promise<Message<AnyGuildTextableChannel>>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message<AnyGuildTextableChannel>>;
@@ -3007,6 +3078,7 @@ declare namespace Eris {
     getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getOAuthApplication(appID?: string): Promise<OAuthApplicationInfo>;
     getPins(channelID: string): Promise<Message[]>;
+    getPollAnswerVoters(channelID: string, messageID: string, answerID: string, options?: GetPollAnswerVotersOptions): Promise<User[]>;
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
     getRESTChannel(channelID: string): Promise<AnyChannel>;
     getRESTGuild(guildID: string, withCounts?: boolean): Promise<Guild>;
@@ -3101,6 +3173,7 @@ declare namespace Eris {
     searchGuildMembers(guildID: string, query: string, limit?: number): Promise<Member[]>;
     searchGuildMessages(guildID: string, query: SearchOptions): Promise<SearchResults>;
     sendChannelTyping(channelID: string): Promise<void>;
+    setVoiceChannelStatus(channelID: string, status: string, reason?: string): Promise<void>;
     syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     syncGuildTemplate(guildID: string, code: string): Promise<GuildTemplate>;
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
@@ -3453,6 +3526,7 @@ declare namespace Eris {
     message?: Message<AnyGuildTextableChannel> | Uncached;
     reason: string | null;
     role?: Role | { id: string; name: string };
+    status?: string;
     target?: Guild | AnyGuildChannel | Member | Role | Invite | Emoji | Sticker | Message<AnyGuildTextableChannel> | null;
     targetID: string;
     user: User | Uncached;
@@ -3567,6 +3641,7 @@ declare namespace Eris {
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: EditGuildTextableChannelOptions, reason?: string): Promise<this>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
+    endPoll(messageID: string): Promise<Message<this>>;
     getMessage(messageID: string): Promise<Message<this>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     /** @deprecated */
@@ -3574,6 +3649,7 @@ declare namespace Eris {
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
     /** @deprecated */
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
+    getPollAnswerVoters(messageID: string, answerID: string, options?: GetPollAnswerVotersOptions): Promise<User[]>;
     purge(options: PurgeChannelOptions): Promise<number>;
     /** @deprecated */
     purge(limit: number, filter?: (message: Message<this>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
@@ -3647,7 +3723,7 @@ declare namespace Eris {
     user?: User;
     acknowledge(flags?: number): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
-    createMessage(content: string | InteractionContent , file?: FileContent | FileContent[]): Promise<void>;
+    createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     createModal(content: InteractionModal): Promise<void>;
     defer(flags?: number): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
@@ -3815,8 +3891,9 @@ declare namespace Eris {
     mentions: User[];
     messageReference: MessageReference | null;
     pinned: boolean;
+    poll?: Poll;
     prefix?: string;
-    reactions: { [s: string]: { count: number; me: boolean } };
+    reactions: { [s: string]: Reaction };
     referencedMessage?: Message | null;
     roleMentions: string[];
     roleSubscriptionData?: RoleSubscriptionData;
@@ -4219,6 +4296,7 @@ declare namespace Eris {
     position: number;
     rateLimitPerUser: number;
     rtcRegion: string | null;
+    status?: string;
     type: GuildVoiceChannelTypes;
     userLimit: number;
     videoQualityMode: VideoQualityMode;
@@ -4246,6 +4324,7 @@ declare namespace Eris {
     removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
     sendTyping(): Promise<void>;
+    setStatus(status: string, reason?: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
   }
 
