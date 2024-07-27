@@ -3757,17 +3757,6 @@ declare namespace Eris {
     getOriginalMessage(): Promise<Message<T>>;
   }
 
-  interface ComponentInteractionButtonData {
-    component_type: Constants["ComponentTypes"]["BUTTON"];
-    custom_id: string;
-  }
-
-  interface ComponentInteractionSelectMenuData {
-    component_type: Constants["ComponentTypes"]["SELECT_MENU"];
-    custom_id: string;
-    values: string[];
-  }
-
   export class UnknownInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel?: T;
