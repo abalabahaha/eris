@@ -71,7 +71,7 @@ declare namespace Eris {
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
   type PossiblyUncachedSpeakableChannel = AnyVoiceChannel| Uncached;
   type PossiblyUncachedTextableChannel = TextableChannel | Uncached;
-  type TextableChannel = AnyGuildTextableChannel | AnyThreadChannel | DMChannel;
+  type TextableChannel = GuildTextableWithThreads | DMChannel;
   type VideoQualityMode = Constants["VideoQualityModes"][keyof Constants["VideoQualityModes"]];
 
   // Channel Types
