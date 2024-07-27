@@ -52,7 +52,7 @@ declare namespace Eris {
 
   // Channel
   type AnyChannel = AnyGuildChannel | AnyThreadChannel | DMChannel | GroupChannel;
-  type AnyGuildChannel = AnyGuildTextableChannel | AnyVoiceChannel | CategoryChannel | ForumChannel | MediaChannel;
+  type AnyGuildChannel = AnyGuildTextableChannel | CategoryChannel | ForumChannel | MediaChannel;
   type AnyGuildTextableChannel = TextChannel | VoiceChannel | NewsChannel | StageChannel;
   type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
   type AnyVoiceChannel = VoiceChannel | StageChannel;
@@ -69,10 +69,9 @@ declare namespace Eris {
   type EditGuildTextableChannelOptions = EditNewsChannelOptions | EditTextChannelOptions | EditThreadChannelOptions | EditVoiceChannelOptions;
   type GuildTextableWithThreads = AnyGuildTextableChannel | GuildTextableChannel | AnyThreadChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
-  type PossiblyUncachedSpeakableChannel = VoiceChannel | StageChannel | Uncached;
-  type PossiblyUncachedTextable = Textable | Uncached;
+  type PossiblyUncachedSpeakableChannel = AnyVoiceChannel| Uncached;
   type PossiblyUncachedTextableChannel = TextableChannel | Uncached;
-  type TextableChannel = (GuildTextable & AnyGuildTextableChannel) | (GuildTextable & AnyThreadChannel) | (Textable & DMChannel);
+  type TextableChannel = AnyGuildTextableChannel | AnyThreadChannel | DMChannel;
   type VideoQualityMode = Constants["VideoQualityModes"][keyof Constants["VideoQualityModes"]];
 
   // Channel Types
@@ -466,16 +465,6 @@ declare namespace Eris {
     accessToken: string;
     nick?: string;
   }
-  interface GuildTextable extends Textable {
-    rateLimitPerUser: number;
-    removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
-    removeMessageReactions(messageID: string): Promise<void>;
-    edit(options: EditGuildTextableChannelOptions, reason?: string): Promise<this>;
-  }
-  interface WebhookTextable extends GuildTextable {
-    createWebhook(options: WebhookCreateOptions, reason?: string): Promise<Webhook>;
-    getWebhooks(): Promise<Webhook[]>;
-  }
   interface PartialChannel {
     bitrate?: number;
     id: string;
@@ -506,26 +495,6 @@ declare namespace Eris {
     filter?: (m: Message<AnyGuildTextableChannel>) => boolean;
     limit: number;
     reason?: string;
-  }
-  interface Textable {
-    lastMessageID: string | null;
-    messages: Collection<Message<this>>;
-    addMessageReaction(messageID: string, reaction: string): Promise<void>;
-    /** @deprecated */
-    addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
-    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
-    deleteMessage(messageID: string, reason?: string): Promise<void>;
-    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
-    getMessage(messageID: string): Promise<Message<this>>;
-    getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
-    /** @deprecated */
-    getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
-    getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
-    /** @deprecated */
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
-    removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
-    sendTyping(): Promise<void>;
-    unsendMessage(messageID: string): Promise<void>;
   }
   interface WebhookData {
     channelID: string;
@@ -3285,7 +3254,7 @@ declare namespace Eris {
     flattenErrors(errors: HTTPResponse, keyPrefix?: string): string[];
   }
 
-  export class DMChannel extends Channel implements Pinnable, Textable {
+  export class DMChannel extends Channel implements Pinnable {
     lastMessageID: string | null;
     lastPinTimestamp: number | null;
     messages: Collection<Message<this>>;
@@ -3628,7 +3597,7 @@ declare namespace Eris {
     toJSON(props?: string[]): JSONCache;
   }
 
-  export class GuildTextableChannel extends GuildChannel implements GuildTextable {
+  export class GuildTextableChannel extends GuildChannel {
     lastMessageID: string | null;
     messages: Collection<Message<this>>;
     rateLimitPerUser: number;
@@ -3686,7 +3655,7 @@ declare namespace Eris {
   }
 
   //Interactions
-  export class AutocompleteInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+  export class AutocompleteInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
     data: AutocompleteInteractionData;
@@ -3714,7 +3683,7 @@ declare namespace Eris {
     pong(): Promise<void>;
   }
 
-  export class CommandInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+  export class CommandInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
     data: CommandInteractionData;
@@ -3734,7 +3703,7 @@ declare namespace Eris {
     getOriginalMessage(): Promise<Message<T>>;
   }
 
-  export class ComponentInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+  export class ComponentInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
     data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData;
@@ -3757,7 +3726,7 @@ declare namespace Eris {
     getOriginalMessage(): Promise<Message<T>>;
   }
 
-  export class UnknownInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+  export class UnknownInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel?: T;
     data?: unknown;
@@ -3855,7 +3824,7 @@ declare namespace Eris {
     unban(reason?: string): Promise<void>;
   }
 
-  export class Message<T extends PossiblyUncachedTextable = TextableChannel> extends Base {
+  export class Message<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Base {
     activity?: MessageActivity;
     application?: MessageApplication;
     applicationID?: string;
@@ -3914,7 +3883,7 @@ declare namespace Eris {
     unpin(): Promise<void>;
   }
 
-  export class ModalSubmitInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+  export class ModalSubmitInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     channel: T;
     data: ModalSubmitInteractionData;
     guildID?: string;
@@ -4180,7 +4149,7 @@ declare namespace Eris {
     update(data: BaseData): void;
   }
 
-  export class TextChannel extends GuildTextableChannel implements Invitable, Permissionable, Pinnable, WebhookTextable {
+  export class TextChannel extends GuildTextableChannel implements Invitable, Permissionable, Pinnable {
     defaultAutoArchiveDuration: AutoArchiveDuration;
     lastPinTimestamp: number | null;
     nsfw: boolean;
@@ -4277,7 +4246,7 @@ declare namespace Eris {
     removeRelationship(): Promise<void>;
   }
 
-  export class VoiceChannel extends GuildChannel implements Invitable, Permissionable, WebhookTextable {
+  export class VoiceChannel extends GuildChannel implements Invitable, Permissionable {
     bitrate: number;
     lastMessageID: string | null;
     messages: Collection<Message<this>>;
