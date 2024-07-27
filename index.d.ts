@@ -53,7 +53,7 @@ declare namespace Eris {
   // Channel
   type AnyChannel = AnyGuildChannel | AnyThreadChannel | DMChannel | GroupChannel;
   type AnyGuildChannel = AnyGuildTextableChannel | AnyVoiceChannel | CategoryChannel | ForumChannel | MediaChannel;
-  type AnyGuildTextableChannel = TextChannel | VoiceChannel | NewsChannel;
+  type AnyGuildTextableChannel = TextChannel | VoiceChannel | NewsChannel | StageChannel;
   type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
   type AnyVoiceChannel = VoiceChannel | StageChannel;
   type ChannelTypeConversion<T extends GuildChannelTypes> =
@@ -67,7 +67,7 @@ declare namespace Eris {
                   never;
   type EditGuildChannelOptions = EditForumChannelOptions | EditMediaChannelOptions | EditGuildTextableChannelOptions;
   type EditGuildTextableChannelOptions = EditNewsChannelOptions | EditTextChannelOptions | EditThreadChannelOptions | EditVoiceChannelOptions;
-  type GuildTextableWithThreads = AnyGuildTextableChannel | AnyThreadChannel;
+  type GuildTextableWithThreads = AnyGuildTextableChannel | GuildTextableChannel | AnyThreadChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
   type PossiblyUncachedSpeakableChannel = VoiceChannel | StageChannel | Uncached;
   type PossiblyUncachedTextable = Textable | Uncached;
