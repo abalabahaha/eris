@@ -4246,7 +4246,7 @@ declare namespace Eris {
     removeRelationship(): Promise<void>;
   }
 
-  export class VoiceChannel extends GuildChannel implements Invitable, Permissionable {
+  export class VoiceChannel extends GuildTextableChannel implements Invitable, Permissionable {
     bitrate: number;
     lastMessageID: string | null;
     messages: Collection<Message<this>>;
