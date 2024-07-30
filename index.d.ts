@@ -52,7 +52,7 @@ declare namespace Eris {
 
   // Channel
   type AnyChannel = AnyGuildChannel | AnyThreadChannel | DMChannel | GroupChannel;
-  type AnyGuildChannel = AnyGuildTextableChannel | CategoryChannel | ForumChannel | MediaChannel;
+  type AnyGuildChannel = AnyGuildTextableChannel | AnyThreadChannel | CategoryChannel | ForumChannel | MediaChannel;
   type AnyGuildTextableChannel = TextChannel | VoiceChannel | NewsChannel | StageChannel;
   type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
   type AnyVoiceChannel = VoiceChannel | StageChannel;
@@ -3659,10 +3659,10 @@ declare namespace Eris {
     appPermissions?: Permission;
     channel: T;
     data: AutocompleteInteractionData;
-    guildID?: string;
-    member?: Member;
+    guildID: T extends AnyGuildChannel ? string : undefined;
+    member: T extends AnyGuildChannel ? Member : undefined;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE"];
-    user?: User;
+    user: T extends AnyGuildChannel ? undefined : User;
     acknowledge(choices: ApplicationCommandOptionChoice[]): Promise<void>;
     result(choices: ApplicationCommandOptionChoice[]): Promise<void>;
   }
@@ -3687,10 +3687,10 @@ declare namespace Eris {
     appPermissions?: Permission;
     channel: T;
     data: CommandInteractionData;
-    guildID?: string;
-    member?: Member;
+    guildID: T extends AnyGuildChannel ? string : undefined;
+    member: T extends AnyGuildChannel ? Member : undefined;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
-    user?: User;
+    user: T extends AnyGuildChannel ? undefined : User;
     acknowledge(flags?: number): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
@@ -3707,11 +3707,11 @@ declare namespace Eris {
     appPermissions?: Permission;
     channel: T;
     data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData;
-    guildID?: string;
-    member?: Member;
+    guildID: T extends AnyGuildChannel ? string : undefined;
+    member: T extends AnyGuildChannel ? Member : undefined;
     message: Message<T>;
     type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
-    user?: User;
+    user: T extends AnyGuildChannel ? undefined : User;
     acknowledge(): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
@@ -3730,11 +3730,11 @@ declare namespace Eris {
     appPermissions?: Permission;
     channel?: T;
     data?: unknown;
-    guildID?: string;
-    member?: Member;
+    guildID: T extends AnyGuildChannel ? string : undefined;
+    member: T extends AnyGuildChannel ? Member : undefined;
     message?: Message<T>;
     type: number;
-    user?: User;
+    user: T extends AnyGuildChannel ? undefined : User;
     acknowledge(data: InteractionOptions): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
@@ -3886,10 +3886,10 @@ declare namespace Eris {
   export class ModalSubmitInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     channel: T;
     data: ModalSubmitInteractionData;
-    guildID?: string;
-    member?: Member;
+    guildID: T extends AnyGuildChannel ? string : undefined;
+    member: T extends AnyGuildChannel ? Member : undefined;
     type: Constants["InteractionTypes"]["MODAL_SUBMIT"];
-    user?: User;
+    user: T extends AnyGuildChannel ? undefined : User;
     acknowledge(): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
