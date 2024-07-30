@@ -3709,7 +3709,7 @@ declare namespace Eris {
     data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData;
     guildID?: string;
     member?: Member;
-    message: Message;
+    message: Message<T>;
     type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
     user?: User;
     acknowledge(): Promise<void>;
@@ -3732,7 +3732,7 @@ declare namespace Eris {
     data?: unknown;
     guildID?: string;
     member?: Member;
-    message?: Message;
+    message?: Message<T>;
     type: number;
     user?: User;
     acknowledge(data: InteractionOptions): Promise<void>;
