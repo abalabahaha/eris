@@ -52,8 +52,8 @@ declare namespace Eris {
 
   // Channel
   type AnyChannel = AnyGuildChannel | AnyThreadChannel | DMChannel | GroupChannel;
-  type AnyGuildChannel = AnyGuildTextableChannel | AnyVoiceChannel | CategoryChannel | ForumChannel | MediaChannel;
-  type AnyGuildTextableChannel = TextChannel | VoiceChannel | NewsChannel;
+  type AnyGuildChannel = AnyGuildTextableChannel | AnyThreadChannel | CategoryChannel | ForumChannel | MediaChannel;
+  type AnyGuildTextableChannel = TextChannel | VoiceChannel | NewsChannel | StageChannel;
   type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
   type AnyVoiceChannel = VoiceChannel | StageChannel;
   type ChannelTypeConversion<T extends GuildChannelTypes> =
@@ -67,12 +67,11 @@ declare namespace Eris {
                   never;
   type EditGuildChannelOptions = EditForumChannelOptions | EditMediaChannelOptions | EditGuildTextableChannelOptions;
   type EditGuildTextableChannelOptions = EditNewsChannelOptions | EditTextChannelOptions | EditThreadChannelOptions | EditVoiceChannelOptions;
-  type GuildTextableWithThreads = AnyGuildTextableChannel | AnyThreadChannel;
+  type GuildTextableWithThreads = AnyGuildTextableChannel | GuildTextableChannel | AnyThreadChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
-  type PossiblyUncachedSpeakableChannel = VoiceChannel | StageChannel | Uncached;
-  type PossiblyUncachedTextable = Textable | Uncached;
+  type PossiblyUncachedSpeakableChannel = AnyVoiceChannel| Uncached;
   type PossiblyUncachedTextableChannel = TextableChannel | Uncached;
-  type TextableChannel = (GuildTextable & AnyGuildTextableChannel) | (GuildTextable & AnyThreadChannel) | (Textable & DMChannel);
+  type TextableChannel = GuildTextableWithThreads | DMChannel;
   type VideoQualityMode = Constants["VideoQualityModes"][keyof Constants["VideoQualityModes"]];
 
   // Channel Types
@@ -129,7 +128,7 @@ declare namespace Eris {
   type VerificationLevel = Constants["VerificationLevels"][keyof Constants["VerificationLevels"]];
 
   // Interaction
-  type AnyInteraction = PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction;
+  type AnyInteraction = PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction | ModalSubmitInteraction;
   type InteractionCallbackData = InteractionAutocomplete | InteractionContent | InteractionModal;
   type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components" | "poll">;
   type InteractionContentEdit = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components">;
@@ -466,16 +465,6 @@ declare namespace Eris {
     accessToken: string;
     nick?: string;
   }
-  interface GuildTextable extends Textable {
-    rateLimitPerUser: number;
-    removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
-    removeMessageReactions(messageID: string): Promise<void>;
-    edit(options: EditGuildTextableChannelOptions, reason?: string): Promise<this>;
-  }
-  interface WebhookTextable extends GuildTextable {
-    createWebhook(options: WebhookCreateOptions, reason?: string): Promise<Webhook>;
-    getWebhooks(): Promise<Webhook[]>;
-  }
   interface PartialChannel {
     bitrate?: number;
     id: string;
@@ -506,26 +495,6 @@ declare namespace Eris {
     filter?: (m: Message<AnyGuildTextableChannel>) => boolean;
     limit: number;
     reason?: string;
-  }
-  interface Textable {
-    lastMessageID: string | null;
-    messages: Collection<Message<this>>;
-    addMessageReaction(messageID: string, reaction: string): Promise<void>;
-    /** @deprecated */
-    addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
-    createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
-    deleteMessage(messageID: string, reason?: string): Promise<void>;
-    editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
-    getMessage(messageID: string): Promise<Message<this>>;
-    getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
-    /** @deprecated */
-    getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
-    getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
-    /** @deprecated */
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
-    removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
-    sendTyping(): Promise<void>;
-    unsendMessage(messageID: string): Promise<void>;
   }
   interface WebhookData {
     channelID: string;
@@ -3287,7 +3256,7 @@ declare namespace Eris {
     flattenErrors(errors: HTTPResponse, keyPrefix?: string): string[];
   }
 
-  export class DMChannel extends Channel implements Pinnable, Textable {
+  export class DMChannel extends Channel implements Pinnable {
     lastMessageID: string | null;
     lastPinTimestamp: number | null;
     messages: Collection<Message<this>>;
@@ -3630,7 +3599,7 @@ declare namespace Eris {
     toJSON(props?: string[]): JSONCache;
   }
 
-  export class GuildTextableChannel extends GuildChannel implements GuildTextable {
+  export class GuildTextableChannel extends GuildChannel {
     lastMessageID: string | null;
     messages: Collection<Message<this>>;
     rateLimitPerUser: number;
@@ -3688,14 +3657,14 @@ declare namespace Eris {
   }
 
   //Interactions
-  export class AutocompleteInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+  export class AutocompleteInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
     data: AutocompleteInteractionData;
-    guildID?: string;
-    member?: Member;
+    guildID: T extends AnyGuildChannel ? string : undefined;
+    member: T extends AnyGuildChannel ? Member : undefined;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE"];
-    user?: User;
+    user: T extends AnyGuildChannel ? undefined : User;
     acknowledge(choices: ApplicationCommandOptionChoice[]): Promise<void>;
     result(choices: ApplicationCommandOptionChoice[]): Promise<void>;
   }
@@ -3716,14 +3685,14 @@ declare namespace Eris {
     pong(): Promise<void>;
   }
 
-  export class CommandInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+  export class CommandInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
     data: CommandInteractionData;
-    guildID?: string;
-    member?: Member;
+    guildID: T extends AnyGuildChannel ? string : undefined;
+    member: T extends AnyGuildChannel ? Member : undefined;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
-    user?: User;
+    user: T extends AnyGuildChannel ? undefined : User;
     acknowledge(flags?: number): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
@@ -3736,15 +3705,15 @@ declare namespace Eris {
     getOriginalMessage(): Promise<Message<T>>;
   }
 
-  export class ComponentInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+  export class ComponentInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
     data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData;
-    guildID?: string;
-    member?: Member;
-    message: Message;
+    guildID: T extends AnyGuildChannel ? string : undefined;
+    member: T extends AnyGuildChannel ? Member : undefined;
+    message: Message<T>;
     type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
-    user?: User;
+    user: T extends AnyGuildChannel ? undefined : User;
     acknowledge(): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
@@ -3759,26 +3728,15 @@ declare namespace Eris {
     getOriginalMessage(): Promise<Message<T>>;
   }
 
-  interface ComponentInteractionButtonData {
-    component_type: Constants["ComponentTypes"]["BUTTON"];
-    custom_id: string;
-  }
-
-  interface ComponentInteractionSelectMenuData {
-    component_type: Constants["ComponentTypes"]["SELECT_MENU"];
-    custom_id: string;
-    values: string[];
-  }
-
-  export class UnknownInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+  export class UnknownInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel?: T;
     data?: unknown;
-    guildID?: string;
-    member?: Member;
-    message?: Message;
+    guildID: T extends AnyGuildChannel ? string : undefined;
+    member: T extends AnyGuildChannel ? Member : undefined;
+    message?: Message<T>;
     type: number;
-    user?: User;
+    user: T extends AnyGuildChannel ? undefined : User;
     acknowledge(data: InteractionOptions): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
@@ -3868,7 +3826,7 @@ declare namespace Eris {
     unban(reason?: string): Promise<void>;
   }
 
-  export class Message<T extends PossiblyUncachedTextable = TextableChannel> extends Base {
+  export class Message<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Base {
     activity?: MessageActivity;
     application?: MessageApplication;
     applicationID?: string;
@@ -3927,13 +3885,13 @@ declare namespace Eris {
     unpin(): Promise<void>;
   }
 
-  export class ModalSubmitInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+  export class ModalSubmitInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     channel: T;
     data: ModalSubmitInteractionData;
-    guildID?: string;
-    member?: Member;
+    guildID: T extends AnyGuildChannel ? string : undefined;
+    member: T extends AnyGuildChannel ? Member : undefined;
     type: Constants["InteractionTypes"]["MODAL_SUBMIT"];
-    user?: User;
+    user: T extends AnyGuildChannel ? undefined : User;
     acknowledge(): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
@@ -4193,7 +4151,7 @@ declare namespace Eris {
     update(data: BaseData): void;
   }
 
-  export class TextChannel extends GuildTextableChannel implements Invitable, Permissionable, Pinnable, WebhookTextable {
+  export class TextChannel extends GuildTextableChannel implements Invitable, Permissionable, Pinnable {
     defaultAutoArchiveDuration: AutoArchiveDuration;
     lastPinTimestamp: number | null;
     nsfw: boolean;
@@ -4290,7 +4248,7 @@ declare namespace Eris {
     removeRelationship(): Promise<void>;
   }
 
-  export class VoiceChannel extends GuildChannel implements Invitable, Permissionable, WebhookTextable {
+  export class VoiceChannel extends GuildTextableChannel implements Invitable, Permissionable {
     bitrate: number;
     lastMessageID: string | null;
     messages: Collection<Message<this>>;
