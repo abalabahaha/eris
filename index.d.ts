@@ -165,7 +165,7 @@ declare namespace Eris {
   // Permission
   type PermissionType = Constants["PermissionOverwriteTypes"][keyof Constants["PermissionOverwriteTypes"]];
 
-  // Presence/
+  // Presence
   type ActivityFlags = Constants["ActivityFlags"][keyof Constants["ActivityFlags"]];
   type ActivityType = Constants["ActivityTypes"][keyof Constants["ActivityTypes"]];
   type SelfStatus = Status | "invisible";
