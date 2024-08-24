@@ -73,7 +73,7 @@ declare namespace Eris {
   type EditGuildTextableChannelOptions = EditNewsChannelOptions | EditTextChannelOptions | EditThreadChannelOptions | EditVoiceChannelOptions;
   type GuildTextableWithThreads = AnyGuildTextableChannel | GuildTextableChannel | AnyThreadChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
-  type PossiblyUncachedSpeakableChannel = AnyVoiceChannel| Uncached;
+  type PossiblyUncachedSpeakableChannel = AnyVoiceChannel | Uncached;
   type PossiblyUncachedTextableChannel = TextableChannel | Uncached;
   type TextableChannel = GuildTextableWithThreads | DMChannel;
   type VideoQualityMode = Constants["VideoQualityModes"][keyof Constants["VideoQualityModes"]];
