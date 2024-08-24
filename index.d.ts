@@ -7,6 +7,8 @@ import { URL } from "url";
 import { Socket as DgramSocket } from "dgram";
 import * as WebSocket from "ws";
 
+/* eslint-disable @stylistic/key-spacing*/
+
 declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
 
 declare namespace Eris {
@@ -48,7 +50,9 @@ declare namespace Eris {
   type EditAutoModerationRuleOptions = Partial<CreateAutoModerationRuleOptions>;
 
   // Cache
-  interface Uncached { id: string }
+  interface Uncached {
+    id: string;
+  }
 
   // Channel
   type AnyChannel = AnyGuildChannel | AnyThreadChannel | DMChannel | GroupChannel;
@@ -232,7 +236,7 @@ declare namespace Eris {
   interface ApplicationCommandOption<T extends Constants["ApplicationCommandOptionTypes"][Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">]> {
     channel_types: T extends Constants["ApplicationCommandOptionTypes"]["CHANNEL"] ? ChannelTypes | undefined : never;
     description: string;
-    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
+    descriptionLocalizations?: Record<LocaleStrings, string> | null;
     name: string;
     nameLocalizations?: Record<LocaleStrings, string> | null;
     required?: boolean;
@@ -250,7 +254,7 @@ declare namespace Eris {
   }
   interface ApplicationCommandOptionsSubCommand {
     description: string;
-    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
+    descriptionLocalizations?: Record<LocaleStrings, string> | null;
     name: string;
     nameLocalizations?: Record<LocaleStrings, string> | null;
     options?: ApplicationCommandOptionsWithValue[];
@@ -258,7 +262,7 @@ declare namespace Eris {
   }
   interface ApplicationCommandOptionsSubCommandGroup {
     description: string;
-    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
+    descriptionLocalizations?: Record<LocaleStrings, string> | null;
     name: string;
     nameLocalizations?: Record<LocaleStrings, string> | null;
     options?: (ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsWithValue)[];
@@ -268,7 +272,7 @@ declare namespace Eris {
     autocomplete?: boolean;
     choices?: ApplicationCommandOptionChoice<T>[];
     description: string;
-    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
+    descriptionLocalizations?: Record<LocaleStrings, string> | null;
     name: string;
     nameLocalizations?: Record<LocaleStrings, string> | null;
     required?: boolean;
@@ -278,7 +282,7 @@ declare namespace Eris {
     autocomplete?: boolean;
     choices?: ApplicationCommandOptionChoice<T>[];
     description: string;
-    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
+    descriptionLocalizations?: Record<LocaleStrings, string> | null;
     max_value?: number;
     min_value?: number;
     name: string;
@@ -1894,9 +1898,11 @@ declare namespace Eris {
     id: string;
     [key: string]: unknown;
   }
+  /* eslint-disable @stylistic/no-multi-spaces */
+  /* eslint-enable @stylistic/key-spacing */
   interface Constants {
     GATEWAY_VERSION: 9;
-    REST_VERSION: 9;
+    REST_VERSION:    9;
     ActivityFlags: {
       INSTANCE:                    1;
       JOIN:                        2;
@@ -2049,14 +2055,14 @@ declare namespace Eris {
       GROUP_DM:             3;
       GUILD_CATEGORY:       4;
       GUILD_NEWS:           5;
-
+      // Unknown 6-9
       GUILD_NEWS_THREAD:    10;
       GUILD_PUBLIC_THREAD:  11;
       GUILD_PRIVATE_THREAD: 12;
       GUILD_STAGE_VOICE:    13;
       /** @deprecated */
       GUILD_STAGE:          13;
-
+      // Guild Directory 14
       GUILD_FORUM:          15;
       GUILD_MEDIA:          16;
     };
@@ -2172,7 +2178,7 @@ declare namespace Eris {
     };
     GuildScheduledEventStatus: {
       SCHEDULED: 1;
-      ACTIVE:	   2;
+      ACTIVE:    2;
       COMPLETED: 3;
       CANCELED:  4;
     };
@@ -2319,7 +2325,7 @@ declare namespace Eris {
       USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2:       10;
       USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3:       11;
       CHANNEL_FOLLOW_ADD:                           12;
-
+      // Unknown 13
       GUILD_DISCOVERY_DISQUALIFIED:                 14;
       GUILD_DISCOVERY_REQUALIFIED:                  15;
       GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING: 16;
@@ -2336,7 +2342,7 @@ declare namespace Eris {
       STAGE_START:                                  27;
       STAGE_END:                                    28;
       STAGE_SPEAKER:                                29;
-
+      // Unknown 30
       STAGE_TOPIC:                                  31;
       GUILD_APPLICATION_PREMIUM_SUBSCRIPTION:       32;
     };
@@ -2587,6 +2593,9 @@ declare namespace Eris {
       APPLICATION:      3;
     };
   }
+  /* eslint-disable @stylistic/key-spacing*/
+  /* eslint-enable @stylistic/no-multi-spaces */
+
   interface OAuthApplicationInfo {
     bot?: PartialUser;
     bot_public: boolean;
@@ -2646,16 +2655,11 @@ declare namespace Eris {
     constructor(id: string);
     static getCreatedAt(id: string): number;
     static getDiscordEpoch(id: string): number;
-    inspect(): this;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
   }
 
   export class BrowserWebSocket extends EventEmitter {
-    static CONNECTING: 0;
-    static OPEN: 1;
-    static CLOSING: 2;
-    static CLOSED: 3;
     readyState: number;
     constructor(url: string);
     close(code?: number, reason?: string): void;
@@ -2663,6 +2667,12 @@ declare namespace Eris {
     // @ts-ignore: DOM
     send(data: string | ArrayBufferLike | Blob | ArrayBufferView): void;
     terminate(): void;
+    /* eslint-disable sort-class-members/sort-class-members */
+    static CONNECTING: 0;
+    static OPEN: 1;
+    static CLOSING: 2;
+    static CLOSED: 3;
+    /* eslint-enable sort-class-members/sort-class-members */
   }
 
   export class BrowserWebSocketError extends Error {
@@ -2987,6 +2997,7 @@ declare namespace Eris {
     baseObject: new (...args: any[]) => T;
     limit?: number;
     constructor(baseObject: new (...args: any[]) => T, limit?: number);
+    update(obj: T, extra?: unknown, replace?: boolean): T;
     add(obj: T, extra?: unknown, replace?: boolean): T;
     every(func: (i: T) => boolean): boolean;
     filter(func: (i: T) => boolean): T[];
@@ -2996,7 +3007,6 @@ declare namespace Eris {
     reduce<U>(func: (accumulator: U, val: T) => U, initialValue?: U): U;
     remove(obj: T | Uncached): T | null;
     some(func: (i: T) => boolean): boolean;
-    update(obj: T, extra?: unknown, replace?: boolean): T;
   }
 
   export class Command implements CommandOptions, SimpleJSON {
@@ -3950,9 +3960,9 @@ declare namespace Eris {
     privacyLevel: StageInstancePrivacyLevel;
     topic: string;
     constructor(data: BaseData, client: Client);
+    update(data: BaseData): void;
     delete(): Promise<void>;
     edit(options: StageInstanceOptions): Promise<StageInstance>;
-    update(data: BaseData): void;
   }
 
   export class TextChannel extends GuildTextableChannel implements Invitable, Permissionable, Pinnable {
@@ -4009,8 +4019,8 @@ declare namespace Eris {
     joinTimestamp: number;
     threadID: string;
     constructor(data: BaseData, client: Client);
-    leave(): Promise<void>;
     update(data: BaseData): void;
+    leave(): Promise<void>;
   }
 
   export class UnavailableGuild extends Base {

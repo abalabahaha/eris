@@ -19,10 +19,8 @@
     "node": ">=10.4.0"
   },
   "scripts": {
-    "lint:js": "eslint -c .eslintrc.yml lib examples *.js",
-    "lint:js:fix": "eslint -c .eslintrc.yml lib examples *.js --fix && echo \"\u001b[1m\u001b[32mOK\u001b[39m\u001b[22m\" || echo \"\u001b[1m\u001b[31mNot OK\u001b[39m\u001b[22m\"",
-    "lint:ts": "eslint -c .eslintrc.ts.yml *.ts",
-    "lint:ts:fix": "eslint -c .eslintrc.ts.yml *.ts --fix && echo \"\u001b[1m\u001b[32mOK\u001b[39m\u001b[22m\" || echo \"\u001b[1m\u001b[31mNot OK\u001b[39m\u001b[22m\""
+    "lint": "eslint -c .eslintrc.yml lib examples *.js *.ts",
+    "lint:fix": "eslint -c .eslintrc.yml lib examples *.js *.ts --fix && echo \"\u001b[1m\u001b[32mOK\u001b[39m\u001b[22m\" || echo \"\u001b[1m\u001b[31mNot OK\u001b[39m\u001b[22m\""
   },
   "repository": {
     "type": "git",
@@ -45,6 +43,7 @@
     "ws": "^8.2.3"
   },
   "devDependencies": {
+    "@stylistic/eslint-plugin": "^2.6.4",
     "@types/node": "^16.11.7",
     "@types/ws": "^8.2.0",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
