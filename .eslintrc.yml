@@ -166,3 +166,11 @@ overrides:
   - plugin:@typescript-eslint/eslint-recommended
   - plugin:@typescript-eslint/recommended
   - plugin:@stylistic/disable-legacy
+- files:
+  - "Constants.js"
+  rules:
+    "@stylistic/key-spacing":
+    - 2
+    - align:
+        afterColon: true
+        on: value
