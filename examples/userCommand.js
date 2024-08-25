@@ -3,50 +3,57 @@ const Eris = require("eris");
 const Constants = Eris.Constants;
 
 const bot = new Eris("Bot token", {
-    intents: []
+    intents: [],
 });
 
 bot.on("ready", () => {
-    console.log("connected!")
+    console.log("connected!");
     bot.createCommand({
         type: Constants.ApplicationCommandTypes.CHAT_INPUT,
         name: "ping",
         description: "Reply with pong",
         options: [],
         /* The following 2 lines set the state of the application command as both user installable and guild installable */
-        contexts: [Constants.ApplicationCommandContextType.GUILD, Constants.ApplicationCommandContextType.BOT_DM, Constants.ApplicationCommandContextType.PRIVATE],
-        integration_types: [Constants.ApplicationCommandIntegrationTypes.GUILD_INSTALL, Constants.ApplicationCommandIntegrationTypes.USER_INSTALL]
-    })
-})
+        contexts: [
+            Constants.ApplicationCommandContextType.GUILD,
+            Constants.ApplicationCommandContextType.BOT_DM,
+            Constants.ApplicationCommandContextType.PRIVATE,
+        ],
+        integration_types: [
+            Constants.ApplicationCommandIntegrationTypes.GUILD_INSTALL,
+            Constants.ApplicationCommandIntegrationTypes.USER_INSTALL,
+        ],
+    });
+});
 
 bot.on("interactionCreate", (interaction) => {
-    if(interaction instanceof Eris.CommandInteraction) {
-        if(interaction.data.name === "ping") {
-            let where = ""
+    if (interaction instanceof Eris.CommandInteraction) {
+        if (interaction.data.name === "ping") {
+            let where = "";
             /**
              * <CommandInteraction>.context includes information of where the command was executed.
              * if <CommandInteraction>.context matches ...
              *    Constants.ApplicationCommandContextType.GUILD it means it is executed from a server
              *    Constants.ApplicationCommandContextType.BOT_DM it means it is executed from the bot's DM
              *    Constants.ApplicationCommandContextType.PRIVATE it means it is executed as a user installable
-             * 
+             *
              * Incase of BOT_DM and PRIVATE, the CommandInteraction will lose all its guild related properties such as the guild information and member data
              */
-            const context = interaction.context
+            const context = interaction.context;
 
-            if(context === Constants.ApplicationCommandContextType.GUILD) {
-                where = "as a server interaction."
-            } else if(context === Constants.ApplicationCommandContextType.BOT_DM) {
-                where = "as a bot DM interaction."
-            } else if(context === Constants.ApplicationCommandContextType.PRIVATE) {
-                where = "as a private interaction (user installable)."
+            if (context === Constants.ApplicationCommandContextType.GUILD) {
+                where = "as a server interaction.";
+            } else if (context === Constants.ApplicationCommandContextType.BOT_DM) {
+                where = "as a bot DM interaction.";
+            } else if (context === Constants.ApplicationCommandContextType.PRIVATE) {
+                where = "as a private interaction (user installable).";
             } else {
-                where = "as a server interaction."
+                where = "as a server interaction.";
             }
 
-            interaction.createMessage(`🏓 pong ${where}`)
+            interaction.createMessage(`🏓 pong ${where}`);
         }
     }
-})
+});
 
-bot.connect()
+bot.connect();

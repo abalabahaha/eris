@@ -224,8 +224,8 @@ declare namespace Eris {
     description: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "" | void;
     name: string;
     type?: U;
-    contexts: Number[];
-    integration_types: Number[];
+    contexts: number[];
+    integration_types: number[];
   }
   /** Generic T is `true` if editing Guild scoped commands, and `false` if not */
   interface ApplicationCommandBulkEditOptions<T extends boolean, U = ApplicationCommandTypes> extends ApplicationCommandCreateOptions<T, U> {
@@ -1900,14 +1900,14 @@ declare namespace Eris {
     GATEWAY_VERSION: 9;
     REST_VERSION: 9;
     ApplicationCommandContextType: {
-      GUILD:   0,
-      BOT_DM:  1,
-      PRIVATE: 2
-    }
+      GUILD:   0;
+      BOT_DM:  1;
+      PRIVATE: 2;
+    };
     ApplicationCommandIntegrationTypes: {
-      GUILD_INSTALL:   0,
-      USER_INSTALL:    1
-    }
+      GUILD_INSTALL:   0;
+      USER_INSTALL:    1;
+    };
     ActivityFlags: {
       INSTANCE:                    1;
       JOIN:                        2;
@@ -3520,12 +3520,13 @@ declare namespace Eris {
   export class CommandInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
+    context?: number;
     data: CommandInteractionData;
     guildID: T extends AnyGuildChannel ? string : undefined;
     member: T extends AnyGuildChannel ? Member : undefined;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
     user: T extends AnyGuildChannel ? undefined : User;
-    context?: number
+
     acknowledge(flags?: number): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
