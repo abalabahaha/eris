@@ -13,7 +13,7 @@ bot.on("ready", () => {
         name: "ping",
         description: "Reply with pong",
         options: [],
-        /** The following 2 lines set the state of the application command as both user installable and guild installable */
+        /* The following 2 lines set the state of the application command as both user installable and guild installable */
         contexts: [Constants.ApplicationCommandContextType.GUILD, Constants.ApplicationCommandContextType.BOT_DM, Constants.ApplicationCommandContextType.PRIVATE],
         integration_types: [Constants.ApplicationCommandIntegrationTypes.GUILD_INSTALL, Constants.ApplicationCommandIntegrationTypes.USER_INSTALL]
     })
@@ -23,9 +23,14 @@ bot.on("interactionCreate", (interaction) => {
     if(interaction instanceof Eris.CommandInteraction) {
         if(interaction.data.name === "ping") {
             let where = ""
+            /**
+             * <CommandInteraction>.context includes information of where the command was executed.
+             * if <CommandInteraction>.context matches ...
+             *    Constants.ApplicationCommandContextType.GUILD it means it is executed from a server
+             *    Constants.ApplicationCommandContextType.BOT_DM it means it is executed from the bot's DM
+             *    Constants.ApplicationCommandContextType.PRIVATE it means it is executed as a user installable
+             */
             const context = interaction.context
-
-            console.log(interaction)
 
             if(context === Constants.ApplicationCommandContextType.GUILD) {
                 where = "as a server interaction."
