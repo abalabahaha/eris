@@ -1898,6 +1898,11 @@ declare namespace Eris {
   interface Constants {
     GATEWAY_VERSION: 9;
     REST_VERSION: 9;
+    ApplicationCommandContextType: {
+      GUILD:   0,
+      BOT_DM:  1,
+      PRIVATE: 2
+    }
     ActivityFlags: {
       INSTANCE:                    1;
       JOIN:                        2;
@@ -3515,6 +3520,7 @@ declare namespace Eris {
     member: T extends AnyGuildChannel ? Member : undefined;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
     user: T extends AnyGuildChannel ? undefined : User;
+    context?: number
     acknowledge(flags?: number): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
