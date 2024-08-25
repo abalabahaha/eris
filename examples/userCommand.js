@@ -29,6 +29,8 @@ bot.on("interactionCreate", (interaction) => {
              *    Constants.ApplicationCommandContextType.GUILD it means it is executed from a server
              *    Constants.ApplicationCommandContextType.BOT_DM it means it is executed from the bot's DM
              *    Constants.ApplicationCommandContextType.PRIVATE it means it is executed as a user installable
+             * 
+             * Incase of BOT_DM and PRIVATE, the CommandInteraction will lose all its guild related properties such as the guild information and member data
              */
             const context = interaction.context
 
