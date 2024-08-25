@@ -1903,6 +1903,10 @@ declare namespace Eris {
       BOT_DM:  1,
       PRIVATE: 2
     }
+    ApplicationCommandIntegrationTypes: {
+      GUILD_INSTALL:   0,
+      USER_INSTALL:    1
+    }
     ActivityFlags: {
       INSTANCE:                    1;
       JOIN:                        2;

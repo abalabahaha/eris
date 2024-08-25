@@ -13,7 +13,9 @@ bot.on("ready", () => {
         name: "ping",
         description: "Reply with pong",
         options: [],
-        contexts: [Constants.ApplicationCommandContextType.GUILD, Constants.ApplicationCommandContextType.BOT_DM, Constants.ApplicationCommandContextType.PRIVATE]
+        /** The following 2 lines set the state of the application command as both user installable and guild installable */
+        contexts: [Constants.ApplicationCommandContextType.GUILD, Constants.ApplicationCommandContextType.BOT_DM, Constants.ApplicationCommandContextType.PRIVATE],
+        integration_types: [Constants.ApplicationCommandIntegrationTypes.GUILD_INSTALL, Constants.ApplicationCommandIntegrationTypes.USER_INSTALL]
     })
 })
 
