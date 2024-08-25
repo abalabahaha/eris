@@ -225,6 +225,7 @@ declare namespace Eris {
     name: string;
     type?: U;
     contexts: Number[];
+    integration_types: Number[];
   }
   /** Generic T is `true` if editing Guild scoped commands, and `false` if not */
   interface ApplicationCommandBulkEditOptions<T extends boolean, U = ApplicationCommandTypes> extends ApplicationCommandCreateOptions<T, U> {
