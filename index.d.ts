@@ -1906,7 +1906,7 @@ declare namespace Eris {
     };
     ApplicationCommandIntegrationTypes: {
       GUILD_INSTALL: 0;
-      USER_INSTALL: 1;
+      USER_INSTALL:  1;
     };
     ActivityFlags: {
       INSTANCE:                    1;
