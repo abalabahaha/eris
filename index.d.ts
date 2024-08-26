@@ -224,8 +224,8 @@ declare namespace Eris {
     description: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "" | void;
     name: string;
     type?: U;
-    contexts?: Constants['ApplicationCommandContextType'][];
-    integrationTypes?: Constants['ApplicationCommandIntegrationTypes'][];
+    contexts?: Constants["ApplicationCommandContextType"][];
+    integrationTypes?: Constants["ApplicationCommandIntegrationTypes"][];
   }
   /** Generic T is `true` if editing Guild scoped commands, and `false` if not */
   interface ApplicationCommandBulkEditOptions<T extends boolean, U = ApplicationCommandTypes> extends ApplicationCommandCreateOptions<T, U> {

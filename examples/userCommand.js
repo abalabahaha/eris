@@ -41,7 +41,7 @@ bot.on("interactionCreate", (interaction) => {
              */
             const context = interaction.context;
 
-            console.log(interaction)
+            console.log(interaction);
 
             if(context === Constants.ApplicationCommandContextType.GUILD) {
                 where = "as a server interaction.";
