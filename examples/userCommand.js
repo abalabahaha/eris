@@ -19,7 +19,7 @@ bot.on("ready", () => {
             Constants.ApplicationCommandContextType.BOT_DM,
             Constants.ApplicationCommandContextType.PRIVATE
         ],
-        integration_types: [
+        integrationTypes: [
             Constants.ApplicationCommandIntegrationTypes.GUILD_INSTALL,
             Constants.ApplicationCommandIntegrationTypes.USER_INSTALL
         ]
