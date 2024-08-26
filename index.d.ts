@@ -1955,16 +1955,11 @@ declare namespace Eris {
     constructor(id: string);
     static getCreatedAt(id: string): number;
     static getDiscordEpoch(id: string): number;
-    inspect(): this;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
   }
 
   export class BrowserWebSocket extends EventEmitter {
-    static CONNECTING: 0;
-    static OPEN: 1;
-    static CLOSING: 2;
-    static CLOSED: 3;
     readyState: number;
     constructor(url: string);
     close(code?: number, reason?: string): void;
@@ -1972,6 +1967,12 @@ declare namespace Eris {
     // @ts-ignore: DOM
     send(data: string | ArrayBufferLike | Blob | ArrayBufferView): void;
     terminate(): void;
+    /* eslint-disable sort-class-members/sort-class-members */
+    static CONNECTING: 0;
+    static OPEN: 1;
+    static CLOSING: 2;
+    static CLOSED: 3;
+    /* eslint-enable sort-class-members/sort-class-members */
   }
 
   export class BrowserWebSocketError extends Error {
