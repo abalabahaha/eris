@@ -3,7 +3,7 @@ const Eris = require("eris");
 const Constants = Eris.Constants;
 
 const bot = new Eris("Bot token", {
-    intents: [],
+    intents: []
 });
 
 bot.on("ready", () => {
@@ -17,18 +17,18 @@ bot.on("ready", () => {
         contexts: [
             Constants.ApplicationCommandContextType.GUILD,
             Constants.ApplicationCommandContextType.BOT_DM,
-            Constants.ApplicationCommandContextType.PRIVATE,
+            Constants.ApplicationCommandContextType.PRIVATE
         ],
         integration_types: [
             Constants.ApplicationCommandIntegrationTypes.GUILD_INSTALL,
-            Constants.ApplicationCommandIntegrationTypes.USER_INSTALL,
-        ],
+            Constants.ApplicationCommandIntegrationTypes.USER_INSTALL
+        ]
     });
 });
 
 bot.on("interactionCreate", (interaction) => {
-    if (interaction instanceof Eris.CommandInteraction) {
-        if (interaction.data.name === "ping") {
+    if(interaction instanceof Eris.CommandInteraction) {
+        if(interaction.data.name === "ping") {
             let where = "";
             /**
              * <CommandInteraction>.context includes information of where the command was executed.
@@ -41,11 +41,11 @@ bot.on("interactionCreate", (interaction) => {
              */
             const context = interaction.context;
 
-            if (context === Constants.ApplicationCommandContextType.GUILD) {
+            if(context === Constants.ApplicationCommandContextType.GUILD) {
                 where = "as a server interaction.";
-            } else if (context === Constants.ApplicationCommandContextType.BOT_DM) {
+            } else if(context === Constants.ApplicationCommandContextType.BOT_DM) {
                 where = "as a bot DM interaction.";
-            } else if (context === Constants.ApplicationCommandContextType.PRIVATE) {
+            } else if(context === Constants.ApplicationCommandContextType.PRIVATE) {
                 where = "as a private interaction (user installable).";
             } else {
                 where = "as a server interaction.";
