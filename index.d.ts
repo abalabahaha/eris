@@ -3526,7 +3526,6 @@ declare namespace Eris {
     member: T extends AnyGuildChannel ? Member : undefined;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
     user: T extends AnyGuildChannel ? undefined : User;
-
     acknowledge(flags?: number): Promise<void>;
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
