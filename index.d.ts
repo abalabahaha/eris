@@ -2050,14 +2050,14 @@ declare namespace Eris {
       GROUP_DM:             3;
       GUILD_CATEGORY:       4;
       GUILD_NEWS:           5;
-
+      // Unknown 6-9
       GUILD_NEWS_THREAD:    10;
       GUILD_PUBLIC_THREAD:  11;
       GUILD_PRIVATE_THREAD: 12;
       GUILD_STAGE_VOICE:    13;
       /** @deprecated */
       GUILD_STAGE:          13;
-
+      // Unknown 14
       GUILD_FORUM:          15;
       GUILD_MEDIA:          16;
     };
@@ -2320,7 +2320,7 @@ declare namespace Eris {
       USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2:       10;
       USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3:       11;
       CHANNEL_FOLLOW_ADD:                           12;
-
+      // Unknown 13
       GUILD_DISCOVERY_DISQUALIFIED:                 14;
       GUILD_DISCOVERY_REQUALIFIED:                  15;
       GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING: 16;
@@ -2337,7 +2337,7 @@ declare namespace Eris {
       STAGE_START:                                  27;
       STAGE_END:                                    28;
       STAGE_SPEAKER:                                29;
-
+      // Unknown 30
       STAGE_TOPIC:                                  31;
       GUILD_APPLICATION_PREMIUM_SUBSCRIPTION:       32;
     };
@@ -2578,6 +2578,7 @@ declare namespace Eris {
       RESUME:              7;
       HELLO:               8;
       RESUMED:             9;
+      // Unknown 10-12
       CLIENT_DISCONNECT:   13;
       /** @deprecated */
       DISCONNECT:          13;
