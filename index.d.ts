@@ -18,6 +18,8 @@ declare namespace Eris {
   // TYPES
 
   // Application Commands
+  type ApplicationCommandContextTypes = (typeof Constants["ApplicationCommandContextType"][keyof typeof Constants["ApplicationCommandContextType"]]);
+  type ApplicationCommandIntegrationTypes = (typeof Constants["ApplicationCommandIntegrationTypes"][keyof typeof Constants["ApplicationCommandIntegrationTypes"]]);
   type ApplicationCommandOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup | ApplicationCommandOptionsWithValue;
   type ApplicationCommandOptionsBoolean = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
   type ApplicationCommandOptionsChannel = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["CHANNEL"]>;
@@ -221,11 +223,10 @@ declare namespace Eris {
   }
   /** Generic T is `true` if creating Guild scoped commands, and `false` if not */
   interface ApplicationCommandCreateOptions<T extends boolean, U = ApplicationCommandTypes> extends ApplicationCommandEditOptions<T, U> {
+    contexts?: ApplicationCommandContextTypes[];
     description: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "" | void;
+    integrationTypes: ApplicationCommandIntegrationTypes[];
     name: string;
-    type?: U;
-    contexts?: (typeof Constants["ApplicationCommandContextType"][keyof typeof Constants["ApplicationCommandContextType"]])[];
-    integrationTypes?: (typeof Constants["ApplicationCommandIntegrationTypes"][keyof typeof Constants["ApplicationCommandIntegrationTypes"]])[];
   }
   /** Generic T is `true` if editing Guild scoped commands, and `false` if not */
   interface ApplicationCommandBulkEditOptions<T extends boolean, U = ApplicationCommandTypes> extends ApplicationCommandCreateOptions<T, U> {
@@ -1899,15 +1900,6 @@ declare namespace Eris {
   interface Constants {
     GATEWAY_VERSION: 9;
     REST_VERSION: 9;
-    ApplicationCommandContextType: {
-      GUILD:   0;
-      BOT_DM:  1;
-      PRIVATE: 2;
-    };
-    ApplicationCommandIntegrationTypes: {
-      GUILD_INSTALL: 0;
-      USER_INSTALL:  1;
-    };
     ActivityFlags: {
       INSTANCE:                    1;
       JOIN:                        2;
@@ -1926,6 +1918,15 @@ declare namespace Eris {
       WATCHING:  3;
       CUSTOM:    4;
       COMPETING: 5;
+    };
+    ApplicationCommandContextType: {
+      GUILD:   0;
+      BOT_DM:  1;
+      PRIVATE: 2;
+    };
+    ApplicationCommandIntegrationTypes: {
+      GUILD_INSTALL: 0;
+      USER_INSTALL:  1;
     };
     ApplicationCommandOptionTypes: {
       SUB_COMMAND:       1;
@@ -2634,6 +2635,7 @@ declare namespace Eris {
   /** Generic T is `true` if a Guild scoped command, and `false` if not */
   export class ApplicationCommand<T extends boolean, U = ApplicationCommandTypes> extends Base {
     applicationID: string;
+    contexts: ApplicationCommandContextTypes[];
     defaultMemberPermissions: Permission;
     /** @deprecated */
     defaultPermission?: boolean | null;
@@ -3520,7 +3522,7 @@ declare namespace Eris {
   export class CommandInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
-    context?: number;
+    context?: ApplicationCommandContextTypes;
     data: CommandInteractionData;
     guildID: T extends AnyGuildChannel ? string : undefined;
     member: T extends AnyGuildChannel ? Member : undefined;
