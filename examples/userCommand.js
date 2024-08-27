@@ -41,8 +41,8 @@ bot.on("interactionCreate", (interaction) => {
              */
             const context = interaction.context;
 
-            console.log(interaction);
-
+            // Check where the command is sent from.
+            // Keep in mind, context will be the same for commands that are ran as user-installables and guild-invited bots unless user-installables are ran in DMs or are sent in the bot's DMs
             if(context === Constants.ApplicationCommandContextType.GUILD) {
                 where = "as a server interaction.";
             } else if(context === Constants.ApplicationCommandContextType.BOT_DM) {
