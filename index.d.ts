@@ -70,7 +70,7 @@ declare namespace Eris {
   type EditGuildTextableChannelOptions = EditNewsChannelOptions | EditTextChannelOptions | EditThreadChannelOptions | EditVoiceChannelOptions;
   type GuildTextableWithThreads = AnyGuildTextableChannel | GuildTextableChannel | AnyThreadChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
-  type PossiblyUncachedSpeakableChannel = AnyVoiceChannel| Uncached;
+  type PossiblyUncachedSpeakableChannel = AnyVoiceChannel | Uncached;
   type PossiblyUncachedTextableChannel = TextableChannel | Uncached;
   type TextableChannel = GuildTextableWithThreads | DMChannel;
   type VideoQualityMode = Constants["VideoQualityModes"][keyof Constants["VideoQualityModes"]];
@@ -196,9 +196,7 @@ declare namespace Eris {
 
   // INTERFACES
   // Internals
-  interface JSONCache {
-    [s: string]: unknown;
-  }
+  type JSONCache = Record<string, unknown>;
   interface NestedJSON {
     toJSON(arg?: unknown, cache?: (string | unknown)[]): JSONCache;
   }
@@ -233,7 +231,7 @@ declare namespace Eris {
   interface ApplicationCommandOption<T extends Constants["ApplicationCommandOptionTypes"][Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">]> {
     channel_types: T extends Constants["ApplicationCommandOptionTypes"]["CHANNEL"] ? ChannelTypes | undefined : never;
     description: string;
-    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
+    descriptionLocalizations?: Record<LocaleStrings, string> | null;
     name: string;
     nameLocalizations?: Record<LocaleStrings, string> | null;
     required?: boolean;
@@ -251,7 +249,7 @@ declare namespace Eris {
   }
   interface ApplicationCommandOptionsSubCommand {
     description: string;
-    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
+    descriptionLocalizations?: Record<LocaleStrings, string> | null;
     name: string;
     nameLocalizations?: Record<LocaleStrings, string> | null;
     options?: ApplicationCommandOptionsWithValue[];
@@ -259,7 +257,7 @@ declare namespace Eris {
   }
   interface ApplicationCommandOptionsSubCommandGroup {
     description: string;
-    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
+    descriptionLocalizations?: Record<LocaleStrings, string> | null;
     name: string;
     nameLocalizations?: Record<LocaleStrings, string> | null;
     options?: (ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsWithValue)[];
@@ -269,7 +267,7 @@ declare namespace Eris {
     autocomplete?: boolean;
     choices?: ApplicationCommandOptionChoice<T>[];
     description: string;
-    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
+    descriptionLocalizations?: Record<LocaleStrings, string> | null;
     name: string;
     nameLocalizations?: Record<LocaleStrings, string> | null;
     required?: boolean;
@@ -279,7 +277,7 @@ declare namespace Eris {
     autocomplete?: boolean;
     choices?: ApplicationCommandOptionChoice<T>[];
     description: string;
-    descriptionLocalizations?:  Record<LocaleStrings, string> | null;
+    descriptionLocalizations?: Record<LocaleStrings, string> | null;
     max_value?: number;
     min_value?: number;
     name: string;
@@ -516,7 +514,7 @@ declare namespace Eris {
     connectionTimeout?: number;
     defaultImageFormat?: string;
     defaultImageSize?: number;
-    disableEvents?: { [s: string]: boolean };
+    disableEvents?: Record<string, boolean>;
     firstShardID?: number;
     getAllUsers?: boolean;
     guildCreateTimeout?: number;
@@ -610,7 +608,7 @@ declare namespace Eris {
   }
   interface CommandRequirements {
     custom?: GenericCheckFunction<boolean>;
-    permissions?: { [s: string]: boolean } | GenericCheckFunction<{ [s: string]: boolean }>;
+    permissions?: Record<string, boolean> | GenericCheckFunction<Record<string, boolean>>;
     roleIDs?: string[] | GenericCheckFunction<string[]>;
     roleNames?: string[] | GenericCheckFunction<string[]>;
     userIDs?: string[] | GenericCheckFunction<string[]>;
@@ -2013,24 +2011,24 @@ declare namespace Eris {
   export class Client extends EventEmitter {
     application?: { id: string; flags: number };
     bot: boolean;
-    channelGuildMap: { [s: string]: string };
-    dmChannelMap: { [s: string]: string };
+    channelGuildMap: Record<string, string>;
+    dmChannelMap: Record<string, string>;
     dmChannels: Collection<DMChannel>;
     gatewayURL?: string;
     guilds: Collection<Guild>;
-    guildShardMap: { [s: string]: number };
+    guildShardMap: Record<string, number>;
     lastConnect: number;
     lastReconnectDelay: number;
     options: ClientOptions;
     presence: ClientPresence;
-    privateChannelMap: { [s: string]: string };
+    privateChannelMap: Record<string, string>;
     privateChannels: Collection<DMChannel>;
     ready: boolean;
     reconnectAttempts: number;
     requestHandler: RequestHandler;
     shards: ShardManager;
     startTime: number;
-    threadGuildMap: { [s: string]: string };
+    threadGuildMap: Record<string, string>;
     unavailableGuilds: Collection<UnavailableGuild>;
     uptime: number;
     user: ExtendedUser;
@@ -2297,6 +2295,7 @@ declare namespace Eris {
     baseObject: new (...args: any[]) => T;
     limit?: number;
     constructor(baseObject: new (...args: any[]) => T, limit?: number);
+    update(obj: T, extra?: unknown, replace?: boolean): T;
     add(obj: T, extra?: unknown, replace?: boolean): T;
     every(func: (i: T) => boolean): boolean;
     filter(func: (i: T) => boolean): T[];
@@ -2306,7 +2305,6 @@ declare namespace Eris {
     reduce<U>(func: (accumulator: U, val: T) => U, initialValue?: U): U;
     remove(obj: T | Uncached): T | null;
     some(func: (i: T) => boolean): boolean;
-    update(obj: T, extra?: unknown, replace?: boolean): T;
   }
 
   export class Command implements CommandOptions, SimpleJSON {
@@ -2335,8 +2333,8 @@ declare namespace Eris {
     reactionButtonTimeout: number;
     requirements: CommandRequirements;
     restartCooldown: boolean;
-    subcommandAliases: { [alias: string]: string };
-    subcommands: { [s: string]: Command };
+    subcommandAliases: Record<string, string>;
+    subcommands: Record<string, Command>;
     usage: string;
     constructor(label: string, generate: CommandGenerator, options?: CommandOptions);
     cooldownCheck(msg: Message): boolean;
@@ -2352,11 +2350,11 @@ declare namespace Eris {
   }
 
   export class CommandClient extends Client {
-    activeMessages: { [s: string]: ActiveMessages };
-    commandAliases: { [s: string]: string };
+    activeMessages: Record<string, ActiveMessages>;
+    commandAliases: Record<string, string>;
     commandOptions: CommandClientOptions;
-    commands: { [s: string]: Command };
-    guildPrefixes: { [s: string]: string | string[] };
+    commands: Record<string, Command>;
+    guildPrefixes: Record<string, string | string[]>;
     preReady?: true;
     constructor(token: string, options: ClientOptions, commandOptions?: CommandClientOptions);
     checkPrefix(msg: Message): string;
@@ -2621,8 +2619,8 @@ declare namespace Eris {
 
   export class GuildAuditLogEntry extends Base {
     actionType: number;
-    after: { [key: string]: unknown } | null;
-    before: { [key: string]: unknown } | null;
+    after: Record<string, unknown> | null;
+    before: Record<string, unknown> | null;
     channel?: AnyGuildChannel | Uncached;
     count?: number;
     deleteMemberDays?: number;
@@ -2787,7 +2785,7 @@ declare namespace Eris {
     getWebhooks(): Promise<Webhook[]>;
   }
 
-  //Interactions
+  // Interactions
   export class AutocompleteInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
@@ -2897,6 +2895,7 @@ declare namespace Eris {
         : CH extends Exclude<InviteChannel, InvitePartialChannel> // Invite without Metadata and not GroupChanel
           ? Guild // If the invite channel is not partial
           : Guild | Uncached | undefined; // If the invite channel is partial
+
     inviter?: User;
     maxAge: CT extends "withMetadata" ? number : null;
     maxUses: CT extends "withMetadata" ? number : null;
@@ -2985,7 +2984,7 @@ declare namespace Eris {
     pinned: boolean;
     poll?: Poll;
     prefix?: string;
-    reactions: { [s: string]: Reaction };
+    reactions: Record<string, Reaction>;
     referencedMessage?: Message | null;
     roleMentions: string[];
     roleSubscriptionData?: RoleSubscriptionData;
@@ -3094,14 +3093,14 @@ declare namespace Eris {
     globalBlock: boolean;
     latencyRef: LatencyRef;
     options: RequestHandlerOptions;
-    ratelimits: { [route: string]: SequentialBucket };
+    ratelimits: Record<string, SequentialBucket>;
     readyQueue: (() => void)[];
     userAgent: string;
     constructor(client: Client, options?: RequestHandlerOptions);
     /** @deprecated */
     constructor(client: Client, forceQueueing?: boolean);
     globalUnblock(): void;
-    request(method: RequestMethod, url: string, auth?: boolean, body?: { [s: string]: unknown }, file?: FileContent, _route?: string, short?: boolean): Promise<unknown>;
+    request(method: RequestMethod, url: string, auth?: boolean, body?: Record<string, unknown>, file?: FileContent, _route?: string, short?: boolean): Promise<unknown>;
     routefy(url: string, method: RequestMethod): string;
     toString(): string;
     toJSON(props?: string[]): JSONCache;
@@ -3148,7 +3147,7 @@ declare namespace Eris {
     connecting: boolean;
     connectTimeout: NodeJS.Timeout | null;
     discordServerTrace?: string[];
-    getAllUsersCount: { [guildID: string]: boolean };
+    getAllUsersCount: Record<string, boolean>;
     getAllUsersLength: number;
     getAllUsersQueue: string;
     globalBucket: Bucket;
@@ -3164,7 +3163,7 @@ declare namespace Eris {
     presenceUpdateBucket: Bucket;
     ready: boolean;
     reconnectInterval: number;
-    requestMembersPromise: { [s: string]: RequestMembersPromise };
+    requestMembersPromise: Record<string, RequestMembersPromise>;
     resumeURL: string | null;
     seq: number;
     sessionID: string | null;
@@ -3260,9 +3259,9 @@ declare namespace Eris {
     privacyLevel: StageInstancePrivacyLevel;
     topic: string;
     constructor(data: BaseData, client: Client);
+    update(data: BaseData): void;
     delete(): Promise<void>;
     edit(options: StageInstanceOptions): Promise<StageInstance>;
-    update(data: BaseData): void;
   }
 
   export class TextChannel extends GuildTextableChannel implements Invitable, Permissionable, Pinnable {
@@ -3319,8 +3318,8 @@ declare namespace Eris {
     joinTimestamp: number;
     threadID: string;
     constructor(data: BaseData, client: Client);
-    leave(): Promise<void>;
     update(data: BaseData): void;
+    leave(): Promise<void>;
   }
 
   export class UnavailableGuild extends Base {
@@ -3395,7 +3394,7 @@ declare namespace Eris {
     mode?: string;
     modes?: string;
     /** Optional dependencies OpusScript (opusscript) or OpusEncoder (@discordjs/opus) */
-    opus: { [userID: string]: unknown };
+    opus: Record<string, unknown>;
     opusOnly: boolean;
     paused: boolean;
     pcmSize: number;
@@ -3415,7 +3414,7 @@ declare namespace Eris {
     shared: boolean;
     speaking: boolean;
     ssrc?: number;
-    ssrcUserMap: { [s: number]: string };
+    ssrcUserMap: Record<number, string>;
     timestamp: number;
     udpIP?: string;
     udpPort?: number;

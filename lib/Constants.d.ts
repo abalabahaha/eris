@@ -1,6 +1,6 @@
 export default interface Constants {
   GATEWAY_VERSION: 9;
-  REST_VERSION: 9;
+  REST_VERSION:    9;
   ActivityFlags: {
     INSTANCE:                    1;
     JOIN:                        2;
@@ -239,7 +239,7 @@ export default interface Constants {
     "VANITY_URL",
     "VERIFIED",
     "VIP_REGIONS",
-    "WELCOME_SCREEN_ENABLED"
+    "WELCOME_SCREEN_ENABLED",
   ];
   GuildIntegrationExpireBehavior: {
     REMOVE_ROLE: 0;
@@ -249,7 +249,7 @@ export default interface Constants {
     "twitch",
     "youtube",
     "discord",
-    "guild_subscription"
+    "guild_subscription",
   ];
   GuildNSFWLevels: {
     DEFAULT:        0;
@@ -292,7 +292,7 @@ export default interface Constants {
     "jpeg",
     "png",
     "webp",
-    "gif"
+    "gif",
   ];
   ImageSizeBoundaries: {
     MAXIMUM: 4096;
@@ -614,7 +614,7 @@ export default interface Constants {
     "Everyone welcome %user%!",
     "Glad you're here, %user%.",
     "Good to see you, %user%.",
-    "Yay you made it, %user%!"
+    "Yay you made it, %user%!",
   ];
   ThreadMemberFlags: {
     HAS_INTERACTED: 1;
