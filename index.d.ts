@@ -3494,6 +3494,7 @@ declare namespace Eris {
   export class AutocompleteInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
+    context: ApplicationCommandContextTypes;
     data: AutocompleteInteractionData;
     guildID: T extends AnyGuildChannel ? string : undefined;
     member: T extends AnyGuildChannel ? Member : undefined;
@@ -3522,7 +3523,7 @@ declare namespace Eris {
   export class CommandInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
-    context?: ApplicationCommandContextTypes;
+    context: ApplicationCommandContextTypes;
     data: CommandInteractionData;
     guildID: T extends AnyGuildChannel ? string : undefined;
     member: T extends AnyGuildChannel ? Member : undefined;
@@ -3543,6 +3544,7 @@ declare namespace Eris {
   export class ComponentInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
+    context: ApplicationCommandContextTypes;
     data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData;
     guildID: T extends AnyGuildChannel ? string : undefined;
     member: T extends AnyGuildChannel ? Member : undefined;
@@ -3720,6 +3722,7 @@ declare namespace Eris {
 
   export class ModalSubmitInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     channel: T;
+    context: ApplicationCommandContextTypes;
     data: ModalSubmitInteractionData;
     guildID: T extends AnyGuildChannel ? string : undefined;
     member: T extends AnyGuildChannel ? Member : undefined;
