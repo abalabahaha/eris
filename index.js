@@ -3,7 +3,7 @@
 const Client = require("./lib/Client");
 
 function Eris(token, options) {
-    return new Client(token, options);
+  return new Client(token, options);
 }
 
 Eris.ApplicationCommand = require("./lib/structures/ApplicationCommand");
