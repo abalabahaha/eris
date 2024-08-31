@@ -154,6 +154,8 @@ declare namespace Eris {
   type ActionRowComponents = Button | SelectMenu;
   type Button = InteractionButton | URLButton;
   type ButtonStyles = Constants["ButtonStyles"][keyof Constants["ButtonStyles"]];
+  type SelectMenu = BaseSelectMenu | StringSelect | ChannelSelect;
+  type SelectMenuTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT" | "USER_SELECT" | "ROLE_SELECT" | "MENTIONABLE_SELECT" | "CHANNEL_SELECT">];
   type Component = ActionRow | ActionRowComponents;
   type ImageFormat = Constants["ImageFormats"][number];
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
@@ -1304,21 +1306,18 @@ declare namespace Eris {
     resolved?: CommandInteractionResolvedData;
     options?: InteractionDataOptions[];
   }
-  interface CommandInteractionResolvedData {
-    channels?: Collection<AnyChannel>;
-    members?: Collection<Member>;
+  interface CommandInteractionResolvedData extends InteractionResolvedData {
     messages?: Collection<Message>;
-    roles?: Collection<Role>;
-    users?: Collection<User>;
   }
   interface ComponentInteractionButtonData {
     component_type: Constants["ComponentTypes"]["BUTTON"];
     custom_id: string;
   }
   interface ComponentInteractionSelectMenuData {
-    component_type: Constants["ComponentTypes"]["SELECT_MENU"];
+    component_type: SelectMenuTypes;
     custom_id: string;
     values: string[];
+    resolved?: InteractionResolvedData;
   }
   interface InteractionAutocomplete {
     choices: ApplicationCommandOptionChoice[];
@@ -1347,6 +1346,12 @@ declare namespace Eris {
   interface InteractionOptions {
     data?: InteractionCallbackData;
     type: InteractionResponseTypes;
+  }
+  interface InteractionResolvedData {
+    channels?: Collection<AnyChannel>;
+    members?: Collection<Member>;
+    roles?: Collection<Role>;
+    users?: Collection<User>;
   }
 
   // Invite
@@ -1589,21 +1594,36 @@ declare namespace Eris {
     burst: number;
     normal: number;
   }
-  interface SelectMenu {
+  interface BaseSelectMenu extends SelectMenuBase {
+    type: Exclude<SelectMenuTypes, Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT" | "CHANNEL_SELECT">]>;
+  }
+  interface SelectMenuBase {
     custom_id: string;
     disabled?: boolean;
+    default_values?: SelectDefaultValues[];
     max_values?: number;
     min_values?: number;
-    options: SelectMenuOptions[];
     placeholder?: string;
-    type: Constants["ComponentTypes"]["SELECT_MENU"];
+    type: SelectMenuTypes;
   }
-  interface SelectMenuOptions {
+  interface ChannelSelect extends SelectMenuBase {
+    channel_types?: ChannelTypes[];
+    type: Constants["ComponentTypes"]["CHANNEL_SELECT"];
+  }
+  interface StringSelect extends Omit<SelectMenuBase, "default_values"> {
+    options: StringSelectOptions[];
+    type: Constants["ComponentTypes"]["STRING_SELECT"];
+  }
+  interface StringSelectOptions {
     default?: boolean;
     description?: string;
     emoji?: Partial<PartialEmoji>;
     label: string;
     value: string;
+  }
+  interface SelectDefaultValues {
+    id: string;
+    type: "user" | "role" | "channel";
   }
   interface Sticker extends StickerItems {
     /** @deprecated */
