@@ -225,8 +225,9 @@ declare namespace Eris {
   interface ApplicationCommandCreateOptions<T extends boolean, U = ApplicationCommandTypes> extends ApplicationCommandEditOptions<T, U> {
     contexts?: ApplicationCommandContextTypes[];
     description: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "" | void;
-    integrationTypes: ApplicationCommandIntegrationTypes[];
+    integrationTypes?: ApplicationCommandIntegrationTypes[];
     name: string;
+    type?: U;
   }
   /** Generic T is `true` if editing Guild scoped commands, and `false` if not */
   interface ApplicationCommandBulkEditOptions<T extends boolean, U = ApplicationCommandTypes> extends ApplicationCommandCreateOptions<T, U> {
@@ -2635,7 +2636,7 @@ declare namespace Eris {
   /** Generic T is `true` if a Guild scoped command, and `false` if not */
   export class ApplicationCommand<T extends boolean, U = ApplicationCommandTypes> extends Base {
     applicationID: string;
-    contexts: ApplicationCommandContextTypes[];
+    contexts?: ApplicationCommandContextTypes[];
     defaultMemberPermissions: Permission;
     /** @deprecated */
     defaultPermission?: boolean | null;
@@ -2643,6 +2644,7 @@ declare namespace Eris {
     descriptionLocalizations?: U extends "CHAT_INPUT" ? Record<LocaleStrings, string> | null : null;
     dmPermission?: boolean;
     guild: T extends true ? PossiblyUncachedGuild : never;
+    integrationTypes?: ApplicationCommandIntegrationTypes[];
     name: string;
     nameLocalizations?: Record<LocaleStrings, string> | null;
     nsfw?: boolean;
