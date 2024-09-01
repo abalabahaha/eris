@@ -1433,7 +1433,7 @@ declare namespace Eris {
     timeout: NodeJS.Timer;
   }
   interface AdvancedMessageContent extends AdvancedMessageContentEdit {
-    messageReference?: MessageReferenceForward | MessageReferenceReply;
+    messageReference?: MessageReferenceReply | MessageReferenceForward;
     /** @deprecated */
     messageReferenceID?: string;
     poll?: PollCreateOptions;
