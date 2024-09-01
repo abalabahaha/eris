@@ -1545,11 +1545,12 @@ declare namespace Eris {
   interface MessageReferenceForward extends MessageReferenceBase {
     channelID: string;
     messageID: string;
-    type: MessageReferenceTypes;
+    type: Constants["MessageReferenceTypes"]["FORWARD"];
   }
   interface MessageReferenceReply extends MessageReferenceBase {
     messageID: string;
     failIfNotExists?: boolean;
+    type?: Constants["MessageReferenceTypes"]["DEFAULT"];
   }
   interface MessageSnapshot {
     guildID?: string;
