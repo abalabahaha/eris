@@ -162,13 +162,10 @@ declare namespace Eris {
   type PollLayoutTypes = Constants["PollLayoutTypes"][keyof Constants["PollLayoutTypes"]];
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
   type ReactionTypes = Constants["ReactionTypes"][keyof Constants["ReactionTypes"]];
-  type SelectMenu = StringSelectMenu | UserSelectMenu | RoleSelectMenu | MentionableSelectMenu | ChannelSelectMenu;
-  type StringSelectMenu = SelectMenuBase<Constants["ComponentTypes"]["STRING_SELECT"]> & SelectMenuStringOptions;
-  type UserSelectMenu = SelectMenuBase<Constants["ComponentTypes"]["USER_SELECT"]> & SelectMenuDefaultValues;
-  type RoleSelectMenu = SelectMenuBase<Constants["ComponentTypes"]["ROLE_SELECT"]> & SelectMenuDefaultValues;
-  type MentionableSelectMenu = SelectMenuBase<Constants["ComponentTypes"]["MENTIONABLE_SELECT"]> & SelectMenuDefaultValues;
-  type ChannelSelectMenu = SelectMenuBase<Constants["ComponentTypes"]["CHANNEL_SELECT"]> & SelectMenuChannelOptions & SelectMenuDefaultValues;
-  type SelectMenuTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT" | "USER_SELECT" | "ROLE_SELECT" | "MENTIONABLE_SELECT" | "CHANNEL_SELECT">];
+  type SelectMenu = SelectMenuBase | StringSelectMenu | ChannelSelectMenu;
+  type SelectMenuNonResolvedTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT">];
+  type SelectMenuResolvedTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "USER_SELECT" | "ROLE_SELECT" | "MENTIONABLE_SELECT" | "CHANNEL_SELECT">];
+  type SelectMenuTypes = SelectMenuNonResolvedTypes | SelectMenuResolvedTypes;
 
   // Permission
   type PermissionType = Constants["PermissionOverwriteTypes"][keyof Constants["PermissionOverwriteTypes"]];
@@ -1599,16 +1596,21 @@ declare namespace Eris {
     burst: number;
     normal: number;
   }
-  interface SelectMenuBase<T extends SelectMenuTypes> {
+  interface SelectMenuBase {
     custom_id: string;
     disabled?: boolean;
     max_values?: number;
     min_values?: number;
     placeholder?: string;
-    type: T;
+    type: SelectMenuTypes;
   }
-  interface SelectMenuStringOptions {
+  interface ChannelSelectMenu extends SelectMenuBase {
+    channel_types?: ChannelTypes[];
+    type: Constants["ComponentTypes"]["CHANNEL_SELECT"];
+  }
+  interface StringSelectMenu extends SelectMenuBase {
     options: StringSelectOptions[];
+    type: Constants["ComponentTypes"]["STRING_SELECT"];
   }
   interface StringSelectOptions {
     default?: boolean;
@@ -1617,11 +1619,9 @@ declare namespace Eris {
     label: string;
     value: string;
   }
-  interface SelectMenuChannelOptions {
-    channel_types?: ChannelTypes[];
-  }
-  interface SelectMenuDefaultValues {
+  interface ResolvedSelectMenus extends SelectMenuBase {
     default_values?: SelectDefaultValues[];
+    type: SelectMenuResolvedTypes;
   }
   interface SelectDefaultValues {
     id: string;
