@@ -162,7 +162,7 @@ declare namespace Eris {
   type PollLayoutTypes = Constants["PollLayoutTypes"][keyof Constants["PollLayoutTypes"]];
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
   type ReactionTypes = Constants["ReactionTypes"][keyof Constants["ReactionTypes"]];
-  type SelectMenu = SelectMenuBase | StringSelectMenu | ChannelSelectMenu;
+  type SelectMenu = StringSelectMenu | ChannelSelectMenu | ResolvedSelectMenus;
   type SelectMenuNonResolvedTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT">];
   type SelectMenuResolvedTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "USER_SELECT" | "ROLE_SELECT" | "MENTIONABLE_SELECT" | "CHANNEL_SELECT">];
   type SelectMenuTypes = SelectMenuNonResolvedTypes | SelectMenuResolvedTypes;
