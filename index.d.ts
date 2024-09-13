@@ -1024,6 +1024,13 @@ declare namespace Eris {
     deleteMessageSeconds?: number;
     reason?: string;
   }
+  interface BulkBanMembersOptions extends Omit<BanMemberOptions, "deleteMessageDays"> {
+    userIDs: string[];
+  }
+  interface BulkBanMembersResponse {
+    banned_users: string[];
+    failed_users: string[];
+  }
   interface CreateGuildOptions {
     afkChannelID?: string;
     afkTimeout?: number;
@@ -2043,6 +2050,7 @@ declare namespace Eris {
     banGuildMember(guildID: string, userID: string, options?: BanMemberOptions): Promise<void>;
     /** @deprecated */
     banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
+    bulkBanGuildMembers(guildID: string, options: BulkBanMembersOptions): Promise<BulkBanMembersResponse>;
     bulkEditCommands(commands: ApplicationCommandBulkEditOptions<false>[]): Promise<ApplicationCommand<false>[]>;
     bulkEditGuildCommands(guildID: string, commands: ApplicationCommandBulkEditOptions<true>[]): Promise<ApplicationCommand<true>[]>;
     closeVoiceConnection(guildID: string): void;
@@ -2518,6 +2526,7 @@ declare namespace Eris {
     banMember(userID: string, options?: BanMemberOptions): Promise<void>;
     /** @deprecated */
     banMember(userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
+    bulkBanMembers(options: BulkBanMembersOptions): Promise<BulkBanMembersResponse>;
     bulkEditCommands<T extends ApplicationCommandTypes>(commands: ApplicationCommandBulkEditOptions<true, T>[]): Promise<ApplicationCommand<true, T>[]>;
     createAutoModerationRule(rule: CreateAutoModerationRuleOptions): Promise<AutoModerationRule>;
     createChannel(name: string): Promise<TextChannel>;
