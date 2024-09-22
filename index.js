@@ -3,14 +3,13 @@
 const Client = require("./lib/Client");
 
 function Eris(token, options) {
-    return new Client(token, options);
+  return new Client(token, options);
 }
 
 Eris.ApplicationCommand = require("./lib/structures/ApplicationCommand");
 Eris.AutocompleteInteraction = require("./lib/structures/AutocompleteInteraction");
 Eris.Base = require("./lib/structures/Base");
 Eris.Bucket = require("./lib/util/Bucket");
-Eris.Call = require("./lib/structures/Call");
 Eris.CategoryChannel = require("./lib/structures/CategoryChannel");
 Eris.Channel = require("./lib/structures/Channel");
 Eris.Client = Client;
@@ -43,10 +42,10 @@ Eris.NewsThreadChannel = require("./lib/structures/NewsThreadChannel");
 Eris.Permission = require("./lib/structures/Permission");
 Eris.PermissionOverwrite = require("./lib/structures/PermissionOverwrite");
 Eris.PingInteraction = require("./lib/structures/PingInteraction");
-Eris.PrivateChannel = require("./lib/structures/PrivateChannel");
+/** @deprecated */
+Eris.PrivateChannel = require("./lib/structures/DMChannel");
 Eris.PrivateThreadChannel = require("./lib/structures/PrivateThreadChannel");
 Eris.PublicThreadChannel = require("./lib/structures/PublicThreadChannel");
-Eris.Relationship = require("./lib/structures/Relationship");
 Eris.RequestHandler = require("./lib/rest/RequestHandler");
 Eris.Role = require("./lib/structures/Role");
 Eris.SequentialBucket = require("./lib/util/SequentialBucket");
