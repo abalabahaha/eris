@@ -444,6 +444,10 @@ export default interface Constants {
     STAGE_TOPIC:                                  31;
     GUILD_APPLICATION_PREMIUM_SUBSCRIPTION:       32;
   };
+  MessageReferenceTypes: {
+    DEFAULT: 0;
+    FORWARD: 1;
+  };
   MFALevels: {
     NONE:     0;
     ELEVATED: 1;

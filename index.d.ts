@@ -159,6 +159,7 @@ declare namespace Eris {
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
   type MessageContent = string | AdvancedMessageContent;
   type MessageContentEdit = string | AdvancedMessageContentEdit;
+  type MessageReferenceTypes = Constants["MessageReferenceTypes"][keyof Constants["MessageReferenceTypes"]];
   type PollLayoutTypes = Constants["PollLayoutTypes"][keyof Constants["PollLayoutTypes"]];
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
   type ReactionTypes = Constants["ReactionTypes"][keyof Constants["ReactionTypes"]];
@@ -1432,7 +1433,7 @@ declare namespace Eris {
     timeout: NodeJS.Timer;
   }
   interface AdvancedMessageContent extends AdvancedMessageContentEdit {
-    messageReference?: MessageReferenceReply;
+    messageReference?: MessageReferenceReply | MessageReferenceForward;
     /** @deprecated */
     messageReferenceID?: string;
     poll?: PollCreateOptions;
@@ -1539,10 +1540,21 @@ declare namespace Eris {
     channelID?: string;
     guildID?: string;
     messageID?: string;
+    type: MessageReferenceTypes;
+  }
+  interface MessageReferenceForward extends MessageReferenceBase {
+    channelID: string;
+    messageID: string;
+    type: Constants["MessageReferenceTypes"]["FORWARD"];
   }
   interface MessageReferenceReply extends MessageReferenceBase {
     messageID: string;
     failIfNotExists?: boolean;
+    type?: Constants["MessageReferenceTypes"]["DEFAULT"];
+  }
+  interface MessageSnapshot {
+    guildID?: string;
+    message: Pick<Message, "attachments" | "content" | "edited_timestamp" | "embeds" | "flags" | "id" | "mentions" | "roleMentions" | "timestamp" | "type">;
   }
   interface PartialAttachment {
     description?: string;
@@ -2981,6 +2993,7 @@ declare namespace Eris {
     mentionEveryone: boolean;
     mentions: User[];
     messageReference: MessageReference | null;
+    messageSnapshots?: MessageSnapshot[];
     pinned: boolean;
     poll?: Poll;
     prefix?: string;
