@@ -1548,7 +1548,7 @@ declare namespace Eris {
     channelID?: string;
     guildID?: string;
     messageID?: string;
-    type: MessageReferenceTypes;
+    type?: MessageReferenceTypes;
   }
   interface MessageReferenceForward extends MessageReferenceBase {
     channelID: string;
@@ -1562,7 +1562,7 @@ declare namespace Eris {
   }
   interface MessageSnapshot {
     guildID?: string;
-    message: Pick<Message, "attachments" | "content" | "edited_timestamp" | "embeds" | "flags" | "id" | "mentions" | "roleMentions" | "timestamp" | "type">;
+    message: Pick<Message, "attachments" | "content" | "editedTimestamp" | "embeds" | "flags" | "id" | "mentions" | "roleMentions" | "timestamp" | "type">;
   }
   interface PartialAttachment {
     description?: string;
