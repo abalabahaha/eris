@@ -564,6 +564,7 @@ declare namespace Eris {
     domain?: string;
     https?: boolean;
     latencyThreshold?: number;
+    port?: number;
     ratelimiterOffset?: number;
     requestTimeout?: number;
   }
