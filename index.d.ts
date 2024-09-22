@@ -14,6 +14,7 @@ declare namespace Eris {
   export const Constants: Constants;
   export const VERSION: string;
 
+  /** @deprecated */
   export const PrivateChannel: typeof DMChannel;
 
   // TYPES
@@ -2040,7 +2041,9 @@ declare namespace Eris {
     lastReconnectDelay: number;
     options: ClientOptions;
     presence: ClientPresence;
+    /** @deprecated */
     privateChannelMap: Record<string, string>;
+    /** @deprecated */
     privateChannels: Collection<DMChannel>;
     ready: boolean;
     reconnectAttempts: number;
