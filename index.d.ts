@@ -878,7 +878,7 @@ declare namespace Eris {
     channelDelete: [channel: Exclude<AnyChannel, GroupChannel>];
     channelPinUpdate: [channel: TextableChannel, timestamp: number, oldTimestamp: number];
     channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldForumChannel | OldGuildTextChannel | OldVoiceChannel]
-    | [channel: GroupChannel, oldChannel: OldGroupChannel];
+      | [channel: GroupChannel, oldChannel: OldGroupChannel];
     connect: [id: number];
     debug: [message: string, id?: number];
     disconnect: [];
@@ -935,7 +935,7 @@ declare namespace Eris {
     threadMemberUpdate: [channel: AnyThreadChannel, member: ThreadMember, oldMember: OldThreadMember];
     threadUpdate: [channel: AnyThreadChannel, oldChannel: OldThread | null];
     typingStart: [channel: AnyGuildTextableChannel | Uncached, user: User | Uncached, member: Member]
-    | [channel: DMChannel | Uncached, user: User | Uncached, member: null];
+      | [channel: DMChannel | Uncached, user: User | Uncached, member: null];
     unavailableGuildCreate: [guild: UnavailableGuild];
     unknown: [packet: RawPacket, id?: number];
     userUpdate: [user: User, oldUser: PartialUser | null];
@@ -1550,7 +1550,7 @@ declare namespace Eris {
     channelID?: string;
     guildID?: string;
     messageID?: string;
-    type: MessageReferenceTypes;
+    type?: MessageReferenceTypes;
   }
   interface MessageReferenceForward extends MessageReferenceBase {
     channelID: string;
@@ -1564,7 +1564,7 @@ declare namespace Eris {
   }
   interface MessageSnapshot {
     guildID?: string;
-    message: Pick<Message, "attachments" | "content" | "edited_timestamp" | "embeds" | "flags" | "id" | "mentions" | "roleMentions" | "timestamp" | "type">;
+    message: Pick<Message, "attachments" | "content" | "editedTimestamp" | "embeds" | "flags" | "id" | "mentions" | "roleMentions" | "timestamp" | "type">;
   }
   interface PartialAttachment {
     description?: string;
