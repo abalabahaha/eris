@@ -970,6 +970,7 @@ declare namespace Eris {
     speakingStop: [userID: string];
     start: [];
     unknown: [packet: RawPacket];
+    usersConnect: [userIDs: string[]];
     userDisconnect: [userID: string];
     warn: [message: string];
   }
