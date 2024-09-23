@@ -191,6 +191,7 @@ declare namespace Eris {
   // Voice
   type ConverterCommand = "./ffmpeg" | "./avconv" | "ffmpeg" | "avconv";
   type StageInstancePrivacyLevel = Constants["StageInstancePrivacyLevel"][keyof Constants["StageInstancePrivacyLevel"]];
+  type VoiceChannelEffectAnimationType = Constants["VoiceChannelEffectAnimationTypes"][keyof Constants["VoiceChannelEffectAnimationTypes"]];
 
   // Webhook
   type WebhookPayloadEdit = Pick<WebhookPayload, "attachments" | "content" | "embed" | "embeds" | "file" | "allowedMentions" | "components">;
@@ -866,6 +867,16 @@ declare namespace Eris {
     selfStream: boolean;
     selfVideo: boolean;
   }
+  interface VoiceChannelEffect {
+    guild: Guild | Uncached;
+    channel: AnyVoiceChannel | Uncached;
+    user: User | Uncached;
+    emoji?: PartialEmoji;
+    animationType?: VoiceChannelEffectAnimationType;
+    animationID?: number;
+    soundID?: string | number;
+    soundVolume?: number;
+  }
   interface EventListeners {
     applicationCommandPermissionsUpdate: [applicationCommandPermissions: GuildApplicationCommandPermissions];
     autoModerationActionExecution: [guild: Guild, action: AutoModerationActionExecution];
@@ -937,6 +948,7 @@ declare namespace Eris {
     unavailableGuildCreate: [guild: UnavailableGuild];
     unknown: [packet: RawPacket, id?: number];
     userUpdate: [user: User, oldUser: PartialUser | null];
+    voiceChannelEffectSend: [effect: VoiceChannelEffect];
     voiceChannelJoin: [member: Member, channel: AnyVoiceChannel];
     voiceChannelLeave: [member: Member, channel: AnyVoiceChannel];
     voiceChannelStatusUpdate: [channel: AnyVoiceChannel, oldChannel: VoiceStatus];
