@@ -302,6 +302,8 @@ export default interface Constants {
     guilds:                      1;
     guildMembers:                2;
     guildBans:                   4;
+    guildExpressions:            8;
+    /** @deprecated */
     guildEmojisAndStickers:      8;
     /** @deprecated */
     guildEmojis:                 8;
