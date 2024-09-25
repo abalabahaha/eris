@@ -189,24 +189,26 @@ export default interface Constants {
     ALL_MEMBERS:           2;
   };
   GatewayOPCodes: {
-    DISPATCH:              0;
+    DISPATCH:                  0;
     /** @deprecated */
-    EVENT:                 0;
-    HEARTBEAT:             1;
-    IDENTIFY:              2;
-    PRESENCE_UPDATE:       3;
+    EVENT:                     0;
+    HEARTBEAT:                 1;
+    IDENTIFY:                  2;
+    PRESENCE_UPDATE:           3;
     /** @deprecated */
-    STATUS_UPDATE:         3;
-    VOICE_STATE_UPDATE:    4;
-    VOICE_SERVER_PING:     5;
-    RESUME:                6;
-    RECONNECT:             7;
-    REQUEST_GUILD_MEMBERS: 8;
+    STATUS_UPDATE:             3;
+    VOICE_STATE_UPDATE:        4;
+    VOICE_SERVER_PING:         5;
+    RESUME:                    6;
+    RECONNECT:                 7;
+    REQUEST_GUILD_MEMBERS:     8;
     /** @deprecated */
-    GET_GUILD_MEMBERS:     8;
-    INVALID_SESSION:       9;
-    HELLO:                 10;
-    HEARTBEAT_ACK:         11;
+    GET_GUILD_MEMBERS:         8;
+    INVALID_SESSION:           9;
+    HELLO:                     10;
+    HEARTBEAT_ACK:             11;
+    // Unknown 12-30
+    REQUEST_SOUNDBOARD_SOUNDS: 31;
   };
   GuildFeatures: [
     "ANIMATED_BANNER",
@@ -214,27 +216,25 @@ export default interface Constants {
     "APPLICATION_COMMAND_PERMISSIONS_V2",
     "AUTO_MODERATION",
     "BANNER",
-    "COMMERCE",
     "COMMUNITY",
     "CREATOR_MONETIZABLE_PROVISIONAL",
     "CREATOR_STORE_PAGE",
     "DEVELOPER_SUPPORT_SERVER",
     "DISCOVERABLE",
     "FEATURABLE",
-    "INVITE_SPLASH",
     "INVITES_DISABLED",
+    "INVITE_SPLASH",
     "MEMBER_VERIFICATION_GATE_ENABLED",
-    "MONETIZATION_ENABLED",
+    "MORE_SOUNDBOARD",
     "MORE_STICKERS",
     "NEWS",
     "PARTNERED",
     "PREVIEW_ENABLED",
-    "PRIVATE_THREADS",
+    "RAID_ALERTS_DISABLED",
     "ROLE_ICONS",
     "ROLE_SUBSCRIPTIONS_AVAILABLE_FOR_PURCHASE",
     "ROLE_SUBSCRIPTIONS_ENABLED",
-    "SEVEN_DAY_THREAD_ARCHIVE",
-    "THREE_DAY_THREAD_ARCHIVE",
+    "SOUNDBOARD",
     "TICKETED_EVENTS_ENABLED",
     "VANITY_URL",
     "VERIFIED",
