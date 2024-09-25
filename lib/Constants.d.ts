@@ -355,6 +355,7 @@ export default interface Constants {
     ENGLISH_UK:           "en-GB";
     ENGLISH_US:           "en-US";
     SPANISH:              "es-ES";
+    SPANISH_LATAM:        "es-419";
     FINNISH:              "fi";
     FRENCH:               "fr";
     HINDI:                "hi";
