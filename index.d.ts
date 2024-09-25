@@ -2191,7 +2191,7 @@ declare namespace Eris {
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string; wait: true }): Promise<Message<AnyGuildTextableChannel>>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message<AnyGuildTextableChannel>>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
-    followChannel(channelID: string, webhookChannelID: string): Promise<ChannelFollow>;
+    followChannel(channelID: string, webhookChannelID: string, reason?: string): Promise<ChannelFollow>;
     getActiveGuildThreads(guildID: string): Promise<ListedGuildThreads>;
     getArchivedThreads(channelID: string, type: "private", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getArchivedThreads(channelID: string, type: "public", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel<boolean>>>;
