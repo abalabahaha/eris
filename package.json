@@ -1,6 +1,6 @@
 {
   "name": "eris",
-  "version": "0.17.2",
+  "version": "0.18.0",
   "description": "A NodeJS Discord library",
   "main": "./index.js",
   "exports": {
@@ -19,8 +19,8 @@
     "node": ">=10.4.0"
   },
   "scripts": {
-    "format": "eslint --fix lib examples *.{js,mjs,ts}",
-    "lint": "eslint --max-warnings 0 lib examples '*.{js,mjs,ts}'"
+    "format": "eslint --fix lib examples \"*.{js,mjs,ts}\"",
+    "lint": "eslint --max-warnings 0 lib examples \"*.{js,mjs,ts}\""
   },
   "repository": {
     "type": "git",
