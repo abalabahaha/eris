@@ -42,7 +42,8 @@ Eris.NewsThreadChannel = require("./lib/structures/NewsThreadChannel");
 Eris.Permission = require("./lib/structures/Permission");
 Eris.PermissionOverwrite = require("./lib/structures/PermissionOverwrite");
 Eris.PingInteraction = require("./lib/structures/PingInteraction");
-Eris.PrivateChannel = require("./lib/structures/PrivateChannel");
+/** @deprecated */
+Eris.PrivateChannel = require("./lib/structures/DMChannel");
 Eris.PrivateThreadChannel = require("./lib/structures/PrivateThreadChannel");
 Eris.PublicThreadChannel = require("./lib/structures/PublicThreadChannel");
 Eris.RequestHandler = require("./lib/rest/RequestHandler");
