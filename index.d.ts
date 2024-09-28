@@ -2611,6 +2611,7 @@ declare namespace Eris {
     createRole(options: Role, reason?: string): Promise<Role>;
     createScheduledEvent<T extends GuildScheduledEventEntityTypes>(event: GuildScheduledEventOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     createSticker(options: CreateStickerOptions, reason?: string): Promise<Sticker>;
+    createTestEntitlement(skuID: string): Promise<Entitlement>;
     createTemplate(name: string, description?: string | null): Promise<GuildTemplate>;
     delete(): Promise<void>;
     deleteAutoModerationRule(ruleID: string, reason?: string): Promise<void>;
@@ -2660,6 +2661,7 @@ declare namespace Eris {
     getCommandPermissions(): Promise<GuildApplicationCommandPermissions[]>;
     getCommands(): Promise<ApplicationCommand<true>[]>;
     getDiscovery(): Promise<DiscoveryMetadata>;
+    getEntitlements(options?: Omit<GetEntitlementsOptions, "guildID">): Promise<Entitlement[]>;
     /** @deprecated */
     getEmbed(): Promise<Widget>;
     getIntegrations(): Promise<GuildIntegration>;
@@ -3436,6 +3438,7 @@ declare namespace Eris {
     dynamicAvatarURL(format?: ImageFormat, size?: number): string;
     dynamicBannerURL(format?: ImageFormat, size?: number): string | null;
     getDMChannel(): Promise<DMChannel>;
+    getEntitlements(options?: Omit<GetEntitlementsOptions, "userID">): Promise<Entitlement[]>;
   }
 
   export class VoiceChannel extends GuildTextableChannel implements Invitable, Permissionable {
