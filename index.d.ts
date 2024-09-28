@@ -3437,6 +3437,7 @@ declare namespace Eris {
     constructor(data: BaseData, client: Client);
     dynamicAvatarURL(format?: ImageFormat, size?: number): string;
     dynamicBannerURL(format?: ImageFormat, size?: number): string | null;
+    createTestEntitlement(skuID: string): Promise<Entitlement>;
     getDMChannel(): Promise<DMChannel>;
     getEntitlements(options?: Omit<GetEntitlementsOptions, "userID">): Promise<Entitlement[]>;
   }
