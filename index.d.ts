@@ -1312,15 +1312,6 @@ declare namespace Eris {
     ownerType: EntitlementOwnerTypes;
   }
 
-  interface GetSKUEntitlementsOptions {
-    userID?: string;
-    before?: number;
-    after?: number;
-    limit?: number;
-    guildID?: string;
-    excludeEnded?: boolean;
-  }
-
   interface GetEntitlementsOptions {
     userID?: string;
     skuIDs?: string[];
@@ -2506,7 +2497,7 @@ declare namespace Eris {
     slug: string;
     type: SKUTypes;
     createTestEntitlement(ownerID: string, ownerType: EntitlementOwnerTypes): Promise<Entitlement>;
-    getEntitlements(options?: GetSKUEntitlementsOptions): Promise<Entitlement[]>;
+    getEntitlements(options?: Omit<GetEntitlementsOptions, "skuIDs">): Promise<Entitlement[]>;
   }
 
   export class ExtendedUser extends User {
