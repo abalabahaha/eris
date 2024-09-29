@@ -702,6 +702,15 @@ declare namespace Eris {
   }
 
   // Events
+  interface OldAutoModerationRule {
+    actions: AutoModerationAction[];
+    enabled: boolean;
+    eventType: AutoModerationEventType;
+    exemptChannels: string[];
+    exemptRoles: string[];
+    name: string;
+    triggerMetadata: AutoModerationTriggerMetadata;
+  }
   interface OldCall {
     endedTimestamp?: number;
     participants: string[];
@@ -864,7 +873,7 @@ declare namespace Eris {
     autoModerationActionExecution: [guild: Guild, action: AutoModerationActionExecution];
     autoModerationRuleCreate: [guild: Guild, rule: AutoModerationRule];
     autoModerationRuleDelete: [guild: Guild, rule: AutoModerationRule];
-    autoModerationRuleUpdate: [guild: Guild, rule: AutoModerationRule | null, newRule: AutoModerationRule];
+    autoModerationRuleUpdate: [guild: Guild, rule: AutoModerationRule, oldRule: OldAutoModerationRule | null];
     channelCreate: [channel: AnyGuildChannel];
     channelDelete: [channel: Exclude<AnyChannel, GroupChannel>];
     channelPinUpdate: [channel: TextableChannel, timestamp: number, oldTimestamp: number];
