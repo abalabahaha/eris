@@ -116,12 +116,14 @@ export default interface Constants {
     VOICE_CHANNEL_STATUS_DELETE: 193;
   };
   AutoModerationActionTypes: {
-    BLOCK_MESSAGE:      1;
-    SEND_ALERT_MESSAGE: 2;
-    TIMEOUT:            3;
+    BLOCK_MESSAGE:            1;
+    SEND_ALERT_MESSAGE:       2;
+    TIMEOUT:                  3;
+    BLOCK_MEMBER_INTERACTION: 4;
   };
   AutoModerationEventTypes: {
-    MESSAGE_SEND: 1;
+    MESSAGE_SEND:  1;
+    MEMBER_UPDATE: 2;
   };
   AutoModerationKeywordPresetTypes: {
     PROFANITY:      1;
@@ -130,9 +132,12 @@ export default interface Constants {
   };
   AutoModerationTriggerTypes: {
     KEYWORD:        1;
+    /** @deprecated */
     HARMFUL_LINK:   2;
     SPAM:           3;
     KEYWORD_PRESET: 4;
+    MENTION_SPAM:   5;
+    MEMBER_PROFILE: 6;
   };
   ButtonStyles: {
     PRIMARY:   1;
@@ -380,10 +385,16 @@ export default interface Constants {
     CHINESE_TAIWAN:       "zh-TW";
   };
   MemberFlags: {
-    DID_REJOIN:            1;
-    COMPLETED_ONBOARDING:  2;
-    BYPASSES_VERIFICATION: 4;
-    STARTED_ONBOARDING:    8;
+    DID_REJOIN:                      1;
+    COMPLETED_ONBOARDING:            2;
+    BYPASSES_VERIFICATION:           4;
+    STARTED_ONBOARDING:              8;
+    IS_GUEST:                        16;
+    STARTED_HOME_ACTIONS:            32;
+    COMPLETED_HOME_ACTIONS:          64;
+    AUTOMOD_QUARANTINED_USERNAME:    128;
+    // Unknown 1 << 18 (256)
+    DM_SETTINGS_UPSELL_ACKNOWLEDGED: 512;
   };
   MessageActivityTypes: {
     JOIN:         1;
@@ -443,6 +454,11 @@ export default interface Constants {
     // Unknown 30
     STAGE_TOPIC:                                  31;
     GUILD_APPLICATION_PREMIUM_SUBSCRIPTION:       32;
+    // Unknown 33-35
+    GUILD_INCIDENT_ALERT_MODE_ENABLED:            36;
+    GUILD_INCIDENT_ALERT_MODE_DISABLED:           37;
+    GUILD_INCIDENT_REPORT_RAID:                   38;
+    GUILD_INCIDENT_REPORT_FALSE_ALARM:            39;
   };
   MessageReferenceTypes: {
     DEFAULT: 0;
