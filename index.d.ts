@@ -200,6 +200,7 @@ declare namespace Eris {
    type EntitlementTypes = Constants["EntitlementTypes"][keyof Constants["EntitlementTypes"]];
    type EntitlementOwnerTypes = Constants["EntitlementOwnerTypes"][keyof Constants["EntitlementOwnerTypes"]];
    type SKUTypes = Constants["SKUTypes"][keyof Constants["SKUTypes"]];
+   type SKUFlags = Constants["SKUFlags"][keyof Constants["SKUFlags"]];
 
   // INTERFACES
   // Internals
@@ -2492,7 +2493,7 @@ declare namespace Eris {
 
   export class SKU extends Base {
     applicationID: string;
-    flags: number;
+    flags: SKUFlags;
     name: string;
     slug: string;
     type: SKUTypes;
