@@ -125,7 +125,7 @@ declare namespace Eris {
   type PermissionValueTypes = bigint | number | string;
   type PossiblyUncachedGuild = Guild | Uncached;
   type PossiblyUncachedGuildScheduledEvent = GuildScheduledEvent | Uncached;
-  type PossiblyUncachedGuildSoundboardSound = SoundboardSound | { soundID: string; guild: PossiblyUncachedGuild };
+  type PossiblyUncachedGuildSoundboardSound = SoundboardSound | { id: string; guild: PossiblyUncachedGuild };
   type PremiumTier = Constants["PremiumTiers"][keyof Constants["PremiumTiers"]];
   type SystemChannelFlags = Constants["SystemChannelFlags"][keyof Constants["SystemChannelFlags"]];
   type VerificationLevel = Constants["VerificationLevels"][keyof Constants["VerificationLevels"]];
@@ -3326,10 +3326,9 @@ declare namespace Eris {
     emojiName: G extends false ? string : string | null;
     guild: G extends false ? never : PossiblyUncachedGuild;
     name: string;
-    soundID: string;
     user: G extends false ? never : User | undefined;
     volume: number;
-    constructor(data: BaseData, client: Client); // FIXME No id key, only soundID
+    constructor(data: BaseData, client: Client);
     delete(reason?: string): Promise<void>;
     edit(options: GuildSoundboardSoundEdit): Promise<SoundboardSound>;
     send(channelID: string): Promise<void>;
