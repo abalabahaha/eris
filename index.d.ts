@@ -1449,7 +1449,6 @@ declare namespace Eris {
     tts?: boolean;
   }
   interface AdvancedMessageContentEdit {
-    flags?: number;
     allowedMentions?: AllowedMentions;
     attachments?: PartialAttachment[];
     components?: ActionRow[];
@@ -1457,7 +1456,9 @@ declare namespace Eris {
     /** @deprecated */
     embed?: EmbedOptions;
     embeds?: EmbedOptions[];
+    enforceNonce?: boolean;
     file?: FileContent | FileContent[];
+    flags?: number;
   }
   interface AllowedMentions {
     everyone?: boolean;
