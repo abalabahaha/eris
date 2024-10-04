@@ -132,8 +132,8 @@ declare namespace Eris {
   // Interaction
   type AnyInteraction = PingInteraction | CommandInteraction | ComponentInteraction | AutocompleteInteraction | ModalSubmitInteraction;
   type InteractionCallbackData = InteractionAutocomplete | InteractionContent | InteractionModal;
-  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components" | "poll">;
-  type InteractionContentEdit = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components">;
+  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "files" | "allowedMentions" | "tts" | "flags" | "components" | "poll">;
+  type InteractionContentEdit = Pick<WebhookPayload, "content" | "embeds" | "files" | "allowedMentions" | "components">;
   type InteractionDataOptions = InteractionDataOptionsSubCommand | InteractionDataOptionsSubCommandGroup | InteractionDataOptionsWithValue;
   type InteractionDataOptionsBoolean = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"], boolean>;
   type InteractionDataOptionsChannel = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["CHANNEL"], string>;
@@ -193,7 +193,7 @@ declare namespace Eris {
   type StageInstancePrivacyLevel = Constants["StageInstancePrivacyLevel"][keyof Constants["StageInstancePrivacyLevel"]];
 
   // Webhook
-  type WebhookPayloadEdit = Pick<WebhookPayload, "attachments" | "content" | "embed" | "embeds" | "file" | "allowedMentions" | "components">;
+  type WebhookPayloadEdit = Pick<WebhookPayload, "attachments" | "content" | "embed" | "embeds" | "file" | "files" | "allowedMentions" | "components">;
   type WebhookTypes = Constants["WebhookTypes"][keyof Constants["WebhookTypes"]];
 
   // INTERFACES
@@ -1457,7 +1457,9 @@ declare namespace Eris {
     /** @deprecated */
     embed?: EmbedOptions;
     embeds?: EmbedOptions[];
+    /** @deprecated */
     file?: FileContent | FileContent[];
+    files?: FileContent[];
   }
   interface AllowedMentions {
     everyone?: boolean;
@@ -1753,10 +1755,12 @@ declare namespace Eris {
   interface CreateForumThreadOptions extends CreateThreadOptions {
     appliedTags?: string[];
     message: Omit<AdvancedMessageContent, "messageReference" | "messageReferenceID" | "tts"> & FileContent[];
+    files?: FileContent[]
   }
   interface CreateThreadWithoutMessageOptions<T = AnyThreadChannel["type"]> extends CreateThreadOptions {
     invitable?: T extends PrivateThreadChannel["type"] ? boolean : never;
     type?: T;
+    files?: FileContent[];
   }
   interface DefaultReactionEmoji {
     emoji_id?: string;
@@ -1900,7 +1904,9 @@ declare namespace Eris {
     /** @deprecated */
     embed?: EmbedOptions;
     embeds?: EmbedOptions[];
+    /** @deprecated */
     file?: FileContent | FileContent[];
+    files?: FileContent[];
     flags?: number;
     poll?: PollCreateOptions;
     threadID?: string;
@@ -2095,14 +2101,20 @@ declare namespace Eris {
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
     createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionOptions, file?: FileContent | FileContent[]): Promise<void>;
+    createMessage(channelID: string, content: MessageContent): Promise<Message>;
+    /** @deprecated */
     createMessage(channelID: string, content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
     createRole(guildID: string, options?: Role | RoleOptions, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
+    createThread(channelID: string, options: CreateForumThreadOptions): Promise<PublicThreadChannel<true>>;
+    /** @deprecated */
     createThread(channelID: string, options: CreateForumThreadOptions, file?: FileContent | FileContent[]): Promise<PublicThreadChannel<true>>;
+    createThread(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel>;
+    /** @deprecated */
     createThread(channelID: string, options: CreateThreadWithoutMessageOptions, file?: FileContent | FileContent[]): Promise<NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel>;
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     /** @deprecated */
-    createThreadWithoutMessage(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel>;
+    createThreadWithoutMessage(channelID: string, options: Omit<CreateThreadWithoutMessageOptions, "files">): Promise<NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
     deleteAutoModerationRule(guildID: string, ruleID: string, reason?: string): Promise<void>;
     deleteChannel(channelID: string, reason?: string): Promise<void>;
@@ -2422,6 +2434,8 @@ declare namespace Eris {
     type: Constants["ChannelTypes"]["DM"];
     constructor(data: BaseData, client: Client);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
+    createMessage(content: MessageContent): Promise<Message<this>>;
+    /** @deprecated */
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     delete(): Promise<DMChannel>;
     deleteMessage(messageID: string): Promise<void>;
@@ -2761,6 +2775,8 @@ declare namespace Eris {
     type: GuildTextChannelTypes | GuildVoiceChannelTypes | GuildThreadChannelTypes;
     constructor(data: BaseData, client: Client, messageLimit?: number);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
+    createMessage(content: MessageContent): Promise<Message<this>>;
+    /** @deprecated */
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
@@ -2799,6 +2815,8 @@ declare namespace Eris {
     threads: PublicThreadChannel<true>[];
     topic?: string;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
+    createThread(options: CreateForumThreadOptions): Promise<PublicThreadChannel<true>>;
+    /** @deprecated */
     createThread(options: CreateForumThreadOptions, file?: FileContent | FileContent[]): Promise<PublicThreadChannel<true>>;
     createWebhook(options: WebhookCreateOptions, reason?: string): Promise<Webhook>;
     deletePermission(overwriteID: string, reason?: string): Promise<void>;
@@ -2847,13 +2865,21 @@ declare namespace Eris {
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
     user: T extends AnyGuildChannel ? undefined : User;
     acknowledge(flags?: number): Promise<void>;
+    createFollowup(content: string | InteractionContent): Promise<Message>;
+    /** @deprecated */
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createMessage(content: string | InteractionContent): Promise<void>;
+    /** @deprecated */
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     createModal(content: InteractionModal): Promise<void>;
     defer(flags?: number): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | InteractionContentEdit): Promise<Message<T>>;
+    /** @deprecated */
     editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
+    editOriginalMessage(content: string | InteractionContentEdit): Promise<Message<T>>;
+    /** @deprecated */
     editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
     getOriginalMessage(): Promise<Message<T>>;
   }
@@ -2868,15 +2894,25 @@ declare namespace Eris {
     type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
     user: T extends AnyGuildChannel ? undefined : User;
     acknowledge(): Promise<void>;
+    createFollowup(content: string | InteractionContent): Promise<Message>;
+    /** @deprecated */
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createMessage(content: string | InteractionContent): Promise<void>;
+    /** @deprecated */
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     createModal(content: InteractionModal): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | InteractionContentEdit): Promise<Message<T>>;
+    /** @deprecated */
     editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
+    editOriginalMessage(content: string | InteractionContentEdit): Promise<Message<T>>;
+    /** @deprecated */
     editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
+    editParent(content: InteractionContentEdit): Promise<void>;
+    /** @deprecated */
     editParent(content: InteractionContentEdit, file?: FileContent | FileContent[]): Promise<void>;
     getOriginalMessage(): Promise<Message<T>>;
   }
@@ -2891,14 +2927,24 @@ declare namespace Eris {
     type: number;
     user: T extends AnyGuildChannel ? undefined : User;
     acknowledge(data: InteractionOptions): Promise<void>;
+    createFollowup(content: string | InteractionContent): Promise<Message>;
+    /** @deprecated */
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createMessage(content: string | InteractionContent): Promise<void>;
+    /** @deprecated */
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | InteractionContentEdit): Promise<Message<T>>;
+    /** @deprecated */
     editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
+    editOriginalMessage(content: string | InteractionContentEdit): Promise<Message<T>>;
+    /** @deprecated */
     editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message<T>>;
+    editParent(content: InteractionContentEdit): Promise<void>;
+    /** @deprecated */
     editParent(content: InteractionContentEdit, file?: FileContent | FileContent[]): Promise<void>;
     getOriginalMessage(): Promise<Message<T>>;
     pong(): Promise<void>;
@@ -3046,14 +3092,24 @@ declare namespace Eris {
     type: Constants["InteractionTypes"]["MODAL_SUBMIT"];
     user: T extends AnyGuildChannel ? undefined : User;
     acknowledge(): Promise<void>;
+    createFollowup(content: string | InteractionContent): Promise<Message>;
+    /** @deprecated */
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createMessage(content: string | InteractionContent): Promise<void>;
+    /** @deprecated */
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | InteractionContentEdit): Promise<Message>;
+    /** @deprecated */
     editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
+    /** @deprecated */
     editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editParent(content: InteractionContentEdit): Promise<void>;
+    /** @deprecated */
     editParent(content: InteractionContentEdit, file?: FileContent | FileContent[]): Promise<void>;
     getOriginalMessage(): Promise<Message>;
   }
@@ -3298,10 +3354,10 @@ declare namespace Eris {
     topic: string | null;
     type: GuildTextChannelTypes;
     createInvite(options?: CreateChannelInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
-    createThread(options: CreateThreadWithoutMessageOptions): Promise<AnyThreadChannel>;
+    createThread(options: Omit<CreateThreadWithoutMessageOptions, "files">): Promise<AnyThreadChannel>;
     createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     /** @deprecated */
-    createThreadWithoutMessage(options: CreateThreadWithoutMessageOptions): Promise<AnyThreadChannel>;
+    createThreadWithoutMessage(options: Omit<CreateThreadWithoutMessageOptions, "files">): Promise<AnyThreadChannel>;
     createWebhook(options: WebhookCreateOptions, reason?: string | undefined): Promise<Webhook>;
     deletePermission(overwriteID: string, reason?: string): Promise<void>;
     edit(options: EditTextChannelOptions, reason?: string): Promise<this>;
