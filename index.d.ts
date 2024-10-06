@@ -1956,7 +1956,7 @@ declare namespace Eris {
   /** Generic T is `true` if a Guild scoped command, and `false` if not */
   export class ApplicationCommand<T extends boolean, U = ApplicationCommandTypes> extends Base {
     applicationID: string;
-    contexts?: ApplicationCommandContextTypes[];
+    contexts?: ApplicationCommandContextTypes[] | null;
     defaultMemberPermissions: Permission;
     /** @deprecated */
     defaultPermission?: boolean | null;
