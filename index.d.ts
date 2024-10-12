@@ -867,16 +867,6 @@ declare namespace Eris {
     selfStream: boolean;
     selfVideo: boolean;
   }
-  interface VoiceChannelEffect {
-    guild: Guild | Uncached;
-    channel: AnyVoiceChannel | Uncached;
-    user: User | Uncached;
-    emoji?: PartialEmoji;
-    animationType?: VoiceChannelEffectAnimationType;
-    animationID?: number;
-    soundID?: string | number;
-    soundVolume?: number;
-  }
   interface EventListeners {
     applicationCommandPermissionsUpdate: [applicationCommandPermissions: GuildApplicationCommandPermissions];
     autoModerationActionExecution: [guild: Guild, action: AutoModerationActionExecution];
@@ -1837,6 +1827,16 @@ declare namespace Eris {
   interface UncachedMemberVoiceState {
     id: string;
     voiceState: OldVoiceState;
+  }
+  interface VoiceChannelEffect {
+    animationID?: number;
+    animationType?: VoiceChannelEffectAnimationType | null;
+    channel: PossiblyUncachedSpeakableChannel;
+    emoji?: PartialEmoji | null;
+    guild: PossiblyUncachedGuild;
+    soundID?: string | number;
+    soundVolume?: number;
+    user: User | Uncached;
   }
   interface VoiceConnectData {
     channel_id: string;
