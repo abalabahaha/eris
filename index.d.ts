@@ -1463,6 +1463,7 @@ declare namespace Eris {
   }
   interface RequestGuildSoundboardSoundsOptions {
     guildIDs: string[];
+    timeout?: number;
   }
 
   // Message
@@ -2641,6 +2642,7 @@ declare namespace Eris {
     editWidget(options: WidgetOptions): Promise<Widget>;
     fetchAllMembers(timeout?: number): Promise<number>;
     fetchMembers(options?: RequestGuildMembersOptions): Promise<Member[]>;
+    fetchSoundboardSounds(options?: Omit<RequestGuildSoundboardSoundsOptions, "guildIDs">): Promise<SoundboardSound[]>;
     getActiveThreads(): Promise<ListedGuildThreads>;
     getAuditLog(options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
     /** @deprecated */
