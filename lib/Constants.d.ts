@@ -1,6 +1,6 @@
 export default interface Constants {
-  GATEWAY_VERSION: 9;
-  REST_VERSION:    9;
+  GATEWAY_VERSION: 10;
+  REST_VERSION:    10;
   ActivityFlags: {
     INSTANCE:                    1;
     JOIN:                        2;
@@ -357,6 +357,7 @@ export default interface Constants {
     ENGLISH_UK:           "en-GB";
     ENGLISH_US:           "en-US";
     SPANISH:              "es-ES";
+    SPANISH_LATAM:        "es-419";
     FINNISH:              "fi";
     FRENCH:               "fr";
     HINDI:                "hi";
@@ -687,7 +688,9 @@ export default interface Constants {
     RESUME:              7;
     HELLO:               8;
     RESUMED:             9;
-    // Unknown 10-12
+    // Unknown 10
+    CLIENTS_CONNECT:     11;
+    // Unknown 12
     CLIENT_DISCONNECT:   13;
     /** @deprecated */
     DISCONNECT:          13;
