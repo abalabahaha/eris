@@ -5,6 +5,7 @@ export default function (token, options) {
 }
 
 export const {
+  AutoModerationRule,
   ApplicationCommand,
   AutocompleteInteraction,
   Base,
