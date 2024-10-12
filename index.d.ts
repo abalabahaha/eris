@@ -912,7 +912,7 @@ declare namespace Eris {
     guildSoundboardSoundCreate: [sound: SoundboardSound];
     guildSoundboardSoundDelete: [sound: PossiblyUncachedGuildSoundboardSound];
     guildSoundboardSoundUpdate: [sound: SoundboardSound, oldSound: OldGuildSoundboardSound | null];
-    guildSoundboardSoundsUpdate: [sounds: SoundboardSound[], oldSounds: (OldGuildSoundboardSound | null)[]];
+    guildSoundboardSoundsUpdate: [guild: PossiblyUncachedGuild, sounds: SoundboardSound[], oldSounds: (OldGuildSoundboardSound | null)[]];
     guildStickersUpdate: [guild: PossiblyUncachedGuild, stickers: Sticker[], oldStickers: Sticker[] | null];
     guildUnavailable: [guild: UnavailableGuild];
     guildUpdate: [guild: Guild, oldGuild: OldGuild];
