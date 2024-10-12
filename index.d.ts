@@ -153,7 +153,7 @@ declare namespace Eris {
 
   // Message
   type ActionRowComponents = Button | SelectMenu;
-  type Button = InteractionButton | URLButton;
+  type Button = InteractionButton | URLButton | PremiumButton;
   type ButtonStyles = Constants["ButtonStyles"][keyof Constants["ButtonStyles"]];
   type Component = ActionRow | ActionRowComponents;
   type ImageFormat = Constants["ImageFormats"][number];
@@ -195,6 +195,12 @@ declare namespace Eris {
   // Webhook
   type WebhookPayloadEdit = Pick<WebhookPayload, "attachments" | "content" | "embed" | "embeds" | "file" | "allowedMentions" | "components">;
   type WebhookTypes = Constants["WebhookTypes"][keyof Constants["WebhookTypes"]];
+
+   // Subscriptions
+   type EntitlementTypes = Constants["EntitlementTypes"][keyof Constants["EntitlementTypes"]];
+   type EntitlementOwnerTypes = Constants["EntitlementOwnerTypes"][keyof Constants["EntitlementOwnerTypes"]];
+   type SKUTypes = Constants["SKUTypes"][keyof Constants["SKUTypes"]];
+   type SKUFlags = Constants["SKUFlags"][keyof Constants["SKUFlags"]];
 
   // INTERFACES
   // Internals
@@ -944,6 +950,9 @@ declare namespace Eris {
     voiceStateUpdate: [member: Member, oldState: OldVoiceState];
     warn: [message: string, id?: number];
     webhooksUpdate: [data: WebhookData];
+    entitlementCreate: [entitlement: Entitlement];
+    entitlementUpdate: [entitlement: Entitlement];
+    entitlementDelete: [entitlement: Entitlement];
   }
   interface ClientEvents extends EventListeners {
     shardDisconnect: [err: Error | undefined, id: number];
@@ -1298,6 +1307,23 @@ declare namespace Eris {
     reason?: string;
   }
 
+  // Subscriptions
+  interface CreateTestEntitlementOptions {
+    skuID: string;
+    ownerID: string;
+    ownerType: EntitlementOwnerTypes;
+  }
+
+  interface GetEntitlementsOptions {
+    userID?: string;
+    skuIDs?: string[];
+    before?: number;
+    after?: number;
+    limit?: number;
+    guildID?: string;
+    excludeEnded?: boolean;
+  }
+
   // Interaction
   interface AutocompleteInteractionData {
     id: string;
@@ -1523,7 +1549,7 @@ declare namespace Eris {
   }
   interface InteractionButton extends ButtonBase {
     custom_id: string;
-    style: Exclude<ButtonStyles, Constants["ButtonStyles"]["LINK"]>;
+    style: Exclude<ButtonStyles, Constants["ButtonStyles"]["LINK"] | Constants["ButtonStyles"]["PREMIUM"]>;
   }
   interface MessageActivity {
     party_id?: string;
@@ -1656,6 +1682,10 @@ declare namespace Eris {
   interface URLButton extends ButtonBase {
     style: Constants["ButtonStyles"]["LINK"];
     url: string;
+  }
+  interface PremiumButton extends ButtonBase {
+    style: Constants["ButtonStyles"]["PREMIUM"];
+    sku_id: string;
   }
 
   // Presence
@@ -2105,7 +2135,9 @@ declare namespace Eris {
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     /** @deprecated */
     createThreadWithoutMessage(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel>;
+    createTestEntitlement(options: CreateTestEntitlementOptions): Promise<Entitlement>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
+    consumeEntitlement(entitlementID: string): Promise<void>;
     deleteAutoModerationRule(guildID: string, ruleID: string, reason?: string): Promise<void>;
     deleteChannel(channelID: string, reason?: string): Promise<void>;
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
@@ -2123,6 +2155,7 @@ declare namespace Eris {
     deleteMessages(channelID: string, messageIDs: string[], reason?: string): Promise<void>;
     deleteRole(guildID: string, roleID: string, reason?: string): Promise<void>;
     deleteStageInstance(channelID: string): Promise<void>;
+    deleteTestEntitlement(entitlementID: string): Promise<void>;
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
     deleteWebhookMessage(webhookID: string, token: string, messageID: string): Promise<void>;
     disconnect(options: { reconnect?: boolean | "auto" }): void;
@@ -2209,6 +2242,7 @@ declare namespace Eris {
     getDiscoveryCategories(): Promise<DiscoveryCategory[]>;
     getDMChannel(userID: string): Promise<DMChannel>;
     getEmojiGuild(emojiID: string): Promise<Guild>;
+    getEntitlements(options?: GetEntitlementsOptions): Promise<Entitlement[]>;
     getGateway(): Promise<{ url: string }>;
     getGuildAuditLog(guildID: string, options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
     /** @deprecated */
@@ -2271,6 +2305,7 @@ declare namespace Eris {
     getRoleConnectionMetadataRecords(): Promise<ApplicationRoleConnectionMetadata[]>;
     getSelf(): Promise<ExtendedUser>;
     getStageInstance(channelID: string): Promise<StageInstance>;
+    getSKUs(): Promise<SKU[]>;
     getThreadMember(channelID: string, userID: string, withMember?: boolean): Promise<ThreadMember>;
     getThreadMembers(channelID: string, options?: GetThreadMembersOptions): Promise<ThreadMember[]>;
     getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
@@ -2445,6 +2480,29 @@ declare namespace Eris {
     unsendMessage(messageID: string): Promise<void>;
   }
 
+  export class Entitlement extends Base {
+    applicationID: string;
+    consumed: boolean;
+    deleted: boolean;
+    endsAt?: number | null;
+    guildID?: string;
+    skuID: string;
+    startsAt?: number | null;
+    type: EntitlementTypes;
+    userID?: string;
+    consume(): Promise<void>;
+  }
+
+  export class SKU extends Base {
+    applicationID: string;
+    flags: SKUFlags;
+    name: string;
+    slug: string;
+    type: SKUTypes;
+    createTestEntitlement(ownerID: string, ownerType: EntitlementOwnerTypes): Promise<Entitlement>;
+    getEntitlements(options?: Omit<GetEntitlementsOptions, "skuIDs">): Promise<Entitlement[]>;
+  }
+
   export class ExtendedUser extends User {
     email: string;
     mfaEnabled: boolean;
@@ -2556,6 +2614,7 @@ declare namespace Eris {
     createRole(options: Role, reason?: string): Promise<Role>;
     createScheduledEvent<T extends GuildScheduledEventEntityTypes>(event: GuildScheduledEventOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     createSticker(options: CreateStickerOptions, reason?: string): Promise<Sticker>;
+    createTestEntitlement(skuID: string): Promise<Entitlement>;
     createTemplate(name: string, description?: string | null): Promise<GuildTemplate>;
     delete(): Promise<void>;
     deleteAutoModerationRule(ruleID: string, reason?: string): Promise<void>;
@@ -2605,6 +2664,7 @@ declare namespace Eris {
     getCommandPermissions(): Promise<GuildApplicationCommandPermissions[]>;
     getCommands(): Promise<ApplicationCommand<true>[]>;
     getDiscovery(): Promise<DiscoveryMetadata>;
+    getEntitlements(options?: Omit<GetEntitlementsOptions, "guildID">): Promise<Entitlement[]>;
     /** @deprecated */
     getEmbed(): Promise<Widget>;
     getIntegrations(): Promise<GuildIntegration>;
@@ -3380,7 +3440,9 @@ declare namespace Eris {
     constructor(data: BaseData, client: Client);
     dynamicAvatarURL(format?: ImageFormat, size?: number): string;
     dynamicBannerURL(format?: ImageFormat, size?: number): string | null;
+    createTestEntitlement(skuID: string): Promise<Entitlement>;
     getDMChannel(): Promise<DMChannel>;
+    getEntitlements(options?: Omit<GetEntitlementsOptions, "userID">): Promise<Entitlement[]>;
   }
 
   export class VoiceChannel extends GuildTextableChannel implements Invitable, Permissionable {
