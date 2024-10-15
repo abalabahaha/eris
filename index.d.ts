@@ -20,6 +20,8 @@ declare namespace Eris {
   // TYPES
 
   // Application Commands
+  type ApplicationCommandContextTypes = (typeof Constants["ApplicationCommandContextType"][keyof typeof Constants["ApplicationCommandContextType"]]);
+  type ApplicationCommandIntegrationTypes = (typeof Constants["ApplicationCommandIntegrationTypes"][keyof typeof Constants["ApplicationCommandIntegrationTypes"]]);
   type ApplicationCommandOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup | ApplicationCommandOptionsWithValue;
   type ApplicationCommandOptionsBoolean = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
   type ApplicationCommandOptionsChannel = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["CHANNEL"]>;
@@ -222,7 +224,9 @@ declare namespace Eris {
   }
   /** Generic T is `true` if creating Guild scoped commands, and `false` if not */
   interface ApplicationCommandCreateOptions<T extends boolean, U = ApplicationCommandTypes> extends ApplicationCommandEditOptions<T, U> {
+    contexts?: ApplicationCommandContextTypes[];
     description: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "" | void;
+    integrationTypes?: ApplicationCommandIntegrationTypes[];
     name: string;
     type?: U;
   }
@@ -1917,6 +1921,8 @@ declare namespace Eris {
     [key: string]: unknown;
   }
   interface OAuthApplicationInfo {
+    approximate_guild_count?: number;
+    approximate_user_install_count?: number;
     bot?: PartialUser;
     bot_public: boolean;
     bot_require_code_grant: boolean;
@@ -1952,6 +1958,7 @@ declare namespace Eris {
   /** Generic T is `true` if a Guild scoped command, and `false` if not */
   export class ApplicationCommand<T extends boolean, U = ApplicationCommandTypes> extends Base {
     applicationID: string;
+    contexts?: ApplicationCommandContextTypes[] | null;
     defaultMemberPermissions: Permission;
     /** @deprecated */
     defaultPermission?: boolean | null;
@@ -1959,6 +1966,7 @@ declare namespace Eris {
     descriptionLocalizations?: U extends "CHAT_INPUT" ? Record<LocaleStrings, string> | null : null;
     dmPermission?: boolean;
     guild: T extends true ? PossiblyUncachedGuild : never;
+    integrationTypes?: ApplicationCommandIntegrationTypes[];
     name: string;
     nameLocalizations?: Record<LocaleStrings, string> | null;
     nsfw?: boolean;
@@ -2815,6 +2823,7 @@ declare namespace Eris {
   export class AutocompleteInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
+    context: ApplicationCommandContextTypes;
     data: AutocompleteInteractionData;
     guildID: T extends AnyGuildChannel ? string : undefined;
     member: T extends AnyGuildChannel ? Member : undefined;
@@ -2843,6 +2852,7 @@ declare namespace Eris {
   export class CommandInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
+    context: ApplicationCommandContextTypes;
     data: CommandInteractionData;
     guildID: T extends AnyGuildChannel ? string : undefined;
     member: T extends AnyGuildChannel ? Member : undefined;
@@ -2863,6 +2873,7 @@ declare namespace Eris {
   export class ComponentInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
+    context: ApplicationCommandContextTypes;
     data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData;
     guildID: T extends AnyGuildChannel ? string : undefined;
     member: T extends AnyGuildChannel ? Member : undefined;
@@ -3042,6 +3053,7 @@ declare namespace Eris {
 
   export class ModalSubmitInteraction<T extends PossiblyUncachedTextableChannel = TextableChannel> extends Interaction {
     channel: T;
+    context: ApplicationCommandContextTypes;
     data: ModalSubmitInteractionData;
     guildID: T extends AnyGuildChannel ? string : undefined;
     member: T extends AnyGuildChannel ? Member : undefined;
