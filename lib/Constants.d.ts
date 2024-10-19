@@ -677,6 +677,10 @@ export default interface Constants {
     AUTO: 1;
     FULL: 2;
   };
+  VoiceChannelEffectAnimationTypes: {
+    PREMIUM: 0;
+    BASIC:   1;
+  };
   VoiceOPCodes: {
     IDENTIFY:            0;
     SELECT_PROTOCOL:     1;
