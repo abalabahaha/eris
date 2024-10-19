@@ -48,6 +48,8 @@ export default tseslint.config(
       },
     },
     rules: {
+      // Buggy
+      "@stylistic/indent-binary-ops": "off",
       "@stylistic/no-multiple-empty-lines": ["error", { max: 1 }],
       "@typescript-eslint/ban-ts-comment": ["error", {
         "ts-expect-error": "allow-with-description",
@@ -105,8 +107,6 @@ export default tseslint.config(
   {
     files: ["lib/Constants.{d.ts,js}"],
     rules: {
-      // Buggy
-      "@stylistic/indent-binary-ops": "off",
       "@stylistic/key-spacing": ["error", { align: "value" }],
       // Excluding TSPropertySignature doesn't do anything
       "@stylistic/no-multi-spaces": "off",
