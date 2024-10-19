@@ -165,6 +165,10 @@ declare namespace Eris {
   type PollLayoutTypes = Constants["PollLayoutTypes"][keyof Constants["PollLayoutTypes"]];
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
   type ReactionTypes = Constants["ReactionTypes"][keyof Constants["ReactionTypes"]];
+  type SelectMenu = StringSelectMenu | ChannelSelectMenu | ResolvedSelectMenus;
+  type SelectMenuNonResolvedTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT">];
+  type SelectMenuResolvedTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "USER_SELECT" | "ROLE_SELECT" | "MENTIONABLE_SELECT" | "CHANNEL_SELECT">];
+  type SelectMenuTypes = SelectMenuNonResolvedTypes | SelectMenuResolvedTypes;
 
   // Permission
   type PermissionType = Constants["PermissionOverwriteTypes"][keyof Constants["PermissionOverwriteTypes"]];
@@ -1351,21 +1355,18 @@ declare namespace Eris {
     resolved?: CommandInteractionResolvedData;
     options?: InteractionDataOptions[];
   }
-  interface CommandInteractionResolvedData {
-    channels?: Collection<AnyChannel>;
-    members?: Collection<Member>;
+  interface CommandInteractionResolvedData extends InteractionResolvedData {
     messages?: Collection<Message>;
-    roles?: Collection<Role>;
-    users?: Collection<User>;
   }
   interface ComponentInteractionButtonData {
     component_type: Constants["ComponentTypes"]["BUTTON"];
     custom_id: string;
   }
   interface ComponentInteractionSelectMenuData {
-    component_type: Constants["ComponentTypes"]["SELECT_MENU"];
+    component_type: SelectMenuTypes;
     custom_id: string;
     values: string[];
+    resolved?: InteractionResolvedData;
   }
   interface InteractionAutocomplete {
     choices: ApplicationCommandOptionChoice[];
@@ -1394,6 +1395,12 @@ declare namespace Eris {
   interface InteractionOptions {
     data?: InteractionCallbackData;
     type: InteractionResponseTypes;
+  }
+  interface InteractionResolvedData {
+    channels?: Collection<AnyChannel>;
+    members?: Collection<Member>;
+    roles?: Collection<Role>;
+    users?: Collection<User>;
   }
 
   // Invite
@@ -1652,21 +1659,36 @@ declare namespace Eris {
     burst: number;
     normal: number;
   }
-  interface SelectMenu {
+  interface SelectMenuBase {
     custom_id: string;
     disabled?: boolean;
     max_values?: number;
     min_values?: number;
-    options: SelectMenuOptions[];
     placeholder?: string;
-    type: Constants["ComponentTypes"]["SELECT_MENU"];
+    type: SelectMenuTypes;
   }
-  interface SelectMenuOptions {
+  interface ChannelSelectMenu extends SelectMenuBase {
+    channel_types?: ChannelTypes[];
+    type: Constants["ComponentTypes"]["CHANNEL_SELECT"];
+  }
+  interface StringSelectMenu extends SelectMenuBase {
+    options: StringSelectOptions[];
+    type: Constants["ComponentTypes"]["STRING_SELECT"];
+  }
+  interface StringSelectOptions {
     default?: boolean;
     description?: string;
     emoji?: Partial<PartialEmoji>;
     label: string;
     value: string;
+  }
+  interface ResolvedSelectMenus extends SelectMenuBase {
+    default_values?: SelectDefaultValues[];
+    type: SelectMenuResolvedTypes;
+  }
+  interface SelectDefaultValues {
+    id: string;
+    type: "user" | "role" | "channel";
   }
   interface Sticker extends StickerItems {
     /** @deprecated */

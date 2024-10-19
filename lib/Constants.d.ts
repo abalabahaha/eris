@@ -165,10 +165,14 @@ export default interface Constants {
     GUILD_MEDIA:          16;
   };
   ComponentTypes: {
-    ACTION_ROW:  1;
-    BUTTON:      2;
-    SELECT_MENU: 3;
-    TEXT_INPUT:  4;
+    ACTION_ROW:         1;
+    BUTTON:             2;
+    STRING_SELECT:      3;
+    TEXT_INPUT:         4;
+    USER_SELECT:        5;
+    ROLE_SELECT:        6;
+    MENTIONABLE_SELECT: 7;
+    CHANNEL_SELECT:     8;
   };
   ForumLayoutTypes: {
     NOT_SET:      0;
