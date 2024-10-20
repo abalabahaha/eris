@@ -2033,13 +2033,17 @@ declare namespace Eris {
   export class Attachment extends Base {
     contentType?: string;
     description?: string;
+    durationSeconds?: number;
     ephemeral?: boolean;
     filename: string;
+    flags?: number;
     height?: number;
     id: string;
     proxyURL: string;
     size: number;
+    title?: string;
     url: string;
+    waveform?: string;
     width?: number;
     constructor(data: BaseData);
   }
