@@ -2749,6 +2749,8 @@ declare namespace Eris {
   export class GuildAuditLogEntry extends Base {
     actionType: number;
     after: Record<string, unknown> | null;
+    autoModerationRuleName?: string;
+    autoModerationRuleTriggerType?: AutoModerationTriggerType; // FIXME int as string on discord???
     before: Record<string, unknown> | null;
     channel?: AnyGuildChannel | Uncached;
     count?: number;
