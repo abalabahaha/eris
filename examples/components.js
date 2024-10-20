@@ -3,8 +3,8 @@ const Eris = require("eris");
 const Constants = Eris.Constants;
 
 // Replace TOKEN with your bot account's token
-const bot = new Eris("BOT TOKEN", {
-  intents: ["guildMessages"],
+const bot = Eris("BOT TOKEN", {
+  intents: ["guildMessages", "messageContent"],
 });
 
 bot.on("ready", async () => { // When the bot is ready
