@@ -1517,21 +1517,6 @@ declare namespace Eris {
     roles?: boolean | string[];
     users?: boolean | string[];
   }
-  interface Attachment extends PartialAttachment {
-    content_type?: string;
-    description?: string;
-    duration_secs?: number;
-    ephemeral?: boolean;
-    filename: string;
-    flags?: number;
-    height?: number;
-    id: string;
-    proxy_url: string;
-    size: number;
-    url: string;
-    waveform?: string;
-    width?: number;
-  }
   interface ButtonBase {
     disabled?: boolean;
     emoji?: Partial<PartialEmoji>;
