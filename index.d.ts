@@ -708,12 +708,11 @@ declare namespace Eris {
     image: string;
     roles?: string[];
   }
-  interface ApplicationEmojiOptions  {
-    image: string;
-    name: string;
-  }
   interface EditApplicationEmojiOptions {
     name: string;
+  }
+  interface ApplicationEmojiOptions extends EditApplicationEmojiOptions {
+    image: string;
   }
   interface PartialEmoji {
     id: string | null;
