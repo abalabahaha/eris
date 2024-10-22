@@ -1,7 +1,7 @@
 const Eris = require("eris");
 
 // Replace TOKEN with your bot account's token
-const bot = new Eris("Bot TOKEN");
+const bot = Eris("Bot TOKEN");
 
 const playCommand = "!play";
 
