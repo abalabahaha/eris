@@ -1901,7 +1901,7 @@ declare namespace Eris {
     guild: PossiblyUncachedGuild;
     soundID?: string | number;
     soundVolume?: number;
-    user: User | Uncached;
+    user: PossiblyUncachedUser;
   }
   interface VoiceConnectData {
     channel_id: string;
