@@ -13,6 +13,8 @@ export default interface Constants {
     EMBEDDED:                    256;
   };
   ActivityTypes: {
+    PLAYING:   0;
+    /** @deprecated */
     GAME:      0;
     STREAMING: 1;
     LISTENING: 2;
