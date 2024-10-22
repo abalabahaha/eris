@@ -21,6 +21,7 @@ declare namespace Eris {
 
   // Application Commands
   type ApplicationCommandOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup | ApplicationCommandOptionsWithValue;
+  type ApplicationCommandOptionsAttachment = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["ATTACHMENT"]>;
   type ApplicationCommandOptionsBoolean = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"]>;
   type ApplicationCommandOptionsChannel = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["CHANNEL"]>;
   type ApplicationCommandOptionsInteger = ApplicationCommandOptionsIntegerWithAutocomplete | ApplicationCommandOptionsIntegerWithoutAutocomplete | ApplicationCommandOptionsIntegerWithMinMax;
@@ -37,7 +38,7 @@ declare namespace Eris {
   type ApplicationCommandOptionsStringWithAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["STRING"]>, "choices"> & AutocompleteEnabled;
   type ApplicationCommandOptionsStringWithoutAutocomplete = Omit<ApplicationCommandOptionWithChoices<Constants["ApplicationCommandOptionTypes"]["STRING"]>, "autocomplete"> & AutocompleteDisabled;
   type ApplicationCommandOptionsUser = ApplicationCommandOption<Constants["ApplicationCommandOptionTypes"]["USER"]>;
-  type ApplicationCommandOptionsWithValue = ApplicationCommandOptionsString | ApplicationCommandOptionsInteger | ApplicationCommandOptionsBoolean | ApplicationCommandOptionsUser | ApplicationCommandOptionsChannel | ApplicationCommandOptionsRole | ApplicationCommandOptionsMentionable | ApplicationCommandOptionsNumber;
+  type ApplicationCommandOptionsWithValue = ApplicationCommandOptionsString | ApplicationCommandOptionsInteger | ApplicationCommandOptionsBoolean | ApplicationCommandOptionsUser | ApplicationCommandOptionsChannel | ApplicationCommandOptionsRole | ApplicationCommandOptionsMentionable | ApplicationCommandOptionsNumber | ApplicationCommandOptionsAttachment;
   type ApplicationCommandPermissionTypes = Constants["ApplicationCommandPermissionTypes"][keyof Constants["ApplicationCommandPermissionTypes"]];
   type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
   type ModalSubmitInteractionDataComponent = ModalSubmitInteractionDataTextInputComponent;
@@ -136,6 +137,7 @@ declare namespace Eris {
   type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components" | "poll">;
   type InteractionContentEdit = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components">;
   type InteractionDataOptions = InteractionDataOptionsSubCommand | InteractionDataOptionsSubCommandGroup | InteractionDataOptionsWithValue;
+  type InteractionDataOptionsAttachment = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["ATTACHMENT"], string>;
   type InteractionDataOptionsBoolean = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"], boolean>;
   type InteractionDataOptionsChannel = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["CHANNEL"], string>;
   type InteractionDataOptionsInteger = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["INTEGER"], number>;
@@ -144,7 +146,7 @@ declare namespace Eris {
   type InteractionDataOptionsRole = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["ROLE"], string>;
   type InteractionDataOptionsString = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["STRING"], string>;
   type InteractionDataOptionsUser = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["USER"], string>;
-  type InteractionDataOptionsWithValue = InteractionDataOptionsString | InteractionDataOptionsInteger | InteractionDataOptionsBoolean | InteractionDataOptionsUser | InteractionDataOptionsChannel | InteractionDataOptionsRole | InteractionDataOptionsMentionable | InteractionDataOptionsNumber;
+  type InteractionDataOptionsWithValue = InteractionDataOptionsString | InteractionDataOptionsInteger | InteractionDataOptionsBoolean | InteractionDataOptionsUser | InteractionDataOptionsChannel | InteractionDataOptionsRole | InteractionDataOptionsMentionable | InteractionDataOptionsNumber | InteractionDataOptionsAttachment;
   type InteractionResponseTypes = Constants["InteractionResponseTypes"][keyof Constants["InteractionResponseTypes"]];
   type InteractionTypes = Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
   type LocaleStrings = Constants["Locales"][keyof Constants["Locales"]];
@@ -1515,20 +1517,6 @@ declare namespace Eris {
     roles?: boolean | string[];
     users?: boolean | string[];
   }
-  interface Attachment extends PartialAttachment {
-    content_type?: string;
-    duration_secs?: number;
-    ephemeral?: boolean;
-    filename: string;
-    flags?: number;
-    height?: number;
-    id: string;
-    proxy_url: string;
-    size: number;
-    url: string;
-    waveform?: string;
-    width?: number;
-  }
   interface ButtonBase {
     disabled?: boolean;
     emoji?: Partial<PartialEmoji>;
@@ -2040,6 +2028,24 @@ declare namespace Eris {
     version: string;
     delete(): Promise<void>;
     edit(options: ApplicationCommandEditOptions<T, U>): Promise<ApplicationCommand<T, U>>;
+  }
+
+  export class Attachment extends Base {
+    contentType?: string;
+    description?: string;
+    durationSeconds?: number;
+    ephemeral?: boolean;
+    filename: string;
+    flags?: number;
+    height?: number;
+    id: string;
+    proxyURL: string;
+    size: number;
+    title?: string;
+    url: string;
+    waveform?: string;
+    width?: number;
+    constructor(data: BaseData);
   }
 
   class Base implements SimpleJSON {
@@ -3072,7 +3078,7 @@ declare namespace Eris {
     activity?: MessageActivity;
     application?: MessageApplication;
     applicationID?: string;
-    attachments: Attachment[];
+    attachments: Collection<Attachment>;
     author: User;
     channel: T;
     channelMentions: string[];

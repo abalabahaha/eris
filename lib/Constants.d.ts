@@ -33,6 +33,7 @@ export default interface Constants {
     ROLE:              8;
     MENTIONABLE:       9;
     NUMBER:            10;
+    ATTACHMENT:        11;
   };
   ApplicationCommandPermissionTypes: {
     ROLE:    1;
