@@ -22,6 +22,15 @@ export default interface Constants {
     CUSTOM:    4;
     COMPETING: 5;
   };
+  ApplicationCommandContextType: {
+    GUILD:   0;
+    BOT_DM:  1;
+    PRIVATE: 2;
+  };
+  ApplicationCommandIntegrationTypes: {
+    GUILD_INSTALL: 0;
+    USER_INSTALL:  1;
+  };
   ApplicationCommandOptionTypes: {
     SUB_COMMAND:       1;
     SUB_COMMAND_GROUP: 2;
