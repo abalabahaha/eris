@@ -2750,7 +2750,7 @@ declare namespace Eris {
     actionType: number;
     after: Record<string, unknown> | null;
     autoModerationRuleName?: string;
-    autoModerationRuleTriggerType?: AutoModerationTriggerType; // FIXME int as string on discord???
+    autoModerationRuleTriggerType?: AutoModerationTriggerType;
     before: Record<string, unknown> | null;
     channel?: AnyGuildChannel | Uncached;
     count?: number;
