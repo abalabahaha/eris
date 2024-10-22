@@ -6,6 +6,7 @@ function Eris(token, options) {
   return new Client(token, options);
 }
 
+Eris.AutoModerationRule = require("./lib/structures/AutoModerationRule");
 Eris.ApplicationCommand = require("./lib/structures/ApplicationCommand");
 Eris.AutocompleteInteraction = require("./lib/structures/AutocompleteInteraction");
 Eris.Base = require("./lib/structures/Base");
