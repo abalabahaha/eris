@@ -714,6 +714,9 @@ declare namespace Eris {
   interface ApplicationEmojiOptions extends EditApplicationEmojiOptions {
     image: string;
   }
+  interface ApplicationEmojis {
+    items: ApplicationEmojiOptions[];
+  }
   interface PartialEmoji {
     id: string | null;
     name: string;
@@ -2294,7 +2297,7 @@ declare namespace Eris {
     getDiscoveryCategories(): Promise<DiscoveryCategory[]>;
     getDMChannel(userID: string): Promise<DMChannel>;
     getEmoji(emojiID: string): Promise<Emoji>;
-    getEmojis(): Promise<Emoji[]>;
+    getEmojis(): Promise<ApplicationEmojis>;
     getEmojiGuild(emojiID: string): Promise<Guild>;
     getGateway(): Promise<{ url: string }>;
     getGuildAuditLog(guildID: string, options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
