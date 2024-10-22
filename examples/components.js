@@ -21,7 +21,7 @@ bot.on("messageCreate", (msg) => { // When a message is created
       content: "Button Example",
       components: [
         {
-          type: Constants.ComponentTypes.ACTION_ROW, // You can have up to 5 action rows, and 1 select menu per action row
+          type: Constants.ComponentTypes.ACTION_ROW, // You can have up to 5 action rows, and 5 buttons per action row
           components: [
             {
               type: Constants.ComponentTypes.BUTTON, // https://discord.com/developers/docs/interactions/message-components#buttons
@@ -40,10 +40,10 @@ bot.on("messageCreate", (msg) => { // When a message is created
       content: "Select Menu Example",
       components: [
         {
-          type: Constants.ComponentTypes.ACTION_ROW, // You can have up to 5 action rows, and 5 buttons per action row
+          type: Constants.ComponentTypes.ACTION_ROW, // You can have up to 5 action rows, and 1 select menu per action row
           components: [
             {
-              type: Constants.ComponentTypes.SELECT_MENU, // https://discord.com/developers/docs/interactions/message-components#select-menus
+              type: Constants.ComponentTypes.STRING_SELECT, // https://discord.com/developers/docs/interactions/message-components#select-menus
               custom_id: "select_one",
               placeholder: "Select an option",
               options: [ // The options to select from https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
@@ -57,6 +57,26 @@ bot.on("messageCreate", (msg) => { // When a message is created
                   value: "option_2",
                   description: "This is only here to show off picking one",
                 },
+              ],
+              min_values: 1,
+              max_values: 1,
+              disabled: false, // Whether or not the select menu is disabled, is false by default
+            },
+          ],
+        },
+        {
+          type: Constants.ComponentTypes.ACTION_ROW, // You can have up to 5 action rows, and 1 select menu per action row
+          components: [
+            {
+              type: Constants.ComponentTypes.CHANNEL_SELECT, // https://discord.com/developers/docs/interactions/message-components#select-menus
+              custom_id: "select_two",
+              channel_types: [Constants.ChannelTypes.GUILD_TEXT, Constants.ChannelTypes.GUILD_VOICE], // types of channels that can be selected
+              placeholder: "Select a channel",
+              default_values: [ // List of default values for auto-populated select menus https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-default-value-structure
+                {
+                  id: "[Insert default channel id here]",
+                  type: "channel"
+                }
               ],
               min_values: 1,
               max_values: 1,
