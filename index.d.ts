@@ -219,7 +219,7 @@ declare namespace Eris {
     /** @deprecated */
     defaultPermission?: boolean;
     description?: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "" | void;
-    descriptionLocalizations?: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? Record<LocaleStrings, string> | null : null;
+    descriptionLocalizations?: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? Partial<Record<LocaleStrings, string>> | null : null;
     dmPermission?: T extends true ? never : boolean | null;
     name?: string;
     nameLocalizations?: Record<LocaleStrings, string> | null;
@@ -275,7 +275,7 @@ declare namespace Eris {
     autocomplete?: boolean;
     choices?: ApplicationCommandOptionChoice<T>[];
     description: string;
-    descriptionLocalizations?: Record<LocaleStrings, string> | null;
+    descriptionLocalizations?: Partial<Record<LocaleStrings, string>> | null;
     name: string;
     nameLocalizations?: Record<LocaleStrings, string> | null;
     required?: boolean;
