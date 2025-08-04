@@ -1,20 +1,22 @@
-Eris [![NPM version](https://img.shields.io/npm/v/eris.svg?style=flat-square&color=informational)](https://npmjs.com/package/eris)
-====
+ <p align="center">
+     <img src="assets/eris.png" alt="Centered" width="300">
+ </p>
 
-A Node.js wrapper for interfacing with Discord.
+[![NPM version](https://img.shields.io/npm/v/eris.svg?style=flat-square&color=informational)](https://npmjs.com/package/eris)
 
-Installing
-----------
+A Node.js library wrapper for interfacing with Discord.
 
-You will need NodeJS 10.4+. If you need voice support you will also need Python 2.7 and a C++ compiler. Refer to [the Getting Started section of the docs](https://abal.moe/Eris/docs) for more details.
-
+## Installing
 ```
-npm install --no-optional eris
+- npm install eris
+- yarn add eris
+- pnpm add eris
+- bun add eris
 ```
+If you're use any of Those Package Managers
+here you can find the Ways install Packages.
 
-If you need voice support, remove the `--no-optional`.
-
-Ping Pong Example
+# Start Eris with Ping Pong
 -----------------
 
 ```js
@@ -50,15 +52,13 @@ bot.connect(); // Get the bot to connect to Discord
 
 More examples can be found in [the examples folder](https://github.com/abalabahaha/eris/tree/master/examples).
 
-Useful Links
-------------
+## Useful Links
 
 - [The website](https://abal.moe/Eris/) has more details and documentation.
 - [The official Eris server](https://abal.moe/Eris/invite) is the best place to get support.
 - [The GitHub repo](https://github.com/abalabahaha/eris) is where development primarily happens.
 - [The NPM package webpage](https://npmjs.com/package/eris) is, well, the webpage for the NPM package.
 
-License
--------
+## License
 
 Refer to the [LICENSE](LICENSE) file.

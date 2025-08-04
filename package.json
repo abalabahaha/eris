@@ -28,6 +28,7 @@
   },
   "keywords": [
     "api",
+    "client",
     "discord",
     "discordapp",
     "eris",
@@ -38,6 +39,9 @@
   "bugs": {
     "url": "https://github.com/abalabahaha/eris/issues"
   },
+  "contributors": [
+    "abelmoe [hi+github@abal.moe"
+  ],
   "homepage": "https://abal.moe/Eris/",
   "dependencies": {
     "ws": "^8.2.3"
