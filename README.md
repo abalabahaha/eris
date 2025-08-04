@@ -1,5 +1,5 @@
  <p align="center">
-     <img src="assets/eris.png" alt="Centered" width="300">
+     <img src="assets/eris.png" alt="Eris logo" width="300">
  </p>
 
 [![NPM version](https://img.shields.io/npm/v/eris.svg?style=flat-square&color=informational)](https://npmjs.com/package/eris)
