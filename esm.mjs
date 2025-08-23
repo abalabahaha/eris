@@ -1,14 +1,15 @@
 import Eris from "./index.js";
 
-export default function(token, options) {
+export default function (token, options) {
   return new Eris.Client(token, options);
 }
 
 export const {
+  AutoModerationRule,
+  ApplicationCommand,
   AutocompleteInteraction,
   Base,
   Bucket,
-  Call,
   CategoryChannel,
   Channel,
   Client,
@@ -20,17 +21,22 @@ export const {
   Constants,
   DiscordHTTPError,
   DiscordRESTError,
+  DMChannel,
   ExtendedUser,
+  ForumChannel,
   GroupChannel,
   Guild,
   GuildChannel,
   GuildIntegration,
   GuildPreview,
+  GuildScheduledEvent,
   GuildTemplate,
   Interaction,
   Invite,
+  MediaChannel,
   Member,
   Message,
+  ModalSubmitInteraction,
   NewsChannel,
   NewsThreadChannel,
   Permission,
@@ -39,15 +45,14 @@ export const {
   PrivateChannel,
   PrivateThreadChannel,
   PublicThreadChannel,
-  Relationship,
   RequestHandler,
   Role,
   SequentialBucket,
   Shard,
   SharedStream,
+  SoundboardSound,
   StageChannel,
   StageInstance,
-  StoreChannel,
   TextChannel,
   ThreadChannel,
   ThreadMember,
@@ -58,5 +63,5 @@ export const {
   VoiceChannel,
   VoiceConnection,
   VoiceConnectionManager,
-  VoiceState
+  VoiceState,
 } = Eris;
