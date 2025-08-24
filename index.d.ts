@@ -2140,7 +2140,6 @@ declare namespace Eris {
   export class Client extends EventEmitter {
     application?: { id: string; flags: number };
     bot: boolean;
-    channelGuildMap: Record<string, string>;
     dmChannelMap: Record<string, string>;
     dmChannels: Collection<DMChannel>;
     gatewayURL?: string;
@@ -2252,7 +2251,7 @@ declare namespace Eris {
       type: PermissionType,
       reason?: string
     ): Promise<void>;
-    editChannelPosition(channelID: string, position: number, options?: EditChannelPositionOptions): Promise<void>;
+    editChannelPosition(guildID: string, channelID: string, position: number, options?: EditChannelPositionOptions): Promise<void>;
     editChannelPositions(guildID: string, channelPositions: ChannelPosition[]): Promise<void>;
     editCommand<T extends ApplicationCommandTypes>(commandID: string, command: ApplicationCommandEditOptions<false, T>): Promise<ApplicationCommand<false, T>>;
     editEmoji(emojiID: string, options: EditApplicationEmojiOptions): Promise<Emoji>;
@@ -2313,7 +2312,7 @@ declare namespace Eris {
     getAutoModerationRule(guildID: string, ruleID: string): Promise<AutoModerationRule>;
     getAutoModerationRules(guildID: string): Promise<AutoModerationRule[]>;
     getBotGateway(): Promise<{ session_start_limit: { max_concurrency: number; remaining: number; reset_after: number; total: number }; shards: number; url: string }>;
-    getChannel(channelID: string): Exclude<AnyChannel, GroupChannel>;
+    getChannel(channelID: string, guildID: string): Exclude<AnyChannel, GroupChannel>;
     getChannelInvites(channelID: string): Promise<Invite[]>;
     getChannelWebhooks(channelID: string): Promise<Webhook[]>;
     getCommand(commandID: string): Promise<ApplicationCommand<false>>;
@@ -2398,11 +2397,11 @@ declare namespace Eris {
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
     getWebhookMessage(webhookID: string, token: string, messageID: string): Promise<Message<AnyGuildTextableChannel>>;
     joinThread(channelID: string, userID?: string): Promise<void>;
-    joinVoiceChannel(channelID: string, options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
+    joinVoiceChannel(guildID: string, channelID: string, options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
     kickGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     leaveGuild(guildID: string): Promise<void>;
     leaveThread(channelID: string, userID?: string): Promise<void>;
-    leaveVoiceChannel(channelID: string): void;
+    leaveVoiceChannel(guildID: string, channelID: string): void;
     off<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
     off(event: string, listener: (...args: any[]) => void): this;
     once<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
