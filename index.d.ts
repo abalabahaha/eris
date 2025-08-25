@@ -859,6 +859,7 @@ declare namespace Eris {
   }
   interface OldRole {
     color: number;
+    colors: RoleColors;
     flags: number;
     hoist: boolean;
     icon: string | null;
@@ -1805,8 +1806,14 @@ declare namespace Eris {
     permissions?: number;
     position?: number;
   }
+  interface RoleColors {
+    primaryColor: number;
+    secondaryColor?: number | null;
+    tertiaryColor?: number | null;
+  }
   interface RoleOptions {
     color?: number;
+    colors?: RoleColors;
     hoist?: boolean;
     icon?: string;
     mentionable?: boolean;
@@ -3268,6 +3275,7 @@ declare namespace Eris {
 
   export class Role extends Base {
     color: number;
+    colors: RoleColors;
     createdAt: number;
     flags: number;
     guild: Guild;
