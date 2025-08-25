@@ -253,6 +253,7 @@ export default interface Constants {
     "VERIFIED",
     "VIP_REGIONS",
     "WELCOME_SCREEN_ENABLED",
+    "ENHANCED_ROLE_COLORS",
   ];
   GuildIntegrationExpireBehavior: {
     REMOVE_ROLE: 0;
