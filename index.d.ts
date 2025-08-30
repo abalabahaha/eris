@@ -3050,6 +3050,7 @@ declare namespace Eris {
     // @ts-ignore: Property is only not null when invite metadata is supplied
     createdAt: CT extends "withMetadata" ? number : null;
     expiresAt?: CT extends "withCount" ? number | null : null;
+    flags?: number;
     guild: CT extends "withMetadata"
       ? Guild // Invite with Metadata always has guild prop
       : CH extends Extract<InviteChannel, GroupChannel> // Invite without Metadata
