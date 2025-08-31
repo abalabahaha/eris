@@ -1194,7 +1194,6 @@ declare namespace Eris {
     features?: GuildFeatures[]; // Though only some are editable?
     icon?: string | null;
     name?: string;
-    ownerID?: string;
     preferredLocale?: LocaleStrings | null;
     publicUpdatesChannelID?: string | null;
     rulesChannelID?: string | null;
