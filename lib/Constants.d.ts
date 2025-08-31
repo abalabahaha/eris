@@ -365,6 +365,11 @@ export default interface Constants {
     STREAM:               1;
     EMBEDDED_APPLICATION: 2;
   };
+  InviteTypes: {
+    GUILD:    0;
+    GROUP_DM: 1;
+    FRIEND:   2;
+  };
   Locales: {
     BULGARIAN:            "bg";
     CZECH:                "cs";
