@@ -150,6 +150,7 @@ declare namespace Eris {
 
   // Invite
   type InviteTargetTypes = Constants["InviteTargetTypes"][keyof Constants["InviteTargetTypes"]];
+  type InviteTypes = Constants["InviteTypes"][keyof Constants["InviteTypes"]];
 
   // Message
   type ActionRowComponents = Button | SelectMenu;
@@ -3067,6 +3068,7 @@ declare namespace Eris {
     /** @deprecated */
     stageInstance: CH extends StageChannel ? InviteStageInstance : null;
     temporary: CT extends "withMetadata" ? boolean : null;
+    type: InviteTypes;
     uses: CT extends "withMetadata" ? number : null;
     constructor(data: BaseData, client: Client);
     delete(reason?: string): Promise<void>;
