@@ -1078,17 +1078,6 @@ declare namespace Eris {
     banned_users: string[];
     failed_users: string[];
   }
-  interface CreateGuildOptions {
-    afkChannelID?: string;
-    afkTimeout?: number;
-    channels?: PartialChannel[];
-    defaultNotifications?: DefaultNotifications;
-    explicitContentFilter?: ExplicitContentFilter;
-    icon?: string;
-    roles?: PartialRole[];
-    systemChannelID: string;
-    verificationLevel?: VerificationLevel;
-  }
   interface DiscoveryCategory {
     id: number;
     is_primary: boolean;
@@ -2197,10 +2186,8 @@ declare namespace Eris {
     createCommand<T extends ApplicationCommandTypes>(command: ApplicationCommandCreateOptions<false, T>): Promise<ApplicationCommand<false, T>>;
     createEmoji(options: ApplicationEmojiOptions): Promise<Emoji>;
     createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
-    createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
     createGuildCommand<T extends ApplicationCommandTypes>(guildID: string, command: ApplicationCommandCreateOptions<true, T>): Promise<ApplicationCommand<true, T>>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
-    createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, event: GuildScheduledEventOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     createGuildSoundboardSound(guildID: string, sound: GuildSoundboardSoundCreate, reason?: string): Promise<SoundboardSound>;
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
@@ -2220,7 +2207,6 @@ declare namespace Eris {
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
     deleteCommand(commandID: string): Promise<void>;
     deleteEmoji(emojiID: string): Promise<void>;
-    deleteGuild(guildID: string): Promise<void>;
     deleteGuildCommand(guildID: string, commandID: string): Promise<void>;
     deleteGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<void>;
     deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
@@ -2681,7 +2667,6 @@ declare namespace Eris {
     createSoundboardSound(sound: GuildSoundboardSoundCreate, reason?: string): Promise<SoundboardSound>;
     createSticker(options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createTemplate(name: string, description?: string | null): Promise<GuildTemplate>;
-    delete(): Promise<void>;
     deleteAutoModerationRule(ruleID: string, reason?: string): Promise<void>;
     deleteCommand(commandID: string): Promise<void>;
     deleteDiscoverySubcategory(categoryID: string, reason?: string): Promise<void>;
@@ -2881,7 +2866,6 @@ declare namespace Eris {
     updatedAt: number;
     usageCount: number;
     constructor(data: BaseData, client: Client);
-    createGuild(name: string, icon?: string): Promise<Guild>;
     delete(): Promise<GuildTemplate>;
     edit(options: GuildTemplateOptions): Promise<GuildTemplate>;
     sync(): Promise<GuildTemplate>;
