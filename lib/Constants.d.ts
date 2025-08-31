@@ -305,6 +305,7 @@ export default interface Constants {
     "jpeg",
     "png",
     "webp",
+    "webm",
     "gif",
   ];
   ImageSizeBoundaries: {

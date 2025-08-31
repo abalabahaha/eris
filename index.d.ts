@@ -3081,6 +3081,7 @@ declare namespace Eris {
   export class Member extends Base implements Presence {
     accentColor?: number | null;
     activities?: Activity[];
+    animatedNameplateURL: string | null;
     avatar: string | null;
     avatarDecorationData?: AvatarDecorationData | null;
     avatarDecorationURL: string | null;
@@ -3110,6 +3111,7 @@ declare namespace Eris {
     premiumSince?: number | null;
     roles: string[];
     staticAvatarURL: string;
+    staticNameplateURL: string | null;
     status?: UserStatus;
     user: User;
     username: string;
@@ -3520,6 +3522,7 @@ declare namespace Eris {
 
   export class User extends Base {
     accentColor?: number | null;
+    animatedNameplateURL: string | null;
     avatar: string | null;
     avatarDecorationData?: AvatarDecorationData | null;
     avatarDecorationURL: string | null;
@@ -3537,6 +3540,7 @@ declare namespace Eris {
     mention: string;
     publicFlags?: number;
     staticAvatarURL: string;
+    staticNameplateURL: string | null;
     system: boolean;
     username: string;
     constructor(data: BaseData, client: Client);
