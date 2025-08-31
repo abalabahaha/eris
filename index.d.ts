@@ -836,6 +836,7 @@ declare namespace Eris {
   interface OldMember {
     avatar: string | null;
     avatarDecorationData?: AvatarDecorationData | null;
+    collectibles?: UserCollectibles | null;
     communicationDisabledUntil?: number | null;
     flags?: number;
     nick: string | null;
@@ -1478,6 +1479,7 @@ declare namespace Eris {
     avatar: string | null;
     avatarDecorationData?: AvatarDecorationData | null;
     banner?: string | null;
+    collectibles?: UserCollectibles | null;
     discriminator: string;
     id: string;
     username: string;
@@ -1492,6 +1494,15 @@ declare namespace Eris {
   interface RequestGuildSoundboardSoundsOptions {
     guildIDs: string[];
     timeout?: number;
+  }
+  interface UserCollectibles {
+    nameplate?: UserCollectiblesNameplate;
+  }
+  interface UserCollectiblesNameplate {
+    sku_id: number;
+    palette: string;
+    label: string;
+    asset: string;
   }
 
   // Message
@@ -3078,6 +3089,7 @@ declare namespace Eris {
     bannerURL: string | null;
     bot: boolean;
     clientStatus?: ClientStatus;
+    collectibles?: UserCollectibles | null;
     communicationDisabledUntil?: number | null;
     createdAt: number;
     defaultAvatar: string;
@@ -3515,6 +3527,7 @@ declare namespace Eris {
     banner?: string | null;
     bannerURL: string | null;
     bot: boolean;
+    collectibles?: UserCollectibles | null;
     createdAt: number;
     defaultAvatar: string;
     defaultAvatarURL: string;
