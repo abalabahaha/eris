@@ -709,6 +709,15 @@ declare namespace Eris {
     image: string;
     roles?: string[];
   }
+  interface EditApplicationEmojiOptions {
+    name: string;
+  }
+  interface ApplicationEmojiOptions extends EditApplicationEmojiOptions {
+    image: string;
+  }
+  interface ApplicationEmojis {
+    items: Emoji[];
+  }
   interface PartialEmoji {
     id: string | null;
     name: string;
@@ -2186,6 +2195,7 @@ declare namespace Eris {
       reason?: string
     ): Promise<Webhook>;
     createCommand<T extends ApplicationCommandTypes>(command: ApplicationCommandCreateOptions<false, T>): Promise<ApplicationCommand<false, T>>;
+    createEmoji(options: ApplicationEmojiOptions): Promise<Emoji>;
     createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
     createGuildCommand<T extends ApplicationCommandTypes>(guildID: string, command: ApplicationCommandCreateOptions<true, T>): Promise<ApplicationCommand<true, T>>;
@@ -2209,6 +2219,7 @@ declare namespace Eris {
     deleteChannel(channelID: string, reason?: string): Promise<void>;
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
     deleteCommand(commandID: string): Promise<void>;
+    deleteEmoji(emojiID: string): Promise<void>;
     deleteGuild(guildID: string): Promise<void>;
     deleteGuildCommand(guildID: string, commandID: string): Promise<void>;
     deleteGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<void>;
@@ -2244,6 +2255,7 @@ declare namespace Eris {
     editChannelPosition(channelID: string, position: number, options?: EditChannelPositionOptions): Promise<void>;
     editChannelPositions(guildID: string, channelPositions: ChannelPosition[]): Promise<void>;
     editCommand<T extends ApplicationCommandTypes>(commandID: string, command: ApplicationCommandEditOptions<false, T>): Promise<ApplicationCommand<false, T>>;
+    editEmoji(emojiID: string, options: EditApplicationEmojiOptions): Promise<Emoji>;
     editCommandPermissions(guildID: string, commandID: string, permissions: ApplicationCommandPermissions[], reason?: string): Promise<GuildApplicationCommandPermissions>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
     editGuildCommand<T extends ApplicationCommandTypes>(guildID: string, commandID: string, command: ApplicationCommandEditOptions<true, T>): Promise<ApplicationCommand<true, T>>;
@@ -2309,6 +2321,8 @@ declare namespace Eris {
     getCommands(): Promise<ApplicationCommand<false>[]>;
     getDiscoveryCategories(): Promise<DiscoveryCategory[]>;
     getDMChannel(userID: string): Promise<DMChannel>;
+    getEmoji(emojiID: string): Promise<Emoji>;
+    getEmojis(): Promise<ApplicationEmojis>;
     getEmojiGuild(emojiID: string): Promise<Guild>;
     getGateway(): Promise<{ url: string }>;
     getGuildAuditLog(guildID: string, options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
