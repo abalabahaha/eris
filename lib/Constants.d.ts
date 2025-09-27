@@ -149,6 +149,7 @@ export default interface Constants {
     SUCCESS:   3;
     DANGER:    4;
     LINK:      5;
+    PREMIUM:   6;
   };
   ChannelFlags: {
     PINNED:                      1;
@@ -195,6 +196,20 @@ export default interface Constants {
   SortOrderTypes: {
     LATEST_ACTIVITY: 0;
     CREATION_DATE:   1;
+  };
+  EntitlementTypes: {
+    PURCHASE:                 1;
+    PREMIUM_SUBSCRIPTION:     2;
+    DEVELOPER_GIFT:           3;
+    TEST_MODE_PURCHASE:       4;
+    FREE_PURCHASE:            5;
+    USER_GIFT:                6;
+    PREMIUM_PURCHASE:         7;
+    APPLICATION_SUBSCRIPTION: 8;
+  };
+  EntitlementOwnerTypes: {
+    GUILD: 1;
+    USER:  2;
   };
   ExplicitContentFilterLevels: {
     DISABLED:              0;
@@ -645,6 +660,17 @@ export default interface Constants {
     NORMAL: 0;
     BURST:  1;
   };
+  SKUTypes: {
+    DURABLE:            2;
+    CONSUMABLE:         3;
+    SUBSCRIPTION:       5;
+    SUBSCRIPTION_GROUP: 6;
+  };
+  SKUFlags: {
+    AVAILABLE:          4;
+    GUILD_SUBSCRIPTION: 128;
+    USER_SUBSCRIPTION:  256;
+  };
   StageInstancePrivacyLevel: {
     PUBLIC:     1;
     GUILD_ONLY: 2;
@@ -682,6 +708,11 @@ export default interface Constants {
     "Good to see you, %user%.",
     "Yay you made it, %user%!",
   ];
+  SubscriptionStatuses: {
+    ACTIVE:   0;
+    ENDING:   1;
+    INACTIVE: 2;
+  };
   ThreadMemberFlags: {
     HAS_INTERACTED: 1;
     ALL_MESSAGES:   2;
