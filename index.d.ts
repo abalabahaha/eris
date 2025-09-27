@@ -117,6 +117,9 @@ declare namespace Eris {
   type GuildScheduledEventEntityTypes = Constants["GuildScheduledEventEntityTypes"][keyof Constants["GuildScheduledEventEntityTypes"]];
   type GuildScheduledEventOptions<T extends GuildScheduledEventEntityTypes> = GuildScheduledEventOptionsExternal | GuildScheduledEventOptionsDiscord | GuildScheduledEventOptionsBase<T>;
   type GuildScheduledEventPrivacyLevel = Constants["GuildScheduledEventPrivacyLevel"][keyof Constants["GuildScheduledEventPrivacyLevel"]];
+  type GuildScheduledEventRecurrenceRuleFrequencyTypes = Constants["GuildScheduledEventRecurrenceRuleFrequency"][keyof Constants["GuildScheduledEventRecurrenceRuleFrequency"]];
+  type GuildScheduledEventRecurrenceRuleMonthTypes = Constants["GuildScheduledEventRecurrenceRuleMonth"][keyof Constants["GuildScheduledEventRecurrenceRuleMonth"]];
+  type GuildScheduledEventRecurrenceRuleWeekdayTypes = Constants["GuildScheduledEventRecurrenceRuleWeekday"][keyof Constants["GuildScheduledEventRecurrenceRuleWeekday"]];
   type GuildScheduledEventStatus = Constants["GuildScheduledEventStatus"][keyof Constants["GuildScheduledEventStatus"]];
   type GuildWidgetStyles = Constants["GuildWidgetStyles"][keyof Constants["GuildWidgetStyles"]];
   type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
@@ -714,6 +717,15 @@ declare namespace Eris {
     image: string;
     roles?: string[];
   }
+  interface EditApplicationEmojiOptions {
+    name: string;
+  }
+  interface ApplicationEmojiOptions extends EditApplicationEmojiOptions {
+    image: string;
+  }
+  interface ApplicationEmojis {
+    items: Emoji[];
+  }
   interface PartialEmoji {
     id: string | null;
     name: string;
@@ -1219,6 +1231,7 @@ declare namespace Eris {
     image?: string;
     name?: string;
     privacyLevel?: GuildScheduledEventPrivacyLevel;
+    recurrenceRule?: GuildScheduledEventRecurrenceRuleOptions;
     scheduledEndTime?: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? Date : Date | undefined;
     scheduledStartTime?: Date;
     status?: GuildScheduledEventStatus;
@@ -1251,6 +1264,24 @@ declare namespace Eris {
     channelID: never;
     entityMetadata: Required<GuildScheduledEventMetadata>;
     scheduledEndTime: Date;
+  }
+  interface GuildScheduledEventRecurrenceRuleNWeekday {
+    day: GuildScheduledEventRecurrenceRuleWeekdayTypes;
+    n: 1 | 2 | 3 | 4 | 5;
+  }
+  interface GuildScheduledEventRecurrenceRule extends GuildScheduledEventRecurrenceRuleOptions {
+    byYearDay: number[];
+    count: number | null;
+    end: number | null;
+  }
+  interface GuildScheduledEventRecurrenceRuleOptions { // TODO More precision? Depends on Discord
+    byMonth: GuildScheduledEventRecurrenceRuleMonthTypes[] | null;
+    byMonthDay: number[];
+    byNWeekday: GuildScheduledEventRecurrenceRuleNWeekday[] | null;
+    byWeekday: GuildScheduledEventRecurrenceRuleWeekdayTypes[] | null;
+    frequency: GuildScheduledEventRecurrenceRuleFrequencyTypes;
+    interval: number;
+    start: number;
   }
   interface GuildScheduledEventUser {
     guildScheduledEventID: string;
@@ -2234,6 +2265,7 @@ declare namespace Eris {
       reason?: string
     ): Promise<Webhook>;
     createCommand<T extends ApplicationCommandTypes>(command: ApplicationCommandCreateOptions<false, T>): Promise<ApplicationCommand<false, T>>;
+    createEmoji(options: ApplicationEmojiOptions): Promise<Emoji>;
     createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
     createGuildCommand<T extends ApplicationCommandTypes>(guildID: string, command: ApplicationCommandCreateOptions<true, T>): Promise<ApplicationCommand<true, T>>;
@@ -2257,6 +2289,7 @@ declare namespace Eris {
     deleteChannel(channelID: string, reason?: string): Promise<void>;
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
     deleteCommand(commandID: string): Promise<void>;
+    deleteEmoji(emojiID: string): Promise<void>;
     deleteGuild(guildID: string): Promise<void>;
     deleteGuildCommand(guildID: string, commandID: string): Promise<void>;
     deleteGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<void>;
@@ -2292,6 +2325,7 @@ declare namespace Eris {
     editChannelPosition(channelID: string, position: number, options?: EditChannelPositionOptions): Promise<void>;
     editChannelPositions(guildID: string, channelPositions: ChannelPosition[]): Promise<void>;
     editCommand<T extends ApplicationCommandTypes>(commandID: string, command: ApplicationCommandEditOptions<false, T>): Promise<ApplicationCommand<false, T>>;
+    editEmoji(emojiID: string, options: EditApplicationEmojiOptions): Promise<Emoji>;
     editCommandPermissions(guildID: string, commandID: string, permissions: ApplicationCommandPermissions[], reason?: string): Promise<GuildApplicationCommandPermissions>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
     editGuildCommand<T extends ApplicationCommandTypes>(guildID: string, commandID: string, command: ApplicationCommandEditOptions<true, T>): Promise<ApplicationCommand<true, T>>;
@@ -2357,6 +2391,8 @@ declare namespace Eris {
     getCommands(): Promise<ApplicationCommand<false>[]>;
     getDiscoveryCategories(): Promise<DiscoveryCategory[]>;
     getDMChannel(userID: string): Promise<DMChannel>;
+    getEmoji(emojiID: string): Promise<Emoji>;
+    getEmojis(): Promise<ApplicationEmojis>;
     getEmojiGuild(emojiID: string): Promise<Guild>;
     getGateway(): Promise<{ url: string }>;
     getGuildAuditLog(guildID: string, options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
@@ -2894,6 +2930,7 @@ declare namespace Eris {
     image?: string;
     name: string;
     privacyLevel: GuildScheduledEventPrivacyLevel;
+    recurrenceRule: GuildScheduledEventRecurrenceRule | null;
     scheduledEndTime: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? number : number | null;
     scheduledStartTime: number;
     status: GuildScheduledEventStatus;
