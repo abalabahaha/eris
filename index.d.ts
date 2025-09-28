@@ -1120,6 +1120,10 @@ declare namespace Eris {
     category_id: number;
     guild_id: string;
   }
+  interface EditGuildIncidentDataOptions {
+    dmsDisabledUntil?: Date | null;
+    invitesDisabledUntil?: Date | null;
+  }
   interface GetGuildAuditLogOptions {
     actionType?: number;
     before?: string;
@@ -1164,6 +1168,12 @@ declare namespace Eris {
   interface GuildBan {
     reason?: string;
     user: User;
+  }
+  interface GuildIncidentData {
+    dmsDisabledUntil: number | null;
+    dmSpamDetectedAt: number | null;
+    invitesDisabledUntil: number | null;
+    raidDetectedAt: number | null;
   }
   interface GuildOnboarding {
     default_channel_ids: string[];
@@ -2284,6 +2294,7 @@ declare namespace Eris {
       options: { name?: string; roles?: string[] },
       reason?: string
     ): Promise<Emoji>;
+    editGuildIncidentActions(guildID: string, options: EditGuildIncidentDataOptions): Promise<GuildIncidentData>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
     editGuildOnboarding(guildID: string, options: GuildOnboardingOptions, reason?: string): Promise<GuildOnboarding>;
     editGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
@@ -2723,6 +2734,7 @@ declare namespace Eris {
     editCommandPermissions(permissions: ApplicationCommandPermissions[], reason?: string): Promise<GuildApplicationCommandPermissions[]>;
     editDiscovery(options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
+    editIncidentActions(options: EditGuildIncidentDataOptions): Promise<GuildIncidentData>;
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
     /** @deprecated */
     editNickname(nick: string): Promise<void>;
