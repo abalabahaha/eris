@@ -2,8 +2,8 @@ const Eris = require("eris");
 
 const Constants = Eris.Constants;
 
-// Replace TOKEN with your bot account's token
-const bot = new Eris("BOT TOKEN", {
+// Replace BOT_TOKEN with your bot account's token
+const bot = new Eris("Bot BOT_TOKEN", {
   intents: ["guildMessages"],
 });
 
@@ -24,7 +24,7 @@ bot.on("messageCreate", (msg) => { // When a message is created
           type: Constants.ComponentTypes.ACTION_ROW, // You can have up to 5 action rows, and 5 buttons per action row
           components: [
             {
-              type: Constants.ComponentTypes.BUTTON, // https://discord.com/developers/docs/interactions/message-components#buttons
+              type: Constants.ComponentTypes.BUTTON, // https://discord.com/developers/docs/interactions/message-components#button
               style: Constants.ButtonStyles.PRIMARY, // This is the style of the button https://discord.com/developers/docs/interactions/message-components#button-object-button-styles
               custom_id: "click_one",
               label: "Click me!",
