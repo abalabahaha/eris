@@ -188,6 +188,7 @@ export default interface Constants {
     MEDIA_GALLERY:      12;
     FILE:               13;
     SEPARATOR:          14;
+    // Unknown 15-16
     CONTAINER:          17;
   };
   ForumLayoutTypes: {
