@@ -115,6 +115,9 @@ declare namespace Eris {
   type GuildScheduledEventEntityTypes = Constants["GuildScheduledEventEntityTypes"][keyof Constants["GuildScheduledEventEntityTypes"]];
   type GuildScheduledEventOptions<T extends GuildScheduledEventEntityTypes> = GuildScheduledEventOptionsExternal | GuildScheduledEventOptionsDiscord | GuildScheduledEventOptionsBase<T>;
   type GuildScheduledEventPrivacyLevel = Constants["GuildScheduledEventPrivacyLevel"][keyof Constants["GuildScheduledEventPrivacyLevel"]];
+  type GuildScheduledEventRecurrenceRuleFrequencyTypes = Constants["GuildScheduledEventRecurrenceRuleFrequency"][keyof Constants["GuildScheduledEventRecurrenceRuleFrequency"]];
+  type GuildScheduledEventRecurrenceRuleMonthTypes = Constants["GuildScheduledEventRecurrenceRuleMonth"][keyof Constants["GuildScheduledEventRecurrenceRuleMonth"]];
+  type GuildScheduledEventRecurrenceRuleWeekdayTypes = Constants["GuildScheduledEventRecurrenceRuleWeekday"][keyof Constants["GuildScheduledEventRecurrenceRuleWeekday"]];
   type GuildScheduledEventStatus = Constants["GuildScheduledEventStatus"][keyof Constants["GuildScheduledEventStatus"]];
   type GuildWidgetStyles = Constants["GuildWidgetStyles"][keyof Constants["GuildWidgetStyles"]];
   type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
@@ -219,7 +222,7 @@ declare namespace Eris {
     /** @deprecated */
     defaultPermission?: boolean;
     description?: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "" | void;
-    descriptionLocalizations?: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? Record<LocaleStrings, string> | null : null;
+    descriptionLocalizations?: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? Partial<Record<LocaleStrings, string>> | null : null;
     dmPermission?: T extends true ? never : boolean | null;
     name?: string;
     nameLocalizations?: Record<LocaleStrings, string> | null;
@@ -275,7 +278,7 @@ declare namespace Eris {
     autocomplete?: boolean;
     choices?: ApplicationCommandOptionChoice<T>[];
     description: string;
-    descriptionLocalizations?: Record<LocaleStrings, string> | null;
+    descriptionLocalizations?: Partial<Record<LocaleStrings, string>> | null;
     name: string;
     nameLocalizations?: Record<LocaleStrings, string> | null;
     required?: boolean;
@@ -1223,6 +1226,7 @@ declare namespace Eris {
     image?: string;
     name?: string;
     privacyLevel?: GuildScheduledEventPrivacyLevel;
+    recurrenceRule?: GuildScheduledEventRecurrenceRuleOptions;
     scheduledEndTime?: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? Date : Date | undefined;
     scheduledStartTime?: Date;
     status?: GuildScheduledEventStatus;
@@ -1255,6 +1259,24 @@ declare namespace Eris {
     channelID: never;
     entityMetadata: Required<GuildScheduledEventMetadata>;
     scheduledEndTime: Date;
+  }
+  interface GuildScheduledEventRecurrenceRuleNWeekday {
+    day: GuildScheduledEventRecurrenceRuleWeekdayTypes;
+    n: 1 | 2 | 3 | 4 | 5;
+  }
+  interface GuildScheduledEventRecurrenceRule extends GuildScheduledEventRecurrenceRuleOptions {
+    byYearDay: number[];
+    count: number | null;
+    end: number | null;
+  }
+  interface GuildScheduledEventRecurrenceRuleOptions { // TODO More precision? Depends on Discord
+    byMonth: GuildScheduledEventRecurrenceRuleMonthTypes[] | null;
+    byMonthDay: number[];
+    byNWeekday: GuildScheduledEventRecurrenceRuleNWeekday[] | null;
+    byWeekday: GuildScheduledEventRecurrenceRuleWeekdayTypes[] | null;
+    frequency: GuildScheduledEventRecurrenceRuleFrequencyTypes;
+    interval: number;
+    start: number;
   }
   interface GuildScheduledEventUser {
     guildScheduledEventID: string;
@@ -2862,6 +2884,7 @@ declare namespace Eris {
     image?: string;
     name: string;
     privacyLevel: GuildScheduledEventPrivacyLevel;
+    recurrenceRule: GuildScheduledEventRecurrenceRule | null;
     scheduledEndTime: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? number : number | null;
     scheduledStartTime: number;
     status: GuildScheduledEventStatus;
