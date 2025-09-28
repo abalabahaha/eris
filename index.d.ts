@@ -158,7 +158,8 @@ declare namespace Eris {
   type ActionRowComponents = Button | SelectMenu;
   type Button = InteractionButton | URLButton;
   type ButtonStyles = Constants["ButtonStyles"][keyof Constants["ButtonStyles"]];
-  type Component = ActionRow | ActionRowComponents;
+  type Component = ActionRow | ActionRowComponents | ComponentsV2;
+  type ComponentsV2 = Section | TextDisplay | Thumbnail | MediaGallery | File | Separator | Container;
   type ImageFormat = Constants["ImageFormats"][number];
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
   type MessageContent = string | AdvancedMessageContent;
@@ -1540,7 +1541,7 @@ declare namespace Eris {
   interface AdvancedMessageContentEdit {
     allowedMentions?: AllowedMentions;
     attachments?: PartialAttachment[];
-    components?: ActionRow[];
+    components?: ActionRow[] | Component[];
     content?: string;
     /** @deprecated */
     embed?: EmbedOptions;
@@ -1733,6 +1734,64 @@ declare namespace Eris {
   interface SelectDefaultValues {
     id: string;
     type: "user" | "role" | "channel";
+  }
+
+  interface Section {
+    accessory?: Thumbnail | Button;
+    components: TextDisplay[];
+    id?: number;
+    type: Constants["ComponentTypes"]["SECTION"];
+  }
+  interface TextDisplay {
+    content: string;
+    id?: number;
+    type: Constants["ComponentTypes"]["TEXT_DISPLAY"];
+  }
+  interface Thumbnail {
+    description?: string;
+    id?: number;
+    media: UnfurledMediaItem;
+    spoiler?: boolean;
+    type: Constants["ComponentTypes"]["THUMBNAIL"];
+  }
+  interface MediaGallery {
+    id?: number;
+    items: MediaGalleryItem[];
+    type: Constants["ComponentTypes"]["MEDIA_GALLERY"];
+  }
+  interface MediaGalleryItem {
+    description?: string;
+    media: UnfurledMediaItem;
+    spoiler?: boolean;
+  }
+  interface File {
+    file: UnfurledMediaItem;
+    id?: number;
+    name?: string;
+    size?: number;
+    spoiler?: boolean;
+    type: Constants["ComponentTypes"]["FILE"];
+  }
+  interface Separator {
+    divider?: boolean;
+    id?: number;
+    spacing?: 1 | 2;
+    type: Constants["ComponentTypes"]["SEPARATOR"];
+  }
+  interface Container {
+    accent_color?: number;
+    components: (ActionRow | TextDisplay | Section | MediaGallery | Separator | File)[];
+    id?: number;
+    spoiler?: boolean;
+    type: Constants["ComponentTypes"]["CONTAINER"];
+  }
+  interface UnfurledMediaItem {
+    attachment_id?: string;
+    content_type?: string;
+    height?: number;
+    proxy_url?: string;
+    url: string;
+    width?: number;
   }
   interface Sticker extends StickerItems {
     available?: boolean;
