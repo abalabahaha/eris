@@ -2380,6 +2380,7 @@ declare namespace Eris {
     getMessages(channelID: string, options?: GetMessagesOptions): Promise<Message[]>;
     /** @deprecated */
     getMessages(channelID: string, limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
+    /** @deprecated */
     getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getOAuthApplication(): Promise<OAuthApplicationInfo>;
     /** @deprecated */
@@ -2411,6 +2412,7 @@ declare namespace Eris {
     getSoundboardSounds(): Promise<SoundboardSound<false>[]>;
     getStageInstance(channelID: string): Promise<StageInstance>;
     getStickerPack(packID: string): Promise<StickerPack>;
+    getStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getThreadMember(channelID: string, userID: string, withMember?: boolean): Promise<ThreadMember>;
     getThreadMembers(channelID: string, options?: GetThreadMembersOptions): Promise<ThreadMember[]>;
     getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
