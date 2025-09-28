@@ -3,7 +3,7 @@ const Eris = require("eris");
 const Constants = Eris.Constants;
 
 // Replace TOKEN with your bot account's token
-const bot = new Eris("BOT TOKEN", {
+const bot = Eris("BOT TOKEN", {
   intents: [], // No intents are needed for interactions, but you still need to specify either an empty array or 0
 });
 
