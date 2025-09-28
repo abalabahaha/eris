@@ -1,7 +1,7 @@
 const Eris = require("eris");
 
-// Replace TOKEN with your bot account's token
-const bot = new Eris("Bot TOKEN");
+// Replace BOT_TOKEN with your bot account's token
+const bot = new Eris("Bot BOT_TOKEN");
 
 bot.on("ready", () => { // When the bot is ready
   console.log("Ready!"); // Log "Ready!"
