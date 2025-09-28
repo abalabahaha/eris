@@ -8,6 +8,7 @@ function Eris(token, options) {
 
 Eris.AutoModerationRule = require("./lib/structures/AutoModerationRule");
 Eris.ApplicationCommand = require("./lib/structures/ApplicationCommand");
+Eris.Attachment = require("./lib/structures/Attachment");
 Eris.AutocompleteInteraction = require("./lib/structures/AutocompleteInteraction");
 Eris.Base = require("./lib/structures/Base");
 Eris.Bucket = require("./lib/util/Bucket");

@@ -7,6 +7,7 @@ export default function (token, options) {
 export const {
   AutoModerationRule,
   ApplicationCommand,
+  Attachment,
   AutocompleteInteraction,
   Base,
   Bucket,
