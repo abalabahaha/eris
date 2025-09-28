@@ -153,6 +153,7 @@ declare namespace Eris {
 
   // Invite
   type InviteTargetTypes = Constants["InviteTargetTypes"][keyof Constants["InviteTargetTypes"]];
+  type InviteTypes = Constants["InviteTypes"][keyof Constants["InviteTypes"]];
 
   // Message
   type ActionRowComponents = Button | SelectMenu;
@@ -2356,8 +2357,12 @@ declare namespace Eris {
     getGuildWidget(guildID: string): Promise<WidgetData>;
     getGuildWidgetImageURL(guildID: string, style?: GuildWidgetStyles): string;
     getGuildWidgetSettings(guildID: string): Promise<Widget>;
+    /** @deprecated */
     getInvite(inviteID: string, withCounts?: false, withExpiration?: boolean, guildScheduledEventID?: string): Promise<Invite<"withoutCount">>;
+    /** @deprecated */
     getInvite(inviteID: string, withCounts: true, withExpiration?: boolean, guildScheduledEventID?: string): Promise<Invite<"withCount">>;
+    getInvite(inviteID: string, withCounts?: false, guildScheduledEventID?: string): Promise<Invite<"withoutCount">>;
+    getInvite(inviteID: string, withCounts: true, guildScheduledEventID?: string): Promise<Invite<"withCount">>;
     getJoinedPrivateArchivedThreads(channelID: string, options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getMessage(channelID: string, messageID: string): Promise<Message>;
     getMessageReaction(channelID: string, messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
@@ -3047,6 +3052,7 @@ declare namespace Eris {
     // @ts-ignore: Property is only not null when invite metadata is supplied
     createdAt: CT extends "withMetadata" ? number : null;
     expiresAt?: CT extends "withCount" ? number | null : null;
+    flags?: number;
     guild: CT extends "withMetadata"
       ? Guild // Invite with Metadata always has guild prop
       : CH extends Extract<InviteChannel, GroupChannel> // Invite without Metadata
@@ -3063,6 +3069,7 @@ declare namespace Eris {
     /** @deprecated */
     stageInstance: CH extends StageChannel ? InviteStageInstance : null;
     temporary: CT extends "withMetadata" ? boolean : null;
+    type: InviteTypes;
     uses: CT extends "withMetadata" ? number : null;
     constructor(data: BaseData, client: Client);
     delete(reason?: string): Promise<void>;

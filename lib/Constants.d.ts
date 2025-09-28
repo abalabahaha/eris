@@ -235,6 +235,7 @@ export default interface Constants {
     "DEVELOPER_SUPPORT_SERVER",
     "DISCOVERABLE",
     "FEATURABLE",
+    "GUEST_INVITES",
     "INVITES_DISABLED",
     "INVITE_SPLASH",
     "MEMBER_VERIFICATION_GATE_ENABLED",
@@ -386,9 +387,17 @@ export default interface Constants {
     APPLICATION_COMMAND_AUTOCOMPLETE: 4;
     MODAL_SUBMIT:                     5;
   };
+  InviteFlags: {
+    IS_GUEST_INVITE: 1;
+  };
   InviteTargetTypes: {
     STREAM:               1;
     EMBEDDED_APPLICATION: 2;
+  };
+  InviteTypes: {
+    GUILD:    0;
+    GROUP_DM: 1;
+    FRIEND:   2;
   };
   Locales: {
     BULGARIAN:            "bg";
