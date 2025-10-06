@@ -853,6 +853,7 @@ declare namespace Eris {
   interface OldMember {
     avatar: string | null;
     avatarDecorationData?: AvatarDecorationData | null;
+    collectibles?: UserCollectibles | null;
     communicationDisabledUntil?: number | null;
     flags?: number;
     nick: string | null;
@@ -1499,6 +1500,7 @@ declare namespace Eris {
     avatar: string | null;
     avatarDecorationData?: AvatarDecorationData | null;
     banner?: string | null;
+    collectibles?: UserCollectibles | null;
     discriminator: string;
     id: string;
     username: string;
@@ -1513,6 +1515,15 @@ declare namespace Eris {
   interface RequestGuildSoundboardSoundsOptions {
     guildIDs: string[];
     timeout?: number;
+  }
+  interface UserCollectibles {
+    nameplate?: UserCollectiblesNameplate;
+  }
+  interface UserCollectiblesNameplate {
+    sku_id: number;
+    palette: string;
+    label: string;
+    asset: string;
   }
 
   // Message
@@ -3089,6 +3100,7 @@ declare namespace Eris {
   export class Member extends Base implements Presence {
     accentColor?: number | null;
     activities?: Activity[];
+    animatedNameplateURL: string | null;
     avatar: string | null;
     avatarDecorationData?: AvatarDecorationData | null;
     avatarDecorationURL: string | null;
@@ -3097,6 +3109,7 @@ declare namespace Eris {
     bannerURL: string | null;
     bot: boolean;
     clientStatus?: ClientStatus;
+    collectibles?: UserCollectibles | null;
     communicationDisabledUntil?: number | null;
     createdAt: number;
     defaultAvatar: string;
@@ -3117,6 +3130,7 @@ declare namespace Eris {
     premiumSince?: number | null;
     roles: string[];
     staticAvatarURL: string;
+    staticNameplateURL: string | null;
     status?: UserStatus;
     user: User;
     username: string;
@@ -3531,6 +3545,7 @@ declare namespace Eris {
 
   export class User extends Base {
     accentColor?: number | null;
+    animatedNameplateURL: string | null;
     avatar: string | null;
     avatarDecorationData?: AvatarDecorationData | null;
     avatarDecorationURL: string | null;
@@ -3538,6 +3553,7 @@ declare namespace Eris {
     banner?: string | null;
     bannerURL: string | null;
     bot: boolean;
+    collectibles?: UserCollectibles | null;
     createdAt: number;
     defaultAvatar: string;
     defaultAvatarURL: string;
@@ -3547,6 +3563,7 @@ declare namespace Eris {
     mention: string;
     publicFlags?: number;
     staticAvatarURL: string;
+    staticNameplateURL: string | null;
     system: boolean;
     username: string;
     constructor(data: BaseData, client: Client);
