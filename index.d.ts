@@ -1458,6 +1458,9 @@ declare namespace Eris {
     sku_id: string;
   }
   interface MemberOptions {
+    avatar?: string | null;
+    banner?: string | null;
+    bio?: string | null;
     channelID?: string | null;
     communicationDisabledUntil?: Date | null;
     deaf?: boolean;
