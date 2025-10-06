@@ -234,6 +234,7 @@ export default interface Constants {
     "CREATOR_STORE_PAGE",
     "DEVELOPER_SUPPORT_SERVER",
     "DISCOVERABLE",
+    "ENHANCED_ROLE_COLORS",
     "FEATURABLE",
     "INVITES_DISABLED",
     "INVITE_SPLASH",
