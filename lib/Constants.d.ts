@@ -235,6 +235,7 @@ export default interface Constants {
     "DEVELOPER_SUPPORT_SERVER",
     "DISCOVERABLE",
     "FEATURABLE",
+    "GUILD_TAGS",
     "INVITES_DISABLED",
     "INVITE_SPLASH",
     "MEMBER_VERIFICATION_GATE_ENABLED",
