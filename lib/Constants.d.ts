@@ -459,6 +459,7 @@ export default interface Constants {
     FAILED_TO_MENTION_SOME_ROLES_IN_THREAD: 256;
     SUPPRESS_NOTIFICATIONS:                 4096;
     IS_VOICE_MESSAGE:                       8192;
+    IS_COMPONENTS_V2:                       32768;
   };
   MessageTypes: {
     DEFAULT:                                      0;
