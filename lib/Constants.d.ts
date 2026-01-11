@@ -287,6 +287,35 @@ export default interface Constants {
     PUBLIC:     1;
     GUILD_ONLY: 2;
   };
+  GuildScheduledEventRecurrenceRuleFrequency: {
+    YEARLY:  0;
+    MONTHLY: 1;
+    WEEKLY:  2;
+    DAILY:   3;
+  };
+  GuildScheduledEventRecurrenceRuleMonth: {
+    JANUARY:   1;
+    FEBRUARY:  2;
+    MARCH:     3;
+    APRIL:     4;
+    MAY:       5;
+    JUNE:      6;
+    JULY:      7;
+    AUGUST:    8;
+    SEPTEMBER: 9;
+    OCTOBER:   10;
+    NOVEMBER:  11;
+    DECEMBER:  12;
+  };
+  GuildScheduledEventRecurrenceRuleWeekday: {
+    MONDAY:    0;
+    TUESDAY:   1;
+    WEDNESDAY: 2;
+    THURSDAY:  3;
+    FRIDAY:    4;
+    SATURDAY:  5;
+    SUNDAY:    6;
+  };
   GuildScheduledEventStatus: {
     SCHEDULED: 1;
     ACTIVE:    2;
@@ -579,10 +608,11 @@ export default interface Constants {
     setVoiceChannelStatus:            281474976710656n;
     sendPolls:                        562949953421312n;
     useExternalApps:                  1125899906842624n;
+    pinMessages:                      2251799813685248n;
     allGuild:                         1155597391626430n;
-    allText:                          1759754133699665n;
+    allText:                          4011553947384913n;
     allVoice:                         2080830385030929n;
-    all:                              2111062325329919n;
+    all:                              4362862139015167n;
   };
   PollLayoutTypes: {
     DEFAULT: 1;

@@ -115,6 +115,9 @@ declare namespace Eris {
   type GuildScheduledEventEntityTypes = Constants["GuildScheduledEventEntityTypes"][keyof Constants["GuildScheduledEventEntityTypes"]];
   type GuildScheduledEventOptions<T extends GuildScheduledEventEntityTypes> = GuildScheduledEventOptionsExternal | GuildScheduledEventOptionsDiscord | GuildScheduledEventOptionsBase<T>;
   type GuildScheduledEventPrivacyLevel = Constants["GuildScheduledEventPrivacyLevel"][keyof Constants["GuildScheduledEventPrivacyLevel"]];
+  type GuildScheduledEventRecurrenceRuleFrequencyTypes = Constants["GuildScheduledEventRecurrenceRuleFrequency"][keyof Constants["GuildScheduledEventRecurrenceRuleFrequency"]];
+  type GuildScheduledEventRecurrenceRuleMonthTypes = Constants["GuildScheduledEventRecurrenceRuleMonth"][keyof Constants["GuildScheduledEventRecurrenceRuleMonth"]];
+  type GuildScheduledEventRecurrenceRuleWeekdayTypes = Constants["GuildScheduledEventRecurrenceRuleWeekday"][keyof Constants["GuildScheduledEventRecurrenceRuleWeekday"]];
   type GuildScheduledEventStatus = Constants["GuildScheduledEventStatus"][keyof Constants["GuildScheduledEventStatus"]];
   type GuildWidgetStyles = Constants["GuildWidgetStyles"][keyof Constants["GuildWidgetStyles"]];
   type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
@@ -219,7 +222,7 @@ declare namespace Eris {
     /** @deprecated */
     defaultPermission?: boolean;
     description?: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? string : "" | void;
-    descriptionLocalizations?: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? Record<LocaleStrings, string> | null : null;
+    descriptionLocalizations?: U extends Constants["ApplicationCommandTypes"]["CHAT_INPUT"] ? Partial<Record<LocaleStrings, string>> | null : null;
     dmPermission?: T extends true ? never : boolean | null;
     name?: string;
     nameLocalizations?: Record<LocaleStrings, string> | null;
@@ -275,7 +278,7 @@ declare namespace Eris {
     autocomplete?: boolean;
     choices?: ApplicationCommandOptionChoice<T>[];
     description: string;
-    descriptionLocalizations?: Record<LocaleStrings, string> | null;
+    descriptionLocalizations?: Partial<Record<LocaleStrings, string>> | null;
     name: string;
     nameLocalizations?: Record<LocaleStrings, string> | null;
     required?: boolean;
@@ -457,6 +460,10 @@ declare namespace Eris {
     before?: string;
     limit?: number;
   }
+  interface GetPinsOptions {
+    before?: Date;
+    limit?: number;
+  }
   interface GroupRecipientOptions {
     accessToken: string;
     nick?: string;
@@ -481,9 +488,19 @@ declare namespace Eris {
   }
   interface Pinnable {
     lastPinTimestamp: number | null;
+    /** @deprecated */
     getPins(): Promise<Message[]>;
+    getPins(options?: GetPinsOptions): Promise<GetPinsResponse>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
+  }
+  interface GetPinsResponse {
+    hasMore: boolean;
+    items: GetPinsResponseItem;
+  }
+  interface GetPinsResponseItem {
+    pinnedAt: number;
+    message: Message;
   }
   interface PurgeChannelOptions {
     after?: string;
@@ -1078,17 +1095,6 @@ declare namespace Eris {
     banned_users: string[];
     failed_users: string[];
   }
-  interface CreateGuildOptions {
-    afkChannelID?: string;
-    afkTimeout?: number;
-    channels?: PartialChannel[];
-    defaultNotifications?: DefaultNotifications;
-    explicitContentFilter?: ExplicitContentFilter;
-    icon?: string;
-    roles?: PartialRole[];
-    systemChannelID: string;
-    verificationLevel?: VerificationLevel;
-  }
   interface DiscoveryCategory {
     id: number;
     is_primary: boolean;
@@ -1205,7 +1211,6 @@ declare namespace Eris {
     features?: GuildFeatures[]; // Though only some are editable?
     icon?: string | null;
     name?: string;
-    ownerID?: string;
     preferredLocale?: LocaleStrings | null;
     publicUpdatesChannelID?: string | null;
     rulesChannelID?: string | null;
@@ -1223,6 +1228,7 @@ declare namespace Eris {
     image?: string;
     name?: string;
     privacyLevel?: GuildScheduledEventPrivacyLevel;
+    recurrenceRule?: GuildScheduledEventRecurrenceRuleOptions;
     scheduledEndTime?: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? Date : Date | undefined;
     scheduledStartTime?: Date;
     status?: GuildScheduledEventStatus;
@@ -1255,6 +1261,24 @@ declare namespace Eris {
     channelID: never;
     entityMetadata: Required<GuildScheduledEventMetadata>;
     scheduledEndTime: Date;
+  }
+  interface GuildScheduledEventRecurrenceRuleNWeekday {
+    day: GuildScheduledEventRecurrenceRuleWeekdayTypes;
+    n: 1 | 2 | 3 | 4 | 5;
+  }
+  interface GuildScheduledEventRecurrenceRule extends GuildScheduledEventRecurrenceRuleOptions {
+    byYearDay: number[];
+    count: number | null;
+    end: number | null;
+  }
+  interface GuildScheduledEventRecurrenceRuleOptions { // TODO More precision? Depends on Discord
+    byMonth: GuildScheduledEventRecurrenceRuleMonthTypes[] | null;
+    byMonthDay: number[];
+    byNWeekday: GuildScheduledEventRecurrenceRuleNWeekday[] | null;
+    byWeekday: GuildScheduledEventRecurrenceRuleWeekdayTypes[] | null;
+    frequency: GuildScheduledEventRecurrenceRuleFrequencyTypes;
+    interval: number;
+    start: number;
   }
   interface GuildScheduledEventUser {
     guildScheduledEventID: string;
@@ -1297,9 +1321,6 @@ declare namespace Eris {
     enableEmoticons?: string;
     expireBehavior?: string;
     expireGracePeriod?: string;
-  }
-  interface MFALevelResponse {
-    level: MFALevel;
   }
   interface PruneMemberOptions extends GetPruneOptions {
     computePruneCount?: boolean;
@@ -2197,10 +2218,8 @@ declare namespace Eris {
     createCommand<T extends ApplicationCommandTypes>(command: ApplicationCommandCreateOptions<false, T>): Promise<ApplicationCommand<false, T>>;
     createEmoji(options: ApplicationEmojiOptions): Promise<Emoji>;
     createGroupChannel(userIDs: string[]): Promise<GroupChannel>;
-    createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
     createGuildCommand<T extends ApplicationCommandTypes>(guildID: string, command: ApplicationCommandCreateOptions<true, T>): Promise<ApplicationCommand<true, T>>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
-    createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, event: GuildScheduledEventOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     createGuildSoundboardSound(guildID: string, sound: GuildSoundboardSoundCreate, reason?: string): Promise<SoundboardSound>;
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
@@ -2220,7 +2239,6 @@ declare namespace Eris {
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
     deleteCommand(commandID: string): Promise<void>;
     deleteEmoji(emojiID: string): Promise<void>;
-    deleteGuild(guildID: string): Promise<void>;
     deleteGuildCommand(guildID: string, commandID: string): Promise<void>;
     deleteGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<void>;
     deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
@@ -2267,7 +2285,6 @@ declare namespace Eris {
       reason?: string
     ): Promise<Emoji>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
-    editGuildMFALevel(guildID: string, level: MFALevel, reason?: string): Promise<MFALevelResponse>;
     editGuildOnboarding(guildID: string, options: GuildOnboardingOptions, reason?: string): Promise<GuildOnboarding>;
     editGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     editGuildSoundboardSound(guildID: string, soundID: string, options: GuildSoundboardSoundEdit): Promise<SoundboardSound>;
@@ -2365,7 +2382,9 @@ declare namespace Eris {
     getMessages(channelID: string, limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
     getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getOAuthApplication(): Promise<OAuthApplicationInfo>;
+    /** @deprecated */
     getPins(channelID: string): Promise<Message[]>;
+    getPins(channelID: string, options?: GetPinsOptions): Promise<GetPinsResponse>;
     getPollAnswerVoters(channelID: string, messageID: string, answerID: string, options?: GetPollAnswerVotersOptions): Promise<User[]>;
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
     getRESTChannel(channelID: string): Promise<AnyChannel>;
@@ -2557,7 +2576,9 @@ declare namespace Eris {
     getMessages(options: GetMessagesOptions): Promise<Message<this>[]>;
     /** @deprecated */
     getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
+    /** @deprecated */
     getPins(): Promise<Message<this>[]>;
+    getPins(options?: GetPinsOptions): Promise<GetPinsResponse>;
     pinMessage(messageID: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
@@ -2681,7 +2702,6 @@ declare namespace Eris {
     createSoundboardSound(sound: GuildSoundboardSoundCreate, reason?: string): Promise<SoundboardSound>;
     createSticker(options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createTemplate(name: string, description?: string | null): Promise<GuildTemplate>;
-    delete(): Promise<void>;
     deleteAutoModerationRule(ruleID: string, reason?: string): Promise<void>;
     deleteCommand(commandID: string): Promise<void>;
     deleteDiscoverySubcategory(categoryID: string, reason?: string): Promise<void>;
@@ -2704,7 +2724,6 @@ declare namespace Eris {
     editDiscovery(options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
-    editMFALevel(level: MFALevel, reason?: string): Promise<MFALevelResponse>;
     /** @deprecated */
     editNickname(nick: string): Promise<void>;
     editOnboarding(options: GuildOnboardingOptions, reason?: string): Promise<GuildOnboarding>;
@@ -2860,6 +2879,7 @@ declare namespace Eris {
     image?: string;
     name: string;
     privacyLevel: GuildScheduledEventPrivacyLevel;
+    recurrenceRule: GuildScheduledEventRecurrenceRule | null;
     scheduledEndTime: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? number : number | null;
     scheduledStartTime: number;
     status: GuildScheduledEventStatus;
@@ -2881,7 +2901,6 @@ declare namespace Eris {
     updatedAt: number;
     usageCount: number;
     constructor(data: BaseData, client: Client);
-    createGuild(name: string, icon?: string): Promise<Guild>;
     delete(): Promise<GuildTemplate>;
     edit(options: GuildTemplateOptions): Promise<GuildTemplate>;
     sync(): Promise<GuildTemplate>;
@@ -3461,7 +3480,9 @@ declare namespace Eris {
     getArchivedThreads(type: "public", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel>>;
     getInvites(): Promise<Invite<"withMetadata", this>[]>;
     getJoinedPrivateArchivedThreads(options: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
+    /** @deprecated */
     getPins(): Promise<Message<this>[]>;
+    getPins(options?: GetPinsOptions): Promise<GetPinsResponse>;
     getWebhooks(): Promise<Webhook[]>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
@@ -3481,7 +3502,9 @@ declare namespace Eris {
     edit(options: EditThreadChannelOptions, reason?: string): Promise<this>;
     getMember(userID: string, withMember?: boolean): Promise<ThreadMember>;
     getMembers(options?: GetThreadMembersOptions): Promise<ThreadMember[]>;
+    /** @deprecated */
     getPins(): Promise<Message<this>[]>;
+    getPins(options?: GetPinsOptions): Promise<GetPinsResponse>;
     join(userID?: string): Promise<void>;
     leave(userID?: string): Promise<void>;
     pinMessage(messageID: string): Promise<void>;
