@@ -621,6 +621,11 @@ export default interface Constants {
     allVoice:                         954930478188305n;
     all:                              985162418487295n;
     useExternalApps:                  1125899906842624n;
+    pinMessages:                      2251799813685248n;
+    allGuild:                         1155597391626430n;
+    allText:                          4011553947384913n;
+    allVoice:                         2080830385030929n;
+    all:                              4362862139015167n;
   };
   PollLayoutTypes: {
     DEFAULT: 1;
