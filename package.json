@@ -2,7 +2,7 @@
   "name": "eris",
   "version": "0.18.0",
   "description": "A NodeJS Discord library",
-  "main": "./index.js",
+  "main": "lib/index.js",
   "exports": {
     ".": [
       {
@@ -19,6 +19,8 @@
     "node": ">=10.4.0"
   },
   "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
     "format": "eslint --fix lib examples \"*.{js,mjs,ts}\"",
     "lint": "eslint --max-warnings 0 lib examples \"*.{js,mjs,ts}\""
   },
@@ -31,7 +33,7 @@
     "discord",
     "discordapp",
     "eris",
-    "wrapper"
+    "discordbot"
   ],
   "author": "abalabahaha",
   "license": "MIT",
@@ -56,7 +58,7 @@
     "typescript-eslint": "^8.2.0"
   },
   "optionalDependencies": {
-    "opusscript": "^0.0.8",
+    "opusscript": "^0.1.1",
     "tweetnacl": "^1.0.3"
   },
   "browser": {
@@ -67,6 +69,6 @@
     "fs": false,
     "tls": false,
     "tweetnacl": false,
-    "ws": false
+    "ws": true
   }
 }
