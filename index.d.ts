@@ -2454,7 +2454,7 @@ declare namespace Eris {
     searchGuildMembers(guildID: string, query: string, limit?: number): Promise<Member[]>;
     sendChannelTyping(channelID: string): Promise<void>;
     sendSoundboardSound(channelID: string, options: GuildSoundboardSoundSend): Promise<void>;
-    setVoiceChannelStatus(channelID: string, status: string, reason?: string): Promise<void>;
+    setVoiceChannelStatus(channelID: string, status: string | null, reason?: string): Promise<void>;
     syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     syncGuildTemplate(guildID: string, code: string): Promise<GuildTemplate>;
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
@@ -3584,7 +3584,7 @@ declare namespace Eris {
     join(options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
     leave(): void;
     sendSoundboardSound(options: GuildSoundboardSoundSend): Promise<void>;
-    setStatus(status: string, reason?: string): Promise<void>;
+    setStatus(status: string | null, reason?: string): Promise<void>;
   }
 
   export class VoiceConnection extends EventEmitter implements SimpleJSON {
