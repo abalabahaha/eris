@@ -1478,6 +1478,13 @@ declare namespace Eris {
     asset: string;
     sku_id: string;
   }
+  interface GuildMemberEditMeOptions {
+    avatar?: string | null;
+    banner?: string | null;
+    bio?: string | null;
+    nick?: string | null;
+    reason?: string;
+  }
   interface MemberOptions {
     channelID?: string | null;
     communicationDisabledUntil?: Date | null;
@@ -2285,6 +2292,7 @@ declare namespace Eris {
       reason?: string
     ): Promise<Emoji>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
+    editGuildMemberMe(guildID: string, options: GuildMemberEditMeOptions): Promise<Member>;
     editGuildOnboarding(guildID: string, options: GuildOnboardingOptions, reason?: string): Promise<GuildOnboarding>;
     editGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     editGuildSoundboardSound(guildID: string, soundID: string, options: GuildSoundboardSoundEdit): Promise<SoundboardSound>;
@@ -2723,6 +2731,7 @@ declare namespace Eris {
     editCommandPermissions(permissions: ApplicationCommandPermissions[], reason?: string): Promise<GuildApplicationCommandPermissions[]>;
     editDiscovery(options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
+    editMe(options: GuildMemberEditMeOptions): Promise<Member>;
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
     /** @deprecated */
     editNickname(nick: string): Promise<void>;
