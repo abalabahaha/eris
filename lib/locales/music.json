@@ -1,0 +1,74 @@
+{
+  "en": {
+    "music.nowPlaying": "Now playing: {title}",
+    "music.queueEmpty": "The queue is empty.",
+    "music.paused": "Playback paused.",
+    "music.resumed": "Playback resumed."
+  },
+  "ml": {
+    "music.nowPlaying": "ഇപ്പോൾ പ്ലേ ചെയ്യുന്നത്: {title}",
+    "music.queueEmpty": "ക്യൂ ശൂന്യമാണ്.",
+    "music.paused": "പ്ലേബാക്ക് താൽക്കാലികമായി നിർത്തി.",
+    "music.resumed": "പ്ലേബാക്ക് പുനരാരംഭിച്ചു."
+  },
+  "hi": {
+    "music.nowPlaying": "अभी बज रहा है: {title}",
+    "music.queueEmpty": "कतार खाली है।",
+    "music.paused": "प्लेबैक रोक दिया गया है।",
+    "music.resumed": "प्लेबैक फिर से शुरू हो गया है।"
+  },
+  "ta": {
+    "music.nowPlaying": "இப்போது ஒலிப்பது: {title}",
+    "music.queueEmpty": "பாடல் வரிசை காலியாக உள்ளது.",
+    "music.paused": "பாடல் தற்காலிகமாக நிறுத்தப்பட்டது.",
+    "music.resumed": "பாடல் மீண்டும் தொடர்கிறது."
+  },
+  "ko": {
+    "music.nowPlaying": "현재 재생 중: {title}",
+    "music.queueEmpty": "대기열이 비어 있습니다.",
+    "music.paused": "재생을 일시 정지했습니다.",
+    "music.resumed": "재생을 다시 시작했습니다."
+  },
+  "ja": {
+    "music.nowPlaying": "再生中：{title}",
+    "music.queueEmpty": "キューは空です。",
+    "music.paused": "再生を一時停止しました。",
+    "music.resumed": "再生を再開しました。"
+  },
+  "zh": {
+    "music.nowPlaying": "正在播放：{title}",
+    "music.queueEmpty": "播放队列为空。",
+    "music.paused": "已暂停播放。",
+    "music.resumed": "已继续播放。"
+  },
+  "zh-TW": {
+    "music.nowPlaying": "正在播放：{title}",
+    "music.queueEmpty": "播放佇列是空的。",
+    "music.paused": "已暫停播放。",
+    "music.resumed": "已繼續播放。"
+  },
+  "id": {
+    "music.nowPlaying": "Sedang diputar: {title}",
+    "music.queueEmpty": "Antrean kosong.",
+    "music.paused": "Pemutaran dijeda.",
+    "music.resumed": "Pemutaran dilanjutkan."
+  },
+  "pt-BR": {
+    "music.nowPlaying": "Tocando agora: {title}",
+    "music.queueEmpty": "A fila está vazia.",
+    "music.paused": "Reprodução pausada.",
+    "music.resumed": "Reprodução retomada."
+  },
+  "es": {
+    "music.nowPlaying": "Sonando ahora: {title}",
+    "music.queueEmpty": "La cola está vacía.",
+    "music.paused": "Reproducción en pausa.",
+    "music.resumed": "Reproducción reanudada."
+  },
+  "fr": {
+    "music.nowPlaying": "En cours de lecture : {title}",
+    "music.queueEmpty": "La file d’attente est vide.",
+    "music.paused": "Lecture en pause.",
+    "music.resumed": "Lecture reprise."
+  }
+}
