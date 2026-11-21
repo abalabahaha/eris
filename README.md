@@ -50,6 +50,32 @@ bot.connect(); // Get the bot to connect to Discord
 
 More examples can be found in [the examples folder](https://github.com/abalabahaha/eris/tree/master/examples).
 
+Translated bot replies
+----------------------
+
+Each client has an i18n catalog. The bundled music keys are `music.nowPlaying`,
+`music.queueEmpty`, `music.paused`, and `music.resumed`. They cover English,
+Malayalam, Hindi, Tamil, Korean, Japanese, Chinese (Simplified and Traditional),
+Indonesian, Brazilian Portuguese, Spanish, and French.
+
+```js
+const bot = new Eris.Client(token, { defaultLocale: "en" });
+bot.i18n.register("en", { "music.added": "Added {title} to the queue." });
+bot.i18n.register("ml", { "music.added": "{title} ക്യൂവിൽ ചേർത്തു." });
+
+// In a command interaction handler:
+await interaction.createMessage(interaction.t("music.nowPlaying", { title }));
+
+// For prefix commands, pass the user's or server's saved language explicitly:
+const reply = bot.i18n.t("music.added", "ml", { title });
+```
+
+For each key, interactions try the user's Discord locale, the guild locale,
+the client's default locale, then English. Each locale also tries its parent
+language (for example, `fr-CA` tries `fr`). Missing keys return the key itself.
+Registration merges flat string keys and can override the starter messages.
+Existing replies use translations only when the bot calls a translation method.
+
 Useful Links
 ------------
 

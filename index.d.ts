@@ -523,7 +523,13 @@ declare namespace Eris {
     name_localizations?: Record<LocaleStrings, string>;
     type: ApplicationRoleConnectionMetadataTypes;
   }
+  interface I18n {
+    register(locale: string, messages: Record<string, string>): void;
+    t(key: string, locales?: string | readonly (string | undefined)[], values?: Record<string, string | number>): string;
+  }
+
   interface ClientOptions {
+    defaultLocale?: string;
     /** @deprecated */
     agent?: HTTPSAgent;
     allowedMentions?: AllowedMentions;
@@ -2166,6 +2172,7 @@ declare namespace Eris {
   }
 
   export class Client extends EventEmitter {
+    readonly i18n: I18n;
     application?: { id: string; flags: number };
     bot: boolean;
     channelGuildMap: Record<string, string>;
@@ -2985,6 +2992,9 @@ declare namespace Eris {
   }
 
   export class Interaction extends Base {
+    locale?: string;
+    guildLocale?: string;
+    t(key: string, values?: Record<string, string | number>): string;
     acknowledged: boolean;
     applicationID: string;
     id: string;
